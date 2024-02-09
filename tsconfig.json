@@ -19,8 +19,10 @@
       }
     ],
     "paths": {
-      "@pages/*": ["./src/app/pages/*"],
-      "@public/*": ["./public/*"]
+      "@public/*": ["./public/*"],
+      "@config/*": ["./src/config/*"],
+      "@models/*": ["./src/models/*"],
+      "@pages/*": ["./pages/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
