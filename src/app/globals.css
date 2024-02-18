@@ -1,6 +1,6 @@
 :root {
   --main-color: #d8aaff;
-  --click-color: #454C53;
+  --click-color: #454c53;
 }
 
 * {
@@ -13,16 +13,23 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden
+  overflow-x: hidden;
 }
 
 body {
   font-size: 12px;
   font-weight: 400;
-  color: #1B1D1F;
+  color: #1b1d1f;
 }
 
-ul, li {
+main,
+header {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+ul,
+li {
   list-style: none;
   list-style-position: outside;
 }
