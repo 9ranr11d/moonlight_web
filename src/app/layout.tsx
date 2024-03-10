@@ -5,7 +5,7 @@ import "./globals.css";
 
 import Provider from "@redux/Provider";
 
-import Header from "@components/common/header";
+import Header from "@components/common/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 

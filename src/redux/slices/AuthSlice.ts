@@ -11,6 +11,7 @@ export type AuthState = {
   id: string;
   nickname: string;
   accessLevel: number;
+  accessToken: string;
 };
 
 /** 초기값 */
@@ -20,6 +21,7 @@ const initialState = {
     id: "",
     nickname: "",
     accessLevel: 0,
+    accessToken: "",
   } as AuthState,
 } as InitialState;
 
@@ -28,22 +30,34 @@ export const Auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    signIn: (State, action: PayloadAction<AuthState>) => {
+    // 로그인
+    signIn: (_, action: PayloadAction<AuthState>): InitialState => {
       return {
         value: {
           isAuth: true,
           id: action.payload.id,
           nickname: action.payload.nickname,
           accessLevel: action.payload.accessLevel,
+          accessToken: action.payload.accessToken,
         },
       };
     },
-    signOut: () => {
+    // 로그아웃
+    signOut: (): InitialState => {
       return initialState;
+    },
+    // Refresh Token으로 재발행 된 Access Token 저장
+    refreshAccessToken: (State: InitialState, action: PayloadAction<{ accessToken: string }>): InitialState => {
+      return {
+        value: {
+          ...State.value,
+          accessToken: action.payload.accessToken,
+        },
+      };
     },
   },
 });
 
-export const { signIn, signOut } = Auth.actions; // reducers 함수
+export const { signIn, signOut, refreshAccessToken } = Auth.actions; // reducers 함수
 
 export default Auth.reducer;

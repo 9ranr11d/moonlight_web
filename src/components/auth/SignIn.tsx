@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux/store";
-import { signIn, AuthState } from "@redux/slices/AuthSlice";
+import { AuthState, signIn } from "@redux/slices/AuthSlice";
 
 /** SignIn 자식 */
 interface SignInProps {
@@ -23,25 +23,33 @@ export default function SignIn({ signUp }: SignInProps) {
 
   /** 로그인 */
   const handleSignIn = (): void => {
-    fetch(`/api/user?id=${id}&pw=${pw}`)
-      .then((res: Response) => {
+    const data = { id, pw };
+
+    fetch("/api/sign_in", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res: Response): any => {
         if (res.ok) return res.json();
         else if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
         else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
-        return Promise.reject(res);
+        return res.json().then((data: any) => Promise.reject(data.err));
       })
-      .then((data: AuthState) => {
+      .then((data: AuthState): any =>
+        // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
             isAuth: true,
             id: data.id,
             nickname: data.nickname,
             accessLevel: data.accessLevel,
+            accessToken: data.accessToken,
           })
-        );
-      })
-      .catch((err: Error) => console.error("Sign In :", err));
+        )
+      )
+      .catch((err: Error): void => console.error("Handle Sign In :", err));
   };
 
   return (

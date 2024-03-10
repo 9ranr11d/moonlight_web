@@ -17,27 +17,27 @@ export default function SignUp({ completed }: SignUpProps) {
   const [pw, setPw] = useState<string>(""); // Password
   const [confirmPw, setConfirmPw] = useState<string>(""); // Password 재확인
 
+  /** 회원가입 */
   const handleSignUp = (): void => {
+    // pw와 pw 재확인이 일치하지 않을 때
     if (pw !== confirmPw) return alert("비밀번호가 일치하지 않습니다.");
 
-    const data = {
-      id,
-      nickname,
-      pw,
-    };
+    /** 회원가입에 필요한 사용자 정보 */
+    const data = { id, nickname, pw };
 
-    fetch("/api/user", {
+    fetch("/api/sign_up", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res: Response) => {
+      .then((res: Response): any => {
         if (res.ok) return completed();
-        else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
-        return Promise.reject(res);
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        return res.json().then((data: any) => Promise.reject(data.err));
       })
-      .catch((err: Error) => console.error("Sign Up :", err));
+      .catch((err: Error): void => console.error("Handle Sign Up :", err));
   };
 
   return (

@@ -13,26 +13,19 @@ interface IUser extends Document {
  */
 const UserSchema = new Schema({
   // Identification
-  id: {
-    type: String,
-    required: true,
-  },
+  id: { type: String, required: true },
   // Password
-  pw: {
-    type: String,
-    required: true,
-  },
+  pw: { type: String, required: true },
   // 별명
-  nickname: {
-    type: String,
-    required: true,
-  },
+  nickname: { type: String, required: true },
   // 열람 권한: { 0: 심사중, 1: 방문자, 2: 연인, 3: 관리자}
   accessLevel: {
     type: Number,
     required: true,
     default: 1,
   },
+  // Refresh Token
+  refreshToken: { type: String },
 });
 
 export default mongoose.models.User || mongoose.model<IUser>("User", UserSchema); // 정의된 'User'모델이 없으면 새로운 'User'모델 생성
