@@ -4,7 +4,6 @@
 
 .header > nav {
   padding: 10px 30px;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
 }

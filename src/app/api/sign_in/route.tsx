@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
     const user = await User.findOne({ id: id });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ err: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
 
     /** 해싱한 pw와 찾은 사용자의 pw 일치 여부 */
     const pwMatch = await bcrypt.compare(pw, user.pw);
 
     // pw와 사용자의 pw가 일치하지 않을 시 404 Error 반환
-    if (!pwMatch) return NextResponse.json({ err: "Incorrect Password" }, { status: 401 });
+    if (!pwMatch) return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
 
     /** 사용자 id로 발급받은 Access Token */
     const accessToken = sign(user.id);
@@ -43,7 +43,10 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(
       {
-        user,
+        isAuth: true,
+        id: user.id,
+        nickname: user.nickname,
+        accessLevel: user.accessLevel,
         accessToken: accessToken,
       },
       {
@@ -54,6 +57,6 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("User GET :", err);
 
-    return NextResponse.json({ err: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
 }

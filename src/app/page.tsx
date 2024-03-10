@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import { AppDispatch, RootState } from "@redux/store";
 import { AuthState, refreshAccessToken, signIn } from "@redux/slices/AuthSlice";
 
@@ -17,6 +16,7 @@ import Main from "@components/main/Main";
 export default function Home() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
+
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
@@ -31,6 +31,18 @@ export default function Home() {
     if (user.value.accessToken.length !== 0) getUser(user.value.accessToken);
     else getRefreshAccessToken();
   }, [user.value]);
+
+  // 50분마다 Access Token 자동 재발급
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getRefreshAccessToken();
+    }, 50 * 60 * 1000);
+
+    // 로그아웃 시 Access Token 자동 재발급 취소
+    if (!user.value.isAuth) return clearInterval(interval);
+
+    return () => clearInterval(interval);
+  }, [user.value.accessToken]);
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
@@ -55,7 +67,7 @@ export default function Home() {
       .then((res: Response): any => {
         if (res.ok) return res.json();
 
-        return res.json().then((data: any) => Promise.reject(data.err));
+        return res.json().then((data: any) => Promise.reject(data.msg));
       })
       .then((data: AuthState): any =>
         // 사용자 정보 AuthSlice(Redux)에 저장
@@ -78,7 +90,7 @@ export default function Home() {
       .then((res: Response): any => {
         if (res.ok) return res.json();
 
-        return res.json().then((data: any) => Promise.reject(data.err));
+        return res.json().then((data: any) => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
       .then((data: AuthState): any => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
@@ -87,7 +99,13 @@ export default function Home() {
 
   return (
     <main className={CSS.container}>
-      {user.value.isAuth ? <Main /> : !isSignUp ? <SignIn signUp={handleSignUp} /> : <SignUp completed={handleCompleted} />}
+      {user.value.isAuth ? (
+        <Main />
+      ) : !isSignUp ? (
+        <SignIn signUp={handleSignUp} />
+      ) : (
+        <SignUp completed={handleCompleted} back={(): void => setIsSignUp(false)} />
+      )}
     </main>
   );
 }

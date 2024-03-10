@@ -16,6 +16,7 @@ interface SignInProps {
  * @param signUp 회원가입으로 전환
  */
 export default function SignIn({ signUp }: SignInProps) {
+  /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
   const [id, setId] = useState<string>(""); // Identification
@@ -35,7 +36,7 @@ export default function SignIn({ signUp }: SignInProps) {
         else if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
         else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
-        return res.json().then((data: any) => Promise.reject(data.err));
+        return res.json().then((data: any) => Promise.reject(data.msg));
       })
       .then((data: AuthState): any =>
         // 사용자 정보 AuthSlice(Redux)에 저장
@@ -54,34 +55,24 @@ export default function SignIn({ signUp }: SignInProps) {
 
   return (
     <div>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <input type="text" value={id} onChange={(e) => setId(e.target.value)} placeholder="Identification" />
-            </td>
-            <td rowSpan={2}>
-              <button type="button" onClick={handleSignIn}>
-                Sign In
-              </button>
-            </td>
-          </tr>
+      <div>
+        <ul>
+          <li>
+            <input type="text" value={id} onChange={(e) => setId(e.target.value)} placeholder="Identification" />
+          </li>
+          <li>
+            <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="PassWord" />
+          </li>
+        </ul>
 
-          <tr>
-            <td>
-              <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="PassWord" />
-            </td>
-          </tr>
+        <button type="button" onClick={handleSignIn}>
+          로그인
+        </button>
+      </div>
 
-          <tr>
-            <td colSpan={2}>
-              <button type="button" onClick={signUp}>
-                회원가입
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <button type="button" onClick={signUp}>
+        회원가입
+      </button>
     </div>
   );
 }

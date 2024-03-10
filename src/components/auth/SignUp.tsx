@@ -5,13 +5,14 @@ import React, { useState } from "react";
 /** SignUp 자식 */
 interface SignUpProps {
   completed: () => void;
+  back: () => void;
 }
 
 /**
  * 회원가입
  * @param completed 회원가입 완료
  */
-export default function SignUp({ completed }: SignUpProps) {
+export default function SignUp({ completed, back }: SignUpProps) {
   const [id, setId] = useState<string>(""); // Identification
   const [nickname, setNickName] = useState<string>(""); // 별명
   const [pw, setPw] = useState<string>(""); // Password
@@ -35,7 +36,7 @@ export default function SignUp({ completed }: SignUpProps) {
 
         alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
-        return res.json().then((data: any) => Promise.reject(data.err));
+        return res.json().then((data: any) => Promise.reject(data.msg));
       })
       .catch((err: Error): void => console.error("Handle Sign Up :", err));
   };
@@ -76,12 +77,22 @@ export default function SignUp({ completed }: SignUpProps) {
               <input type="password" value={confirmPw} onChange={(e) => setConfirmPw(e.target.value)} placeholder="Confirm Password" />
             </td>
           </tr>
+
+          <tr>
+            <td>
+              <button type="button" onClick={handleSignUp}>
+                확인
+              </button>
+            </td>
+
+            <td>
+              <button type="button" onClick={() => back()}>
+                뒤로가기
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
-
-      <button type="button" onClick={handleSignUp}>
-        확인
-      </button>
     </div>
   );
 }
