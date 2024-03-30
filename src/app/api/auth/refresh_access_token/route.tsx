@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import dbConnect from "@config/dbConnect";
+import dbConnect from "@lib/dbConnect";
 
 import User from "@models/User";
 

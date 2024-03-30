@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import dbConnect from "@config/dbConnect";
+import dbConnect from "@lib/dbConnect";
 
 import User from "@models/User";
 
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token 반환
     return NextResponse.json(
       {
-        isAuth: true,
         id: user.id,
         nickname: user.nickname,
         accessLevel: user.accessLevel,

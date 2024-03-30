@@ -4,13 +4,14 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { AuthState, refreshAccessToken, signIn } from "@redux/slices/AuthSlice";
+import { refreshAccessToken, signIn } from "@redux/slices/AuthSlice";
 
 import CSS from "./page.module.css";
 
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/SignUp";
 import Main from "@components/main/Main";
+import Recovery from "@components/auth/Recovery";
 
 /** 시작 페이지 */
 export default function Home() {
@@ -20,7 +21,8 @@ export default function Home() {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
-  const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입을 클릭했는 지
+  const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
+  const [isRecovery, setIsRecovery] = useState<boolean>(false); // id/pw 찾기 여부
 
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
@@ -54,57 +56,81 @@ export default function Home() {
     setIsSignUp(false);
   };
 
+  /** 회원가입 창에서 뒤로가기 버튼 */
+  const handleSignUpBack = (): void => {
+    setIsSignUp(false);
+  };
+
+  /** ID/PW 찾기 버튼 클릭 시 */
+  const handleRecovery = (): void => {
+    setIsRecovery(true);
+  };
+
+  /** ID/PW 찾기 창에서 뒤로가기 버튼 */
+  const handleRecoveryBack = (): void => {
+    setIsRecovery(false);
+  };
+
   /** Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인 */
   const getUser = (accessToken: string): void => {
     /** 보낼 Access Token */
     const data = { accessToken: accessToken };
 
-    fetch("/api/get_user_by_access_token", {
+    fetch("/api/auth/get_user_by_access_token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res: Response): any => {
+      .then((res) => {
         if (res.ok) return res.json();
 
-        return res.json().then((data: any) => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((data: AuthState): any =>
+      .then((data) =>
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
             isAuth: true,
             id: data.id,
             nickname: data.nickname,
+            email: data.email,
             accessLevel: data.accessLevel,
             accessToken: data.accessToken,
           })
         )
       )
-      .catch((err: Error): void => console.error("Get User :", err));
+      .catch((err) => console.error("Get User :", err));
   };
 
   /** Refresh Token 확인 */
   const getRefreshAccessToken = (): void => {
-    fetch("/api/refresh_access_token")
-      .then((res: Response): any => {
+    fetch("/api/auth/refresh_access_token")
+      .then((res) => {
         if (res.ok) return res.json();
 
-        return res.json().then((data: any) => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
-      .then((data: AuthState): any => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch((err: Error): void => console.error("Refresh Access Token :", err));
+      .then((data) => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
+      .catch((err) => console.error("Refresh Access Token :", err));
   };
 
   return (
     <main className={CSS.container}>
       {user.value.isAuth ? (
         <Main />
-      ) : !isSignUp ? (
-        <SignIn signUp={handleSignUp} />
       ) : (
-        <SignUp completed={handleCompleted} back={(): void => setIsSignUp(false)} />
+        <div className={CSS.authBox}>
+          {!isSignUp ? (
+            !isRecovery ? (
+              <SignIn signUp={handleSignUp} recovery={handleRecovery} />
+            ) : (
+              <Recovery back={handleRecoveryBack} />
+            )
+          ) : (
+            <SignUp completed={handleCompleted} back={handleSignUpBack} />
+          )}
+        </div>
       )}
     </main>
   );

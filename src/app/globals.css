@@ -1,6 +1,12 @@
 :root {
   --main-color: #d8aaff;
+  --sub-color: #bb86fc;
   --click-color: #454c53;
+  --placeholder-color: #72787f;
+  --border-color: #d9d9d9;
+  --font-color: #111;
+  --disabled-color: #9ea4aa;
+  --white: #fff;
 }
 
 * {
@@ -13,6 +19,7 @@
 html,
 body {
   max-width: 100vw;
+  height: 100vh;
   overflow-x: hidden;
 }
 
@@ -20,12 +27,17 @@ body {
   font-size: 12px;
   font-weight: 400;
   color: #1b1d1f;
+  background: #d8aaff33;
 }
 
 main,
 header {
   max-width: 1920px;
   margin: 0 auto;
+}
+
+main {
+  padding-top: 110px;
 }
 
 ul,
@@ -83,6 +95,40 @@ caption {
   font-size: 13px;
   font-weight: 400;
   line-height: 140%;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: var(--placeholder-color);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: 1px solid var(--sub-color);
+}
+
+button {
+  border: none;
+  background: var(--main-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: var(--white);
+  cursor: pointer;
+}
+
+button:active {
+  background: var(--sub-color);
+}
+
+button:disabled {
+  background: var(--disabled-color);
 }
 
 @font-face {

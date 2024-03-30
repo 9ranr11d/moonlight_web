@@ -1,0 +1,84 @@
+.headerBox {
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  margin-bottom: 20px;
+}
+
+.headerBox > button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin-right: 16px;
+}
+
+.headerBox > h3 {
+  flex: 1;
+}
+
+.signUpBox > table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 20px 10px;
+}
+
+.signUpBox > table > tbody > tr:first-child > td > button {
+  width: 100%;
+}
+
+.signUpBox > table > tbody > tr > td {
+  position: relative;
+}
+
+.signUpBox > table > tbody > tr > th {
+  font-size: 17px;
+}
+
+.signUpBox > table input {
+  width: 100%;
+  font-size: 17px;
+}
+
+.signUpBox > table > tbody > tr > td > span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.emailLine > ul {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 10px 1fr 120px;
+  column-gap: 5px;
+  align-items: center;
+}
+
+.emailLine > ul button {
+  width: 120px;
+  border-radius: 0;
+  color: var(--font-color);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.emailLine > ul > li > button .img {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.emailLine > ul > li > ul {
+  position: absolute;
+}
+
+.emailLine > ul > li > ul > li > button:hover {
+  background: var(--main-color);
+  color: var(--white);
+}
+
+.okBtnBox {
+  margin-top: 10px;
+}

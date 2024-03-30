@@ -1,5 +1,6 @@
 import Cookies from "universal-cookie";
 
+/** Cookie */
 const cookies = new Cookies();
 
 /** Cookie 저장 */

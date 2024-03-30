@@ -1,0 +1,45 @@
+.signInBox > h3 {
+  margin-bottom: 20px;
+}
+
+.signInBox > ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.signInBox > ul > li > button {
+  width: 100%;
+}
+
+.signInBox > ul > li:first-child > button {
+  border-radius: 5px 0 0 5px;
+  border-right: 1px solid var(--white);
+}
+
+.signInBox > ul > li:last-child > button {
+  border-radius: 0 5px 5px 0;
+}
+
+.signInBox .innerBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.signInBox .innerBox > ul {
+  margin-right: 10px;
+}
+
+.signInBox .innerBox > ul > li:first-child {
+  margin-bottom: 10px;
+}
+
+.signInBox .innerBox > button {
+  padding: 0 30px;
+}
+
+.signInBox .innerBox input[type="text"],
+.signInBox .innerBox input[type="password"] {
+  font-size: 17px;
+}

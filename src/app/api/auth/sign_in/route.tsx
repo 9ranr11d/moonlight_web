@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import bcrypt from "bcrypt";
 
-import dbConnect from "@config/dbConnect";
+import dbConnect from "@lib/dbConnect";
 
 import User from "@models/User";
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error("User GET :", err);
+    console.error("Sign In GET :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

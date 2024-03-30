@@ -1,16 +1,26 @@
 .header {
   width: 100%;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .header > nav {
   padding: 10px 30px;
-  display: flex;
-  align-items: center;
+  background: #ffffffcc;
+  transition: height 1s ease, padding 1s ease;
+}
+
+.afterSignInBox {
+  position: relative;
+  transition: bottom 1s ease, opacity 1s ease;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  column-gap: 30px;
 }
 
 .logoBox {
-  display: inline-block;
-  margin-right: 30px;
+  margin: auto;
 }
 
 .logoBox h5 {
@@ -18,11 +28,53 @@
 }
 
 .menuBox {
-  display: inline-block;
   width: 100%;
+  margin: auto;
 }
 
 .menuBox > ul {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+
+.menuBox > ul > li {
+  cursor: pointer;
+}
+
+.menuBox > ul > li:last-child {
+  position: relative;
+  text-align: center;
+  cursor: initial;
+}
+
+.menuBox > ul > li:last-child button {
+  border: none;
+  background: none;
+  color: var(--font-color);
+  padding: 10px;
+}
+
+.menuBox > ul > li:last-child .option {
+  position: absolute;
+  right: 0;
+  background: var(--white);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  border: 0.5px solid var(--border-color);
+}
+
+.menuBox > ul > li:last-child .option > ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.beforeSignInBox {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: top 1s ease, opacity 1s ease;
 }

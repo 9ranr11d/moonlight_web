@@ -1,5 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 
+/** MongoDB URI */
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 declare global {
@@ -13,6 +14,7 @@ let cached = global.mongoose;
 
 if (!cached) cached = global.mongoose = { conn: null, promise: null };
 
+/** MongoDB 연결 */
 export default async function dbConnect() {
   if (cached.conn) return cached.conn;
 

@@ -20,7 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Provider>
           <Header />
-
           {children}
         </Provider>
       </body>
