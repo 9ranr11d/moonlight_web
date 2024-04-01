@@ -5,6 +5,7 @@ import authReducer from "./slices/AuthSlice";
 /** Redux Store */
 export const store = configureStore({
   reducer: {
+    /** 인증 정보 */
     authReducer,
   },
 });

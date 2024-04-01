@@ -4,7 +4,7 @@ import dbConnect from "@lib/dbConnect";
 
 import User from "@models/User";
 
-import { verify } from "@utils/jwtUtils";
+import { verify } from "@utils/JwtUtils";
 
 /** Access Token으로 사용자 정보 가져오기 */
 export async function POST(req: NextRequest) {

@@ -117,7 +117,10 @@ export default function SignUp({ completed, back }: SignUpProps) {
     setIsEmailListOpen(!isEmailListOpen);
   };
 
-  /** E-mail 자동완성 목록 선택 시 */
+  /**
+   * E-mail 자동완성 목록 선택 시
+   * @param idx 몇 번째 E-mail인지
+   */
   const handleSelectEmail = (idx: number): void => {
     if (idx === 0) setLastEmail("");
 

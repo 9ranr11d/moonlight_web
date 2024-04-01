@@ -160,11 +160,16 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
   );
 };
 
+/** Identification 찾기 */
 const Identification = () => {
-  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<boolean>(false); // E-mail 인증 여부
 
-  const [id, setId] = useState<string>("");
+  const [id, setId] = useState<string>(""); // 찾으려는 Identification
 
+  /**
+   * 입력받은 E-mail과 부합하는 Identification 찾기
+   * @param email E-mail
+   */
   const getUserId = (email: string): void => {
     const data = { email };
 
@@ -202,38 +207,48 @@ const Identification = () => {
   );
 };
 
+/** Password 찾기 */
 const Password = ({ back }: PasswordProps) => {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
-  const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false);
-  const [isPwMatching, setIsPwMatching] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean>(false); // Identification 인증 여부
+  const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
+  const [isPwMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
 
-  const [id, setId] = useState<string>("");
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
-  const [confirmPw, setConfirmPw] = useState<string>("");
+  const [id, setId] = useState<string>(""); // 인증할 Identification
+  const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
+  const [pw, setPw] = useState<string>(""); // 새로 만들 Password
+  const [confirmPw, setConfirmPw] = useState<string>(""); // 새로 만들 Password 확인
 
+  // Password랑 Password 확인 일치 여부 판단
   useEffect(() => {
     if (pw.length > 0 && pw === confirmPw) setIsPwMatching(true);
     else setIsPwMatching(false);
   }, [pw, confirmPw]);
 
+  /**
+   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
+   * @param email E-mail
+   */
   const checkEmail = (email: string): void => {
     if (email === userEmail) setIsEmailMatching(true);
     else alert("이메일이 일치하지 않습니다.");
   };
 
+  /** Input Password */
   const handlePw = (e: any): void => {
     setPw(e.target.value);
   };
 
+  /** Input Password 확인 */
   const handleConfirmPw = (e: any): void => {
     setConfirmPw(e.target.value);
   };
 
+  /** Input Identification */
   const handleId = (e: any): void => {
     setId(e.target.value);
   };
 
+  /** Identification 인증 */
   const checkId = (): void => {
     const data = { id };
 
@@ -257,6 +272,7 @@ const Password = ({ back }: PasswordProps) => {
       .catch((err) => console.error("Check Id :", err));
   };
 
+  /** 비밀번호 변경 */
   const changePw = (): void => {
     const data = { id, pw };
 
@@ -357,19 +373,23 @@ const Password = ({ back }: PasswordProps) => {
   );
 };
 
+/** ID/PW 찾기 */
 export default function Recovery({ back }: RecoveryProps) {
-  const [isId, setIsId] = useState<boolean>(true);
+  const [isIdRecovery, setIsIdRecovery] = useState<boolean>(true); // Identification 찾기 인지 여부
 
+  /** 뒤로가기 */
   const handleBack = () => {
     back();
   };
 
-  const handleId = () => {
-    setIsId(true);
+  /** Identification 찾기 클릭 */
+  const handleIdRecovery = () => {
+    setIsIdRecovery(true);
   };
 
-  const handlePw = () => {
-    setIsId(false);
+  /** Password 찾기 클릭 */
+  const handlePwRecovery = () => {
+    setIsIdRecovery(false);
   };
 
   return (
@@ -384,16 +404,16 @@ export default function Recovery({ back }: RecoveryProps) {
         </div>
 
         <div className={CSS.tapBox}>
-          <button type="button" onClick={handleId} disabled={isId}>
+          <button type="button" onClick={handleIdRecovery} disabled={isIdRecovery}>
             Identification
           </button>
 
-          <button type="button" onClick={handlePw} disabled={!isId}>
+          <button type="button" onClick={handlePwRecovery} disabled={!isIdRecovery}>
             Password
           </button>
         </div>
 
-        <div className={CSS.content}>{isId ? <Identification /> : <Password back={handleBack} />}</div>
+        <div className={CSS.content}>{isIdRecovery ? <Identification /> : <Password back={handleBack} />}</div>
       </div>
     </>
   );

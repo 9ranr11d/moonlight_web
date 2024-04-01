@@ -3,7 +3,11 @@ import jwt from "jsonwebtoken";
 /** JWT Secret key */
 const secret: string = process.env.JWT_SECRET!;
 
-/** Access Token 발급 */
+/**
+ * Access Token 발급
+ * @param userId Identification
+ * @returns Access Token
+ */
 export const sign = (userId: string) => {
   return jwt.sign({ id: userId }, secret, {
     algorithm: "HS256",
@@ -11,7 +15,11 @@ export const sign = (userId: string) => {
   });
 };
 
-/** Access Token 검증 */
+/**
+ * Access Token 검증
+ * @param token Access Token
+ * @returns 유효한 Token인지
+ */
 export const verify = (token: string) => {
   let decoded: any = null;
 
@@ -30,7 +38,11 @@ export const verify = (token: string) => {
   }
 };
 
-/** Refresh Token 발급 */
+/**
+ * Refresh Token 발급
+ * @param userId Identification
+ * @returns Refresh Token
+ */
 export const refresh = (userId: string) => {
   return jwt.sign({ id: userId }, secret, {
     algorithm: "HS256",
@@ -38,7 +50,11 @@ export const refresh = (userId: string) => {
   });
 };
 
-/** Refresh Token 검증 */
+/**
+ * Refresh Token 검증
+ * @param token Refresh Token
+ * @returns 유효한 Token인지
+ */
 export const refreshVerify = (token: string) => {
   try {
     jwt.verify(token, secret);

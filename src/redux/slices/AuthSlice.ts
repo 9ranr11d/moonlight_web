@@ -38,7 +38,12 @@ export const Auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    /** 로그인 */
+    /**
+     * 로그인
+     * @param _ 현재 상태
+     * @param action 받아온 값
+     * @returns initialState 변경
+     */
     signIn: (_, action: PayloadAction<AuthState>): InitialState => {
       return {
         value: {
@@ -55,7 +60,12 @@ export const Auth = createSlice({
     signOut: (): InitialState => {
       return initialState;
     },
-    /** Refresh Token으로 재발행 된 Access Token 저장 */
+    /**
+     * Refresh Token으로 재발행 된 Access Token 저장
+     * @param State 현재 상태
+     * @param action 받아온 값
+     * @returns initialState 변경
+     */
     refreshAccessToken: (State: InitialState, action: PayloadAction<{ accessToken: string }>): InitialState => {
       return {
         value: {

@@ -6,7 +6,7 @@ import dbConnect from "@lib/dbConnect";
 
 import User from "@models/User";
 
-import { refresh, sign } from "@utils/jwtUtils";
+import { refresh, sign } from "@utils/JwtUtils";
 
 /** 로그인 */
 export async function POST(req: NextRequest) {
