@@ -3,21 +3,21 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 /** 관리자 E-mail Identification */
-const adminMail = process.env.NODEMAILER_ID;
+const adminMail: string = process.env.NODEMAILER_ID!;
 /** 관리자 E-mail PassWord(앱 비밀번호) */
-const adminPassword = process.env.NODEMAILER_PW;
+const adminPassword: string = process.env.NODEMAILER_PW!;
 
 /** 이메일 인증 */
 export async function POST(req: NextRequest) {
   try {
     // E-mail
-    const { email } = await req.json();
+    const { email }: { email: string } = await req.json();
 
     /** 인증코드 */
-    const verificationCode = Math.random().toString(36).slice(2, 8);
+    const verificationCode: string = Math.random().toString(36).slice(2, 8);
 
     /** 인증코드가 포함된 E-maili 양식 */
-    const content = `
+    const content: string = `
       <html>
         <head>
           <title>INMEDIC E-mail Verification</title>

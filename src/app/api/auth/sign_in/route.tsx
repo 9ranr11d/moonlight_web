@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User from "@models/User";
+import User, { IUser } from "@models/User";
 
 import { refresh, sign } from "@utils/JwtUtils";
 
@@ -15,37 +15,39 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, PassWord
-    const { id, pw } = await req.json();
+    const { id, pw }: { id: string; pw: string } = await req.json();
 
     /** id와 일차하는 사용자 정보 */
-    const user = await User.findOne({ id: id });
+    const user: IUser | null = await User.findOne({ id });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
 
     /** 해싱한 pw와 찾은 사용자의 pw 일치 여부 */
-    const pwMatch = await bcrypt.compare(pw, user.pw);
+    const pwMatch: boolean = await bcrypt.compare(pw, user.pw);
 
     // pw와 사용자의 pw가 일치하지 않을 시 404 Error 반환
     if (!pwMatch) return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
 
     /** 사용자 id로 발급받은 Access Token */
-    const accessToken = sign(user.id);
+    const accessToken: string = sign(user.id);
     /** 사용자 id로 발급받은 Refresh Token */
-    const refreshToken = refresh(user.id);
+    const refreshToken: string = refresh(user.id);
 
     // 발급받은 Refresh Token을 DB 속 사용자 정보에 저장
-    await User.findByIdAndUpdate(user._id, { refreshToken: refreshToken });
+    await User.findByIdAndUpdate(user._id, { refreshToken }, { new: true });
 
     /** Refresh Token을 저장할 쿠키의 수명 (현재 14일) */
-    const maxAge = 14 * 24 * 60 * 60;
+    const maxAge: number = 14 * 24 * 60 * 60;
 
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(
       {
+        _id: user._id,
         isAuth: true,
         id: user.id,
         nickname: user.nickname,
+        email: user.email,
         accessLevel: user.accessLevel,
         accessToken: accessToken,
       },

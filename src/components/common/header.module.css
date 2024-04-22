@@ -52,7 +52,7 @@
   border: none;
   background: none;
   color: var(--font-color);
-  padding: 10px;
+  padding: 0;
 }
 
 .menuBox > ul > li:last-child .option {
@@ -64,6 +64,10 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
   border: 0.5px solid var(--border-color);
+}
+
+.menuBox > ul > li:last-child .option button {
+  padding: 10px;
 }
 
 .menuBox > ul > li:last-child .option > ul {

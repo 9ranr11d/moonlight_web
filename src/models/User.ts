@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 /** 사용자 인터페이스 */
-interface IUser extends Document {
+export interface IUser extends Document {
   /** Identification */
   id: string;
   /** Password */
@@ -17,7 +17,7 @@ interface IUser extends Document {
 }
 
 /** 사용자 모델 */
-const UserSchema = new Schema({
+const UserSchema: mongoose.Schema<IUser> = new Schema<IUser>({
   id: {
     type: String,
     required: true,

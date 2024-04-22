@@ -12,6 +12,7 @@ import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/SignUp";
 import Main from "@components/main/Main";
 import Recovery from "@components/auth/Recovery";
+import UnderReview from "@components/auth/UnderReview";
 
 /** 시작 페이지 */
 export default function Home() {
@@ -27,12 +28,12 @@ export default function Home() {
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
     // 이미 로그인이 된 상태면 패스
-    if (user.value.isAuth) return;
+    if (user.isAuth) return;
 
     // AccessToken이 있는지, 없는지
-    if (user.value.accessToken.length !== 0) getUser(user.value.accessToken);
+    if (user.accessToken.length !== 0) getUser(user.accessToken);
     else getRefreshAccessToken();
-  }, [user.value]);
+  }, [user]);
 
   // 50분마다 Access Token 자동 재발급
   useEffect(() => {
@@ -41,10 +42,10 @@ export default function Home() {
     }, 50 * 60 * 1000);
 
     // 로그아웃 시 Access Token 자동 재발급 취소
-    if (!user.value.isAuth) return clearInterval(interval);
+    if (!user.isAuth) return clearInterval(interval);
 
     return () => clearInterval(interval);
-  }, [user.value.accessToken]);
+  }, [user.accessToken]);
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
@@ -74,7 +75,7 @@ export default function Home() {
   /** Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인 */
   const getUser = (accessToken: string): void => {
     /** 보낼 Access Token */
-    const data = { accessToken: accessToken };
+    const data: { accessToken: string } = { accessToken };
 
     fetch("/api/auth/get_user_by_access_token", {
       method: "POST",
@@ -90,6 +91,7 @@ export default function Home() {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
+            _id: data._id,
             isAuth: true,
             id: data.id,
             nickname: data.nickname,
@@ -117,8 +119,14 @@ export default function Home() {
 
   return (
     <main className={CSS.container}>
-      {user.value.isAuth ? (
-        <Main />
+      {user.isAuth ? (
+        user.accessLevel >= 1 ? (
+          <Main />
+        ) : (
+          <div className={CSS.authBox}>
+            <UnderReview />
+          </div>
+        )
       ) : (
         <div className={CSS.authBox}>
           {!isSignUp ? (

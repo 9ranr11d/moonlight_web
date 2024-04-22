@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-/** 초기값 형태 */
-type InitialState = {
-  value: AuthState;
-};
-
-/** value값 형태 */
-export type AuthState = {
+/** 초기값 형태  */
+export interface AuthState {
+  /** MongoDB Identification */
+  _id: string;
   /** Sign In 여부 */
   isAuth: boolean;
   /** Identification */
@@ -19,19 +16,18 @@ export type AuthState = {
   accessLevel: number;
   /** Access Token */
   accessToken: string;
-};
+}
 
 /** 초기값 */
-const initialState = {
-  value: {
-    isAuth: false,
-    id: "",
-    nickname: "",
-    email: "",
-    accessLevel: 0,
-    accessToken: "",
-  } as AuthState,
-} as InitialState;
+const initialState: AuthState = {
+  _id: "",
+  isAuth: false,
+  id: "",
+  nickname: "",
+  email: "",
+  accessLevel: 0,
+  accessToken: "",
+};
 
 /** Redux Auth Slice */
 export const Auth = createSlice({
@@ -44,20 +40,19 @@ export const Auth = createSlice({
      * @param action 받아온 값
      * @returns initialState 변경
      */
-    signIn: (_, action: PayloadAction<AuthState>): InitialState => {
+    signIn: (_, action: PayloadAction<AuthState>): AuthState => {
       return {
-        value: {
-          isAuth: true,
-          id: action.payload.id,
-          nickname: action.payload.nickname,
-          email: action.payload.email,
-          accessLevel: action.payload.accessLevel,
-          accessToken: action.payload.accessToken,
-        },
+        _id: action.payload._id,
+        isAuth: true,
+        id: action.payload.id,
+        nickname: action.payload.nickname,
+        email: action.payload.email,
+        accessLevel: action.payload.accessLevel,
+        accessToken: action.payload.accessToken,
       };
     },
     /** 로그아웃 */
-    signOut: (): InitialState => {
+    signOut: (): AuthState => {
       return initialState;
     },
     /**
@@ -66,12 +61,10 @@ export const Auth = createSlice({
      * @param action 받아온 값
      * @returns initialState 변경
      */
-    refreshAccessToken: (State: InitialState, action: PayloadAction<{ accessToken: string }>): InitialState => {
+    refreshAccessToken: (State: AuthState, action: PayloadAction<{ accessToken: string }>): AuthState => {
       return {
-        value: {
-          ...State.value,
-          accessToken: action.payload.accessToken,
-        },
+        ...State,
+        accessToken: action.payload.accessToken,
       };
     },
   },

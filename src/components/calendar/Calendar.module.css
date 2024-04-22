@@ -1,0 +1,171 @@
+.calendar {
+  display: flex;
+  background: var(--white);
+  border-radius: 10px;
+}
+
+.calendar > div {
+  padding: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.yearMonthToggleBtn {
+  display: flex;
+  column-gap: 7px;
+  background: var(--sub-color);
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.yearMonthToggleBtn button {
+  color: var(--disabled-color-i);
+  background: var(--disabled-color-ii) !important;
+  padding: 3px 10px !important;
+}
+
+.yearMonthToggleBtn button:disabled {
+  color: var(--font-color);
+  background: var(--white) !important;
+}
+
+.header button,
+.subBox .content button {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.subBox {
+  background: var(--main-color);
+  border-radius: 10px 0 0 10px;
+}
+
+.subBox h6 {
+  color: var(--white);
+}
+
+.subBox .header {
+  column-gap: 12px;
+  margin-bottom: 16px;
+}
+
+.subBox .content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.subBox .content button {
+  width: 100%;
+  color: var(--font-color);
+  text-align: center;
+  font-size: 14px;
+  padding: 4px 0;
+  border-radius: 5px 0 0 5px;
+}
+
+.subBox .content button:hover,
+.subBox .content .selected {
+  background: var(--sub-color);
+}
+
+.mainBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainBox .header {
+  column-gap: 30px;
+  margin-bottom: 16px;
+}
+
+.mainBox .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainBox .content > ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.daysOfWeek {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.days {
+  flex: 1;
+}
+
+.days button {
+  position: relative;
+  border: none;
+  background: none;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.days button:hover {
+  background: var(--main-color);
+}
+
+.days button:hover > span {
+  color: var(--white) !important;
+}
+
+.days button > span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: var(--font-color);
+}
+
+.days .today {
+  color: var(--bright-green) !important;
+}
+
+.days > li {
+  border: 1px solid var(--border-color);
+  padding: 3px;
+  font-weight: 600;
+}
+
+.days > li:first-child {
+  border-radius: 5px 0 0 0;
+}
+
+.days > li:nth-child(7n) > button > span {
+  color: var(--bright-blue);
+}
+
+.days > li:nth-child(7n + 1) > button > span {
+  color: var(--bright-red);
+}
+
+.days > li:nth-child(7) {
+  border-radius: 0 5px 0 0;
+}
+
+.days > li:nth-last-child(7) {
+  border-radius: 0 0 0 5px;
+}
+
+.days > li:last-child {
+  border-radius: 0 0 5px 0;
+}
+
+.days .disabled {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--disabled-color-i);
+}

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User from "@models/User";
+import User, { IUser } from "@models/User";
 
 /** 회원가입 */
 export async function POST(req: NextRequest) {
@@ -13,13 +13,13 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, 별명, Password
-    const { id, nickname, pw, email } = await req.json();
+    const { id, nickname, pw, email }: { id: string; nickname: string; pw: string; email: string } = await req.json();
 
     /** 해싱된 pw */
-    const hashedPw = await bcrypt.hash(pw, 10);
+    const hashedPw: string = await bcrypt.hash(pw, 10);
 
     /** 회원가입 할 사용자 정보  */
-    const newUser = new User({
+    const newUser: IUser = new User({
       id,
       pw: hashedPw,
       nickname,

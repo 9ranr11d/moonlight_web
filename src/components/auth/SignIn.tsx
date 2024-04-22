@@ -26,7 +26,7 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
 
   /** 로그인 */
   const handleSignIn = (): void => {
-    const data = { id, pw };
+    const data: { id: string; pw: string } = { id, pw };
 
     fetch("/api/auth/sign_in", {
       method: "POST",
@@ -44,6 +44,7 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
+            _id: data._id,
             isAuth: true,
             id: data.id,
             nickname: data.nickname,
@@ -72,38 +73,36 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
   };
 
   return (
-    <>
-      <div className={CSS.signInBox}>
-        <h3>로그인</h3>
+    <div className={CSS.signInBox}>
+      <h3>로그인</h3>
 
-        <div className={CSS.innerBox}>
-          <ul>
-            <li>
-              <input type="text" value={id} onChange={handleId} placeholder="Identification" />
-            </li>
-            <li>
-              <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
-            </li>
-          </ul>
-
-          <button type="button" onClick={handleSignIn}>
-            <h5>로그인</h5>
-          </button>
-        </div>
-
+      <div className={CSS.innerBox}>
         <ul>
           <li>
-            <button type="button" onClick={handleRecovery}>
-              ID/PW 찾기
-            </button>
+            <input type="text" value={id} onChange={handleId} placeholder="Identification" />
           </li>
           <li>
-            <button type="button" onClick={signUp}>
-              회원가입
-            </button>
+            <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
           </li>
         </ul>
+
+        <button type="button" onClick={handleSignIn}>
+          <h5>로그인</h5>
+        </button>
       </div>
-    </>
+
+      <ul>
+        <li>
+          <button type="button" onClick={handleRecovery}>
+            ID/PW 찾기
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={signUp}>
+            회원가입
+          </button>
+        </li>
+      </ul>
+    </div>
   );
 }

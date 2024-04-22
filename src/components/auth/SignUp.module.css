@@ -1,18 +1,18 @@
-.headerBox {
+.header {
   display: flex;
   align-items: center;
   padding-right: 30px;
   margin-bottom: 20px;
 }
 
-.headerBox > button {
+.header > button {
   border: none;
   background: none;
   padding: 0;
   margin-right: 16px;
 }
 
-.headerBox > h3 {
+.header > h3 {
   flex: 1;
 }
 

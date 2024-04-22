@@ -8,8 +8,8 @@ import { convertToMinutes } from "@utils/Util";
 
 import CSS from "./Recovery.module.css";
 
-import IconBack from "@public/img/common/icon_back_black.svg";
-import IconCheck from "@public/img/common/icon_check_main.svg";
+import IconBack from "@public/img/common/icon_less_than_black.svg";
+import IconCheck from "@public/img/common/icon_check_round_main.svg";
 
 /** EmailSender 자식 */
 interface EmailSenderProps {
@@ -32,7 +32,7 @@ interface RecoveryProps {
 /** E-mail 인증 */
 const EmailSender = ({ verified }: EmailSenderProps) => {
   /** 인증코드 입력 제한시간 최대값 */
-  const maxDeadline = 600;
+  const maxDeadline: number = 600;
 
   const [email, setEmail] = useState<string>(""); // 입력된 E-mail
   const [verificationCode, setVerificationCode] = useState<string>(""); // 인증코드
@@ -68,7 +68,7 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
 
   /** DB에 등록 되어있는 E-mail인지 확인 */
   const verifyMatch = (): void => {
-    const data = { email };
+    const data: { email: string } = { email };
 
     fetch("/api/auth/verify_user_info_match", {
       method: "POST",
@@ -84,7 +84,7 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
 
   /** 인증코드 전송 */
   const sendEmail = (): void => {
-    const data = { email };
+    const data: { email: string } = { email };
 
     fetch("/api/auth/email_verification", {
       method: "POST",
@@ -395,7 +395,7 @@ export default function Recovery({ back }: RecoveryProps) {
   return (
     <>
       <div className={CSS.recoveryBox}>
-        <div className={CSS.headerBox}>
+        <div className={CSS.header}>
           <button type="button" onClick={handleBack}>
             <Image src={IconBack} width={24} height={24} alt="◀" />
           </button>

@@ -6,9 +6,9 @@ import Image from "next/image";
 
 import CSS from "./SignUp.module.css";
 
-import IconBack from "@public/img/common/icon_back_black.svg";
-import IconCheck from "@public/img/common/icon_check_main.svg";
-import IconTriangle from "@public/img/common/icon_triangle_black.svg";
+import IconBack from "@public/img/common/icon_less_than_black.svg";
+import IconCheck from "@public/img/common/icon_check_round_main.svg";
+import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
 
 /** SignUp 자식 */
 interface SignUpProps {
@@ -20,7 +20,7 @@ interface SignUpProps {
 
 /** 회원가입 */
 export default function SignUp({ completed, back }: SignUpProps) {
-  const emailList = ["직접입력", "gmail.com", "naver.com"]; // E-mail 자동완성 목록
+  const emailList: string[] = ["직접입력", "gmail.com", "naver.com"]; // E-mail 자동완성 목록
 
   const [id, setId] = useState<string>(""); // Identification
   const [nickname, setNickName] = useState<string>(""); // 별명
@@ -36,7 +36,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
   const [isPwMatching, setIsPwMatching] = useState<boolean>(false); // Pw와 ConfirmPw가 일치하는 지
 
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
-  const isEmpty = isDuplicateId || nickname.length === 0 || !isPwMatching || firstEmail.length === 0 || lastEmail.length === 0;
+  const isEmpty: boolean = isDuplicateId || nickname.length === 0 || !isPwMatching || firstEmail.length === 0 || lastEmail.length === 0;
 
   // E-mail 자동완성 선택 시 lastEmail에 자동입력
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
 
   /** Identification 중복 확인 */
   const handleDuplicate = (): void => {
-    const data = { id };
+    const data: { id: string } = { id };
 
     fetch("/api/auth/check_duplicate_id", {
       method: "POST",
@@ -134,7 +134,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
     if (pw !== confirmPw) return alert("비밀번호가 일치하지 않습니다.");
 
     /** 회원가입에 필요한 사용자 정보 */
-    const data = { id, nickname, pw, email: `${firstEmail}@${lastEmail}` };
+    const data: { id: string; nickname: string; pw: string; email: string } = { id, nickname, pw, email: `${firstEmail}@${lastEmail}` };
 
     fetch("/api/auth/sign_up", {
       method: "POST",
@@ -152,117 +152,115 @@ export default function SignUp({ completed, back }: SignUpProps) {
   };
 
   return (
-    <>
-      <div className={CSS.signUpBox}>
-        <div className={CSS.headerBox}>
-          <button type="button" onClick={handleBack}>
-            <Image src={IconBack} width={24} height={24} alt="◀" />
-          </button>
+    <div className={CSS.signUpBox}>
+      <div className={CSS.header}>
+        <button type="button" onClick={handleBack}>
+          <Image src={IconBack} width={24} height={24} alt="◀" />
+        </button>
 
-          <h3>회원가입</h3>
-        </div>
-
-        <table>
-          <colgroup>
-            <col style={{ width: "15%" }} />
-            <col style={{ width: "65%" }} />
-            <col style={{ width: "20%" }} />
-          </colgroup>
-
-          <tbody>
-            <tr>
-              <th>아이디</th>
-              <td>
-                <input type="text" value={id} onChange={handleId} placeholder="Identification" />
-
-                {!isDuplicateId && (
-                  <span>
-                    <Image src={IconCheck} width={20} alt="√" />
-                  </span>
-                )}
-              </td>
-              <td>
-                <button type="button" onClick={handleDuplicate} disabled={id.length <= 5}>
-                  중복검사
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <th>별명</th>
-              <td colSpan={2}>
-                <input type="text" value={nickname} onChange={handleNickname} placeholder="Nickname" />
-              </td>
-            </tr>
-
-            <tr>
-              <th>비밀번호</th>
-              <td colSpan={2}>
-                <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
-              </td>
-            </tr>
-
-            <tr>
-              <th>
-                비밀번호
-                <br />
-                재확인
-              </th>
-              <td colSpan={2}>
-                <input type="password" value={confirmPw} onChange={handleConfirmPw} placeholder="Confirm Password" />
-
-                {isPwMatching && (
-                  <span>
-                    <Image src={IconCheck} width={20} alt="√" />
-                  </span>
-                )}
-              </td>
-            </tr>
-
-            <tr>
-              <th>E-mail</th>
-              <td colSpan={2} className={CSS.emailLine}>
-                <ul>
-                  <li>
-                    <input type="text" value={firstEmail} onChange={handleFirstEmail} placeholder="Identification" />
-                  </li>
-                  <li>@</li>
-                  <li>
-                    <input type="text" value={lastEmail} onChange={handleLastEmail} placeholder="직접 입력" readOnly={lastEmailIdx !== 0} />
-                  </li>
-                  <li>
-                    <button type="button" onClick={handleEmailList}>
-                      {emailList[lastEmailIdx]}
-
-                      <div className={CSS.img}>
-                        <Image src={IconTriangle} width={9} alt="▼" />
-                      </div>
-                    </button>
-
-                    {isEmailListOpen && (
-                      <ul>
-                        {emailList.map((email, idx) => (
-                          <li key={idx}>
-                            <button type="button" onClick={() => handleSelectEmail(idx)}>
-                              {email}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className={CSS.okBtnBox}>
-          <button type="button" onClick={handleSignUp} disabled={isEmpty}>
-            확인
-          </button>
-        </div>
+        <h3>회원가입</h3>
       </div>
-    </>
+
+      <table>
+        <colgroup>
+          <col style={{ width: "15%" }} />
+          <col style={{ width: "65%" }} />
+          <col style={{ width: "20%" }} />
+        </colgroup>
+
+        <tbody>
+          <tr>
+            <th>아이디</th>
+            <td>
+              <input type="text" value={id} onChange={handleId} placeholder="Identification" />
+
+              {!isDuplicateId && (
+                <span>
+                  <Image src={IconCheck} width={20} alt="√" />
+                </span>
+              )}
+            </td>
+            <td>
+              <button type="button" onClick={handleDuplicate} disabled={id.length <= 5}>
+                중복검사
+              </button>
+            </td>
+          </tr>
+
+          <tr>
+            <th>별명</th>
+            <td colSpan={2}>
+              <input type="text" value={nickname} onChange={handleNickname} placeholder="Nickname" />
+            </td>
+          </tr>
+
+          <tr>
+            <th>비밀번호</th>
+            <td colSpan={2}>
+              <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
+            </td>
+          </tr>
+
+          <tr>
+            <th>
+              비밀번호
+              <br />
+              재확인
+            </th>
+            <td colSpan={2}>
+              <input type="password" value={confirmPw} onChange={handleConfirmPw} placeholder="Confirm Password" />
+
+              {isPwMatching && (
+                <span>
+                  <Image src={IconCheck} width={20} alt="√" />
+                </span>
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <th>E-mail</th>
+            <td colSpan={2} className={CSS.emailLine}>
+              <ul>
+                <li>
+                  <input type="text" value={firstEmail} onChange={handleFirstEmail} placeholder="Identification" />
+                </li>
+                <li>@</li>
+                <li>
+                  <input type="text" value={lastEmail} onChange={handleLastEmail} placeholder="직접 입력" readOnly={lastEmailIdx !== 0} />
+                </li>
+                <li>
+                  <button type="button" onClick={handleEmailList}>
+                    {emailList[lastEmailIdx]}
+
+                    <div className={CSS.img}>
+                      <Image src={IconTriangle} width={9} alt="▼" />
+                    </div>
+                  </button>
+
+                  {isEmailListOpen && (
+                    <ul>
+                      {emailList.map((email, idx) => (
+                        <li key={idx}>
+                          <button type="button" onClick={() => handleSelectEmail(idx)}>
+                            {email}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div className={CSS.okBtnBox}>
+        <button type="button" onClick={handleSignUp} disabled={isEmpty}>
+          확인
+        </button>
+      </div>
+    </div>
   );
 }

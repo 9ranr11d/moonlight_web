@@ -17,7 +17,7 @@ export default function Header() {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
-  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false); // 사용자 Panel 열기 여부
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
 
   /** 사용자 Panel Toggle */
   const handleUserPanel = (): void => {
@@ -26,31 +26,31 @@ export default function Header() {
 
   /** 로그아웃 */
   const handleSignOut = (): void => {
-    const confirmSignOut = window.confirm("로그아웃 하시겠습니까?");
+    const confirmSignOut: boolean = window.confirm("로그아웃 하시겠습니까?");
 
-    if (confirmSignOut) {
-      setIsUserPanelOpen(false);
+    if (!confirmSignOut) return;
 
-      fetch("/api/auth/sign_out", { method: "POST" })
-        .then((res) => {
-          if (res.ok) return res.json();
+    setIsUserPanelOpen(false);
 
-          return res.json().then((data) => Promise.reject(data.msg));
-        })
-        .then((data) => {
-          alert("로그아웃 됐습니다.");
-          console.log(data.msg);
+    fetch("/api/auth/sign_out", { method: "POST" })
+      .then((res) => {
+        if (res.ok) return res.json();
 
-          dispatch(signOut());
-        })
-        .catch((err) => console.error("Handle Sign Out :", err));
-    }
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        alert("로그아웃 됐습니다.");
+        console.log(data.msg);
+
+        dispatch(signOut());
+      })
+      .catch((err) => console.error("Handle Sign Out :", err));
   };
 
   return (
     <header className={CSS.header}>
-      <nav style={user.value.isAuth ? undefined : { height: 0, padding: 0 }}>
-        <div className={CSS.afterSignInBox} style={user.value.isAuth ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
+      <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
+        <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
           <div className={CSS.logoBox}>
             <Link href={"/"}>
               <h5>MOONLIGHT</h5>
@@ -66,11 +66,11 @@ export default function Header() {
               <li>전국 일주</li>
               <li>
                 <button type="button" onClick={handleUserPanel}>
-                  {user.value.nickname}
+                  {user.nickname}
                 </button>
 
                 <div className={CSS.option} style={isUserPanelOpen ? undefined : { display: "none" }}>
-                  <h6>{user.value.nickname}님</h6>
+                  <h6>{user.nickname}님</h6>
 
                   <ul>
                     <li>
@@ -90,7 +90,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className={CSS.beforeSignInBox} style={user.value.isAuth ? { top: -30, opacity: 0 } : { top: 30 }}>
+        <div className={CSS.beforeSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { top: -30, opacity: 0 } : { top: 30 }}>
           <Link href={"/"}>
             <h1>MOONLIGHT</h1>
           </Link>

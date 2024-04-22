@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User from "@models/User";
+import User, { IUser } from "@models/User";
 
 /** E-mail 일치 여부 */
 export async function POST(req: NextRequest) {
@@ -11,10 +11,10 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // E-mail
-    const { email } = await req.json();
+    const { email }: { email: string } = await req.json();
 
     /** email과 일치하는 사용자 정보 */
-    const user = await User.find({ email: email });
+    const user: IUser[] | null = await User.find({ email });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });

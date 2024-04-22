@@ -5,8 +5,12 @@
   --placeholder-color: #72787f;
   --border-color: #d9d9d9;
   --font-color: #111;
-  --disabled-color: #9ea4aa;
+  --disabled-color-i: #9ea4aa;
+  --disabled-color-ii: #ddd;
   --white: #fff;
+  --bright-blue: #00bfff;
+  --bright-red: #ff69b4;
+  --bright-green: #7fff00;
 }
 
 * {
@@ -53,6 +57,15 @@ a {
 
 a:hover {
   color: var(--click-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "pretendard_bold";
 }
 
 h1 {
@@ -128,7 +141,7 @@ button:active {
 }
 
 button:disabled {
-  background: var(--disabled-color);
+  background: var(--disabled-color-i);
 }
 
 @font-face {

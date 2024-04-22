@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function POST() {
   try {
     /** 만료 날짜(현재 시간 - 1) */
-    const pastTime = new Date(Date.now() - 1000);
+    const pastTime: Date = new Date(Date.now() - 1000);
 
     // Refresh Token을 저장한 Cookie 삭제
     return NextResponse.json(
