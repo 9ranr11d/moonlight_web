@@ -11,7 +11,7 @@ import IconCheck from "@public/img/common/icon_check_round_main.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
 
 /** SignUp 자식 */
-interface SignUpProps {
+interface ISignUpProps {
   /** 회원가입 완료 */
   completed: () => void;
   /** 뒤로가기 */
@@ -19,13 +19,13 @@ interface SignUpProps {
 }
 
 /** 회원가입 */
-export default function SignUp({ completed, back }: SignUpProps) {
+export default function SignUp({ completed, back }: ISignUpProps) {
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"]; // E-mail 자동완성 목록
 
-  const [id, setId] = useState<string>(""); // Identification
+  const [identification, setIdentification] = useState<string>(""); // Identification
   const [nickname, setNickName] = useState<string>(""); // 별명
-  const [pw, setPw] = useState<string>(""); // Password
-  const [confirmPw, setConfirmPw] = useState<string>(""); // Password 재확인
+  const [password, setPassword] = useState<string>(""); // Password
+  const [confirmPassword, setConfirmPassword] = useState<string>(""); // Password 재확인
   const [firstEmail, setFirstEmail] = useState<string>(""); // E-mail Identification 부분
   const [lastEmail, setLastEmail] = useState<string>(""); // E-mail Domain 부분
 
@@ -33,10 +33,10 @@ export default function SignUp({ completed, back }: SignUpProps) {
 
   const [isEmailListOpen, setIsEmailListOpen] = useState<boolean>(false); // E-mail 리스트 드롭다운 메뉴 열기 여부
   const [isDuplicateId, setIsDuplicateId] = useState<boolean>(true); // Id가 중복인지
-  const [isPwMatching, setIsPwMatching] = useState<boolean>(false); // Pw와 ConfirmPw가 일치하는 지
+  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // Password와 ConfirmPw가 일치하는 지
 
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
-  const isEmpty: boolean = isDuplicateId || nickname.length === 0 || !isPwMatching || firstEmail.length === 0 || lastEmail.length === 0;
+  const isEmpty: boolean = isDuplicateId || nickname.length === 0 || !isPasswordMatching || firstEmail.length === 0 || lastEmail.length === 0;
 
   // E-mail 자동완성 선택 시 lastEmail에 자동입력
   useEffect(() => {
@@ -45,9 +45,9 @@ export default function SignUp({ completed, back }: SignUpProps) {
 
   // Password랑 Password 확인 일치여부 확인
   useEffect(() => {
-    if (pw.length > 0 && pw === confirmPw) setIsPwMatching(true);
+    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
     else setIsPwMatching(false);
-  }, [pw, confirmPw]);
+  }, [password, confirmPassword]);
 
   /** 뒤로가기 */
   const handleBack = (): void => {
@@ -55,14 +55,14 @@ export default function SignUp({ completed, back }: SignUpProps) {
   };
 
   /** Input Identification */
-  const handleId = (e: any): void => {
-    setId(e.target.value);
+  const handleIdentification = (e: any): void => {
+    setIdentification(e.target.value);
     setIsDuplicateId(true);
   };
 
   /** Identification 중복 확인 */
   const handleDuplicate = (): void => {
-    const data: { id: string } = { id };
+    const data: { identification: string } = { identification };
 
     fetch("/api/auth/check_duplicate_id", {
       method: "POST",
@@ -70,20 +70,18 @@ export default function SignUp({ completed, back }: SignUpProps) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.ok)
-          return res.json().then((data) => {
-            setIsDuplicateId(false);
-            console.log(data.msg);
-            alert("사용 가능한 아이디 입니다.");
-          });
-        else if (res.status == 409)
-          return res.json().then((data) => {
-            setIsDuplicateId(true);
-            console.log(data.msg);
-            alert("이미 사용 중인 아이디입니다.");
-          });
-        else return res.json().then((data) => Promise.reject(data.msg));
+        if (res.ok || res.status === 409) {
+          const is409 = res.status === 409;
+          setIsDuplicateId(is409);
+
+          alert(is409 ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디 입니다.");
+
+          return res.json();
+        }
+
+        return res.json().then((data) => Promise.reject(data.msg));
       })
+      .then((data) => console.log(data.msg))
       .catch((err) => console.error("Handle Duplicate :", err));
   };
 
@@ -93,13 +91,13 @@ export default function SignUp({ completed, back }: SignUpProps) {
   };
 
   /** Input Password */
-  const handlePw = (e: any): void => {
-    setPw(e.target.value);
+  const handlePassword = (e: any): void => {
+    setPassword(e.target.value);
   };
 
   /** Input Password 확인 */
   const handleConfirmPw = (e: any): void => {
-    setConfirmPw(e.target.value);
+    setConfirmPassword(e.target.value);
   };
 
   /** Input E-mail Identification부분 */
@@ -130,11 +128,16 @@ export default function SignUp({ completed, back }: SignUpProps) {
 
   /** 회원가입 */
   const handleSignUp = (): void => {
-    // pw와 pw 재확인이 일치하지 않을 때
-    if (pw !== confirmPw) return alert("비밀번호가 일치하지 않습니다.");
+    // Password Password 재확인이 일치하지 않을 때
+    if (password !== confirmPassword) return alert("비밀번호가 일치하지 않습니다.");
 
     /** 회원가입에 필요한 사용자 정보 */
-    const data: { id: string; nickname: string; pw: string; email: string } = { id, nickname, pw, email: `${firstEmail}@${lastEmail}` };
+    const data: { identification: string; nickname: string; password: string; email: string } = {
+      identification,
+      nickname,
+      password,
+      email: `${firstEmail}@${lastEmail}`,
+    };
 
     fetch("/api/auth/sign_up", {
       method: "POST",
@@ -142,11 +145,16 @@ export default function SignUp({ completed, back }: SignUpProps) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.ok) return completed();
+        if (res.ok) return res.json();
 
         alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
         return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        completed();
       })
       .catch((err) => console.error("Handle Sign Up :", err));
   };
@@ -172,7 +180,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
           <tr>
             <th>아이디</th>
             <td>
-              <input type="text" value={id} onChange={handleId} placeholder="Identification" />
+              <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
 
               {!isDuplicateId && (
                 <span>
@@ -181,7 +189,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
               )}
             </td>
             <td>
-              <button type="button" onClick={handleDuplicate} disabled={id.length <= 5}>
+              <button type="button" onClick={handleDuplicate} disabled={identification.length <= 5}>
                 중복검사
               </button>
             </td>
@@ -197,7 +205,7 @@ export default function SignUp({ completed, back }: SignUpProps) {
           <tr>
             <th>비밀번호</th>
             <td colSpan={2}>
-              <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
+              <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
             </td>
           </tr>
 
@@ -208,9 +216,9 @@ export default function SignUp({ completed, back }: SignUpProps) {
               재확인
             </th>
             <td colSpan={2}>
-              <input type="password" value={confirmPw} onChange={handleConfirmPw} placeholder="Confirm Password" />
+              <input type="password" value={confirmPassword} onChange={handleConfirmPw} placeholder="Confirm Password" />
 
-              {isPwMatching && (
+              {isPasswordMatching && (
                 <span>
                   <Image src={IconCheck} width={20} alt="√" />
                 </span>

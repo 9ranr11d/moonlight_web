@@ -1,32 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { IUser } from "@models/User";
+
 /** 초기값 형태  */
-export interface AuthState {
+interface IAuthState extends IUser {
   /** MongoDB Identification */
   _id: string;
   /** Sign In 여부 */
   isAuth: boolean;
-  /** Identification */
-  id: string;
-  /** 별명 */
-  nickname: string;
-  /** E-mail */
-  email: string;
-  /** 열람 권한 */
-  accessLevel: number;
   /** Access Token */
   accessToken: string;
 }
 
 /** 초기값 */
-const initialState: AuthState = {
+const initialState: IAuthState = {
   _id: "",
   isAuth: false,
-  id: "",
+  identification: "",
   nickname: "",
   email: "",
   accessLevel: 0,
   accessToken: "",
+  regDate: "",
 };
 
 /** Redux Auth Slice */
@@ -40,19 +35,20 @@ export const Auth = createSlice({
      * @param action 받아온 값
      * @returns initialState 변경
      */
-    signIn: (_, action: PayloadAction<AuthState>): AuthState => {
+    signIn: (_, action: PayloadAction<IAuthState>): IAuthState => {
       return {
         _id: action.payload._id,
         isAuth: true,
-        id: action.payload.id,
+        identification: action.payload.identification,
         nickname: action.payload.nickname,
         email: action.payload.email,
         accessLevel: action.payload.accessLevel,
         accessToken: action.payload.accessToken,
+        regDate: action.payload.regDate,
       };
     },
     /** 로그아웃 */
-    signOut: (): AuthState => {
+    signOut: (): IAuthState => {
       return initialState;
     },
     /**
@@ -61,7 +57,7 @@ export const Auth = createSlice({
      * @param action 받아온 값
      * @returns initialState 변경
      */
-    refreshAccessToken: (State: AuthState, action: PayloadAction<{ accessToken: string }>): AuthState => {
+    refreshAccessToken: (State: IAuthState, action: PayloadAction<{ accessToken: string }>): IAuthState => {
       return {
         ...State,
         accessToken: action.payload.accessToken,

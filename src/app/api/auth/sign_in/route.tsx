@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IUser } from "@models/User";
+import User, { IIUser } from "@models/User";
 
 import { refresh, sign } from "@utils/JwtUtils";
 
@@ -15,24 +15,24 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, PassWord
-    const { id, pw }: { id: string; pw: string } = await req.json();
+    const { identification, password }: { identification: string; password: string } = await req.json();
 
-    /** id와 일차하는 사용자 정보 */
-    const user: IUser | null = await User.findOne({ id });
+    /** Identification와 일차하는 사용자 정보 */
+    const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
 
-    /** 해싱한 pw와 찾은 사용자의 pw 일치 여부 */
-    const pwMatch: boolean = await bcrypt.compare(pw, user.pw);
+    /** 해싱한 Password 찾은 사용자의 Password 일치 여부 */
+    const passwordMatch: boolean = await bcrypt.compare(password, user.password);
 
-    // pw와 사용자의 pw가 일치하지 않을 시 404 Error 반환
-    if (!pwMatch) return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
+    // Password 사용자의 Password가 일치하지 않을 시 404 Error 반환
+    if (!passwordMatch) return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
 
-    /** 사용자 id로 발급받은 Access Token */
-    const accessToken: string = sign(user.id);
-    /** 사용자 id로 발급받은 Refresh Token */
-    const refreshToken: string = refresh(user.id);
+    /** 사용자 Identification로 발급받은 Access Token */
+    const accessToken: string = sign(user.identification);
+    /** 사용자 Identification로 발급받은 Refresh Token */
+    const refreshToken: string = refresh(user.identification);
 
     // 발급받은 Refresh Token을 DB 속 사용자 정보에 저장
     await User.findByIdAndUpdate(user._id, { refreshToken }, { new: true });
@@ -43,12 +43,8 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(
       {
-        _id: user._id,
+        user,
         isAuth: true,
-        id: user.id,
-        nickname: user.nickname,
-        email: user.email,
-        accessLevel: user.accessLevel,
         accessToken: accessToken,
       },
       {
@@ -57,7 +53,7 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error("Sign In GET :", err);
+    console.error("Sign In :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

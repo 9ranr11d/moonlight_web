@@ -9,7 +9,7 @@ import { signIn } from "@redux/slices/AuthSlice";
 import CSS from "./SignIn.module.css";
 
 /** SignIn 자식 */
-interface SignInProps {
+interface ISignInProps {
   /** 회원가입으로 전환 */
   signUp: () => void;
   /** ID/PW 찾기 전환 */
@@ -17,16 +17,16 @@ interface SignInProps {
 }
 
 /** 로그인 */
-export default function SignIn({ signUp, recovery }: SignInProps) {
+export default function SignIn({ signUp, recovery }: ISignInProps) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const [id, setId] = useState<string>(""); // Identification
-  const [pw, setPw] = useState<string>(""); // Password
+  const [identification, setIdentification] = useState<string>(""); // Identification
+  const [password, setPassword] = useState<string>(""); // Password
 
   /** 로그인 */
   const handleSignIn = (): void => {
-    const data: { id: string; pw: string } = { id, pw };
+    const data: { identification: string; password: string } = { identification, password };
 
     fetch("/api/auth/sign_in", {
       method: "POST",
@@ -46,11 +46,12 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
           signIn({
             _id: data._id,
             isAuth: true,
-            id: data.id,
+            identification: data.identification,
             nickname: data.nickname,
             email: data.email,
             accessLevel: data.accessLevel,
             accessToken: data.accessToken,
+            regDate: data.regDate,
           })
         )
       )
@@ -58,13 +59,13 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
   };
 
   /** Input Identification */
-  const handleId = (e: any): void => {
-    setId(e.target.value);
+  const handleIdentification = (e: any): void => {
+    setIdentification(e.target.value);
   };
 
   /** Input Password */
-  const handlePw = (e: any): void => {
-    setPw(e.target.value);
+  const handlePassword = (e: any): void => {
+    setPassword(e.target.value);
   };
 
   /** ID/PW 찾기로 전환 */
@@ -79,10 +80,10 @@ export default function SignIn({ signUp, recovery }: SignInProps) {
       <div className={CSS.innerBox}>
         <ul>
           <li>
-            <input type="text" value={id} onChange={handleId} placeholder="Identification" />
+            <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
           </li>
           <li>
-            <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
+            <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
           </li>
         </ul>
 

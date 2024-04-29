@@ -23,7 +23,7 @@ export default function Home() {
   const user = useSelector((state: RootState) => state.authReducer);
 
   const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
-  const [isRecovery, setIsRecovery] = useState<boolean>(false); // id/pw 찾기 여부
+  const [isRecovery, setIsRecovery] = useState<boolean>(false); // Identification/Password 찾기 여부
 
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
@@ -93,11 +93,12 @@ export default function Home() {
           signIn({
             _id: data._id,
             isAuth: true,
-            id: data.id,
+            identification: data.identification,
             nickname: data.nickname,
             email: data.email,
             accessLevel: data.accessLevel,
             accessToken: data.accessToken,
+            regDate: data.regDate,
           })
         )
       )

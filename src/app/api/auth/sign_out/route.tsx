@@ -15,7 +15,7 @@ export async function POST() {
       }
     );
   } catch (err) {
-    console.error("Sign Out POST :", err);
+    console.error("Sign Out :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IUser } from "@models/User";
+import User, { IIUser } from "@models/User";
 
 /** 회원가입 */
 export async function POST(req: NextRequest) {
@@ -13,15 +13,15 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, 별명, Password
-    const { id, nickname, pw, email }: { id: string; nickname: string; pw: string; email: string } = await req.json();
+    const { identification, nickname, password, email }: { identification: string; nickname: string; password: string; email: string } = await req.json();
 
-    /** 해싱된 pw */
-    const hashedPw: string = await bcrypt.hash(pw, 10);
+    /** 해싱된 Password */
+    const hashedPw: string = await bcrypt.hash(password, 10);
 
     /** 회원가입 할 사용자 정보  */
-    const newUser: IUser = new User({
-      id,
-      pw: hashedPw,
+    const newUser: IIUser = new User({
+      identification,
+      password: hashedPw,
       nickname,
       email,
       accessLevel: 0,
@@ -30,10 +30,10 @@ export async function POST(req: NextRequest) {
     // 사용자 정보 저장
     await newUser.save();
 
-    // 200 반환
-    return NextResponse.json({ status: 200 });
+    // 회원가입 성공 메세지 반환
+    return NextResponse.json({ msg: "Success" }, { status: 200 });
   } catch (err) {
-    console.error("Sign Up POST: ", err);
+    console.error("Sign Up :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

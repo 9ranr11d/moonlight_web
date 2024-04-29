@@ -6,10 +6,12 @@ import Image from "next/image";
 
 import CSS from "./Calendar.module.css";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@redux/store";
+import { setScheduleCategories, IIIScheduleCategory } from "@redux/slices/ScheduleCategoriesSlice";
 
-import { IUser } from "@models/User";
+import { IIUser } from "@models/User";
+import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
 import { convertDate } from "@utils/Util";
 
@@ -18,26 +20,33 @@ import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
+import IconPlus from "@public/img/common/icon_plus_white.svg";
+import IconDelete from "@public/img/common/icon_delete_white.svg";
+import IconEdit from "@public/img/common/icon_edit_white.svg";
 
-interface PopupState {
+interface IPopupState {
   user: string;
   title: string;
   content: string;
   color: string;
 }
 
-interface PopupStateValue extends PopupState {
+interface IPopupStateValue extends IPopupState {
   category: string[];
   isRepeating: boolean;
 }
 
-interface PopupStateTitle extends PopupState {
+interface IPopupStateTitle extends IPopupState {
   category: string;
   isRepeating: string;
 }
 
 export default function Calendar() {
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
   const user = useSelector((state: RootState) => state.authReducer);
+  const scheduleCategories = useSelector((state: RootState) => state.scheduleCategoriesreducer);
 
   const today: Date = new Date();
   const currentYear: number = today.getFullYear();
@@ -47,7 +56,7 @@ export default function Calendar() {
   const monthNames: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   const dayOfWeek: string[] = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const popupStateTitle: PopupStateTitle = {
+  const popupStateTitle: IPopupStateTitle = {
     user: "사용자",
     title: "일정 이름",
     category: "카테고리",
@@ -56,7 +65,7 @@ export default function Calendar() {
     color: "색상",
   };
 
-  const popupInitialState: PopupStateValue = {
+  const popupInitialState: IPopupStateValue = {
     user: user._id,
     title: "",
     category: [],
@@ -72,10 +81,20 @@ export default function Calendar() {
   const [isYear, setIsYear] = useState<boolean>(false);
   const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false);
   const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false);
+  const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false);
+  const [isCreateCategory, setIsCreateCategory] = useState<boolean>(false);
 
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [newCategory, setNewCategory] = useState<IScheduleCategory>({
+    title: "",
+    color: "#000000",
+    createdBy: user._id,
+  });
 
-  const [popupState, setPopupState] = useState<PopupState>(popupInitialState);
+  const [users, setUsers] = useState<IIUser[]>([]);
+
+  const [categories, setCategories] = useState<IIIScheduleCategory[]>([]);
+
+  const [popupState, setPopupState] = useState<IPopupState>(popupInitialState);
 
   const years: number[] = Array.from({ length: 12 }, (_, idx) => year - 5 + idx);
   const monthDays: number[] = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -89,16 +108,35 @@ export default function Calendar() {
 
   useEffect(() => {
     getUsers();
+    getCategories();
   }, []);
+
+  useEffect(() => {
+    setCategories(scheduleCategories.values);
+  }, [scheduleCategories.values]);
 
   const getUsers = () => {
     fetch("/api/auth/get_users_with_access_level_2")
       .then((res) => {
         if (res.ok) return res.json();
 
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((users) => setUsers(users));
+      .then((users) => setUsers(users))
+      .catch((err) => console.error("Get Users :", err));
+  };
+
+  const getCategories = () => {
+    fetch("/api/calendar/categories_management")
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((_categories) => dispatch(setScheduleCategories(_categories)))
+      .catch((err) => console.error("Get Categories :", err));
   };
 
   const handleYear = (direction: string): void => {
@@ -158,7 +196,7 @@ export default function Calendar() {
       case "user":
         return (
           <>
-            <button type="button" onClick={handleUser}>
+            <button type="button" onClick={handleUser} disabled={user.accessLevel < 3}>
               <span>{users.find((user) => user._id === value)?.nickname}</span>
 
               <Image src={IconTriangle} width={9} alt="▼" />
@@ -183,17 +221,43 @@ export default function Calendar() {
       case "category":
         return (
           <>
-            <button type="button" onClick={handleUser}></button>
+            <button type="button" onClick={handleCategory}>
+              {value.length > 0 ? value.map((_category: string, idx: number) => <span key={idx}>{_category}</span>) : "선택된 카테고리가 없습니다."}
 
-            {isUserListOpen && (
+              <Image src={IconTriangle} width={9} alt="▼" />
+            </button>
+
+            {isCategoryListOpen && (
               <ul>
-                {users.map((user, idx) => (
-                  <li key={idx}>
-                    <button type="button" onClick={() => selectUser(user)}>
-                      {user.nickname}
-                    </button>
-                  </li>
-                ))}
+                {categories.length > 0 &&
+                  categories.map((_category, idx) => (
+                    <li key={idx}>
+                      <button type="button" onClick={() => selectCategory(_category)}>
+                        {_category.title}
+                      </button>
+
+                      <button type="button" onClick={() => console.log("Edit Category")}>
+                        <Image src={IconEdit} height={12} alt="Edit" />
+                      </button>
+
+                      <button type="button" onClick={() => console.log("Delete Category")}>
+                        <Image src={IconDelete} height={12} alt="Delete" />
+                      </button>
+                    </li>
+                  ))}
+
+                <li>
+                  {isCreateCategory && (
+                    <>
+                      <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
+                      <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
+                    </>
+                  )}
+
+                  <button type="button" onClick={handlePlusCategory}>
+                    <Image src={IconPlus} width={12} alt="+" />
+                  </button>
+                </li>
               </ul>
             )}
           </>
@@ -208,19 +272,65 @@ export default function Calendar() {
     }));
   };
 
-  console.log(popupState);
-
   const handleUser = (): void => {
-    setIsUserListOpen(true);
+    setIsUserListOpen((prev) => !prev);
   };
 
-  const selectUser = (user: IUser): void => {
+  const selectUser = (user: IIUser): void => {
     setPopupState((prev) => ({
       ...prev,
       user: user._id,
     }));
 
     setIsUserListOpen(false);
+  };
+
+  const handleCategory = (): void => {
+    setIsCategoryListOpen((prev) => !prev);
+  };
+
+  const selectCategory = (_category: IIScheduleCategory): void => {};
+
+  const handlePlusCategory = (): void => {
+    if (!isCreateCategory) setIsCreateCategory(true);
+    else createCategory();
+  };
+
+  const handleCreateCategoryTitle = (e: any) => {
+    setNewCategory((prev) => ({
+      ...prev,
+      title: e.target.value,
+    }));
+  };
+
+  const handleCreateCategoryColor = (e: any) => {
+    setNewCategory((prev) => ({
+      ...prev,
+      color: e.target.value,
+    }));
+  };
+
+  const createCategory = () => {
+    fetch("/api/calendar/categories_management", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newCategory),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        getCategories();
+
+        alert("일정 카테고리 추가에 성공하였습니다.");
+      })
+      .catch((err) => console.error("Handle Duplicate :", err));
   };
 
   return (
@@ -334,7 +444,7 @@ export default function Calendar() {
               {Object.entries(popupState).map(([key, value], idx) => (
                 <li key={idx}>
                   <ul>
-                    <li>{popupStateTitle[key as keyof PopupStateTitle]}</li>
+                    <li>{popupStateTitle[key as keyof IPopupStateTitle]}</li>
                     <li>{showPopupInput(key, value)}</li>
                   </ul>
                 </li>

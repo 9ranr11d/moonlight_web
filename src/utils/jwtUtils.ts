@@ -5,11 +5,11 @@ const secret: string = process.env.JWT_SECRET!;
 
 /**
  * Access Token 발급
- * @param userId Identification
+ * @param userIdentification Identification
  * @returns Access Token
  */
-export const sign = (userId: string) => {
-  return jwt.sign({ id: userId }, secret, {
+export const sign = (userIdentification: string) => {
+  return jwt.sign({ identification: userIdentification }, secret, {
     algorithm: "HS256",
     expiresIn: "1h",
   });
@@ -28,7 +28,7 @@ export const verify = (token: string) => {
 
     return {
       ok: true,
-      userId: decoded.id,
+      userIdentification: decoded.identification,
     };
   } catch (err: any) {
     return {
@@ -40,11 +40,11 @@ export const verify = (token: string) => {
 
 /**
  * Refresh Token 발급
- * @param userId Identification
+ * @param userIdentification Identification
  * @returns Refresh Token
  */
-export const refresh = (userId: string) => {
-  return jwt.sign({ id: userId }, secret, {
+export const refresh = (userIdentification: string) => {
+  return jwt.sign({ identification: userIdentification }, secret, {
     algorithm: "HS256",
     expiresIn: "14d",
   });

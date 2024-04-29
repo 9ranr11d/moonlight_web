@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IUser } from "@models/User";
+import User, { IIUser } from "@models/User";
 
 /** 해당 id를 가진 사용자가 존재하는 확인 */
 export async function POST(req: NextRequest) {
@@ -11,16 +11,16 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification
-    const { id }: { id: string } = await req.json();
+    const { identification }: { identification: string } = await req.json();
 
-    /** id와 일차하는 사용자 정보 */
-    const user: IUser | null = await User.findOne({ id });
+    /** Identification와 일차하는 사용자 정보 */
+    const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
 
-    // 일차하는 사용자의 id, email 반환
-    return NextResponse.json({ id: user.id, email: user.email }, { status: 200 });
+    // 일차하는 사용자의 Identification, email 반환
+    return NextResponse.json({ identification: user.identification, email: user.email }, { status: 200 });
   } catch (err) {
     console.error("Check Id :", err);
 

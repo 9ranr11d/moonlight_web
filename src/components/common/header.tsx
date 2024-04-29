@@ -36,11 +36,14 @@ export default function Header() {
       .then((res) => {
         if (res.ok) return res.json();
 
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((data) => {
-        alert("로그아웃 됐습니다.");
         console.log(data.msg);
+
+        alert("로그아웃 됐습니다.");
 
         dispatch(signOut());
       })

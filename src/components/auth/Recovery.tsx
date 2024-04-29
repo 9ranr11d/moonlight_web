@@ -12,25 +12,25 @@ import IconBack from "@public/img/common/icon_less_than_black.svg";
 import IconCheck from "@public/img/common/icon_check_round_main.svg";
 
 /** EmailSender 자식 */
-interface EmailSenderProps {
+interface IEmailSenderProps {
   /** 인증 된 E-mail 반환 */
   verified: (email: string) => void;
 }
 
 /** Password 자식 */
-interface PasswordProps {
+interface IPasswordProps {
   /** 뒤로가기 */
   back: () => void;
 }
 
 /** Recovery 자식 */
-interface RecoveryProps {
+interface IRecoveryProps {
   /** 뒤로가기 */
   back: () => void;
 }
 
 /** E-mail 인증 */
-const EmailSender = ({ verified }: EmailSenderProps) => {
+const EmailSender = ({ verified }: IEmailSenderProps) => {
   /** 인증코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
@@ -76,8 +76,14 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.ok) return sendEmail();
-        else return res.json().then((data) => Promise.reject(data.msg));
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        sendEmail();
       })
       .catch((err) => console.error("Verify Match :", err));
   };
@@ -93,6 +99,8 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
     })
       .then((res) => {
         if (res.ok) return res.json();
+
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -164,13 +172,13 @@ const EmailSender = ({ verified }: EmailSenderProps) => {
 const Identification = () => {
   const [isVerified, setIsVerified] = useState<boolean>(false); // E-mail 인증 여부
 
-  const [id, setId] = useState<string>(""); // 찾으려는 Identification
+  const [identification, setIdentification] = useState<string>(""); // 찾으려는 Identification
 
   /**
    * 입력받은 E-mail과 부합하는 Identification 찾기
    * @param email E-mail
    */
-  const getUserId = (email: string): void => {
+  const getUserIdentification = (email: string): void => {
     const data = { email };
 
     fetch("/api/auth/get_user_id_by_email", {
@@ -186,7 +194,7 @@ const Identification = () => {
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((data) => {
-        setId(data.id);
+        setIdentification(data.identification);
         setIsVerified(true);
       })
       .catch((err) => console.error("Identification :", err));
@@ -195,11 +203,11 @@ const Identification = () => {
   return (
     <>
       {!isVerified ? (
-        <EmailSender verified={(email) => getUserId(email)} />
+        <EmailSender verified={(email) => getUserIdentification(email)} />
       ) : (
         <div>
           <h4>찾으시는 아이디는</h4>
-          <h2>『 {id} 』</h2>
+          <h2>『 {identification} 』</h2>
           <h4>입니다.</h4>
         </div>
       )}
@@ -208,21 +216,21 @@ const Identification = () => {
 };
 
 /** Password 찾기 */
-const Password = ({ back }: PasswordProps) => {
+const Password = ({ back }: IPasswordProps) => {
   const [isAuth, setIsAuth] = useState<boolean>(false); // Identification 인증 여부
   const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
-  const [isPwMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
+  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
 
-  const [id, setId] = useState<string>(""); // 인증할 Identification
+  const [identification, setIdentification] = useState<string>(""); // 인증할 Identification
   const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
-  const [pw, setPw] = useState<string>(""); // 새로 만들 Password
-  const [confirmPw, setConfirmPw] = useState<string>(""); // 새로 만들 Password 확인
+  const [password, setPassword] = useState<string>(""); // 새로 만들 Password
+  const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
 
   // Password랑 Password 확인 일치 여부 판단
   useEffect(() => {
-    if (pw.length > 0 && pw === confirmPw) setIsPwMatching(true);
+    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
     else setIsPwMatching(false);
-  }, [pw, confirmPw]);
+  }, [password, confirmPassword]);
 
   /**
    * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
@@ -234,23 +242,23 @@ const Password = ({ back }: PasswordProps) => {
   };
 
   /** Input Password */
-  const handlePw = (e: any): void => {
-    setPw(e.target.value);
+  const handlePassword = (e: any): void => {
+    setPassword(e.target.value);
   };
 
   /** Input Password 확인 */
   const handleConfirmPw = (e: any): void => {
-    setConfirmPw(e.target.value);
+    setConfirmPassword(e.target.value);
   };
 
   /** Input Identification */
-  const handleId = (e: any): void => {
-    setId(e.target.value);
+  const handleIdentification = (e: any): void => {
+    setIdentification(e.target.value);
   };
 
   /** Identification 인증 */
-  const checkId = (): void => {
-    const data = { id };
+  const checkIdentification = (): void => {
+    const data = { identification };
 
     fetch("/api/auth/check_id", {
       method: "POST",
@@ -265,7 +273,7 @@ const Password = ({ back }: PasswordProps) => {
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((data) => {
-        setId(data.id);
+        setIdentification(data.identification);
         setUserEmail(data.email);
         setIsAuth(true);
       })
@@ -273,8 +281,8 @@ const Password = ({ back }: PasswordProps) => {
   };
 
   /** 비밀번호 변경 */
-  const changePw = (): void => {
-    const data = { id, pw };
+  const changePassword = (): void => {
+    const data = { identification, password };
 
     fetch("/api/auth/change_pw", {
       method: "PUT",
@@ -310,10 +318,10 @@ const Password = ({ back }: PasswordProps) => {
               <tr>
                 <th>아이디</th>
                 <td>
-                  <input type="text" value={id} onChange={handleId} placeholder="Identification" />
+                  <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
                 </td>
                 <td>
-                  <button type="button" onClick={checkId}>
+                  <button type="button" onClick={checkIdentification}>
                     확인
                   </button>
                 </td>
@@ -337,7 +345,7 @@ const Password = ({ back }: PasswordProps) => {
               <tr>
                 <th>비밀번호</th>
                 <td>
-                  <input type="password" value={pw} onChange={handlePw} placeholder="Password" />
+                  <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
                 </td>
               </tr>
 
@@ -348,9 +356,9 @@ const Password = ({ back }: PasswordProps) => {
                   재확인
                 </th>
                 <td>
-                  <input type="password" value={confirmPw} onChange={handleConfirmPw} placeholder="Confirm Password" />
+                  <input type="password" value={confirmPassword} onChange={handleConfirmPw} placeholder="Confirm Password" />
 
-                  {isPwMatching && (
+                  {isPasswordMatching && (
                     <span>
                       <Image src={IconCheck} width={20} alt="√" />
                     </span>
@@ -360,7 +368,7 @@ const Password = ({ back }: PasswordProps) => {
 
               <tr>
                 <td colSpan={2}>
-                  <button type="button" onClick={changePw} disabled={!isPwMatching}>
+                  <button type="button" onClick={changePassword} disabled={!isPasswordMatching}>
                     확인
                   </button>
                 </td>
@@ -374,7 +382,7 @@ const Password = ({ back }: PasswordProps) => {
 };
 
 /** ID/PW 찾기 */
-export default function Recovery({ back }: RecoveryProps) {
+export default function Recovery({ back }: IRecoveryProps) {
   const [isIdRecovery, setIsIdRecovery] = useState<boolean>(true); // Identification 찾기 인지 여부
 
   /** 뒤로가기 */
