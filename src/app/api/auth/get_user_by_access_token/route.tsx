@@ -43,13 +43,8 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token 반환
     return NextResponse.json(
       {
-        _id: user._id,
-        identification: user.identification,
-        nickname: user.nickname,
-        email: user.email,
-        accessLevel: user.accessLevel,
+        user,
         accessToken: accessToken,
-        regDate: user.regDate,
       },
       { status: 200 }
     );

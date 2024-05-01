@@ -9,7 +9,7 @@ export async function GET() {
     // DB 연결
     await dbConnect();
 
-    const user: IIUser[] | null = await User.find({ accessLevel: 2 });
+    const user: IIUser[] | null = await User.find({ accessLevel: { $gte: 2 } });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (user.length === 0) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });

@@ -36,7 +36,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // Password와 ConfirmPw가 일치하는 지
 
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
-  const isEmpty: boolean = isDuplicateId || nickname.length === 0 || !isPasswordMatching || firstEmail.length === 0 || lastEmail.length === 0;
+  const isEmpty: boolean = isDuplicateId || !nickname || !isPasswordMatching || !firstEmail || !lastEmail;
 
   // E-mail 자동완성 선택 시 lastEmail에 자동입력
   useEffect(() => {
@@ -49,40 +49,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     else setIsPwMatching(false);
   }, [password, confirmPassword]);
 
-  /** 뒤로가기 */
-  const handleBack = (): void => {
-    back();
-  };
-
   /** Input Identification */
   const handleIdentification = (e: any): void => {
     setIdentification(e.target.value);
     setIsDuplicateId(true);
-  };
-
-  /** Identification 중복 확인 */
-  const handleDuplicate = (): void => {
-    const data: { identification: string } = { identification };
-
-    fetch("/api/auth/check_duplicate_id", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok || res.status === 409) {
-          const is409 = res.status === 409;
-          setIsDuplicateId(is409);
-
-          alert(is409 ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디 입니다.");
-
-          return res.json();
-        }
-
-        return res.json().then((data) => Promise.reject(data.msg));
-      })
-      .then((data) => console.log(data.msg))
-      .catch((err) => console.error("Handle Duplicate :", err));
   };
 
   /** Input 별명 */
@@ -110,24 +80,54 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     setLastEmail(e.target.value);
   };
 
+  /** 뒤로가기 */
+  const goBack = (): void => {
+    back();
+  };
+
   /** E-mail 자동완성 목록 Toggle */
-  const handleEmailList = (): void => {
-    setIsEmailListOpen(!isEmailListOpen);
+  const toggleEmailList = (): void => {
+    setIsEmailListOpen((prev) => !prev);
   };
 
   /**
    * E-mail 자동완성 목록 선택 시
    * @param idx 몇 번째 E-mail인지
    */
-  const handleSelectEmail = (idx: number): void => {
+  const selectEmail = (idx: number): void => {
     if (idx === 0) setLastEmail("");
 
     setLastEmailIdx(idx);
     setIsEmailListOpen(false);
   };
 
+  /** Identification 중복 확인 */
+  const checkDuplicate = (): void => {
+    const data: { identification: string } = { identification };
+
+    fetch("/api/auth/check_duplicate_id", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok || res.status === 409) {
+          const is409 = res.status === 409;
+          setIsDuplicateId(is409);
+
+          alert(is409 ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디 입니다.");
+
+          return res.json();
+        }
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => console.log(data.msg))
+      .catch((err) => console.error("Check Duplicate :", err));
+  };
+
   /** 회원가입 */
-  const handleSignUp = (): void => {
+  const processSignUp = (): void => {
     // Password Password 재확인이 일치하지 않을 때
     if (password !== confirmPassword) return alert("비밀번호가 일치하지 않습니다.");
 
@@ -156,13 +156,13 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         completed();
       })
-      .catch((err) => console.error("Handle Sign Up :", err));
+      .catch((err) => console.error("Process Sign Up :", err));
   };
 
   return (
     <div className={CSS.signUpBox}>
       <div className={CSS.header}>
-        <button type="button" onClick={handleBack}>
+        <button type="button" onClick={goBack}>
           <Image src={IconBack} width={24} height={24} alt="◀" />
         </button>
 
@@ -184,12 +184,12 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
               {!isDuplicateId && (
                 <span>
-                  <Image src={IconCheck} width={20} alt="√" />
+                  <Image src={IconCheck} width={20} height={20} alt="√" />
                 </span>
               )}
             </td>
             <td>
-              <button type="button" onClick={handleDuplicate} disabled={identification.length <= 5}>
+              <button type="button" onClick={checkDuplicate} disabled={identification.length <= 5}>
                 중복검사
               </button>
             </td>
@@ -220,7 +220,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
               {isPasswordMatching && (
                 <span>
-                  <Image src={IconCheck} width={20} alt="√" />
+                  <Image src={IconCheck} width={20} height={20} alt="√" />
                 </span>
               )}
             </td>
@@ -238,7 +238,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
                   <input type="text" value={lastEmail} onChange={handleLastEmail} placeholder="직접 입력" readOnly={lastEmailIdx !== 0} />
                 </li>
                 <li>
-                  <button type="button" onClick={handleEmailList}>
+                  <button type="button" onClick={toggleEmailList}>
                     {emailList[lastEmailIdx]}
 
                     <div className={CSS.img}>
@@ -250,7 +250,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
                     <ul>
                       {emailList.map((email, idx) => (
                         <li key={idx}>
-                          <button type="button" onClick={() => handleSelectEmail(idx)}>
+                          <button type="button" onClick={() => selectEmail(idx)}>
                             {email}
                           </button>
                         </li>
@@ -265,7 +265,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       </table>
 
       <div className={CSS.okBtnBox}>
-        <button type="button" onClick={handleSignUp} disabled={isEmpty}>
+        <button type="button" onClick={processSignUp} disabled={isEmpty}>
           확인
         </button>
       </div>

@@ -24,8 +24,23 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [identification, setIdentification] = useState<string>(""); // Identification
   const [password, setPassword] = useState<string>(""); // Password
 
+  /** Input Identification */
+  const handleIdentification = (e: any): void => {
+    setIdentification(e.target.value);
+  };
+
+  /** Input Password */
+  const handlePassword = (e: any): void => {
+    setPassword(e.target.value);
+  };
+
+  /** ID/PW 찾기로 전환 */
+  const handleRecovery = (): void => {
+    recovery();
+  };
+
   /** 로그인 */
-  const handleSignIn = (): void => {
+  const processSignIn = (): void => {
     const data: { identification: string; password: string } = { identification, password };
 
     fetch("/api/auth/sign_in", {
@@ -40,37 +55,22 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((data) =>
+      .then((data) => {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
-            _id: data._id,
+            _id: data.user._id,
             isAuth: true,
-            identification: data.identification,
-            nickname: data.nickname,
-            email: data.email,
-            accessLevel: data.accessLevel,
+            identification: data.user.identification,
+            nickname: data.user.nickname,
+            email: data.user.email,
+            accessLevel: data.user.accessLevel,
             accessToken: data.accessToken,
-            regDate: data.regDate,
+            regDate: data.user.regDate,
           })
-        )
-      )
-      .catch((err) => console.error("Handle Sign In :", err));
-  };
-
-  /** Input Identification */
-  const handleIdentification = (e: any): void => {
-    setIdentification(e.target.value);
-  };
-
-  /** Input Password */
-  const handlePassword = (e: any): void => {
-    setPassword(e.target.value);
-  };
-
-  /** ID/PW 찾기로 전환 */
-  const handleRecovery = (): void => {
-    recovery();
+        );
+      })
+      .catch((err) => console.error("Process Sign In :", err));
   };
 
   return (
@@ -87,7 +87,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
           </li>
         </ul>
 
-        <button type="button" onClick={handleSignIn}>
+        <button type="button" onClick={processSignIn}>
           <h5>로그인</h5>
         </button>
       </div>

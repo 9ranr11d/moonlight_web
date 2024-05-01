@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import { convertToMinutes } from "@utils/Util";
+import { convertToMinutes } from "@utils/Utils";
 
 import CSS from "./Recovery.module.css";
 
@@ -66,6 +66,17 @@ const EmailSender = ({ verified }: IEmailSenderProps) => {
     setVerificationInput(e.target.value);
   };
 
+  /** 인증코드가 유효한지 확인 */
+  const checkVerificationCode = (): void => {
+    if (verificationInput === verificationCode) {
+      if (deadline > 0) {
+        alert("인증되었습니다.");
+
+        verified(email);
+      } else alert("제한 시간이 초과되었습니다.");
+    } else alert("인증코드가 잘못되었습니다.");
+  };
+
   /** DB에 등록 되어있는 E-mail인지 확인 */
   const verifyMatch = (): void => {
     const data: { email: string } = { email };
@@ -110,17 +121,6 @@ const EmailSender = ({ verified }: IEmailSenderProps) => {
         setDeadline(maxDeadline);
       })
       .catch((err) => console.error("Send Email :", err));
-  };
-
-  /** 인증코드가 유효한지 확인 */
-  const checkVerificationCode = (): void => {
-    if (verificationInput === verificationCode) {
-      if (deadline > 0) {
-        alert("인증되었습니다.");
-
-        verified(email);
-      } else alert("제한 시간이 초과되었습니다.");
-    } else alert("인증코드가 잘못되었습니다.");
   };
 
   return (
@@ -197,7 +197,7 @@ const Identification = () => {
         setIdentification(data.identification);
         setIsVerified(true);
       })
-      .catch((err) => console.error("Identification :", err));
+      .catch((err) => console.error("Get User Identification :", err));
   };
 
   return (
@@ -232,15 +232,6 @@ const Password = ({ back }: IPasswordProps) => {
     else setIsPwMatching(false);
   }, [password, confirmPassword]);
 
-  /**
-   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
-   * @param email E-mail
-   */
-  const checkEmail = (email: string): void => {
-    if (email === userEmail) setIsEmailMatching(true);
-    else alert("이메일이 일치하지 않습니다.");
-  };
-
   /** Input Password */
   const handlePassword = (e: any): void => {
     setPassword(e.target.value);
@@ -254,6 +245,15 @@ const Password = ({ back }: IPasswordProps) => {
   /** Input Identification */
   const handleIdentification = (e: any): void => {
     setIdentification(e.target.value);
+  };
+
+  /**
+   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
+   * @param email E-mail
+   */
+  const checkEmail = (email: string): void => {
+    if (email === userEmail) setIsEmailMatching(true);
+    else alert("이메일이 일치하지 않습니다.");
   };
 
   /** Identification 인증 */
@@ -277,7 +277,7 @@ const Password = ({ back }: IPasswordProps) => {
         setUserEmail(data.email);
         setIsAuth(true);
       })
-      .catch((err) => console.error("Check Id :", err));
+      .catch((err) => console.error("Check Identification :", err));
   };
 
   /** 비밀번호 변경 */
@@ -298,7 +298,7 @@ const Password = ({ back }: IPasswordProps) => {
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .catch((err) => console.error("Check Pw :", err));
+      .catch((err) => console.error("Chage Password :", err));
   };
 
   return (
@@ -360,7 +360,7 @@ const Password = ({ back }: IPasswordProps) => {
 
                   {isPasswordMatching && (
                     <span>
-                      <Image src={IconCheck} width={20} alt="√" />
+                      <Image src={IconCheck} width={20} height={20} alt="√" />
                     </span>
                   )}
                 </td>
@@ -386,17 +386,17 @@ export default function Recovery({ back }: IRecoveryProps) {
   const [isIdRecovery, setIsIdRecovery] = useState<boolean>(true); // Identification 찾기 인지 여부
 
   /** 뒤로가기 */
-  const handleBack = () => {
+  const goBack = () => {
     back();
   };
 
   /** Identification 찾기 클릭 */
-  const handleIdRecovery = () => {
+  const identificationRecovery = () => {
     setIsIdRecovery(true);
   };
 
   /** Password 찾기 클릭 */
-  const handlePwRecovery = () => {
+  const passwordRecovery = () => {
     setIsIdRecovery(false);
   };
 
@@ -404,7 +404,7 @@ export default function Recovery({ back }: IRecoveryProps) {
     <>
       <div className={CSS.recoveryBox}>
         <div className={CSS.header}>
-          <button type="button" onClick={handleBack}>
+          <button type="button" onClick={goBack}>
             <Image src={IconBack} width={24} height={24} alt="◀" />
           </button>
 
@@ -412,16 +412,16 @@ export default function Recovery({ back }: IRecoveryProps) {
         </div>
 
         <div className={CSS.tapBox}>
-          <button type="button" onClick={handleIdRecovery} disabled={isIdRecovery}>
+          <button type="button" onClick={identificationRecovery} disabled={isIdRecovery}>
             Identification
           </button>
 
-          <button type="button" onClick={handlePwRecovery} disabled={!isIdRecovery}>
+          <button type="button" onClick={passwordRecovery} disabled={!isIdRecovery}>
             Password
           </button>
         </div>
 
-        <div className={CSS.content}>{isIdRecovery ? <Identification /> : <Password back={handleBack} />}</div>
+        <div className={CSS.content}>{isIdRecovery ? <Identification /> : <Password back={goBack} />}</div>
       </div>
     </>
   );

@@ -91,14 +91,14 @@ export default function Home() {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
-            _id: data._id,
+            _id: data.user._id,
             isAuth: true,
-            identification: data.identification,
-            nickname: data.nickname,
-            email: data.email,
-            accessLevel: data.accessLevel,
+            identification: data.user.identification,
+            nickname: data.user.nickname,
+            email: data.user.email,
+            accessLevel: data.user.accessLevel,
             accessToken: data.accessToken,
-            regDate: data.regDate,
+            regDate: data.user.regDate,
           })
         )
       )
@@ -115,7 +115,7 @@ export default function Home() {
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
       .then((data) => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch((err) => console.error("Refresh Access Token :", err));
+      .catch((err) => console.error("Get Refresh Access Token :", err));
   };
 
   return (

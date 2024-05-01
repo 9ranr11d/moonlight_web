@@ -6,9 +6,10 @@ import Link from "next/link";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { signOut } from "@redux/slices/AuthSlice";
 
 import CSS from "./header.module.css";
+
+import { processSignOut } from "@utils/Utils";
 
 export default function Header() {
   /** Dispatch */
@@ -20,34 +21,12 @@ export default function Header() {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
 
   /** 사용자 Panel Toggle */
-  const handleUserPanel = (): void => {
-    setIsUserPanelOpen(!isUserPanelOpen);
+  const toggleUserPanel = (): void => {
+    setIsUserPanelOpen((prev) => !prev);
   };
 
-  /** 로그아웃 */
-  const handleSignOut = (): void => {
-    const confirmSignOut: boolean = window.confirm("로그아웃 하시겠습니까?");
-
-    if (!confirmSignOut) return;
-
-    setIsUserPanelOpen(false);
-
-    fetch("/api/auth/sign_out", { method: "POST" })
-      .then((res) => {
-        if (res.ok) return res.json();
-
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
-
-        return res.json().then((data) => Promise.reject(data.msg));
-      })
-      .then((data) => {
-        console.log(data.msg);
-
-        alert("로그아웃 됐습니다.");
-
-        dispatch(signOut());
-      })
-      .catch((err) => console.error("Handle Sign Out :", err));
+  const clickSignOut = () => {
+    if (processSignOut("로그아웃 하시겠습니까?", dispatch)) setIsUserPanelOpen(false);
   };
 
   return (
@@ -68,7 +47,7 @@ export default function Header() {
               <li>지도</li>
               <li>전국 일주</li>
               <li>
-                <button type="button" onClick={handleUserPanel}>
+                <button type="button" onClick={toggleUserPanel}>
                   {user.nickname}
                 </button>
 
@@ -82,7 +61,7 @@ export default function Header() {
                       </button>
                     </li>
                     <li>
-                      <button type="button" onClick={handleSignOut}>
+                      <button type="button" onClick={clickSignOut}>
                         로그아웃
                       </button>
                     </li>
