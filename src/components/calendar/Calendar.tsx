@@ -8,11 +8,11 @@ import CSS from "./Calendar.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { setScheduleCategories, IIIScheduleCategory } from "@redux/slices/ScheduleCategoriesSlice";
+import { setSchedule, setScheduleCategories } from "@redux/slices/SchedulesSlice";
 
 import { IIUser } from "@models/User";
 import { IISchedule, ISchedule } from "@models/Schedule";
-import { IScheduleCategory } from "@models/ScheduleCategory";
+import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
 import { convertDate } from "@utils/Utils";
 
@@ -21,11 +21,13 @@ import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
-import IconPlus from "@public/img/common/icon_plus_white.svg";
-import IconDelete from "@public/img/common/icon_delete_white.svg";
+import IconClose from "@public/img/common/icon_close_main.svg";
+import IconCheck from "@public/img/common/icon_check_main.svg";
 import IconEdit from "@public/img/common/icon_edit_white.svg";
+import IconDelete from "@public/img/common/icon_delete_white.svg";
 import IconExpand from "@public/img/common/icon_expand_white.svg";
 import IconCollapse from "@public/img/common/icon_collapse_white.svg";
+import IconPlus from "@public/img/common/icon_plus_white.svg";
 
 interface IScheduleTitle extends ISchedule {
   categories: string;
@@ -37,7 +39,7 @@ export default function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const user = useSelector((state: RootState) => state.authReducer);
-  const scheduleCategories = useSelector((state: RootState) => state.scheduleCategoriesreducer);
+  const schedules = useSelector((state: RootState) => state.schedulesReducer);
 
   const today: Date = new Date();
   const currentYear: number = today.getFullYear();
@@ -80,11 +82,13 @@ export default function Calendar() {
   const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false);
   const [isCreateCategory, setIsCreateCategory] = useState<boolean>(false);
 
+  const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]);
+
   const [newCategory, setNewCategory] = useState<IScheduleCategory>(categoryInitialState);
 
   const [users, setUsers] = useState<IIUser[]>([]);
 
-  const [categories, setCategories] = useState<IIIScheduleCategory[]>([]);
+  const [categories, setCategories] = useState<IIScheduleCategory[]>([]);
 
   const [newScheduleState, setNewScheduleState] = useState<IISchedule>({
     ...scheduleInitialState,
@@ -105,24 +109,17 @@ export default function Calendar() {
 
   useEffect(() => {
     getUsers();
+    getSchedules();
     getCategories();
   }, []);
 
   useEffect(() => {
     checkSelectedCategory();
-  }, [scheduleCategories.values]);
+  }, [schedules.categories]);
 
   useEffect(() => {
-    setNewScheduleState((prev) => ({
-      ...scheduleInitialState,
-      date: prev.date,
-      user: prev.user,
-    }));
-  }, [newScheduleState.user]);
-
-  useEffect(() => {
-    setCategories(scheduleCategories.values.filter((category) => category.createdBy === newScheduleState.user));
-  }, [scheduleCategories.values, newScheduleState.user]);
+    setCategories(schedules.categories.filter((category) => category.createdBy === newScheduleState.user));
+  }, [schedules.categories, newScheduleState.user]);
 
   useEffect(() => {
     setNewScheduleState((prev) => ({
@@ -163,7 +160,7 @@ export default function Calendar() {
           <>
             <button type="button" onClick={toggleCategory}>
               {value.length > 0
-                ? value.map((category: IIIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
+                ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
                 : "선택된 카테고리가 없습니다."}
 
               <Image src={IconTriangle} width={9} alt="▼" />
@@ -172,25 +169,42 @@ export default function Calendar() {
             {isCategoryListOpen && (
               <ul>
                 {categories.length > 0 &&
-                  categories.map((category, idx) => (
-                    <li key={idx}>
-                      <button type="button" onClick={() => selectCategory(category)}>
-                        {category.title}
-                      </button>
+                  categories.map((category, idx) =>
+                    editCategories.some((_category: IIScheduleCategory) => _category._id === category._id) ? (
+                      <li key={idx}>
+                        <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", category._id)} />
 
-                      <button type="button" onClick={() => console.log("Edit Category")}>
-                        <Image src={IconEdit} height={12} alt="Edit" />
-                      </button>
+                        <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", category._id)} />
 
-                      <button type="button" onClick={() => deleteCategory(category._id)}>
-                        <Image src={IconDelete} height={12} alt="Delete" />
-                      </button>
-                    </li>
-                  ))}
+                        <button type="button" onClick={() => updateCategory(category)}>
+                          <Image src={IconCheck} height={12} alt="√" />
+                        </button>
+
+                        <button type="button" onClick={() => toggleEditCategory(category)}>
+                          <Image src={IconClose} height={12} alt="X" />
+                        </button>
+                      </li>
+                    ) : (
+                      <li key={idx}>
+                        <button type="button" onClick={() => selectCategory(category)}>
+                          {category.title}
+                        </button>
+
+                        <button type="button" onClick={() => toggleEditCategory(category)}>
+                          <Image src={IconEdit} height={12} alt="Edit" />
+                        </button>
+
+                        <button type="button" onClick={() => deleteCategory(category._id)}>
+                          <Image src={IconDelete} height={12} alt="Delete" />
+                        </button>
+                      </li>
+                    )
+                  )}
 
                 {isCreateCategory && (
                   <li>
                     <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
+
                     <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
 
                     <button type="button" onClick={createCategory}>
@@ -218,28 +232,45 @@ export default function Calendar() {
     }
   };
 
-  const handleCreateCategoryTitle = (e: any) => {
-    setNewCategory((prev) => ({
-      ...prev,
-      title: e.target.value,
-    }));
+  const handleEditCategoryColorTitle = (e: any, key: "color" | "title", _id: string): void => {
+    const tempCategories: IIScheduleCategory[] = [...categories];
+
+    const categoryIdx: number = categories.findIndex((category) => category._id === _id);
+
+    if (categoryIdx !== -1) {
+      const updatedCategory: IIScheduleCategory = {
+        ...categories[categoryIdx],
+        [key]: e.target.value,
+      } as IIScheduleCategory;
+
+      tempCategories[categoryIdx] = updatedCategory;
+
+      setCategories(tempCategories);
+    }
   };
 
-  const handleCreateCategoryColor = (e: any) => {
+  const handleCreateCategoryColor = (e: any): void => {
     setNewCategory((prev) => ({
       ...prev,
       color: e.target.value,
     }));
   };
 
-  const handlePopupText = (key: string, e: any) => {
+  const handleCreateCategoryTitle = (e: any): void => {
+    setNewCategory((prev) => ({
+      ...prev,
+      title: e.target.value,
+    }));
+  };
+
+  const handlePopupText = (key: string, e: any): void => {
     setNewScheduleState((prev) => ({
       ...prev,
       [key]: e.target.value,
     }));
   };
 
-  const handleRepeating = (e: any) => {
+  const handleRepeating = (e: any): void => {
     setNewScheduleState((prev) => ({
       ...prev,
       isRepeating: e.target.value === "repeat" ? true : false,
@@ -247,10 +278,10 @@ export default function Calendar() {
   };
 
   const checkSelectedCategory = (): void => {
-    const categoriesSet = new Set(scheduleCategories.values);
-    const selectedCategory = newScheduleState.categories;
+    const categoriesSet: Set<IIScheduleCategory> = new Set(schedules.categories);
+    const selectedCategory: IIScheduleCategory[] = newScheduleState.categories;
 
-    const filteredSelectedCategory = selectedCategory.filter((category) => categoriesSet.has(category));
+    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category));
 
     setNewScheduleState((prev) => ({
       ...prev,
@@ -310,31 +341,43 @@ export default function Calendar() {
     }
   };
 
+  const closePopup = (): void => {
+    setIsPopupVisible(false);
+  };
+
   const toggleUserList = (): void => {
     setIsUserListOpen((prev) => !prev);
   };
 
   const selectUser = (_user: IIUser): void => {
     setNewScheduleState((prev) => ({
-      ...prev,
+      ...scheduleInitialState,
+      date: prev.date,
       user: _user._id,
     }));
 
+    setNewCategory({
+      ...categoryInitialState,
+      createdBy: _user._id,
+    });
+
     setIsUserListOpen(false);
     setIsCategoryListOpen(false);
+    setEditCategories([]);
   };
 
   const toggleCategory = (): void => {
     setIsCreateCategory(false);
+    setEditCategories([]);
     setIsCategoryListOpen((prev) => !prev);
   };
 
-  const selectCategory = (category: IIIScheduleCategory): void => {
-    const prevCategories = newScheduleState.categories;
+  const selectCategory = (category: IIScheduleCategory): void => {
+    const prevCategories: IIScheduleCategory[] = newScheduleState.categories;
 
-    const idx = prevCategories.findIndex((_category) => _category.title === category.title);
+    const selectedIdx: number = prevCategories.findIndex((_category) => _category.title === category.title);
 
-    if (idx !== -1) prevCategories.splice(idx, 1);
+    if (selectedIdx !== -1) prevCategories.splice(selectedIdx, 1);
     else prevCategories.push(category);
 
     setNewScheduleState((prev) => ({
@@ -343,11 +386,33 @@ export default function Calendar() {
     }));
   };
 
+  const toggleEditCategory = (category: IIScheduleCategory): void => {
+    const tempCategories: IIScheduleCategory[] = [...categories];
+    const tempEditCategories: IIScheduleCategory[] = [...editCategories];
+
+    const categoryIdx: number = tempCategories.findIndex((_category) => _category._id === category._id);
+    const existingIdx: number = tempEditCategories.findIndex((_category) => _category._id === category._id);
+
+    if (existingIdx !== -1) {
+      const rollbackCategory: IIScheduleCategory = {
+        ...tempEditCategories[existingIdx],
+      } as IIScheduleCategory;
+
+      tempCategories[categoryIdx] = rollbackCategory;
+
+      setCategories(tempCategories);
+
+      tempEditCategories.splice(existingIdx, 1);
+    } else tempEditCategories.push(category);
+
+    setEditCategories(tempEditCategories);
+  };
+
   const toggleCreateCategory = (): void => {
     setIsCreateCategory((prev) => !prev);
   };
 
-  const getUsers = () => {
+  const getUsers = (): void => {
     fetch("/api/auth/get_users_with_high_access_level")
       .then((res) => {
         if (res.ok) return res.json();
@@ -360,18 +425,52 @@ export default function Calendar() {
       .catch((err) => console.error("Get Users :", err));
   };
 
-  const getCategories = () => {
+  const getSchedules = (): void => {
+    fetch(`/api/calendar/schedules_management/${year}/${month}`)
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((_schedules) => dispatch(setSchedule(_schedules)))
+      .catch((err) => console.error("Get Categories :", err));
+  };
+
+  const getCategories = (): void => {
     fetch("/api/calendar/categories_management")
       .then((res) => {
         if (res.ok) return res.json();
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((_categories) => dispatch(setScheduleCategories(_categories)))
-      .catch((err) => console.error("Get Users :", err));
+      .then((_categories) => {
+        dispatch(setScheduleCategories(_categories));
+      })
+      .catch((err) => console.error("Get Categories :", err));
   };
 
-  const deleteCategory = (_id: string) => {
+  const updateCategory = (category: IIScheduleCategory): void => {
+    fetch("/api/calendar/categories_management", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(category),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        toggleEditCategory(data);
+
+        getCategories();
+      })
+      .catch((err) => console.error("Update Category :", err));
+  };
+
+  const deleteCategory = (_id: string): void => {
     fetch(`/api/calendar/categories_management?_id=${_id}`, { method: "DELETE" })
       .then((res) => {
         if (res.ok) return res.json();
@@ -386,7 +485,7 @@ export default function Calendar() {
       .catch((err) => console.error("Delete Duplicate :", err));
   };
 
-  const createCategory = () => {
+  const createCategory = (): void => {
     setIsCreateCategory(false);
 
     if (categories.some((category) => category.title === newCategory.title)) return alert("이미 있는 카테고리입니다.");
@@ -415,7 +514,7 @@ export default function Calendar() {
   };
 
   const createSchedule = (): void => {
-    fetch("/api/calendar/schedule_management", {
+    fetch("/api/calendar/schedules_management", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newScheduleState),
@@ -436,11 +535,14 @@ export default function Calendar() {
         });
         setIsPopupVisible(false);
         setIsCategoryListOpen(false);
+        getSchedules();
 
         alert("일정 추가에 성공하였습니다.");
       })
       .catch((err) => console.error("Create Schedule :", err));
   };
+
+  console.log(schedules);
 
   return (
     <div className={CSS.calendar}>
@@ -545,6 +647,10 @@ export default function Calendar() {
 
         {isPopupVisible && (
           <div className={CSS.popup}>
+            <button type="button" onClick={closePopup} className={CSS.close}>
+              <Image src={IconClose} width={12} height={12} alt="X" />
+            </button>
+
             <div className={CSS.header}>
               <h5>{convertDate(year, month + 1, day, "-")}</h5>
             </div>

@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-import { IIIScheduleCategory } from "@redux/slices/ScheduleCategoriesSlice";
+import { IIScheduleCategory } from "./ScheduleCategory";
 
 export interface ISchedule {
   user: Schema.Types.ObjectId | string;
@@ -10,7 +10,7 @@ export interface ISchedule {
 
 export interface IISchedule extends ISchedule {
   date: Date;
-  categories: IIIScheduleCategory[];
+  categories: IIScheduleCategory[];
   isRepeating: boolean;
 }
 

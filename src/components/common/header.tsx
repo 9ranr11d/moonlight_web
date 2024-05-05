@@ -34,7 +34,7 @@ export default function Header() {
       <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
         <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
           <div className={CSS.logoBox}>
-            <Link href={"/"}>
+            <Link prefetch={true} href={"/"}>
               <h5>MOONLIGHT</h5>
             </Link>
           </div>
@@ -73,7 +73,7 @@ export default function Header() {
         </div>
 
         <div className={CSS.beforeSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { top: -30, opacity: 0 } : { top: 30 }}>
-          <Link href={"/"}>
+          <Link prefetch={true} href={"/"}>
             <h1>MOONLIGHT</h1>
           </Link>
         </div>

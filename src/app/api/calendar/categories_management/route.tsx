@@ -40,6 +40,24 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  try {
+    await dbConnect();
+
+    const { _id, color, title }: { _id: string; color: string; title: string } = await req.json();
+
+    const updatedScheduleCategory = await ScheduleCategory.findByIdAndUpdate(_id, { color, title }, { new: true });
+
+    if (!updatedScheduleCategory) return NextResponse.json({ msg: "Schedule Category Not Found" }, { status: 404 });
+
+    return NextResponse.json(updatedScheduleCategory, { status: 200 });
+  } catch (err) {
+    console.log("Schedule Management PUT :", err);
+
+    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();

@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "./slices/AuthSlice";
-import scheduleCategoriesreducer from "./slices/ScheduleCategoriesSlice";
+import schedulesReducer from "./slices/SchedulesSlice";
 
 /** Redux Store */
 export const store = configureStore({
   reducer: {
     /** 인증 정보 */
     authReducer,
-    scheduleCategoriesreducer,
+    schedulesReducer,
   },
 });
 

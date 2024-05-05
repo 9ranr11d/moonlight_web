@@ -290,13 +290,16 @@ const Password = ({ back }: IPasswordProps) => {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if (res.ok) {
-          res.json().then((data) => console.log(data.msg));
-          return back();
-        } else if (res.status === 404) alert("존재하지 않는 아이디입니다.");
+        if (res.ok) return res.json();
+        else if (res.status === 404) alert("존재하지 않는 아이디입니다.");
         else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
 
         return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        back();
       })
       .catch((err) => console.error("Chage Password :", err));
   };
