@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
+import ScheduleCategory from "@models/ScheduleCategory";
 import Schedule, { IIISchedule } from "@models/Schedule";
 
 export async function GET(req: NextRequest, { params }: { params: { year: string; month: string } }) {
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
       ],
     };
 
-    const schedules: IIISchedule[] | null = await Schedule.find(query).populate("user");
+    const schedules: IIISchedule[] | null = await Schedule.find(query).populate("user").populate("categories");
 
     return NextResponse.json(schedules, { status: 200 });
   } catch (err) {

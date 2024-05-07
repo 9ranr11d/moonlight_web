@@ -16,6 +16,14 @@ export const convertToMinutes = (time: number): string => {
   return `${paddedMinutes}:${paddedSecond}`;
 };
 
+export const convertDateII = (date: Date, splitter: string): string => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return convertDateI(year, month, day, splitter);
+};
+
 /**
  * 날짜 형식 설정
  * @param year 년
@@ -24,7 +32,7 @@ export const convertToMinutes = (time: number): string => {
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDate = (year: number, month: number, day: number, splitter: string): string => {
+export const convertDateI = (year: number, month: number, day: number, splitter: string): string => {
   const paddedMonth = String(month).padStart(2, "0");
   const paddedDay = String(day).padStart(2, "0");
 

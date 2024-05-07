@@ -8,13 +8,13 @@ import CSS from "./Calendar.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { setSchedule, setScheduleCategories } from "@redux/slices/SchedulesSlice";
+import { setSchedules, setScheduleCategories } from "@redux/slices/CalendarSlice";
 
 import { IIUser } from "@models/User";
-import { IISchedule, ISchedule } from "@models/Schedule";
+import { ISchedule, IISchedule } from "@models/Schedule";
 import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
-import { convertDate } from "@utils/Utils";
+import { convertDateII } from "@utils/Utils";
 
 import IconPrevWhite from "@public/img/common/icon_less_than_white.svg";
 import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
@@ -29,9 +29,15 @@ import IconExpand from "@public/img/common/icon_expand_white.svg";
 import IconCollapse from "@public/img/common/icon_collapse_white.svg";
 import IconPlus from "@public/img/common/icon_plus_white.svg";
 
-interface IScheduleTitle extends ISchedule {
+interface ISchedulePopupTitle extends ISchedule {
   categories: string;
   isRepeating: string;
+}
+
+interface ICovertedSchedules extends IISchedule {
+  year: number;
+  month: number;
+  day: number;
 }
 
 export default function Calendar() {
@@ -39,7 +45,7 @@ export default function Calendar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const user = useSelector((state: RootState) => state.authReducer);
-  const schedules = useSelector((state: RootState) => state.schedulesReducer);
+  const calendar = useSelector((state: RootState) => state.calendarReducer);
 
   const today: Date = new Date();
   const currentYear: number = today.getFullYear();
@@ -49,7 +55,7 @@ export default function Calendar() {
   const monthNames: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   const dayOfWeek: string[] = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const scheduleTitle: IScheduleTitle = {
+  const schedulePopupTitle: ISchedulePopupTitle = {
     user: "사용자",
     title: "일정 이름",
     categories: "카테고리",
@@ -57,7 +63,7 @@ export default function Calendar() {
     isRepeating: "반복 여부",
   };
 
-  const scheduleInitialState: IISchedule = {
+  const schedulePopupInitialState: IISchedule = {
     date: today,
     user: "",
     title: "",
@@ -66,7 +72,7 @@ export default function Calendar() {
     isRepeating: false,
   };
 
-  const categoryInitialState: IScheduleCategory = {
+  const newCategoryInitialState: IScheduleCategory = {
     title: "",
     color: "#000000",
     createdBy: user._id,
@@ -74,7 +80,6 @@ export default function Calendar() {
 
   const [year, setYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(currentMonth);
-  const [day, setDay] = useState<number>(currentDay);
 
   const [isYear, setIsYear] = useState<boolean>(false);
   const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false);
@@ -84,14 +89,16 @@ export default function Calendar() {
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]);
 
-  const [newCategory, setNewCategory] = useState<IScheduleCategory>(categoryInitialState);
+  const [newCategory, setNewCategory] = useState<IScheduleCategory>(newCategoryInitialState);
 
   const [users, setUsers] = useState<IIUser[]>([]);
 
-  const [categories, setCategories] = useState<IIScheduleCategory[]>([]);
+  const [convertedSchedules, setConvertedSchedules] = useState<ICovertedSchedules[]>([]);
+
+  const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]);
 
   const [newScheduleState, setNewScheduleState] = useState<IISchedule>({
-    ...scheduleInitialState,
+    ...schedulePopupInitialState,
     user: user._id,
   });
 
@@ -114,21 +121,34 @@ export default function Calendar() {
   }, []);
 
   useEffect(() => {
+    convertSchedules();
+  }, [calendar.schedules]);
+
+  useEffect(() => {
     checkSelectedCategory();
-  }, [schedules.categories]);
+  }, [calendar.categories]);
 
   useEffect(() => {
-    setCategories(schedules.categories.filter((category) => category.createdBy === newScheduleState.user));
-  }, [schedules.categories, newScheduleState.user]);
+    setUserCategories(calendar.categories.filter((category) => category.createdBy === newScheduleState.user));
+  }, [calendar.categories, newScheduleState.user]);
 
-  useEffect(() => {
-    setNewScheduleState((prev) => ({
-      ...prev,
-      date: new Date(year, month, day),
-    }));
-  }, [day]);
+  const renderSchedule = (_year: number, _month: number, _day: number): JSX.Element | null => {
+    const schedules = findScheduleByDate(_year, _month, _day);
 
-  const showPopupInput = (key: string, value: any): any => {
+    return schedules.length > 0 ? (
+      <>
+        {schedules.map((schedule, idx) => (
+          <p key={idx}>
+            {schedule.categories.map((category, _idx) => (
+              <span>{category.color}</span>
+            ))}
+          </p>
+        ))}
+      </>
+    ) : null;
+  };
+
+  const renderPopupInput = (key: string, value: any): JSX.Element | null => {
     switch (key) {
       case "user":
         return (
@@ -168,8 +188,8 @@ export default function Calendar() {
 
             {isCategoryListOpen && (
               <ul>
-                {categories.length > 0 &&
-                  categories.map((category, idx) =>
+                {userCategories.length > 0 &&
+                  userCategories.map((category, idx) =>
                     editCategories.some((_category: IIScheduleCategory) => _category._id === category._id) ? (
                       <li key={idx}>
                         <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", category._id)} />
@@ -229,23 +249,25 @@ export default function Calendar() {
             <input type="radio" name="isRepeating" value="noRepeat" checked={!newScheduleState.isRepeating} onChange={handleRepeating} />
           </>
         );
+      default:
+        return null;
     }
   };
 
   const handleEditCategoryColorTitle = (e: any, key: "color" | "title", _id: string): void => {
-    const tempCategories: IIScheduleCategory[] = [...categories];
+    const tempCategories: IIScheduleCategory[] = [...userCategories];
 
-    const categoryIdx: number = categories.findIndex((category) => category._id === _id);
+    const categoryIdx: number = userCategories.findIndex((category) => category._id === _id);
 
     if (categoryIdx !== -1) {
       const updatedCategory: IIScheduleCategory = {
-        ...categories[categoryIdx],
+        ...userCategories[categoryIdx],
         [key]: e.target.value,
       } as IIScheduleCategory;
 
       tempCategories[categoryIdx] = updatedCategory;
 
-      setCategories(tempCategories);
+      setUserCategories(tempCategories);
     }
   };
 
@@ -277,8 +299,23 @@ export default function Calendar() {
     }));
   };
 
+  const convertSchedules = (): void => {
+    const tempSchedules = calendar.schedules.map((schedule) => {
+      const date = new Date(schedule.date);
+
+      return {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate(),
+        ...schedule,
+      };
+    });
+
+    setConvertedSchedules(tempSchedules);
+  };
+
   const checkSelectedCategory = (): void => {
-    const categoriesSet: Set<IIScheduleCategory> = new Set(schedules.categories);
+    const categoriesSet: Set<IIScheduleCategory> = new Set(calendar.categories);
     const selectedCategory: IIScheduleCategory[] = newScheduleState.categories;
 
     const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category));
@@ -315,16 +352,20 @@ export default function Calendar() {
     }
   };
 
-  const selectYear = (year: number): void => {
-    setYear(year);
+  const selectYear = (_year: number): void => {
+    setYear(_year);
   };
 
   const selectMonth = (idx: number): void => {
     setMonth(idx);
   };
 
-  const selectDay = (_day: number): void => {
-    setDay(_day);
+  const selectDay = (_year: number, _month: number, _day: number): void => {
+    setNewScheduleState((prev) => ({
+      ...prev,
+      date: new Date(_year, _month, _day),
+    }));
+
     setIsPopupVisible(true);
   };
 
@@ -351,13 +392,13 @@ export default function Calendar() {
 
   const selectUser = (_user: IIUser): void => {
     setNewScheduleState((prev) => ({
-      ...scheduleInitialState,
+      ...schedulePopupInitialState,
       date: prev.date,
       user: _user._id,
     }));
 
     setNewCategory({
-      ...categoryInitialState,
+      ...newCategoryInitialState,
       createdBy: _user._id,
     });
 
@@ -387,7 +428,7 @@ export default function Calendar() {
   };
 
   const toggleEditCategory = (category: IIScheduleCategory): void => {
-    const tempCategories: IIScheduleCategory[] = [...categories];
+    const tempCategories: IIScheduleCategory[] = [...userCategories];
     const tempEditCategories: IIScheduleCategory[] = [...editCategories];
 
     const categoryIdx: number = tempCategories.findIndex((_category) => _category._id === category._id);
@@ -400,7 +441,7 @@ export default function Calendar() {
 
       tempCategories[categoryIdx] = rollbackCategory;
 
-      setCategories(tempCategories);
+      setUserCategories(tempCategories);
 
       tempEditCategories.splice(existingIdx, 1);
     } else tempEditCategories.push(category);
@@ -410,6 +451,10 @@ export default function Calendar() {
 
   const toggleCreateCategory = (): void => {
     setIsCreateCategory((prev) => !prev);
+  };
+
+  const findScheduleByDate = (_year: number, _month: number, _day: number): ICovertedSchedules[] => {
+    return convertedSchedules.filter((schedule) => schedule.year === _year && schedule.month === _month && schedule.day === _day);
   };
 
   const getUsers = (): void => {
@@ -434,7 +479,7 @@ export default function Calendar() {
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((_schedules) => dispatch(setSchedule(_schedules)))
+      .then((_schedules) => dispatch(setSchedules(_schedules)))
       .catch((err) => console.error("Get Categories :", err));
   };
 
@@ -445,9 +490,7 @@ export default function Calendar() {
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then((_categories) => {
-        dispatch(setScheduleCategories(_categories));
-      })
+      .then((_categories) => dispatch(setScheduleCategories(_categories)))
       .catch((err) => console.error("Get Categories :", err));
   };
 
@@ -488,7 +531,7 @@ export default function Calendar() {
   const createCategory = (): void => {
     setIsCreateCategory(false);
 
-    if (categories.some((category) => category.title === newCategory.title)) return alert("이미 있는 카테고리입니다.");
+    if (userCategories.some((category) => category.title === newCategory.title)) return alert("이미 있는 카테고리입니다.");
 
     fetch("/api/calendar/categories_management", {
       method: "POST",
@@ -506,7 +549,7 @@ export default function Calendar() {
         console.log(data.msg);
 
         getCategories();
-        setNewCategory(categoryInitialState);
+        setNewCategory(newCategoryInitialState);
 
         alert("일정 카테고리 추가에 성공하였습니다.");
       })
@@ -530,7 +573,7 @@ export default function Calendar() {
         console.log(data.msg);
 
         setNewScheduleState({
-          ...scheduleInitialState,
+          ...schedulePopupInitialState,
           user: user._id,
         });
         setIsPopupVisible(false);
@@ -542,7 +585,7 @@ export default function Calendar() {
       .catch((err) => console.error("Create Schedule :", err));
   };
 
-  console.log(schedules);
+  console.log(newScheduleState);
 
   return (
     <div className={CSS.calendar}>
@@ -617,28 +660,33 @@ export default function Calendar() {
 
         <div className={CSS.content}>
           <ul className={CSS.daysOfWeek}>
-            {dayOfWeek.map((day, idx) => (
+            {dayOfWeek.map((_day, idx) => (
               <li key={idx}>
-                <h6>{day}</h6>
+                <h6>{_day}</h6>
               </li>
             ))}
           </ul>
 
           <ul className={CSS.days}>
             {Array.from({ length: totalDays }, (_, idx) => {
-              const _day: number = idx + 1 - firstDayOfMonth;
+              const isPrevMonth = idx < firstDayOfMonth;
+              const isNextMonth = idx + 1 > monthDaysWithPrevLastWeek;
+
+              const _day: number = isPrevMonth
+                ? prevMonthDays - (firstDayOfMonth - (idx + 1))
+                : isNextMonth
+                ? idx + 1 - monthDaysWithPrevLastWeek
+                : idx + 1 - firstDayOfMonth;
+
+              const _month = isPrevMonth ? month - 1 : isNextMonth ? month + 1 : month;
 
               return (
                 <li key={idx}>
-                  {idx < firstDayOfMonth ? (
-                    <span className={CSS.disabled}>{prevMonthDays - (firstDayOfMonth - (idx + 1))}</span>
-                  ) : idx + 1 > monthDaysWithPrevLastWeek ? (
-                    <span className={CSS.disabled}>{`${idx + 1 - monthDaysWithPrevLastWeek}`}</span>
-                  ) : (
-                    <button type="button" onClick={() => selectDay(_day)}>
-                      <span className={year === currentYear && month === currentMonth && _day === currentDay ? CSS.today : undefined}>{_day}</span>
-                    </button>
-                  )}
+                  <button type="button" onClick={() => selectDay(year, _month, _day)}>
+                    <span className={isPrevMonth ? CSS.disabled : isNextMonth ? CSS.disabled : undefined}>{_day}</span>
+
+                    {renderSchedule(year, _month, _day)}
+                  </button>
                 </li>
               );
             })}
@@ -652,7 +700,7 @@ export default function Calendar() {
             </button>
 
             <div className={CSS.header}>
-              <h5>{convertDate(year, month + 1, day, "-")}</h5>
+              <h5>{convertDateII(newScheduleState.date, "-")}</h5>
             </div>
 
             <ul className={CSS.content}>
@@ -661,8 +709,8 @@ export default function Calendar() {
                   key !== "date" && (
                     <li key={idx}>
                       <ul>
-                        <li>{`${scheduleTitle[key as keyof IScheduleTitle]}`}</li>
-                        <li>{showPopupInput(key, value)}</li>
+                        <li>{`${schedulePopupTitle[key as keyof ISchedulePopupTitle]}`}</li>
+                        <li>{renderPopupInput(key, value)}</li>
                       </ul>
                     </li>
                   )

@@ -13,11 +13,11 @@ const initialState: ScheduleCategoriesState = {
   categories: [],
 };
 
-export const Schedules = createSlice({
-  name: "schedules",
+export const Calendar = createSlice({
+  name: "calendar",
   initialState,
   reducers: {
-    setSchedule: (state, action: PayloadAction<IIISchedule[]>): ScheduleCategoriesState => {
+    setSchedules: (state, action: PayloadAction<IIISchedule[]>): ScheduleCategoriesState => {
       return {
         ...state,
         schedules: action.payload,
@@ -32,6 +32,6 @@ export const Schedules = createSlice({
   },
 });
 
-export const { setSchedule, setScheduleCategories } = Schedules.actions;
+export const { setSchedules, setScheduleCategories } = Calendar.actions;
 
-export default Schedules.reducer;
+export default Calendar.reducer;
