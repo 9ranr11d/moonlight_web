@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+import { IIUser } from "./User";
 import { IIScheduleCategory } from "./ScheduleCategory";
 
 export interface ISchedule {
-  user: Schema.Types.ObjectId | string;
+  user: Schema.Types.ObjectId | string | IIUser;
   title: string;
   content: string;
 }

@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import ScheduleCategory from "@models/ScheduleCategory";
 import Schedule, { IIISchedule } from "@models/Schedule";
 
 export async function GET(req: NextRequest, { params }: { params: { year: string; month: string } }) {
   try {
     await dbConnect();
 
-    const { year, month } = params;
+    const { year, month }: { year: string; month: string } = params;
 
     const _year = parseInt(year);
     const _month = parseInt(month);

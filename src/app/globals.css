@@ -110,6 +110,21 @@ caption {
   line-height: 140%;
 }
 
+textarea {
+  resize: none;
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+}
+
+textarea::placeholder {
+  color: var(--placeholder-color);
+}
+
+textarea:focus {
+  outline: 1px solid var(--sub-color);
+}
+
 input[type="text"],
 input[type="password"] {
   padding: 10px 20px;
@@ -125,6 +140,15 @@ input[type="password"]::placeholder {
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: 1px solid var(--sub-color);
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  box-shadow: none;
 }
 
 button {

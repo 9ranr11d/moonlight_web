@@ -37,14 +37,15 @@ export const Auth = createSlice({
      */
     signIn: (_, action: PayloadAction<IAuthState>): IAuthState => {
       return {
-        _id: action.payload._id,
+        ...action.payload,
+        // _id: action.payload._id,
         isAuth: true,
-        identification: action.payload.identification,
-        nickname: action.payload.nickname,
-        email: action.payload.email,
-        accessLevel: action.payload.accessLevel,
-        accessToken: action.payload.accessToken,
-        regDate: action.payload.regDate,
+        // identification: action.payload.identification,
+        // nickname: action.payload.nickname,
+        // email: action.payload.email,
+        // accessLevel: action.payload.accessLevel,
+        // accessToken: action.payload.accessToken,
+        // regDate: action.payload.regDate,
       };
     },
     /** 로그아웃 */

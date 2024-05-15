@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules, setScheduleCategories } from "@redux/slices/CalendarSlice";
 
 import { IIUser } from "@models/User";
-import { ISchedule, IISchedule } from "@models/Schedule";
+import { ISchedule, IISchedule, IIISchedule } from "@models/Schedule";
 import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
 import { convertDateII } from "@utils/Utils";
@@ -20,21 +20,24 @@ import IconPrevWhite from "@public/img/common/icon_less_than_white.svg";
 import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
-import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
+import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
+import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
 import IconClose from "@public/img/common/icon_close_main.svg";
 import IconCheck from "@public/img/common/icon_check_main.svg";
-import IconEdit from "@public/img/common/icon_edit_white.svg";
-import IconDelete from "@public/img/common/icon_delete_white.svg";
-import IconExpand from "@public/img/common/icon_expand_white.svg";
-import IconCollapse from "@public/img/common/icon_collapse_white.svg";
-import IconPlus from "@public/img/common/icon_plus_white.svg";
+import IconEditMain from "@public/img/common/icon_edit_main.svg";
+import IconEditWhite from "@public/img/common/icon_edit_white.svg";
+import IconDeleteMain from "@public/img/common/icon_delete_main.svg";
+import IconDeleteWhite from "@public/img/common/icon_delete_white.svg";
+import IconExpand from "@public/img/common/icon_expand_main.svg";
+import IconCollapse from "@public/img/common/icon_collapse_main.svg";
+import IconPlus from "@public/img/common/icon_plus_main.svg";
 
-interface ISchedulePopupTitle extends ISchedule {
+interface IEditScheduleTitle extends ISchedule {
   categories: string;
   isRepeating: string;
 }
 
-interface ICovertedSchedules extends IISchedule {
+interface IConvertedSchedules extends IIISchedule {
   year: number;
   month: number;
   day: number;
@@ -55,7 +58,7 @@ export default function Calendar() {
   const monthNames: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   const dayOfWeek: string[] = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const schedulePopupTitle: ISchedulePopupTitle = {
+  const editScheduleTitle: IEditScheduleTitle = {
     user: "사용자",
     title: "일정 이름",
     categories: "카테고리",
@@ -63,7 +66,7 @@ export default function Calendar() {
     isRepeating: "반복 여부",
   };
 
-  const schedulePopupInitialState: IISchedule = {
+  const editScheduleInitialState: IISchedule = {
     date: today,
     user: "",
     title: "",
@@ -81,11 +84,15 @@ export default function Calendar() {
   const [year, setYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(currentMonth);
 
+  const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
+
   const [isYear, setIsYear] = useState<boolean>(false);
   const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false);
   const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false);
   const [isCreateCategory, setIsCreateCategory] = useState<boolean>(false);
+  const [isEditSchedule, setIsEditSchedule] = useState<boolean>(false);
+  const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false);
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]);
 
@@ -93,12 +100,12 @@ export default function Calendar() {
 
   const [users, setUsers] = useState<IIUser[]>([]);
 
-  const [convertedSchedules, setConvertedSchedules] = useState<ICovertedSchedules[]>([]);
+  const [convertedSchedules, setConvertedSchedules] = useState<IConvertedSchedules[]>([]);
 
   const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]);
 
-  const [newScheduleState, setNewScheduleState] = useState<IISchedule>({
-    ...schedulePopupInitialState,
+  const [editScheduleState, setEditScheduleState] = useState<IISchedule>({
+    ...editScheduleInitialState,
     user: user._id,
   });
 
@@ -112,7 +119,7 @@ export default function Calendar() {
   const monthDaysWithPrevLastWeek: number = monthDays[month] + firstDayOfMonth;
   const totalDays: number = monthDaysWithPrevLastWeek + (7 - (monthDaysWithPrevLastWeek % 7));
 
-  const isPopupStateEmpty = Object.values(newScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
+  const isPopupStateEmpty = Object.values(editScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
 
   useEffect(() => {
     getUsers();
@@ -129,42 +136,106 @@ export default function Calendar() {
   }, [calendar.categories]);
 
   useEffect(() => {
-    setUserCategories(calendar.categories.filter((category) => category.createdBy === newScheduleState.user));
-  }, [calendar.categories, newScheduleState.user]);
+    setUserCategories(calendar.categories.filter((category) => category.createdBy === editScheduleState.user));
+  }, [calendar.categories, editScheduleState.user]);
 
-  const renderSchedule = (_year: number, _month: number, _day: number): JSX.Element | null => {
+  useEffect(() => {
+    if (!isEditSchedule) {
+      setEditScheduleState((prev) => ({
+        ...editScheduleInitialState,
+        user: user._id,
+        date: prev.date,
+      }));
+      setIsCategoryListOpen(false);
+      setIsCreateCategory(false);
+    }
+  }, [isEditSchedule]);
+
+  const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
     const schedules = findScheduleByDate(_year, _month, _day);
 
     return schedules.length > 0 ? (
       <>
         {schedules.map((schedule, idx) => (
           <p key={idx}>
-            {schedule.categories.map((category, _idx) => (
-              <span>{category.color}</span>
-            ))}
+            <span className={CSS.multiple}>
+              {schedule.categories.map((category, _idx) => (
+                <span key={_idx} style={{ display: "inline-block", background: category.color, width: 10, height: 10 }}></span>
+              ))}
+            </span>
+
+            <span>{schedule.title}</span>
           </p>
         ))}
       </>
     ) : null;
   };
 
-  const renderPopupInput = (key: string, value: any): JSX.Element | null => {
+  const renderPopupSchedules = (): JSX.Element => {
+    const selectedDate = new Date(editScheduleState.date);
+
+    const schedules = findScheduleByDate(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+
+    return schedules.length > 0 ? (
+      <ul className={CSS.schedules}>
+        {schedules.map((schedule, idx) => (
+          <li key={idx}>
+            <button type="button" onClick={() => selectedSchedule(schedule)} disabled={user.accessLevel !== 3 && (schedule.user as IIUser)._id !== user._id}>
+              <span className={CSS.multiple}>
+                {schedule.categories.map((category, _idx) =>
+                  _idx < 2 ? <span key={_idx} className={CSS.categories} style={{ background: category.color }}></span> : _idx < 3 && "..."
+                )}
+              </span>
+
+              <span className={CSS.truncated}>{schedule.title}</span>
+
+              <span className={CSS.truncated}>{(schedule.user as IIUser).nickname}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>일정이 없습니다.</p>
+    );
+  };
+
+  const renderCategories = (category: IIScheduleCategory, idx: number): JSX.Element => {
+    const isSelected = editScheduleState.categories.find((_category) => _category._id === category._id);
+
+    return (
+      <li key={idx} className={isSelected ? `${CSS.selectedList} ${CSS.list}` : CSS.list}>
+        <button type="button" onClick={() => selectCategory(category)} className={CSS.truncated}>
+          <span>{category.title}</span>
+        </button>
+
+        <button type="button" onClick={() => toggleEditCategory(category)}>
+          <Image src={isSelected ? IconEditWhite : IconEditMain} height={12} alt="Edit" />
+        </button>
+
+        <button type="button" onClick={() => deleteCategory(category._id)}>
+          <Image src={isSelected ? IconDeleteWhite : IconDeleteMain} height={12} alt="Delete" />
+        </button>
+      </li>
+    );
+  };
+
+  const renderPopupInputs = (key: string, value: any): JSX.Element | null => {
     switch (key) {
       case "user":
         return (
           <>
-            <button type="button" onClick={toggleUserList} disabled={user.accessLevel < 3}>
+            <button type="button" onClick={toggleUserList} disabled={user.accessLevel < 3} style={isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
               <span>{users.find((_user) => _user._id === value)?.nickname}</span>
 
-              <Image src={IconTriangle} width={9} alt="▼" />
+              {user.accessLevel >= 3 && <Image src={isUserListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isUserListOpen ? "▲" : "▼"} />}
             </button>
 
             {isUserListOpen && (
-              <ul>
+              <ul className={CSS.user}>
                 {users.map((_user, idx) => (
                   <li key={idx}>
                     <button type="button" onClick={() => selectUser(_user)}>
-                      {_user.nickname}
+                      <span className={CSS.truncated}>{_user.nickname}</span>
                     </button>
                   </li>
                 ))}
@@ -173,25 +244,31 @@ export default function Calendar() {
           </>
         );
       case "title":
-      case "content":
         return <input type="text" value={value} onChange={(e) => handlePopupText(key, e)} placeholder="입력해주세요." />;
+      case "content":
+        return <textarea value={value} onChange={(e) => handlePopupText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
       case "categories":
         return (
           <>
-            <button type="button" onClick={toggleCategory}>
-              {value.length > 0
-                ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
-                : "선택된 카테고리가 없습니다."}
+            <button type="button" onClick={toggleCategory} style={isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
+              <span
+                className={CSS.multiple}
+                style={{ display: "inline-block", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+              >
+                {value.length > 0
+                  ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
+                  : "선택된 카테고리가 없습니다."}
+              </span>
 
-              <Image src={IconTriangle} width={9} alt="▼" />
+              <Image src={isCategoryListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isCategoryListOpen ? "▲" : "▼"} />
             </button>
 
             {isCategoryListOpen && (
-              <ul>
+              <ul className={CSS.categories}>
                 {userCategories.length > 0 &&
                   userCategories.map((category, idx) =>
-                    editCategories.some((_category: IIScheduleCategory) => _category._id === category._id) ? (
-                      <li key={idx}>
+                    editCategories.some((_category) => _category._id === category._id) ? (
+                      <li key={idx} className={CSS.edit}>
                         <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", category._id)} />
 
                         <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", category._id)} />
@@ -205,24 +282,12 @@ export default function Calendar() {
                         </button>
                       </li>
                     ) : (
-                      <li key={idx}>
-                        <button type="button" onClick={() => selectCategory(category)}>
-                          {category.title}
-                        </button>
-
-                        <button type="button" onClick={() => toggleEditCategory(category)}>
-                          <Image src={IconEdit} height={12} alt="Edit" />
-                        </button>
-
-                        <button type="button" onClick={() => deleteCategory(category._id)}>
-                          <Image src={IconDelete} height={12} alt="Delete" />
-                        </button>
-                      </li>
+                      renderCategories(category, idx)
                     )
                   )}
 
                 {isCreateCategory && (
-                  <li>
+                  <li className={CSS.edit}>
                     <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
 
                     <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
@@ -235,7 +300,7 @@ export default function Calendar() {
 
                 <li>
                   <button type="button" onClick={toggleCreateCategory}>
-                    <Image src={!isCreateCategory ? IconExpand : IconCollapse} width={12} alt="▼" />
+                    <Image src={!isCreateCategory ? IconExpand : IconCollapse} width={12} alt={!isCreateCategory ? "▼" : "▲"} />
                   </button>
                 </li>
               </ul>
@@ -245,8 +310,15 @@ export default function Calendar() {
       case "isRepeating":
         return (
           <>
-            <input type="radio" name="isRepeating" value="repeat" checked={newScheduleState.isRepeating} onChange={handleRepeating} />
-            <input type="radio" name="isRepeating" value="noRepeat" checked={!newScheduleState.isRepeating} onChange={handleRepeating} />
+            <input type="radio" id="repeating" name="isRepeating" value="repeating" checked={editScheduleState.isRepeating} onChange={handleRepeating} />
+            <label htmlFor="repeating" className={editScheduleState.isRepeating ? CSS.repeating : undefined}>
+              반복
+            </label>
+
+            <input type="radio" id="nonrepeating" name="isRepeating" value="nonrepeating" checked={!editScheduleState.isRepeating} onChange={handleRepeating} />
+            <label htmlFor="nonrepeating" className={!editScheduleState.isRepeating ? CSS.repeating : undefined}>
+              반복 안함
+            </label>
           </>
         );
       default:
@@ -286,21 +358,21 @@ export default function Calendar() {
   };
 
   const handlePopupText = (key: string, e: any): void => {
-    setNewScheduleState((prev) => ({
+    setEditScheduleState((prev) => ({
       ...prev,
       [key]: e.target.value,
     }));
   };
 
   const handleRepeating = (e: any): void => {
-    setNewScheduleState((prev) => ({
+    setEditScheduleState((prev) => ({
       ...prev,
-      isRepeating: e.target.value === "repeat" ? true : false,
+      isRepeating: e.target.value === "repeating" ? true : false,
     }));
   };
 
   const convertSchedules = (): void => {
-    const tempSchedules = calendar.schedules.map((schedule) => {
+    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
       const date = new Date(schedule.date);
 
       return {
@@ -308,7 +380,7 @@ export default function Calendar() {
         month: date.getMonth(),
         day: date.getDate(),
         ...schedule,
-      };
+      } as IConvertedSchedules;
     });
 
     setConvertedSchedules(tempSchedules);
@@ -316,11 +388,11 @@ export default function Calendar() {
 
   const checkSelectedCategory = (): void => {
     const categoriesSet: Set<IIScheduleCategory> = new Set(calendar.categories);
-    const selectedCategory: IIScheduleCategory[] = newScheduleState.categories;
+    const selectedCategory: IIScheduleCategory[] = editScheduleState.categories;
 
     const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category));
 
-    setNewScheduleState((prev) => ({
+    setEditScheduleState((prev) => ({
       ...prev,
       categories: filteredSelectedCategory,
     }));
@@ -361,11 +433,12 @@ export default function Calendar() {
   };
 
   const selectDay = (_year: number, _month: number, _day: number): void => {
-    setNewScheduleState((prev) => ({
+    setEditScheduleState((prev) => ({
       ...prev,
       date: new Date(_year, _month, _day),
     }));
 
+    setIsEditSchedule(false);
     setIsPopupVisible(true);
   };
 
@@ -382,20 +455,45 @@ export default function Calendar() {
     }
   };
 
+  const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
+    return convertedSchedules.filter((schedule) => schedule.year === _year && schedule.month === _month && schedule.day === _day);
+  };
+
   const closePopup = (): void => {
     setIsPopupVisible(false);
   };
+
+  const selectedSchedule = (schedule: IConvertedSchedules): void => {
+    setSelectedScheduleId(schedule._id);
+    setEditScheduleState({
+      ...schedule,
+      user: (schedule.user as IIUser)._id,
+      date: new Date(schedule.year, schedule.month, schedule.day),
+    });
+    setIsCreateSchedule(false);
+    setIsEditSchedule(true);
+  };
+
+  console.log(editScheduleState);
 
   const toggleUserList = (): void => {
     setIsUserListOpen((prev) => !prev);
   };
 
   const selectUser = (_user: IIUser): void => {
-    setNewScheduleState((prev) => ({
-      ...schedulePopupInitialState,
-      date: prev.date,
-      user: _user._id,
-    }));
+    if (isCreateSchedule) {
+      setEditScheduleState((prev) => ({
+        ...editScheduleInitialState,
+        date: prev.date,
+        user: _user._id,
+      }));
+    } else {
+      setEditScheduleState((prev) => ({
+        ...prev,
+        user: _user._id,
+        categories: [],
+      }));
+    }
 
     setNewCategory({
       ...newCategoryInitialState,
@@ -414,16 +512,18 @@ export default function Calendar() {
   };
 
   const selectCategory = (category: IIScheduleCategory): void => {
-    const prevCategories: IIScheduleCategory[] = newScheduleState.categories;
+    const tempCategories: IIScheduleCategory[] = editScheduleState.categories;
 
-    const selectedIdx: number = prevCategories.findIndex((_category) => _category.title === category.title);
+    const selectedIdx: number = tempCategories.findIndex((_category) => _category.title === category.title);
 
-    if (selectedIdx !== -1) prevCategories.splice(selectedIdx, 1);
-    else prevCategories.push(category);
+    let newCategories: IIScheduleCategory[] = [];
 
-    setNewScheduleState((prev) => ({
+    if (selectedIdx !== -1) newCategories = tempCategories.filter((_category, idx) => idx !== selectedIdx);
+    else newCategories = [...tempCategories, category];
+
+    setEditScheduleState((prev) => ({
       ...prev,
-      categories: prevCategories,
+      categories: newCategories,
     }));
   };
 
@@ -453,8 +553,9 @@ export default function Calendar() {
     setIsCreateCategory((prev) => !prev);
   };
 
-  const findScheduleByDate = (_year: number, _month: number, _day: number): ICovertedSchedules[] => {
-    return convertedSchedules.filter((schedule) => schedule.year === _year && schedule.month === _month && schedule.day === _day);
+  const toggleCreateSchedule = (): void => {
+    if (!isEditSchedule) setIsCreateSchedule(true);
+    setIsEditSchedule((prev) => !prev);
   };
 
   const getUsers = (): void => {
@@ -471,6 +572,9 @@ export default function Calendar() {
   };
 
   const getSchedules = (): void => {
+    setIsCategoryListOpen(false);
+    setIsEditSchedule(false);
+
     fetch(`/api/calendar/schedules_management/${year}/${month}`)
       .then((res) => {
         if (res.ok) return res.json();
@@ -560,7 +664,7 @@ export default function Calendar() {
     fetch("/api/calendar/schedules_management", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newScheduleState),
+      body: JSON.stringify(editScheduleState),
     })
       .then((res) => {
         if (res.ok) return res.json();
@@ -572,12 +676,12 @@ export default function Calendar() {
       .then((data) => {
         console.log(data.msg);
 
-        setNewScheduleState({
-          ...schedulePopupInitialState,
+        setEditScheduleState((prev) => ({
+          ...editScheduleInitialState,
+          date: prev.date,
           user: user._id,
-        });
-        setIsPopupVisible(false);
-        setIsCategoryListOpen(false);
+        }));
+
         getSchedules();
 
         alert("일정 추가에 성공하였습니다.");
@@ -585,7 +689,39 @@ export default function Calendar() {
       .catch((err) => console.error("Create Schedule :", err));
   };
 
-  console.log(newScheduleState);
+  const updateSchedule = (): void => {
+    fetch("/api/calendar/schedules_management", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editScheduleState),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        getSchedules();
+      })
+      .catch((err) => console.error("Update Category :", err));
+  };
+
+  const deleteSchedule = (): void => {
+    fetch(`/api/calendar/schedules_management?_id=${selectedScheduleId}`, { method: "DELETE" })
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        getSchedules();
+      })
+      .catch((err) => console.error("Delete Duplicate :", err));
+  };
 
   return (
     <div className={CSS.calendar}>
@@ -683,9 +819,21 @@ export default function Calendar() {
               return (
                 <li key={idx}>
                   <button type="button" onClick={() => selectDay(year, _month, _day)}>
-                    <span className={isPrevMonth ? CSS.disabled : isNextMonth ? CSS.disabled : undefined}>{_day}</span>
+                    <span
+                      className={
+                        isPrevMonth
+                          ? CSS.disabled
+                          : isNextMonth
+                          ? CSS.disabled
+                          : year === currentYear && month === currentMonth && _day === currentDay
+                          ? CSS.today
+                          : undefined
+                      }
+                    >
+                      {_day}
+                    </span>
 
-                    {renderSchedule(year, _month, _day)}
+                    {renderSchedules(year, _month, _day)}
                   </button>
                 </li>
               );
@@ -695,31 +843,62 @@ export default function Calendar() {
 
         {isPopupVisible && (
           <div className={CSS.popup}>
-            <button type="button" onClick={closePopup} className={CSS.close}>
-              <Image src={IconClose} width={12} height={12} alt="X" />
-            </button>
-
             <div className={CSS.header}>
-              <h5>{convertDateII(newScheduleState.date, "-")}</h5>
+              {isEditSchedule && (
+                <button type="button" onClick={toggleCreateSchedule}>
+                  <Image src={IconPrevBlack} width={12} alt="<" />
+                </button>
+              )}
+
+              <h5>{convertDateII(editScheduleState.date, "-")}</h5>
+
+              <button type="button" onClick={closePopup}>
+                <Image src={IconClose} width={12} height={12} alt="X" />
+              </button>
             </div>
 
-            <ul className={CSS.content}>
-              {Object.entries(newScheduleState).map(
-                ([key, value], idx) =>
-                  key !== "date" && (
-                    <li key={idx}>
-                      <ul>
-                        <li>{`${schedulePopupTitle[key as keyof ISchedulePopupTitle]}`}</li>
-                        <li>{renderPopupInput(key, value)}</li>
-                      </ul>
-                    </li>
-                  )
-              )}
-            </ul>
+            <div className={CSS.content}>
+              {!isEditSchedule ? (
+                renderPopupSchedules()
+              ) : (
+                <>
+                  <ul>
+                    {Object.entries(editScheduleState).map(([key, value], idx) => {
+                      const isKeyInSchedulePopupTitle = key in editScheduleTitle;
 
-            <button type="button" onClick={createSchedule} disabled={isPopupStateEmpty}>
-              일정 추가
-            </button>
+                      if (!isKeyInSchedulePopupTitle) return null;
+
+                      return (
+                        <li key={idx}>
+                          <ul>
+                            <li>{`${editScheduleTitle[key as keyof IEditScheduleTitle]}`}</li>
+                            <li>{renderPopupInputs(key, value)}</li>
+                          </ul>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  <div className={CSS.btnBox} style={{ justifyContent: isCreateSchedule ? "center" : "space-between" }}>
+                    <button type="button" onClick={isCreateSchedule ? createSchedule : updateSchedule} disabled={isPopupStateEmpty}>
+                      <Image src={isCreateSchedule ? IconPlus : IconEditMain} height={24} alt={isCreateSchedule ? "+" : "Update"} />
+                    </button>
+
+                    {!isCreateSchedule && (
+                      <button type="button" onClick={deleteSchedule}>
+                        <Image src={IconDeleteMain} height={24} alt="Delete" />
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {!isEditSchedule && (
+              <button type="button" onClick={toggleCreateSchedule}>
+                <Image src={IconPlus} width={24} alt="+" />
+              </button>
+            )}
           </div>
         )}
       </div>

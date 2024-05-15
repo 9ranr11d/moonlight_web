@@ -59,14 +59,15 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(
           signIn({
-            _id: data.user._id,
+            ...data.user,
+            // _id: data.user._id,
             isAuth: true,
-            identification: data.user.identification,
-            nickname: data.user.nickname,
-            email: data.user.email,
-            accessLevel: data.user.accessLevel,
-            accessToken: data.accessToken,
-            regDate: data.user.regDate,
+            // identification: data.user.identification,
+            // nickname: data.user.nickname,
+            // email: data.user.email,
+            // accessLevel: data.user.accessLevel,
+            // accessToken: data.accessToken,
+            // regDate: data.user.regDate,
           })
         );
       })

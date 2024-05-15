@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token 반환
     return NextResponse.json(
       {
-        user,
+        ...user.toObject(),
         accessToken: accessToken,
       },
       { status: 200 }

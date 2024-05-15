@@ -35,7 +35,7 @@
 }
 
 .header button,
-.subBox .content button {
+.subBox > .content button {
   border: none;
   background: none;
   padding: 0;
@@ -55,13 +55,13 @@
   margin-bottom: 16px;
 }
 
-.subBox .content {
+.subBox > .content {
   display: flex;
   flex-direction: column;
   row-gap: 4px;
 }
 
-.subBox .content button {
+.subBox > .content button {
   width: 100%;
   color: var(--font-color);
   text-align: center;
@@ -70,8 +70,8 @@
   border-radius: 5px 0 0 5px;
 }
 
-.subBox .content button:hover,
-.subBox .content .selected {
+.subBox > .content button:hover,
+.subBox > .content .selected {
   background: var(--sub-color);
 }
 
@@ -79,6 +79,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .mainBox .header {
@@ -86,13 +87,13 @@
   margin-bottom: 16px;
 }
 
-.mainBox .content {
+.mainBox > .content {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.mainBox .content > ul {
+.mainBox > .content > ul {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
@@ -168,4 +169,262 @@
   font-size: 10px;
   font-weight: 400;
   color: var(--disabled-color-i);
+}
+
+.multiple {
+  display: flex;
+  justify-content: center;
+  column-gap: 5px;
+}
+
+.truncated {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popup {
+  background: var(--white);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  width: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.popup button {
+  background: none;
+  padding: 0;
+}
+
+.popup .header {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popup > .content .schedules {
+  height: 200px;
+  overflow-y: scroll;
+}
+
+.popup > .content > p {
+  height: 200px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup > .content > ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup > .content > ul > li {
+  margin-bottom: 10px;
+}
+
+.popup > .content > ul > li > button {
+  width: 100%;
+  color: var(--font-color);
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  align-items: center;
+  border: 1px solid var(--white);
+  padding: 10px;
+}
+
+.popup > .content > ul > li > button:hover {
+  border: 1px solid var(--main-color);
+}
+
+.popup > .content > ul > li > button:active {
+  background: var(--main-color);
+  color: var(--white);
+}
+
+.popup > .content > ul > li > button:active .categories {
+  border: 2px solid var(--white);
+}
+
+.popup > .content > ul > li > button .categories {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+}
+
+.popup > .content > ul > li > ul {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
+}
+
+.popup > .content > ul > li > ul > li {
+  position: relative;
+}
+
+.popup > .content > ul > li > ul > li > button {
+  width: 100%;
+  color: var(--font-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+}
+
+.popup > .content > ul > li > ul > li > textarea {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.popup > .content > ul > li > ul > li > input[type="text"] {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.popup > .content > ul > li > ul > li > input[type="radio"] {
+  display: none;
+}
+
+.popup > .content > ul > li > ul > li > input[type="radio"] + label {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.popup > .content > ul > li > ul > li > input[type="radio"] + label:last-child {
+  margin-right: 0;
+}
+
+.popup > .content > ul > li > ul > li > .repeating {
+  background: var(--main-color);
+  color: var(--white);
+}
+
+.popup > .content > ul > li > ul > li > ul {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border-radius: 0 0 5px 5px;
+  border: 1px solid var(--border-color);
+  border-top: none;
+}
+
+.popup > .content > ul > li > ul > li > ul > li {
+  background: var(--white);
+}
+
+.popup > .content > ul > li > ul > li > ul > li > button {
+  width: 100%;
+  color: var(--font-color);
+}
+
+.popup > .content > ul > li > ul > li > ul > li:last-child {
+  border-radius: 0 0 5px 5px;
+}
+
+.popup > .content .user > li {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup > .content .user > li:last-child > button > span {
+  border-bottom: none;
+}
+
+.popup > .content .user > li > button {
+  padding: 0 10px;
+}
+
+.popup > .content .user > li > button:hover {
+  border-radius: 0;
+  background: var(--main-color);
+  color: var(--white);
+}
+.popup > .content .user > li > button:hover > span {
+  border-bottom: none;
+}
+
+.popup > .content .user > li > button > span {
+  width: 100%;
+  display: inline-block;
+  padding: 10px 0;
+}
+
+.popup > .content .categories > li {
+  display: grid;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup > .content .categories > .list {
+  border: 1px solid var(--white);
+  border-bottom: 1px solid var(--border-color);
+  grid-template-columns: 1fr 16px 16px;
+  column-gap: 10px;
+}
+
+.popup > .content .categories > .list:hover {
+  border: 1px solid var(--main-color);
+}
+
+.popup > .content .categories > .selectedList {
+  background: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+
+.popup > .content .categories > .selectedList > button {
+  color: var(--white);
+}
+
+.popup > .content .categories > .selectedList:hover {
+  border: 1px solid var(--white);
+}
+
+.popup > .content .categories .edit {
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup > .content .categories .edit > input[type="color"] {
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}
+
+.popup > .content .categories .edit > input[type="text"] {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+}
+
+.popup > .content .categories .edit > button {
+  width: 30px;
+  height: 30px;
+}
+
+.popup > .content .categories .edit > button:hover {
+  border: 1px solid var(--main-color);
+}
+
+.popup > .content > .btnBox {
+  display: flex;
+  align-items: center;
+  column-gap: 30px;
 }
