@@ -34,6 +34,26 @@ body {
   background: #d8aaff33;
 }
 
+ul::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+ul::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+  border: 1px solid var(--white);
+  background: var(--sub-color);
+  border-radius: 4px;
+}
+
+ul::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track {
+  width: 10px;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
 main,
 header {
   max-width: 1920px;

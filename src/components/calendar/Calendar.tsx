@@ -146,6 +146,7 @@ export default function Calendar() {
         user: user._id,
         date: prev.date,
       }));
+      setIsUserListOpen(false);
       setIsCategoryListOpen(false);
       setIsCreateCategory(false);
     }
@@ -156,17 +157,19 @@ export default function Calendar() {
 
     return schedules.length > 0 ? (
       <>
-        {schedules.map((schedule, idx) => (
-          <p key={idx}>
-            <span className={CSS.multiple}>
-              {schedule.categories.map((category, _idx) => (
-                <span key={_idx} style={{ display: "inline-block", background: category.color, width: 10, height: 10 }}></span>
-              ))}
-            </span>
+        {schedules.map((schedule, idx) =>
+          idx < 2 ? (
+            <p key={idx} className={CSS.schedules}>
+              <span className={CSS.multiple}>
+                {schedule.categories.map((category, _idx) => (_idx < 2 ? <span key={_idx} style={{ background: category.color }}></span> : _idx < 3 && "..."))}
+              </span>
 
-            <span>{schedule.title}</span>
-          </p>
-        ))}
+              <span className={CSS.truncated}>{schedule.title}</span>
+            </p>
+          ) : (
+            idx < 3 && <p>...</p>
+          )
+        )}
       </>
     ) : null;
   };
@@ -183,7 +186,7 @@ export default function Calendar() {
             <button type="button" onClick={() => selectedSchedule(schedule)} disabled={user.accessLevel !== 3 && (schedule.user as IIUser)._id !== user._id}>
               <span className={CSS.multiple}>
                 {schedule.categories.map((category, _idx) =>
-                  _idx < 2 ? <span key={_idx} className={CSS.categories} style={{ background: category.color }}></span> : _idx < 3 && "..."
+                  _idx < 2 ? <span key={_idx} className={CSS.categoriesColor} style={{ background: category.color }}></span> : _idx < 3 && "..."
                 )}
               </span>
 
@@ -251,10 +254,7 @@ export default function Calendar() {
         return (
           <>
             <button type="button" onClick={toggleCategory} style={isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
-              <span
-                className={CSS.multiple}
-                style={{ display: "inline-block", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-              >
+              <span className={`${CSS.selectedCategories} ${CSS.multiple}`}>
                 {value.length > 0
                   ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
                   : "선택된 카테고리가 없습니다."}
@@ -287,7 +287,7 @@ export default function Calendar() {
                   )}
 
                 {isCreateCategory && (
-                  <li className={CSS.edit}>
+                  <li className={`${CSS.edit} ${CSS.createCategory}`} style={{ bottom: 24 }}>
                     <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
 
                     <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
@@ -298,8 +298,8 @@ export default function Calendar() {
                   </li>
                 )}
 
-                <li>
-                  <button type="button" onClick={toggleCreateCategory}>
+                <li className={CSS.createCategory}>
+                  <button type="button" onClick={toggleCreateCategory} style={{ borderRadius: 0 }}>
                     <Image src={!isCreateCategory ? IconExpand : IconCollapse} width={12} alt={!isCreateCategory ? "▼" : "▲"} />
                   </button>
                 </li>
@@ -473,8 +473,6 @@ export default function Calendar() {
     setIsCreateSchedule(false);
     setIsEditSchedule(true);
   };
-
-  console.log(editScheduleState);
 
   const toggleUserList = (): void => {
     setIsUserListOpen((prev) => !prev);
@@ -818,7 +816,7 @@ export default function Calendar() {
 
               return (
                 <li key={idx}>
-                  <button type="button" onClick={() => selectDay(year, _month, _day)}>
+                  <button type="button" onClick={() => selectDay(year, _month, _day)} className={CSS.content}>
                     <span
                       className={
                         isPrevMonth
@@ -833,7 +831,7 @@ export default function Calendar() {
                       {_day}
                     </span>
 
-                    {renderSchedules(year, _month, _day)}
+                    <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, _day)}</span>
                   </button>
                 </li>
               );

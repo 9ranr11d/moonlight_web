@@ -91,11 +91,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 }
 
 .mainBox > .content > ul {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
 }
 
 .daysOfWeek {
@@ -168,7 +169,44 @@
 .days .disabled {
   font-size: 10px;
   font-weight: 400;
-  color: var(--disabled-color-i);
+  color: var(--disabled-color-i) !important;
+}
+
+.days > li > .content {
+  height: 80px;
+  padding: 0;
+}
+
+.days > li > .content > p {
+  color: var(--font-color);
+}
+
+.days > li > .content .schedules {
+  display: flex;
+  align-items: center;
+  column-gap: 3px;
+  color: var(--font-color);
+}
+
+.days > li > .content:hover .schedules {
+  color: var(--white);
+}
+
+.days > li > .content .schedules > span > span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+}
+
+.days > li > .content:hover .schedules > span > span {
+  border: 1px solid var(--white);
+}
+
+.scheduleCovers {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding: 20px 3px;
 }
 
 .multiple {
@@ -213,7 +251,7 @@
 
 .popup > .content .schedules {
   height: 200px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .popup > .content > p {
@@ -253,11 +291,11 @@
   color: var(--white);
 }
 
-.popup > .content > ul > li > button:active .categories {
+.popup > .content > ul > li > button:active .categoriesColor {
   border: 2px solid var(--white);
 }
 
-.popup > .content > ul > li > button .categories {
+.popup > .content > ul > li > button .categoriesColor {
   display: inline-block;
   width: 13px;
   height: 13px;
@@ -265,7 +303,7 @@
 
 .popup > .content > ul > li > ul {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 400px;
   align-items: center;
 }
 
@@ -319,6 +357,8 @@
 .popup > .content > ul > li > ul > li > ul {
   position: absolute;
   width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
   z-index: 1;
   border-radius: 0 0 5px 5px;
   border: 1px solid var(--border-color);
@@ -330,101 +370,130 @@
 }
 
 .popup > .content > ul > li > ul > li > ul > li > button {
-  width: 100%;
   color: var(--font-color);
-}
-
-.popup > .content > ul > li > ul > li > ul > li:last-child {
-  border-radius: 0 0 5px 5px;
-}
-
-.popup > .content .user > li {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.popup > .content .user > li:last-child > button > span {
-  border-bottom: none;
-}
-
-.popup > .content .user > li > button {
-  padding: 0 10px;
-}
-
-.popup > .content .user > li > button:hover {
-  border-radius: 0;
-  background: var(--main-color);
-  color: var(--white);
-}
-.popup > .content .user > li > button:hover > span {
-  border-bottom: none;
-}
-
-.popup > .content .user > li > button > span {
-  width: 100%;
-  display: inline-block;
-  padding: 10px 0;
-}
-
-.popup > .content .categories > li {
-  display: grid;
-  padding: 10px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.popup > .content .categories > .list {
-  border: 1px solid var(--white);
-  border-bottom: 1px solid var(--border-color);
-  grid-template-columns: 1fr 16px 16px;
-  column-gap: 10px;
-}
-
-.popup > .content .categories > .list:hover {
-  border: 1px solid var(--main-color);
-}
-
-.popup > .content .categories > .selectedList {
-  background: var(--main-color);
-  border: 1px solid var(--main-color);
-}
-
-.popup > .content .categories > .selectedList > button {
-  color: var(--white);
-}
-
-.popup > .content .categories > .selectedList:hover {
-  border: 1px solid var(--white);
-}
-
-.popup > .content .categories .edit {
-  display: flex;
-  column-gap: 5px;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.popup > .content .categories .edit > input[type="color"] {
-  width: 24px;
-  height: 24px;
-  margin: auto;
-}
-
-.popup > .content .categories .edit > input[type="text"] {
-  flex: 1;
-  width: 100%;
-  padding: 10px;
-}
-
-.popup > .content .categories .edit > button {
-  width: 30px;
-  height: 30px;
-}
-
-.popup > .content .categories .edit > button:hover {
-  border: 1px solid var(--main-color);
 }
 
 .popup > .content > .btnBox {
   display: flex;
   align-items: center;
   column-gap: 30px;
+}
+
+.user > li {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user > li:last-child {
+  border-radius: 0 0 5px 5px;
+}
+
+.user > li:last-child > button > span {
+  border-bottom: none;
+}
+
+.user > li > button {
+  width: 100%;
+  padding: 0 10px;
+}
+
+.user > li > button:hover {
+  border-radius: 0;
+  background: var(--main-color);
+  color: var(--white);
+}
+.user > li > button:hover > span {
+  border-bottom: none;
+}
+
+.user > li > button > span {
+  width: 100%;
+  display: inline-block;
+  padding: 10px 0;
+}
+
+.selectedCategories {
+  width: calc(100% - 9px);
+}
+
+.selectedCategories > span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.categories > li {
+  display: grid;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.categories > li:nth-last-child(2) {
+  border-bottom: none;
+}
+
+.categories > .list {
+  border: 1px solid var(--white);
+  border-bottom: 1px solid var(--border-color);
+  grid-template-columns: 1fr 16px 16px;
+  column-gap: 10px;
+}
+
+.categories > .list > button {
+  padding: 10px 0;
+}
+
+.categories > .list:hover {
+  border: 1px solid var(--main-color);
+}
+
+.categories > .selectedList {
+  background: var(--main-color) !important;
+  border: 1px solid var(--main-color);
+}
+
+.categories > .selectedList > button {
+  color: var(--white) !important;
+}
+
+.categories > .selectedList:hover {
+  border: 1px solid var(--white);
+}
+
+.categories .edit {
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.categories .edit > input[type="color"] {
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}
+
+.categories .edit > input[type="text"] {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+}
+
+.categories .edit > button {
+  width: 30px;
+  height: 30px;
+}
+
+.categories .edit > button:hover {
+  border: 1px solid var(--main-color);
+}
+
+.createCategory {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.createCategory > button {
+  padding: 3px 0;
 }
