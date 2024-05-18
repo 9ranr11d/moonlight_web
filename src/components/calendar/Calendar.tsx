@@ -87,6 +87,7 @@ export default function Calendar() {
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
 
   const [isYear, setIsYear] = useState<boolean>(false);
+  const [isSiderbarOpen, setIsSiderbarOpen] = useState<boolean>(false);
   const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false);
   const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false);
@@ -146,11 +147,25 @@ export default function Calendar() {
         user: user._id,
         date: prev.date,
       }));
+
+      setNewCategory(newCategoryInitialState);
+
       setIsUserListOpen(false);
       setIsCategoryListOpen(false);
       setIsCreateCategory(false);
     }
   }, [isEditSchedule]);
+
+  useEffect(() => {
+    const body = document.body;
+
+    if (isPopupVisible) body.style.overflow = "hidden";
+    else body.style.overflow = "auto";
+
+    return () => {
+      body.style.overflow = "auto";
+    };
+  }, [isPopupVisible]);
 
   const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
     const schedules = findScheduleByDate(_year, _month, _day);
@@ -161,13 +176,15 @@ export default function Calendar() {
           idx < 2 ? (
             <p key={idx} className={CSS.schedules}>
               <span className={CSS.multiple}>
-                {schedule.categories.map((category, _idx) => (_idx < 2 ? <span key={_idx} style={{ background: category.color }}></span> : _idx < 3 && "..."))}
+                {schedule.categories.map((category, _idx) =>
+                  _idx < 2 ? <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span> : _idx < 3 && "..."
+                )}
               </span>
 
               <span className={CSS.truncated}>{schedule.title}</span>
             </p>
           ) : (
-            idx < 3 && <p>...</p>
+            idx < 3 && <p key={idx}>...</p>
           )
         )}
       </>
@@ -371,6 +388,10 @@ export default function Calendar() {
     }));
   };
 
+  const toggleSiderbar = (): void => {
+    setIsSiderbarOpen((prev) => !prev);
+  };
+
   const convertSchedules = (): void => {
     const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
       const date = new Date(schedule.date);
@@ -387,10 +408,10 @@ export default function Calendar() {
   };
 
   const checkSelectedCategory = (): void => {
-    const categoriesSet: Set<IIScheduleCategory> = new Set(calendar.categories);
+    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => category._id));
     const selectedCategory: IIScheduleCategory[] = editScheduleState.categories;
 
-    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category));
+    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category._id));
 
     setEditScheduleState((prev) => ({
       ...prev,
@@ -465,11 +486,18 @@ export default function Calendar() {
 
   const selectedSchedule = (schedule: IConvertedSchedules): void => {
     setSelectedScheduleId(schedule._id);
+
     setEditScheduleState({
       ...schedule,
       user: (schedule.user as IIUser)._id,
       date: new Date(schedule.year, schedule.month, schedule.day),
     });
+
+    setNewCategory((prev) => ({
+      ...prev,
+      createdBy: (schedule.user as IIUser)._id,
+    }));
+
     setIsCreateSchedule(false);
     setIsEditSchedule(true);
   };
@@ -723,54 +751,63 @@ export default function Calendar() {
 
   return (
     <div className={CSS.calendar}>
+      {isPopupVisible && <button type="button" onClick={closePopup} className={CSS.popupBackground}></button>}
       <div className={CSS.subBox}>
-        <ul className={CSS.header}>
-          <li>
-            <button type="button" onClick={() => (isYear ? changeYear("prev") : changeMonth("prev"))}>
-              <Image src={IconPrevWhite} width={24} height={24} alt="Prev" />
-            </button>
-          </li>
+        <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>
+          <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} height={30} alt={isSiderbarOpen ? ">" : "<"} />
+        </button>
 
-          <li>
-            <ul className={CSS.yearMonthToggleBtn}>
+        {isSiderbarOpen && (
+          <div className={CSS.content}>
+            <ul className={CSS.header}>
               <li>
-                <button type="button" onClick={() => toggleYearMonth("year")} disabled={isYear}>
-                  <h5>{year}</h5>
+                <button type="button" onClick={() => (isYear ? changeYear("prev") : changeMonth("prev"))}>
+                  <Image src={IconPrevWhite} width={24} height={24} alt="Prev" />
                 </button>
               </li>
 
               <li>
-                <button type="button" onClick={() => toggleYearMonth("month")} disabled={!isYear}>
-                  <h5>{month + 1}</h5>
+                <ul className={CSS.yearMonthToggleBtn}>
+                  <li>
+                    <button type="button" onClick={() => toggleYearMonth("year")} disabled={isYear}>
+                      <h5>{year}</h5>
+                    </button>
+                  </li>
+
+                  <li>
+                    <button type="button" onClick={() => toggleYearMonth("month")} disabled={!isYear}>
+                      <h5>{month + 1}</h5>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <button type="button" onClick={() => (isYear ? changeYear("next") : changeMonth("next"))}>
+                  <Image src={IconNextWhite} width={24} height={24} alt="Next" />
                 </button>
               </li>
             </ul>
-          </li>
 
-          <li>
-            <button type="button" onClick={() => (isYear ? changeYear("next") : changeMonth("next"))}>
-              <Image src={IconNextWhite} width={24} height={24} alt="Next" />
-            </button>
-          </li>
-        </ul>
-
-        <ul className={CSS.content}>
-          {!isYear
-            ? monthNames.map((monthName, idx) => (
-                <li key={idx}>
-                  <button type="button" onClick={() => selectMonth(idx)} className={idx === month ? CSS.selected : undefined}>
-                    <h6>{monthName}</h6>
-                  </button>
-                </li>
-              ))
-            : years.map((_year, idx) => (
-                <li key={idx}>
-                  <button type="button" onClick={() => selectYear(_year)} className={year === _year ? CSS.selected : undefined}>
-                    <h6>{_year}</h6>
-                  </button>
-                </li>
-              ))}
-        </ul>
+            <ul className={CSS.content}>
+              {!isYear
+                ? monthNames.map((monthName, idx) => (
+                    <li key={idx}>
+                      <button type="button" onClick={() => selectMonth(idx)} className={idx === month ? CSS.selected : undefined}>
+                        <h6>{monthName}</h6>
+                      </button>
+                    </li>
+                  ))
+                : years.map((_year, idx) => (
+                    <li key={idx}>
+                      <button type="button" onClick={() => selectYear(_year)} className={year === _year ? CSS.selected : undefined}>
+                        <h6>{_year}</h6>
+                      </button>
+                    </li>
+                  ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className={CSS.mainBox}>

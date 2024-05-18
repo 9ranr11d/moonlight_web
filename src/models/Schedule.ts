@@ -25,8 +25,8 @@ const ScheduleSchema: mongoose.Schema<IIISchedule> = new Schema<IIISchedule>({
     required: true,
   },
   title: { type: String, required: true },
-  content: { type: String, required: true },
   categories: [{ type: Schema.Types.ObjectId, ref: "ScheduleCategory" }],
+  content: { type: String, required: true },
   isRepeating: { type: Boolean, default: false },
 });
 
