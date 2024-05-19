@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 
@@ -58,6 +58,10 @@ export default function Calendar() {
   const monthNames: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   const dayOfWeek: string[] = ["일", "월", "화", "수", "목", "금", "토"];
 
+  const siderbarWidth = 250;
+  const startYear = 2023;
+  const MaximumSelectableYear = 100;
+
   const editScheduleTitle: IEditScheduleTitle = {
     user: "사용자",
     title: "일정 이름",
@@ -81,8 +85,13 @@ export default function Calendar() {
     createdBy: user._id,
   };
 
+  const siderbarRef = useRef<HTMLUListElement>(null);
+  const yearRefs = useRef<HTMLLIElement[]>([]);
+  const calendarRef = useRef<HTMLDivElement>(null);
+
   const [year, setYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(currentMonth);
+  const [calendarHeight, setCalendarHeight] = useState<number>(0);
 
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
 
@@ -110,7 +119,7 @@ export default function Calendar() {
     user: user._id,
   });
 
-  const years: number[] = Array.from({ length: 12 }, (_, idx) => year - 5 + idx);
+  const years: number[] = Array.from({ length: MaximumSelectableYear }, (_, idx) => startYear + idx);
   const monthDays: number[] = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const firstDayOfMonth: number = new Date(year, month, 1).getDay();
@@ -118,7 +127,8 @@ export default function Calendar() {
   const prevMonthDays: number = month - 1 < 0 ? monthDays[11] : monthDays[month - 1];
 
   const monthDaysWithPrevLastWeek: number = monthDays[month] + firstDayOfMonth;
-  const totalDays: number = monthDaysWithPrevLastWeek + (7 - (monthDaysWithPrevLastWeek % 7));
+  const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
+  const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
   const isPopupStateEmpty = Object.values(editScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
 
@@ -139,6 +149,23 @@ export default function Calendar() {
   useEffect(() => {
     setUserCategories(calendar.categories.filter((category) => category.createdBy === editScheduleState.user));
   }, [calendar.categories, editScheduleState.user]);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      const updatedCalendarHeight = () => {
+        setCalendarHeight(calendarRef.current?.offsetHeight || 0);
+      };
+
+      updatedCalendarHeight();
+
+      const observer = new MutationObserver(updatedCalendarHeight);
+      observer.observe(calendarRef.current, { childList: true, subtree: true });
+    }
+  }, [calendarRef]);
+
+  useEffect(() => {
+    if (isYear) moveSelectedYear(year, year - startYear);
+  }, [isYear]);
 
   useEffect(() => {
     if (!isEditSchedule) {
@@ -445,8 +472,21 @@ export default function Calendar() {
     }
   };
 
-  const selectYear = (_year: number): void => {
+  const selectYear = (_year: number, idx: number): void => {
     setYear(_year);
+
+    moveSelectedYear(_year, idx);
+  };
+
+  const moveSelectedYear = (_year: number, idx: number): void => {
+    if (siderbarRef.current && yearRefs.current[idx]) {
+      const siderbarHeight: number = siderbarRef.current.clientHeight;
+      const selectedYearHeight: number = yearRefs.current[idx].clientHeight;
+      const selectedYearOffsetTop: number = yearRefs.current[idx].offsetTop;
+
+      const scrollTop: number = selectedYearOffsetTop - siderbarHeight / 2 + selectedYearHeight / 2;
+      siderbarRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
+    }
   };
 
   const selectMonth = (idx: number): void => {
@@ -750,15 +790,16 @@ export default function Calendar() {
   };
 
   return (
-    <div className={CSS.calendar}>
+    <>
       {isPopupVisible && <button type="button" onClick={closePopup} className={CSS.popupBackground}></button>}
-      <div className={CSS.subBox}>
-        <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>
-          <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} height={30} alt={isSiderbarOpen ? ">" : "<"} />
-        </button>
 
-        {isSiderbarOpen && (
-          <div className={CSS.content}>
+      <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
+        <div className={CSS.subBox} style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}>
+          <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>
+            <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} height={30} alt={isSiderbarOpen ? ">" : "<"} />
+          </button>
+
+          <div className={CSS.content} style={{ width: siderbarWidth }}>
             <ul className={CSS.header}>
               <li>
                 <button type="button" onClick={() => (isYear ? changeYear("prev") : changeMonth("prev"))}>
@@ -789,7 +830,7 @@ export default function Calendar() {
               </li>
             </ul>
 
-            <ul className={CSS.content}>
+            <ul className={CSS.content} style={{ height: calendarHeight, paddingRight: isYear ? 5 : 0 }} ref={siderbarRef}>
               {!isYear
                 ? monthNames.map((monthName, idx) => (
                     <li key={idx}>
@@ -799,144 +840,144 @@ export default function Calendar() {
                     </li>
                   ))
                 : years.map((_year, idx) => (
-                    <li key={idx}>
-                      <button type="button" onClick={() => selectYear(_year)} className={year === _year ? CSS.selected : undefined}>
+                    <li key={idx} ref={(el) => (yearRefs.current[idx] = el!)}>
+                      <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? CSS.selected : undefined}>
                         <h6>{_year}</h6>
                       </button>
                     </li>
                   ))}
             </ul>
           </div>
-        )}
-      </div>
-
-      <div className={CSS.mainBox}>
-        <ul className={CSS.header}>
-          <li>
-            <button type="button" onClick={() => changeMonth("prev")}>
-              <Image src={IconPrevBlack} width={24} height={24} alt="Prev" />
-            </button>
-          </li>
-
-          <li>
-            <h3>{monthNames[month]}</h3>
-          </li>
-
-          <li>
-            <button type="button" onClick={() => changeMonth("next")}>
-              <Image src={IconNextBlack} width={24} height={24} alt="Next" />
-            </button>
-          </li>
-        </ul>
-
-        <div className={CSS.content}>
-          <ul className={CSS.daysOfWeek}>
-            {dayOfWeek.map((_day, idx) => (
-              <li key={idx}>
-                <h6>{_day}</h6>
-              </li>
-            ))}
-          </ul>
-
-          <ul className={CSS.days}>
-            {Array.from({ length: totalDays }, (_, idx) => {
-              const isPrevMonth = idx < firstDayOfMonth;
-              const isNextMonth = idx + 1 > monthDaysWithPrevLastWeek;
-
-              const _day: number = isPrevMonth
-                ? prevMonthDays - (firstDayOfMonth - (idx + 1))
-                : isNextMonth
-                ? idx + 1 - monthDaysWithPrevLastWeek
-                : idx + 1 - firstDayOfMonth;
-
-              const _month = isPrevMonth ? month - 1 : isNextMonth ? month + 1 : month;
-
-              return (
-                <li key={idx}>
-                  <button type="button" onClick={() => selectDay(year, _month, _day)} className={CSS.content}>
-                    <span
-                      className={
-                        isPrevMonth
-                          ? CSS.disabled
-                          : isNextMonth
-                          ? CSS.disabled
-                          : year === currentYear && month === currentMonth && _day === currentDay
-                          ? CSS.today
-                          : undefined
-                      }
-                    >
-                      {_day}
-                    </span>
-
-                    <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, _day)}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
         </div>
 
-        {isPopupVisible && (
-          <div className={CSS.popup}>
-            <div className={CSS.header}>
-              {isEditSchedule && (
+        <div className={CSS.mainBox}>
+          <ul className={CSS.header}>
+            <li>
+              <button type="button" onClick={() => changeMonth("prev")}>
+                <Image src={IconPrevBlack} width={24} height={24} alt="Prev" />
+              </button>
+            </li>
+
+            <li>
+              <h3>{monthNames[month]}</h3>
+            </li>
+
+            <li>
+              <button type="button" onClick={() => changeMonth("next")}>
+                <Image src={IconNextBlack} width={24} height={24} alt="Next" />
+              </button>
+            </li>
+          </ul>
+
+          <div className={CSS.content} ref={calendarRef}>
+            <ul className={CSS.daysOfWeek}>
+              {dayOfWeek.map((_day, idx) => (
+                <li key={idx}>
+                  <h6>{_day}</h6>
+                </li>
+              ))}
+            </ul>
+
+            <ul className={CSS.days}>
+              {Array.from({ length: totalDays }, (_, idx) => {
+                const isPrevMonth = idx < firstDayOfMonth;
+                const isNextMonth = idx + 1 > monthDaysWithPrevLastWeek;
+
+                const _day: number = isPrevMonth
+                  ? prevMonthDays - (firstDayOfMonth - (idx + 1))
+                  : isNextMonth
+                  ? idx + 1 - monthDaysWithPrevLastWeek
+                  : idx + 1 - firstDayOfMonth;
+
+                const _month = isPrevMonth ? month - 1 : isNextMonth ? month + 1 : month;
+
+                return (
+                  <li key={idx}>
+                    <button type="button" onClick={() => selectDay(year, _month, _day)} className={CSS.content}>
+                      <span
+                        className={
+                          isPrevMonth
+                            ? CSS.disabled
+                            : isNextMonth
+                            ? CSS.disabled
+                            : year === currentYear && month === currentMonth && _day === currentDay
+                            ? CSS.today
+                            : undefined
+                        }
+                      >
+                        {_day}
+                      </span>
+
+                      <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, _day)}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {isPopupVisible && (
+            <div className={CSS.popup}>
+              <div className={CSS.header}>
+                {isEditSchedule && (
+                  <button type="button" onClick={toggleCreateSchedule}>
+                    <Image src={IconPrevBlack} width={12} alt="<" />
+                  </button>
+                )}
+
+                <h5>{convertDateII(editScheduleState.date, "-")}</h5>
+
+                <button type="button" onClick={closePopup}>
+                  <Image src={IconClose} width={12} height={12} alt="X" />
+                </button>
+              </div>
+
+              <div className={CSS.content}>
+                {!isEditSchedule ? (
+                  renderPopupSchedules()
+                ) : (
+                  <>
+                    <ul>
+                      {Object.entries(editScheduleState).map(([key, value], idx) => {
+                        const isKeyInSchedulePopupTitle = key in editScheduleTitle;
+
+                        if (!isKeyInSchedulePopupTitle) return null;
+
+                        return (
+                          <li key={idx}>
+                            <ul>
+                              <li>{`${editScheduleTitle[key as keyof IEditScheduleTitle]}`}</li>
+                              <li>{renderPopupInputs(key, value)}</li>
+                            </ul>
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    <div className={CSS.btnBox} style={{ justifyContent: isCreateSchedule ? "center" : "space-between" }}>
+                      <button type="button" onClick={isCreateSchedule ? createSchedule : updateSchedule} disabled={isPopupStateEmpty}>
+                        <Image src={isCreateSchedule ? IconPlus : IconEditMain} height={24} alt={isCreateSchedule ? "+" : "Update"} />
+                      </button>
+
+                      {!isCreateSchedule && (
+                        <button type="button" onClick={deleteSchedule}>
+                          <Image src={IconDeleteMain} height={24} alt="Delete" />
+                        </button>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {!isEditSchedule && (
                 <button type="button" onClick={toggleCreateSchedule}>
-                  <Image src={IconPrevBlack} width={12} alt="<" />
+                  <Image src={IconPlus} width={24} alt="+" />
                 </button>
               )}
-
-              <h5>{convertDateII(editScheduleState.date, "-")}</h5>
-
-              <button type="button" onClick={closePopup}>
-                <Image src={IconClose} width={12} height={12} alt="X" />
-              </button>
             </div>
-
-            <div className={CSS.content}>
-              {!isEditSchedule ? (
-                renderPopupSchedules()
-              ) : (
-                <>
-                  <ul>
-                    {Object.entries(editScheduleState).map(([key, value], idx) => {
-                      const isKeyInSchedulePopupTitle = key in editScheduleTitle;
-
-                      if (!isKeyInSchedulePopupTitle) return null;
-
-                      return (
-                        <li key={idx}>
-                          <ul>
-                            <li>{`${editScheduleTitle[key as keyof IEditScheduleTitle]}`}</li>
-                            <li>{renderPopupInputs(key, value)}</li>
-                          </ul>
-                        </li>
-                      );
-                    })}
-                  </ul>
-
-                  <div className={CSS.btnBox} style={{ justifyContent: isCreateSchedule ? "center" : "space-between" }}>
-                    <button type="button" onClick={isCreateSchedule ? createSchedule : updateSchedule} disabled={isPopupStateEmpty}>
-                      <Image src={isCreateSchedule ? IconPlus : IconEditMain} height={24} alt={isCreateSchedule ? "+" : "Update"} />
-                    </button>
-
-                    {!isCreateSchedule && (
-                      <button type="button" onClick={deleteSchedule}>
-                        <Image src={IconDeleteMain} height={24} alt="Delete" />
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {!isEditSchedule && (
-              <button type="button" onClick={toggleCreateSchedule}>
-                <Image src={IconPlus} width={24} alt="+" />
-              </button>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

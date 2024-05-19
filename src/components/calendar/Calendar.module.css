@@ -1,6 +1,8 @@
 .calendar {
+  position: relative;
   display: flex;
   justify-content: center;
+  transition: right 0.5s ease-in-out;
 }
 
 .header {
@@ -8,6 +10,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin-bottom: 16px;
+  height: 55px;
 }
 
 .yearMonthToggleBtn {
@@ -37,10 +41,12 @@
 }
 
 .subBox {
+  position: relative;
   display: flex;
   column-gap: 5px;
   border-radius: 10px 0 0 10px;
   background: var(--sub-color);
+  transition: left 0.5s ease-in-out;
 }
 
 .subBox h6 {
@@ -59,9 +65,9 @@
 .subBox > .content {
   display: flex;
   flex-direction: column;
-  row-gap: 16px;
   background: var(--main-color);
   padding: 10px;
+  border-radius: 10px 0 0 10px;
 }
 
 .subBox > .content > .content {
@@ -70,6 +76,7 @@
   flex-direction: column;
   row-gap: 4px;
   justify-content: space-between;
+  overflow-y: auto;
 }
 
 .subBox > .content > .content button {
@@ -96,13 +103,10 @@
 
 .mainBox .header {
   column-gap: 30px;
-  margin-bottom: 16px;
 }
 
 .mainBox > .content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
   margin: 0 auto;
 }
 
