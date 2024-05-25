@@ -10,7 +10,8 @@ export interface ISchedule {
 }
 
 export interface IISchedule extends ISchedule {
-  date: Date;
+  date: Date[];
+  isSingleDate: boolean;
   categories: IIScheduleCategory[];
   isRepeating: boolean;
 }
@@ -18,7 +19,11 @@ export interface IISchedule extends ISchedule {
 export interface IIISchedule extends IISchedule, Document {}
 
 const ScheduleSchema: mongoose.Schema<IIISchedule> = new Schema<IIISchedule>({
-  date: { type: Date, default: Date.now },
+  date: {
+    type: [{ type: Date }],
+    default: () => [new Date(), new Date()],
+  },
+  isSingleDate: { type: Boolean, default: true },
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",

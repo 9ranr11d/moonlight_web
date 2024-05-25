@@ -20,6 +20,7 @@ import IconPrevWhite from "@public/img/common/icon_less_than_white.svg";
 import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
+import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";
 import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
 import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
 import IconClose from "@public/img/common/icon_close_main.svg";
@@ -38,9 +39,12 @@ interface IEditScheduleTitle extends ISchedule {
 }
 
 interface IConvertedSchedules extends IIISchedule {
-  year: number;
-  month: number;
-  day: number;
+  startYear: number;
+  startMonth: number;
+  startDay: number;
+  endYear: number;
+  endMonth: number;
+  endDay: number;
 }
 
 export default function Calendar() {
@@ -71,7 +75,8 @@ export default function Calendar() {
   };
 
   const editScheduleInitialState: IISchedule = {
-    date: today,
+    date: [today, today],
+    isSingleDate: false,
     user: "",
     title: "",
     categories: [],
@@ -102,6 +107,7 @@ export default function Calendar() {
   const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false);
   const [isCreateCategory, setIsCreateCategory] = useState<boolean>(false);
   const [isEditSchedule, setIsEditSchedule] = useState<boolean>(false);
+  const [isMiniCalendarOpen, setIsEndDateListOpen] = useState<boolean>(false);
   const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false);
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]);
@@ -123,12 +129,23 @@ export default function Calendar() {
   const monthDays: number[] = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const firstDayOfMonth: number = new Date(year, month, 1).getDay();
-
   const prevMonthDays: number = month - 1 < 0 ? monthDays[11] : monthDays[month - 1];
-
   const monthDaysWithPrevLastWeek: number = monthDays[month] + firstDayOfMonth;
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
+
+  const editScheduleStateStartDate = editScheduleState.date[0];
+  const editScheduleStateStartMonth = editScheduleStateStartDate.getMonth();
+
+  const editScheduleStateEndDate = editScheduleState.date[1];
+  const editScheduleStateEndYear = editScheduleStateEndDate.getFullYear();
+  const editScheduleStateEndMonth = editScheduleStateEndDate.getMonth();
+
+  const miniFirstDayOfMonth: number = new Date(editScheduleStateEndYear, editScheduleStateEndMonth, 1).getDay();
+  const miniPrevMonthDays: number = editScheduleStateEndMonth - 1 < 0 ? monthDays[11] : monthDays[editScheduleStateEndMonth - 1];
+  const miniMonthDaysWithPrevLastWeek: number = monthDays[editScheduleStateEndMonth] + miniFirstDayOfMonth;
+  const miniFillRemainingDays: number = miniMonthDaysWithPrevLastWeek % 7;
+  const miniTotalDays: number = miniFillRemainingDays === 0 ? miniMonthDaysWithPrevLastWeek : miniMonthDaysWithPrevLastWeek + (7 - miniFillRemainingDays);
 
   const isPopupStateEmpty = Object.values(editScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
 
@@ -168,6 +185,10 @@ export default function Calendar() {
   }, [isYear]);
 
   useEffect(() => {
+    getSchedules();
+  }, [month]);
+
+  useEffect(() => {
     if (!isEditSchedule) {
       setEditScheduleState((prev) => ({
         ...editScheduleInitialState,
@@ -194,8 +215,8 @@ export default function Calendar() {
     };
   }, [isPopupVisible]);
 
-  const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
-    const schedules = findScheduleByDate(_year, _month, _day);
+  const renderSchedules = (_year: number, _month: number, day: number): JSX.Element | null => {
+    const schedules = findScheduleByDate(_year, _month, day);
 
     return schedules.length > 0 ? (
       <>
@@ -219,7 +240,7 @@ export default function Calendar() {
   };
 
   const renderPopupSchedules = (): JSX.Element => {
-    const selectedDate = new Date(editScheduleState.date);
+    const selectedDate = new Date(editScheduleStateStartDate);
 
     const schedules = findScheduleByDate(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
 
@@ -421,12 +442,16 @@ export default function Calendar() {
 
   const convertSchedules = (): void => {
     const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
-      const date = new Date(schedule.date);
+      const startDate = new Date(schedule.date[0]);
+      const endDate = new Date(schedule.date[1]);
 
       return {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-        day: date.getDate(),
+        startYear: currentYear,
+        startMonth: startDate.getMonth(),
+        startDay: startDate.getDate(),
+        endYear: currentYear,
+        endMonth: endDate.getMonth(),
+        endDay: endDate.getDate(),
         ...schedule,
       } as IConvertedSchedules;
     });
@@ -463,10 +488,18 @@ export default function Calendar() {
     switch (direction) {
       case "prev":
         if (month > 0) setMonth((prev) => prev - 1);
+        else {
+          setYear((prev) => prev - 1);
+          setMonth(11);
+        }
 
         break;
       case "next":
         if (month < 11) setMonth((prev) => prev + 1);
+        else {
+          setYear((prev) => prev + 1);
+          setMonth(0);
+        }
 
         break;
     }
@@ -493,10 +526,12 @@ export default function Calendar() {
     setMonth(idx);
   };
 
-  const selectDay = (_year: number, _month: number, _day: number): void => {
+  const selectDay = (_year: number, _month: number, day: number): void => {
+    const selectedDay = new Date(_year, _month, day);
+
     setEditScheduleState((prev) => ({
       ...prev,
-      date: new Date(_year, _month, _day),
+      date: [selectedDay, selectedDay],
     }));
 
     setIsEditSchedule(false);
@@ -516,8 +551,12 @@ export default function Calendar() {
     }
   };
 
-  const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
-    return convertedSchedules.filter((schedule) => schedule.year === _year && schedule.month === _month && schedule.day === _day);
+  const findScheduleByDate = (_year: number, _month: number, day: number): IConvertedSchedules[] => {
+    return convertedSchedules.filter(
+      (schedule) =>
+        (schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === day) ||
+        (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === day)
+    );
   };
 
   const closePopup = (): void => {
@@ -527,10 +566,13 @@ export default function Calendar() {
   const selectedSchedule = (schedule: IConvertedSchedules): void => {
     setSelectedScheduleId(schedule._id);
 
+    const startDate = new Date(schedule.startYear, schedule.startMonth, schedule.startDay);
+    const endDate = new Date(schedule.endYear, schedule.endMonth, schedule.endDay);
+
     setEditScheduleState({
       ...schedule,
       user: (schedule.user as IIUser)._id,
-      date: new Date(schedule.year, schedule.month, schedule.day),
+      date: [startDate, endDate],
     });
 
     setNewCategory((prev) => ({
@@ -622,6 +664,52 @@ export default function Calendar() {
   const toggleCreateSchedule = (): void => {
     if (!isEditSchedule) setIsCreateSchedule(true);
     setIsEditSchedule((prev) => !prev);
+  };
+
+  const toggleDateMode = (): void => {
+    setIsEndDateListOpen((prev) => !prev);
+  };
+
+  const changeMiniMonth = (direction: string): void => {
+    const endDate = editScheduleStateEndDate;
+
+    let endYear = endDate.getFullYear();
+    let endMonth = endDate.getMonth();
+
+    switch (direction) {
+      case "prev":
+        if (endMonth > 0) endMonth--;
+        else {
+          endYear--;
+          endMonth = 11;
+        }
+
+        break;
+      case "next":
+        if (endMonth < 11) endMonth++;
+        else {
+          endYear++;
+          endMonth = 0;
+        }
+
+        break;
+    }
+
+    const newEndDate = new Date(endYear, endMonth, 1);
+
+    setEditScheduleState((prev) => ({
+      ...prev,
+      date: [prev.date[0], newEndDate],
+    }));
+  };
+
+  const selectMiniDay = (date: Date) => {
+    setEditScheduleState((prev) => ({
+      ...prev,
+      date: [prev.date[0], date],
+    }));
+
+    setIsEndDateListOpen(false);
   };
 
   const getUsers = (): void => {
@@ -871,9 +959,9 @@ export default function Calendar() {
 
           <div className={CSS.content} ref={calendarRef}>
             <ul className={CSS.daysOfWeek}>
-              {dayOfWeek.map((_day, idx) => (
+              {dayOfWeek.map((day, idx) => (
                 <li key={idx}>
-                  <h6>{_day}</h6>
+                  <h6>{day}</h6>
                 </li>
               ))}
             </ul>
@@ -883,7 +971,7 @@ export default function Calendar() {
                 const isPrevMonth = idx < firstDayOfMonth;
                 const isNextMonth = idx + 1 > monthDaysWithPrevLastWeek;
 
-                const _day: number = isPrevMonth
+                const day: number = isPrevMonth
                   ? prevMonthDays - (firstDayOfMonth - (idx + 1))
                   : isNextMonth
                   ? idx + 1 - monthDaysWithPrevLastWeek
@@ -893,22 +981,22 @@ export default function Calendar() {
 
                 return (
                   <li key={idx}>
-                    <button type="button" onClick={() => selectDay(year, _month, _day)} className={CSS.content}>
+                    <button type="button" onClick={() => selectDay(year, _month, day)} className={CSS.content}>
                       <span
                         className={
                           isPrevMonth
-                            ? CSS.disabled
+                            ? CSS.subDate
                             : isNextMonth
-                            ? CSS.disabled
-                            : year === currentYear && month === currentMonth && _day === currentDay
+                            ? CSS.subDate
+                            : year === currentYear && month === currentMonth && day === currentDay
                             ? CSS.today
                             : undefined
                         }
                       >
-                        {_day}
+                        {day}
                       </span>
 
-                      <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, _day)}</span>
+                      <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, day)}</span>
                     </button>
                   </li>
                 );
@@ -918,6 +1006,12 @@ export default function Calendar() {
 
           {isPopupVisible && (
             <div className={CSS.popup}>
+              {isMiniCalendarOpen && (
+                <div className={CSS.popupBackground}>
+                  <button type="button" onClick={toggleDateMode}></button>
+                </div>
+              )}
+
               <div className={CSS.header}>
                 {isEditSchedule && (
                   <button type="button" onClick={toggleCreateSchedule}>
@@ -925,7 +1019,105 @@ export default function Calendar() {
                   </button>
                 )}
 
-                <h5>{convertDateII(editScheduleState.date, "-")}</h5>
+                <h5>
+                  {convertDateII(editScheduleStateStartDate, "-")}
+
+                  {isEditSchedule && (
+                    <>
+                      &nbsp;~&nbsp;
+                      <button type="button" onClick={toggleDateMode}>
+                        <span>{convertDateII(editScheduleStateEndDate, "-")}</span>
+
+                        <Image src={isMiniCalendarOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isMiniCalendarOpen ? "▲" : "▼"} />
+                      </button>
+                      {isMiniCalendarOpen && (
+                        <div className={CSS.miniCalendar}>
+                          <ul className={CSS.header}>
+                            <li>
+                              <button
+                                type="button"
+                                onClick={() => changeMiniMonth("prev")}
+                                disabled={!(editScheduleStateStartMonth < editScheduleStateEndMonth)}
+                              >
+                                <Image src={editScheduleStateStartMonth < editScheduleStateEndMonth ? IconPrevBlack : IconPrevGray} height={15} alt="Prev" />
+                              </button>
+                            </li>
+
+                            <li>
+                              <h5>{monthNames[editScheduleStateEndMonth]}</h5>
+                            </li>
+
+                            <li>
+                              <button type="button" onClick={() => changeMiniMonth("next")}>
+                                <Image src={IconNextBlack} height={15} alt="Next" />
+                              </button>
+                            </li>
+                          </ul>
+
+                          <div className={CSS.content}>
+                            <ul className={CSS.daysOfWeek}>
+                              {dayOfWeek.map((day, idx) => (
+                                <li key={idx}>
+                                  <h6>{day}</h6>
+                                </li>
+                              ))}
+                            </ul>
+
+                            <ul className={CSS.days}>
+                              {Array.from({ length: miniTotalDays }, (_, idx) => {
+                                const isPrevMonth = idx < miniFirstDayOfMonth;
+                                const isNextMonth = idx + 1 > miniMonthDaysWithPrevLastWeek;
+
+                                const day: number = isPrevMonth
+                                  ? miniPrevMonthDays - (miniFirstDayOfMonth - (idx + 1))
+                                  : isNextMonth
+                                  ? idx + 1 - miniMonthDaysWithPrevLastWeek
+                                  : idx + 1 - miniFirstDayOfMonth;
+
+                                const _month = isPrevMonth
+                                  ? editScheduleStateEndMonth - 1
+                                  : isNextMonth
+                                  ? editScheduleStateEndMonth + 1
+                                  : editScheduleStateEndMonth;
+
+                                const thisDate = new Date(editScheduleStateEndYear, _month, day);
+
+                                const isPrevDate = editScheduleStateStartDate > thisDate;
+
+                                return (
+                                  <li key={idx}>
+                                    <button
+                                      type="button"
+                                      onClick={() => selectMiniDay(thisDate)}
+                                      className={isPrevDate ? `${CSS.content} ${CSS.disabled}` : CSS.content}
+                                      disabled={isPrevDate}
+                                    >
+                                      <span
+                                        className={
+                                          isPrevDate
+                                            ? CSS.subDate
+                                            : isPrevMonth
+                                            ? CSS.subDate
+                                            : isNextMonth
+                                            ? CSS.subDate
+                                            : editScheduleStateEndYear === currentYear && editScheduleStateEndMonth === currentMonth && day === currentDay
+                                            ? CSS.today
+                                            : undefined
+                                        }
+                                      >
+                                        {day}
+                                      </span>
+                                    </button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </h5>
 
                 <button type="button" onClick={closePopup}>
                   <Image src={IconClose} width={12} height={12} alt="X" />
