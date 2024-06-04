@@ -91,7 +91,9 @@ export default function Calendar() {
   };
 
   const siderbarRef = useRef<HTMLUListElement>(null);
+
   const yearRefs = useRef<HTMLLIElement[]>([]);
+
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const [year, setYear] = useState<number>(currentYear);
@@ -111,14 +113,14 @@ export default function Calendar() {
   const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false);
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]);
+  const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]);
 
   const [newCategory, setNewCategory] = useState<IScheduleCategory>(newCategoryInitialState);
 
   const [users, setUsers] = useState<IIUser[]>([]);
 
   const [convertedSchedules, setConvertedSchedules] = useState<IConvertedSchedules[]>([]);
-
-  const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]);
+  const [multipleSchedules, setMultipleSchedules] = useState<IConvertedSchedules[]>([]);
 
   const [editScheduleState, setEditScheduleState] = useState<IISchedule>({
     ...editScheduleInitialState,
@@ -134,12 +136,12 @@ export default function Calendar() {
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
-  const editScheduleStateStartDate = editScheduleState.date[0];
-  const editScheduleStateStartMonth = editScheduleStateStartDate.getMonth();
+  const editScheduleStateStartDate: Date = editScheduleState.date[0];
+  const editScheduleStateStartMonth: number = editScheduleStateStartDate.getMonth();
 
-  const editScheduleStateEndDate = editScheduleState.date[1];
-  const editScheduleStateEndYear = editScheduleStateEndDate.getFullYear();
-  const editScheduleStateEndMonth = editScheduleStateEndDate.getMonth();
+  const editScheduleStateEndDate: Date = editScheduleState.date[1];
+  const editScheduleStateEndYear: number = editScheduleStateEndDate.getFullYear();
+  const editScheduleStateEndMonth: number = editScheduleStateEndDate.getMonth();
 
   const miniFirstDayOfMonth: number = new Date(editScheduleStateEndYear, editScheduleStateEndMonth, 1).getDay();
   const miniPrevMonthDays: number = editScheduleStateEndMonth - 1 < 0 ? monthDays[11] : monthDays[editScheduleStateEndMonth - 1];
@@ -147,7 +149,9 @@ export default function Calendar() {
   const miniFillRemainingDays: number = miniMonthDaysWithPrevLastWeek % 7;
   const miniTotalDays: number = miniFillRemainingDays === 0 ? miniMonthDaysWithPrevLastWeek : miniMonthDaysWithPrevLastWeek + (7 - miniFillRemainingDays);
 
-  const isPopupStateEmpty = Object.values(editScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
+  const isPopupStateEmpty: boolean = Object.values(editScheduleState).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
+
+  const activeMultipleSchedules: string[] = [];
 
   useEffect(() => {
     getUsers();
@@ -186,14 +190,14 @@ export default function Calendar() {
 
   useEffect(() => {
     getSchedules();
-  }, [month]);
+  }, [year, month]);
 
   useEffect(() => {
     if (!isEditSchedule) {
       setEditScheduleState((prev) => ({
         ...editScheduleInitialState,
         user: user._id,
-        date: prev.date,
+        date: [prev.date[0], prev.date[0]],
       }));
 
       setNewCategory(newCategoryInitialState);
@@ -215,11 +219,16 @@ export default function Calendar() {
     };
   }, [isPopupVisible]);
 
+  const renderMultipleSchedules = (_year: number, _month: number, day: number): JSX.Element | null => {
+    activeMultipleSchedules.push()
+    return multipleSchedules.length > 0 ? <span></span> : null;
+  };
+
   const renderSchedules = (_year: number, _month: number, day: number): JSX.Element | null => {
     const schedules = findScheduleByDate(_year, _month, day);
 
     return schedules.length > 0 ? (
-      <>
+      <span className={CSS.scheduleCovers}>
         {schedules.map((schedule, idx) =>
           idx < 2 ? (
             <p key={idx} className={CSS.schedules}>
@@ -235,7 +244,7 @@ export default function Calendar() {
             idx < 3 && <p key={idx}>...</p>
           )
         )}
-      </>
+      </span>
     ) : null;
   };
 
@@ -436,6 +445,15 @@ export default function Calendar() {
     }));
   };
 
+  const findScheduleByDate = (_year: number, _month: number, day: number): IConvertedSchedules[] => {
+    return convertedSchedules.filter(
+      (schedule) =>
+        schedule.isSingleDate &&
+        ((schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === day) ||
+          (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === day))
+    );
+  };
+
   const toggleSiderbar = (): void => {
     setIsSiderbarOpen((prev) => !prev);
   };
@@ -446,17 +464,21 @@ export default function Calendar() {
       const endDate = new Date(schedule.date[1]);
 
       return {
-        startYear: currentYear,
+        ...schedule,
+        startYear: year,
         startMonth: startDate.getMonth(),
         startDay: startDate.getDate(),
-        endYear: currentYear,
+        endYear: year,
         endMonth: endDate.getMonth(),
         endDay: endDate.getDate(),
-        ...schedule,
       } as IConvertedSchedules;
     });
 
     setConvertedSchedules(tempSchedules);
+
+    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter((schedule) => schedule.isSingleDate === false);
+
+    setMultipleSchedules(tempMultipleSchedules);
   };
 
   const checkSelectedCategory = (): void => {
@@ -549,14 +571,6 @@ export default function Calendar() {
 
         break;
     }
-  };
-
-  const findScheduleByDate = (_year: number, _month: number, day: number): IConvertedSchedules[] => {
-    return convertedSchedules.filter(
-      (schedule) =>
-        (schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === day) ||
-        (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === day)
-    );
   };
 
   const closePopup = (): void => {
@@ -877,6 +891,8 @@ export default function Calendar() {
       .catch((err) => console.error("Delete Duplicate :", err));
   };
 
+  console.log(multipleSchedules);
+
   return (
     <>
       {isPopupVisible && <button type="button" onClick={closePopup} className={CSS.popupBackground}></button>}
@@ -996,7 +1012,9 @@ export default function Calendar() {
                         {day}
                       </span>
 
-                      <span className={CSS.scheduleCovers}>{renderSchedules(year, _month, day)}</span>
+                      {renderMultipleSchedules(year, _month, day)}
+
+                      {renderSchedules(year, _month, day)}
                     </button>
                   </li>
                 );

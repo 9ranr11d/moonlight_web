@@ -10,8 +10,13 @@ export async function POST(req: NextRequest) {
 
     const { date, user, title, categories, content, isRepeating }: IISchedule = await req.json();
 
+    let isSingleDate = true;
+
+    if (date[0] !== date[1]) isSingleDate = false;
+
     const newSchedule: IIISchedule = new Schedule({
       date,
+      isSingleDate,
       user,
       title,
       categories,

@@ -13,10 +13,13 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
     const _year = parseInt(year);
     const _month = parseInt(month);
 
+    const startDate = new Date(_year, _month - 1);
+    const endDate = new Date(_year, _month + 1);
+
     const query = {
       $or: [
         {
-          $and: [{ date: { $gte: new Date(_year, _month - 1) } }, { date: { $lt: new Date(_year, _month + 2) } }],
+          $and: [{ date: { $gte: startDate } }, { date: { $lte: endDate } }],
         },
         {
           isRepeating: true,
