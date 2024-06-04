@@ -7,7 +7,7 @@ import { AppDispatch } from "@redux/store";
 
 import CSS from "./UnderReview.module.css";
 
-import { processSignOut } from "@utils/Utils";
+import { processSignOut } from "@utils/utils";
 
 export default function UnderReview() {
   /** Dispatch */

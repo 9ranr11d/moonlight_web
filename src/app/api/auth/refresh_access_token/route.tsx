@@ -4,7 +4,7 @@ import dbConnect from "@lib/dbConnect";
 
 import User, { IIUser } from "@models/User";
 
-import { refreshVerify, sign } from "@utils/JwtUtils";
+import { refreshVerify, sign } from "@utils/jwtUtils";
 
 /** Refresh Token으로 Access Token 재발급 */
 export async function GET(req: NextRequest) {

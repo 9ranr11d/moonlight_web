@@ -4,7 +4,7 @@ import dbConnect from "@lib/dbConnect";
 
 import User, { IIUser } from "@models/User";
 
-import { verify } from "@utils/JwtUtils";
+import { verify } from "@utils/jwtUtils";
 
 interface VerificationResult {
   /** 유효한 Token인지 */

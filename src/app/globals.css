@@ -1,6 +1,10 @@
 :root {
-  --main-color: #d8aaff;
+  /* --main-color: #d8aaff;
   --sub-color: #bb86fc;
+  --background-color: #d8aaff33; */
+  --main-color: #aece82;
+  --sub-color: #769939;
+  --background-color: #e0ecaa;
   --click-color: #454c53;
   --placeholder-color: #72787f;
   --border-color: #d9d9d9;
@@ -31,8 +35,8 @@ body {
 body {
   font-size: 12px;
   font-weight: 400;
-  color: #1b1d1f;
-  background: #d8aaff33;
+  color: var(--font-color);
+  background: var(--background-color);
 }
 
 main,

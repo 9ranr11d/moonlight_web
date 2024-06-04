@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import { convertToMinutes } from "@utils/Utils";
+import { convertToMinutes } from "@utils/utils";
 
 import CSS from "./Recovery.module.css";
 
