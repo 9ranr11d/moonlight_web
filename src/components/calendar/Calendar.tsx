@@ -891,8 +891,6 @@ export default function Calendar() {
       .catch((err) => console.error("Delete Duplicate :", err));
   };
 
-  console.log(multipleSchedules);
-
   return (
     <>
       {isPopupVisible && <button type="button" onClick={closePopup} className={CSS.popupBackground}></button>}
