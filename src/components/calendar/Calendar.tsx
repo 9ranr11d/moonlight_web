@@ -220,7 +220,19 @@ export default function Calendar() {
   }, [isPopupVisible]);
 
   const renderMultipleSchedules = (_year: number, _month: number, day: number): JSX.Element | null => {
-    activeMultipleSchedules.push()
+    const matchingSchedule = multipleSchedules.find((schedule) => {
+      const { startYear, startMonth, startDay, endYear, endMonth, endDay } = schedule;
+
+      const date = new Date(_year, _month - 1, day);
+
+      const convertedStartDate = new Date(startYear, startMonth, startDay);
+      const convertedEndDate = new Date(endYear, endMonth, endDay);
+
+      return new Date(convertedStartDate) <= date && date <= new Date(convertedEndDate);
+    });
+
+    console.log(`${_year}-${_month}-${day}`, matchingSchedule);
+
     return multipleSchedules.length > 0 ? <span></span> : null;
   };
 
