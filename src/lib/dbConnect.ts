@@ -22,7 +22,10 @@ export default async function dbConnect() {
     cached.promise = mongoose
       .set({ debug: true, strictQuery: false })
       .connect(`${MONGODB_URI}`)
-      .then((mongoose) => mongoose);
+      .then((mongoose) => {
+        console.log("MongoDB 연결 성공");
+        return mongoose;
+      });
   }
 
   cached.conn = await cached.promise;
