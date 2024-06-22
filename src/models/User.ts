@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+/** 공개 사용자 정보 인터페이스 */
 export interface IUser {
   /** Identification */
   identification: string;
@@ -13,6 +14,7 @@ export interface IUser {
   regDate: Date | string;
 }
 
+/** 비공개 사용자 정보 인터페이스 */
 export interface IIUser extends IUser, Document {
   /** Password */
   password: string;

@@ -1,15 +1,22 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+/** 1차 일정 카테고리 인터페이스 */
 export interface IScheduleCategory {
+  /** 이름 */
   title: string;
+  /** 색상 */
   color: string;
+  /** 만든 이 */
   createdBy: Schema.Types.ObjectId | string;
 }
 
+/** 2차 일정 카테고리 인터페이스 */
 export interface IIScheduleCategory extends IScheduleCategory, Document {
+  /** 만든 날짜 */
   regDate: Date | string;
 }
 
+/** 일정 카테고리 모델 */
 const ScheduleCategorySchema: mongoose.Schema<IIScheduleCategory> = new Schema<IIScheduleCategory>({
   title: { type: String, required: true },
   color: { type: String, required: true },

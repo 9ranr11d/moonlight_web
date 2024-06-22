@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { IUser } from "@models/User";
 
-/** 초기값 형태  */
+/** 초기값 인터페이스  */
 interface IAuthState extends IUser {
   /** MongoDB Identification */
   _id: string;
@@ -24,28 +24,20 @@ const initialState: IAuthState = {
   regDate: "",
 };
 
-/** Redux Auth Slice */
+/** 사용자 인증 정보 */
 export const Auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
     /**
      * 로그인
-     * @param _ 현재 상태
+     * @param _ 기존 정보
      * @param action 받아온 값
-     * @returns initialState 변경
      */
     signIn: (_, action: PayloadAction<IAuthState>): IAuthState => {
       return {
         ...action.payload,
-        // _id: action.payload._id,
         isAuth: true,
-        // identification: action.payload.identification,
-        // nickname: action.payload.nickname,
-        // email: action.payload.email,
-        // accessLevel: action.payload.accessLevel,
-        // accessToken: action.payload.accessToken,
-        // regDate: action.payload.regDate,
       };
     },
     /** 로그아웃 */
@@ -54,9 +46,8 @@ export const Auth = createSlice({
     },
     /**
      * Refresh Token으로 재발행 된 Access Token 저장
-     * @param State 현재 상태
+     * @param State 기존 정보
      * @param action 받아온 값
-     * @returns initialState 변경
      */
     refreshAccessToken: (State: IAuthState, action: PayloadAction<{ accessToken: string }>): IAuthState => {
       return {

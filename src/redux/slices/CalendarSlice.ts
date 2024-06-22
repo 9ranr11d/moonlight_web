@@ -3,35 +3,42 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIISchedule } from "@models/Schedule";
 import { IIScheduleCategory } from "@models/ScheduleCategory";
 
-interface ICalendarSchedule extends IIISchedule {
-  _id: string;
-}
-
-interface ICalendarCategory extends IIScheduleCategory {
-  _id: string;
-}
-
+/** 초가값 인터페이스 */
 interface ScheduleCategoriesState {
-  schedules: ICalendarSchedule[];
-  categories: ICalendarCategory[];
+  /** 일정 */
+  schedules: IIISchedule[];
+  /** 일정 카테고리 */
+  categories: IIScheduleCategory[];
 }
 
+/** 초기값 */
 const initialState: ScheduleCategoriesState = {
   schedules: [],
   categories: [],
 };
 
+/** 캘린더 */
 export const Calendar = createSlice({
   name: "calendar",
   initialState,
   reducers: {
-    setSchedules: (state, action: PayloadAction<ICalendarSchedule[]>): ScheduleCategoriesState => {
+    /**
+     * 일정 갱신
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setSchedules: (state, action: PayloadAction<IIISchedule[]>): ScheduleCategoriesState => {
       return {
         ...state,
         schedules: action.payload,
       };
     },
-    setScheduleCategories: (state, action: PayloadAction<ICalendarCategory[]>): ScheduleCategoriesState => {
+    /**
+     * 일정 카테고리 갱신
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setScheduleCategories: (state, action: PayloadAction<IIScheduleCategory[]>): ScheduleCategoriesState => {
       return {
         ...state,
         categories: action.payload,
