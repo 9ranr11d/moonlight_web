@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import CSS from "./header.module.css";
 
-import { processSignOut } from "src/utils/utils";
+import { processSignOut } from "@utils/utils";
 
 export default function Header() {
   /** Dispatch */

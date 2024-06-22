@@ -17,7 +17,7 @@ export interface IIScheduleCategory extends IScheduleCategory, Document {
 }
 
 /** 일정 카테고리 모델 */
-const ScheduleCategorySchema: mongoose.Schema<IIScheduleCategory> = new Schema<IIScheduleCategory>({
+export const ScheduleCategorySchema: mongoose.Schema<IIScheduleCategory> = new Schema<IIScheduleCategory>({
   title: { type: String, required: true },
   color: { type: String, required: true },
   createdBy: {

@@ -23,7 +23,7 @@ export interface IIUser extends IUser, Document {
 }
 
 /** 사용자 모델 */
-const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
+export const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
   identification: {
     type: String,
     required: true,

@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
+import mongoose from "mongoose";
+
 import Schedule, { IIISchedule } from "@models/Schedule";
+import User, { IIUser, UserSchema } from "@models/User";
+import ScheduleCategory, { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCategory";
 
 /**
  * 해당 달 +-1달 일정 정보 가져오기
@@ -38,6 +42,10 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
         },
       ],
     };
+
+    // 사용자, 일정 카테고리 모델 미리 등록
+    mongoose.models.User || mongoose.model<IIUser>("User", UserSchema);
+    mongoose.models.ScheduleCategory || mongoose.model<IIScheduleCategory>("ScheduleCategory", ScheduleCategorySchema);
 
     /** 일정들 */
     const schedules: IIISchedule[] | null = await Schedule.find(query).populate("user").populate("categories");
