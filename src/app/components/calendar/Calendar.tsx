@@ -14,7 +14,7 @@ import { IIUser } from "@models/User";
 import { ISchedule, IISchedule, IIISchedule } from "@models/Schedule";
 import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
-import { convertDateII } from "@utils/utils";
+import { convertDateII } from "src/utils/utils";
 
 import IconPrevWhite from "@public/img/common/icon_less_than_white.svg";
 import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";

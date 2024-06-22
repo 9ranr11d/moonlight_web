@@ -25,7 +25,7 @@
       "@components/*": ["src/app/components/*"],
       "@public/*": ["public/*"],
       "@redux/*": ["src/redux/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
