@@ -13,7 +13,7 @@
 
 .signInBox > ul > li:first-child > button {
   border-radius: 5px 0 0 5px;
-  border-right: 1px solid var(--white);
+  border-right: 1px solid white;
 }
 
 .signInBox > ul > li:last-child > button {

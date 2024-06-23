@@ -58,7 +58,7 @@
   width: 120px;
   border-radius: 0;
   color: var(--font-color);
-  background: var(--white);
+  background: white;
   border: 1px solid var(--border-color);
   text-align: left;
 }
@@ -75,8 +75,8 @@
 }
 
 .emailLine > ul > li > ul > li > button:hover {
-  background: var(--main-color);
-  color: var(--white);
+  background: var(--primary-color);
+  color: white;
 }
 
 .okBtnBox {

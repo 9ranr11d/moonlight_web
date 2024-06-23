@@ -27,7 +27,7 @@
 }
 
 .tapBox > button:disabled {
-  background: var(--main-color);
+  background: var(--primary-color);
 }
 
 .tapBox > button:first-child {

@@ -1,18 +1,15 @@
 :root {
-  /* --main-color: #d8aaff;
-  --sub-color: #bb86fc;
-  --background-color: #d8aaff33; */
-  --main-color: #aece82;
-  --sub-color: #769939;
-  --background-color: #e0ecaa;
-  --click-color: #454c53;
-  --placeholder-color: #72787f;
-  --border-color: #d9d9d9;
+  --primary-color: #d8aaff;
+  --secondary-color: #bb86fc;
+  --background-color: #d8aaff33;
+  --popup-background-color: #00000099;
   --font-color: #111;
+  --placeholder-color: #72787f;
+  --click-color: #454c53;
+  --border-color: #d9d9d9;
   --disabled-color-i: #9ea4aa;
   --disabled-color-ii: #ddd;
-  --popup-background-color: #00000099;
-  --white: #fff;
+
   --bright-blue: #00bfff;
   --bright-red: #ff69b4;
   --bright-green: #7fff00;
@@ -127,7 +124,7 @@ textarea::placeholder {
 }
 
 textarea:focus {
-  outline: 1px solid var(--sub-color);
+  outline: 1px solid var(--secondary-color);
 }
 
 input[type="text"],
@@ -144,7 +141,7 @@ input[type="password"]::placeholder {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-  outline: 1px solid var(--sub-color);
+  outline: 1px solid var(--secondary-color);
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
@@ -163,29 +160,29 @@ textarea::-webkit-scrollbar {
 
 ul::-webkit-scrollbar-thumb,
 textarea::-webkit-scrollbar-thumb {
-  background: var(--sub-color);
+  background: var(--secondary-color);
   border-radius: 4px;
 }
 
 ul::-webkit-scrollbar-track,
 textarea::-webkit-scrollbar-track {
   width: 10px;
-  background: var(--white);
+  background: white;
   border: 1px solid var(--border-color);
   border-radius: 5px;
 }
 
 button {
   border: none;
-  background: var(--main-color);
+  background: var(--primary-color);
   padding: 10px 20px;
   border-radius: 5px;
-  color: var(--white);
+  color: white;
   cursor: pointer;
 }
 
 button:active {
-  background: var(--sub-color);
+  background: var(--secondary-color);
 }
 
 button:disabled {

@@ -59,7 +59,7 @@
 .menuBox > ul > li:last-child .option {
   position: absolute;
   right: 0;
-  background: var(--white);
+  background: white;
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);

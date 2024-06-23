@@ -22,15 +22,19 @@ import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
 import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
-import IconClose from "@public/img/common/icon_close_main.svg";
-import IconCheck from "@public/img/common/icon_check_main.svg";
-import IconEditMain from "@public/img/common/icon_edit_main.svg";
-import IconEditWhite from "@public/img/common/icon_edit_white.svg";
-import IconDeleteMain from "@public/img/common/icon_delete_main.svg";
-import IconDeleteWhite from "@public/img/common/icon_delete_white.svg";
-import IconExpand from "@public/img/common/icon_expand_main.svg";
-import IconCollapse from "@public/img/common/icon_collapse_main.svg";
-import IconPlus from "@public/img/common/icon_plus_main.svg";
+import IconClose from "@public/img/common/icon_close_primary.svg";
+import IconCheck from "@public/img/common/icon_check_primary.svg";
+import IconEditWritingPrimary from "@public/img/common/icon_edit_writing_primary.svg";
+import IconEditReadingPrimary from "@public/img/common/icon_edit_reading_primary.svg";
+import IconEditWritingWhite from "@public/img/common/icon_edit_writing_white.svg";
+import IconEditReadingWhite from "@public/img/common/icon_edit_reading_white.svg";
+import IconDeleteOpenPrimary from "@public/img/common/icon_delete_open_primary.svg";
+import IconDeleteClosePrimary from "@public/img/common/icon_delete_close_primary.svg";
+import IconDeleteOpenWhite from "@public/img/common/icon_delete_open_white.svg";
+import IconDeleteCloseWhite from "@public/img/common/icon_delete_close_white.svg";
+import IconExpand from "@public/img/common/icon_expand_primary.svg";
+import IconCollapse from "@public/img/common/icon_collapse_primary.svg";
+import IconPlus from "@public/img/common/icon_plus_primary.svg";
 
 import MiniCalendar from "./MiniCalendar";
 
@@ -143,6 +147,10 @@ export default function Calendar() {
   const [isStartMiniCalendarOpen, setIsStartMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 시작 날짜 선택 캘린더 가시 유무
   const [isEndMiniCalendarOpen, setIsEndMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 종료 날짜 선택 캘린더 가시 유무
   const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false); // 일정 생성 상태인지
+  const [isEditSchduleHover, setIsEditScheduleHover] = useState<boolean>(false); // 일정 수정 버튼 Hover 여부
+  const [isEditCategoryHovers, setIsEditCategoryHovers] = useState<boolean[]>([]); // 카테고리 수정 버튼 Hover 여부
+  const [isDeleteScheduleHover, setIsDeleteScheduleHover] = useState<boolean>(false); // 일정 삭제 버튼 Hover 여부
+  const [isDeleteCategoryHovers, setIsDeleteCategoryHovers] = useState<boolean[]>([]); // 카테고리 삭제 버튼 위에 Hover 여부
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]); // 수정할 일정 정보
   const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]); // 현재 사용자의 카테고리들
@@ -183,6 +191,24 @@ export default function Calendar() {
 
   /** 일정 수정 시, 빈 값이 있는지 */
   const isPopupStateEmpty: boolean = Object.values(editSchedule).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
+
+  /** 수정 상태인 카테고리 수정 아이콘 */
+  const renderSelectedEditCategoryIcon = (idx: number): any => {
+    return isEditCategoryHovers[idx] ? IconEditWritingWhite : IconEditReadingWhite;
+  };
+  /** 수정 상태가 아닌 카테고리 수정 아이콘 */
+  const renderUnSelectedEditCategoryIcon = (idx: number): any => {
+    return isEditCategoryHovers[idx] ? IconEditWritingPrimary : IconEditReadingPrimary;
+  };
+
+  /** 수정 상태인 카테고리 삭제 아이콘 */
+  const renderSelectedDeleteCategoryIcon = (idx: number): any => {
+    return isDeleteCategoryHovers[idx] ? IconDeleteOpenWhite : IconDeleteCloseWhite;
+  };
+  /** 수정 상태가 아닌 카테고리 삭제 아이콘 */
+  const renderUnSelectedDeleteCategoryIcon = (idx: number): any => {
+    return isDeleteCategoryHovers[idx] ? IconDeleteOpenPrimary : IconDeleteClosePrimary;
+  };
 
   // 시작 시
   useEffect(() => {
@@ -376,12 +402,22 @@ export default function Calendar() {
           <span>{category.title}</span>
         </button>
 
-        <button type="button" onClick={() => (isSelected ? alert("수정하려면 선택을 해제해주세요.") : toggleEditCategory(category))}>
-          <Image src={isSelected ? IconEditWhite : IconEditMain} height={12} alt="Edit" />
+        <button
+          type="button"
+          onClick={() => (isSelected ? alert("수정하려면 선택을 해제해주세요.") : toggleEditCategory(category))}
+          onMouseOver={() => hoverEditCategory(true, idx)}
+          onMouseOut={() => hoverEditCategory(false, idx)}
+        >
+          <Image src={isSelected ? renderSelectedEditCategoryIcon(idx) : renderUnSelectedEditCategoryIcon(idx)} width={16} alt="Edit" />
         </button>
 
-        <button type="button" onClick={() => deleteCategory(category._id)}>
-          <Image src={isSelected ? IconDeleteWhite : IconDeleteMain} height={12} alt="Delete" />
+        <button
+          type="button"
+          onClick={() => deleteCategory(category._id)}
+          onMouseOver={() => hoverDeleteCategory(true, idx)}
+          onMouseOut={() => hoverDeleteCategory(false, idx)}
+        >
+          <Image src={isSelected ? renderSelectedDeleteCategoryIcon(idx) : renderUnSelectedDeleteCategoryIcon(idx)} width={16} alt="Delete" />
         </button>
       </li>
     );
@@ -449,11 +485,11 @@ export default function Calendar() {
                         <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", category._id)} />
 
                         <button type="button" onClick={() => updateCategory(category)}>
-                          <Image src={IconCheck} height={12} alt="√" />
+                          <Image src={IconCheck} width={16} alt="√" />
                         </button>
 
                         <button type="button" onClick={() => toggleEditCategory(category)}>
-                          <Image src={IconClose} height={12} alt="X" />
+                          <Image src={IconClose} width={16} alt="X" />
                         </button>
                       </li>
                     ) : (
@@ -468,7 +504,7 @@ export default function Calendar() {
                     <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
 
                     <button type="button" onClick={createCategory}>
-                      <Image src={IconPlus} width={12} height={12} alt="+" />
+                      <Image src={IconPlus} width={12} alt="+" />
                     </button>
                   </li>
                 )}
@@ -575,208 +611,9 @@ export default function Calendar() {
     }));
   };
 
-  /**
-   * 일정 중 해당 날짜가 포함된 시작 날짜와 종료 날짜가 다른 일정들 찾기
-   * @param _year 연도
-   * @param _month 달
-   * @param _day 일
-   * @returns 찾은 일정 목록
-   */
-  const findMultipleScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
-    return multipleSchedules.filter((schedule) => {
-      /** 찾으려는 날짜 */
-      const date: Date = new Date(_year, _month, _day);
-
-      /** 일정들의 시작 날짜와 종료 날짜들 */
-      const {
-        startYear,
-        startMonth,
-        startDay,
-        endYear,
-        endMonth,
-        endDay,
-      }: { startYear: number; startMonth: number; startDay: number; endYear: number; endMonth: number; endDay: number } = schedule;
-
-      /** 시작 날짜 */
-      const convertedStartDate: Date = new Date(startYear, startMonth, startDay);
-      /** 종료 날짜 */
-      const convertedEndDate: Date = new Date(endYear, endMonth, endDay);
-
-      return convertedStartDate <= date && date <= convertedEndDate;
-    });
-  };
-
-  /**
-   * 일정 중 해당 날짜의 시작 날짜와 종료 날짜가 같은 일정
-   * @param _year 연도
-   * @param _month 달
-   * @param _day 일
-   * @returns 찾은 일정 목록
-   */
-  const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
-    return convertedSchedules.filter(
-      (schedule) =>
-        schedule.isSingleDate &&
-        ((schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === _day) ||
-          (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === _day))
-    );
-  };
-
   /** 사이드 메뉴 가시 상태 설정 */
   const toggleSiderbar = (): void => {
     setIsSiderbarOpen((prev) => !prev);
-  };
-
-  /** 일정 표시를 위한 일정들 정보 변환 */
-  const convertSchedules = (): void => {
-    /** 일정 표시를 위한 형식으로 변환하기 위한 임시 저장 */
-    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
-      /** 시작 날짜 */
-      const startDate = new Date(schedule.date[0]);
-      /** 종료 날짜 */
-      const endDate = new Date(schedule.date[1]);
-
-      return {
-        ...schedule,
-        startYear: year,
-        startMonth: startDate.getMonth(),
-        startDay: startDate.getDate(),
-        endYear: year,
-        endMonth: endDate.getMonth(),
-        endDay: endDate.getDate(),
-      } as IConvertedSchedules;
-    });
-
-    setConvertedSchedules(tempSchedules);
-
-    /** 시작 날짜와 종료 날짜가 다른 일정 목록 */
-    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter((schedule) => schedule.isSingleDate === false);
-
-    setMultipleSchedules(tempMultipleSchedules);
-  };
-
-  /** 현재 선택된 카테고리에서 변경 사항 적용 */
-  const checkSelectedCategory = (): void => {
-    /** 카테고리들의 _id로 중복 제거 */
-    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => category._id));
-    /** 선택된 카테고리들 */
-    const selectedCategory: IIScheduleCategory[] = editSchedule.categories;
-    /** 선택된 카테고리에서 변경 사항 적용 */
-    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category._id));
-
-    setEditSchedule((prev) => ({
-      ...prev,
-      categories: filteredSelectedCategory,
-    }));
-  };
-
-  /**
-   * 연도 변경
-   * @param direction 변경 방향
-   */
-  const changeYear = (direction: "prev" | "next"): void => {
-    switch (direction) {
-      // 이전 년도로 이동
-      case "prev":
-        setYear((prev) => prev - 1);
-
-        break;
-      // 다음 년도로 이동
-      case "next":
-        setYear((prev) => prev + 1);
-
-        break;
-    }
-  };
-
-  /**
-   * 달 변경
-   * @param direction 변경 방향
-   */
-  const changeMonth = (direction: "prev" | "next"): void => {
-    switch (direction) {
-      // 이전 달로 이동
-      case "prev":
-        if (month > 0) setMonth((prev) => prev - 1);
-        // 1월이면 이전 연도 12월로 이동
-        else {
-          setYear((prev) => prev - 1);
-          setMonth(11);
-        }
-
-        break;
-      // 다음 달로 이동
-      case "next":
-        if (month < 11) setMonth((prev) => prev + 1);
-        // 12월이면 다음 연도 1월로 이동
-        else {
-          setYear((prev) => prev + 1);
-          setMonth(0);
-        }
-
-        break;
-    }
-  };
-
-  /**
-   * 연도 선택
-   * @param _year 선택한 연도
-   * @param idx 선택한 연도 순번
-   */
-  const selectYear = (_year: number, idx: number): void => {
-    setYear(_year);
-
-    moveSelectedYear(_year, idx);
-  };
-
-  /**
-   * 선택한 년도로 사이드 메뉴 스크롤 이동
-   * @param _year 선택한 연도
-   * @param idx 선택한 연도 순번
-   */
-  const moveSelectedYear = (_year: number, idx: number): void => {
-    // 사이드 메뉴 Ref가 존재하는 지
-    if (siderbarRef.current && yearRefs.current[idx]) {
-      /** 사이드 메뉴 높이 */
-      const siderbarHeight: number = siderbarRef.current.clientHeight;
-      /** 선택된 연도의 요소 높이 */
-      const selectedYearHeight: number = yearRefs.current[idx].clientHeight;
-      /** 선택된 연도의 y좌표 */
-      const selectedYearOffsetTop: number = yearRefs.current[idx].offsetTop;
-
-      /** 스크롤 위치 */
-      const scrollTop: number = selectedYearOffsetTop - siderbarHeight / 2 + selectedYearHeight / 2;
-      siderbarRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
-    }
-  };
-
-  /**
-   * 달 선택
-   * @param idx 선택한 달 순번
-   */
-  const selectMonth = (idx: number): void => {
-    setMonth(idx);
-  };
-
-  /**
-   * 날짜 선택
-   * @param _year 선택 연도
-   * @param _month 선택 달
-   * @param _day 선택 일
-   */
-  const selectDay = (_year: number, _month: number, _day: number): void => {
-    const selectedDay: Date = new Date(_year, _month, _day);
-
-    setLastSelectedDay(selectedDay);
-
-    // 일정 팝업 수정 상태 날짜 수정
-    setEditSchedule((prev) => ({
-      ...prev,
-      date: [selectedDay, selectedDay],
-    }));
-
-    setIsEditSchedule(false);
-    setIsPopupVisible(true);
   };
 
   /**
@@ -798,105 +635,15 @@ export default function Calendar() {
     }
   };
 
-  /** 일정 팝업 닫기 */
-  const closePopup = (): void => {
-    setIsPopupVisible(false);
-  };
-
-  /**
-   * 일정 선택
-   * @param schedule 선택한 일정
-   */
-  const selectedSchedule = (schedule: IConvertedSchedules): void => {
-    setSelectedScheduleId(schedule._id);
-
-    /** 일정 시작 날짜 */
-    const startDate = new Date(schedule.startYear, schedule.startMonth, schedule.startDay);
-    /** 일정 종료 날짜 */
-    const endDate = new Date(schedule.endYear, schedule.endMonth, schedule.endDay);
-
-    // 일정 팝업 수정 상태 날짜 수정
-    setEditSchedule({
-      ...schedule,
-      user: (schedule.user as IIUser)._id,
-      date: [startDate, endDate],
-    });
-
-    // 카테고리 생성 상태 초기화
-    setNewCategory((prev) => ({
-      ...prev,
-      createdBy: (schedule.user as IIUser)._id,
-    }));
-
-    setIsCreateSchedule(false);
-    setIsEditSchedule(true);
-  };
-
   /** 일정 팝업 수정 상태, 사용자 목록 드롭다운 메뉴 가시 Toggle */
   const toggleUserList = (): void => {
     setIsUserListOpen((prev) => !prev);
-  };
-
-  /**
-   * 일정 팝업 수정 상태에서 사용자 선택
-   * @param _user 선택한 사용자
-   */
-  const selectUser = (_user: IIUser): void => {
-    // 일정 팝업이 생성 상태일 시
-    if (isCreateSchedule)
-      setEditSchedule((prev) => ({
-        ...editScheduleInitialState,
-        date: prev.date,
-        user: _user._id,
-      }));
-    // 일정 팝업이 수정 상태일 시
-    else
-      setEditSchedule((prev) => ({
-        ...prev,
-        user: _user._id,
-        categories: [],
-      }));
-
-    // 카테고리 생성 Input 초기화
-    setNewCategory({
-      ...newCategoryInitialState,
-      createdBy: _user._id,
-    });
-
-    setIsUserListOpen(false);
-    setIsCategoryListOpen(false);
-    setEditCategories([]);
   };
 
   /** 카테고리 선택 드롭다운 메뉴 Toggle */
   const toggleCategory = (): void => {
     setIsCreateCategory(false);
     setIsCategoryListOpen((prev) => !prev);
-  };
-
-  /**
-   * 카테고리 선택
-   * @param category 카테고리
-   */
-  const selectCategory = (category: IIScheduleCategory): void => {
-    /** 카테고리 수정을 위한 기존 카테고리들 임시 저장 */
-    const tempCategories: IIScheduleCategory[] = editSchedule.categories;
-
-    /** 선택된 카테고리 순번 */
-    const selectedIdx: number = tempCategories.findIndex((_category) => _category.title === category.title);
-
-    /** 새로운 카테고리들 */
-    let newCategories: IIScheduleCategory[] = [];
-
-    // 선택된 카테고리면 선택 해제
-    if (selectedIdx !== -1) newCategories = tempCategories.filter((_, idx) => idx !== selectedIdx);
-    // 선택 안된 카테고리면 선택
-    else newCategories = [...tempCategories, category];
-
-    setEditSchedule((prev) => ({
-      ...prev,
-      categories: newCategories,
-    }));
   };
 
   /**
@@ -964,6 +711,54 @@ export default function Calendar() {
   };
 
   /**
+   * 연도 변경
+   * @param direction 변경 방향
+   */
+  const changeYear = (direction: "prev" | "next"): void => {
+    switch (direction) {
+      // 이전 년도로 이동
+      case "prev":
+        setYear((prev) => prev - 1);
+
+        break;
+      // 다음 년도로 이동
+      case "next":
+        setYear((prev) => prev + 1);
+
+        break;
+    }
+  };
+
+  /**
+   * 달 변경
+   * @param direction 변경 방향
+   */
+  const changeMonth = (direction: "prev" | "next"): void => {
+    switch (direction) {
+      // 이전 달로 이동
+      case "prev":
+        if (month > 0) setMonth((prev) => prev - 1);
+        // 1월이면 이전 연도 12월로 이동
+        else {
+          setYear((prev) => prev - 1);
+          setMonth(11);
+        }
+
+        break;
+      // 다음 달로 이동
+      case "next":
+        if (month < 11) setMonth((prev) => prev + 1);
+        // 12월이면 다음 연도 1월로 이동
+        else {
+          setYear((prev) => prev + 1);
+          setMonth(0);
+        }
+
+        break;
+    }
+  };
+
+  /**
    * 미니 캘린더 달 변경
    * @param isStart '일정 시작 날짜 선택 캘런더'로 사용되고 있는지
    * @param direction 달 변경 방향
@@ -1020,11 +815,292 @@ export default function Calendar() {
   };
 
   /**
+   * 일정 수정 버튼 Hover 여부 관리
+   * @param isHover Hover 여부
+   */
+  const hoverEditSchedule = (isHover: boolean): void => {
+    setIsEditScheduleHover(isHover);
+  };
+
+  /**
+   * 카테고리 수정 버튼 Hover 여부 관리
+   * @param isHover Hover 여부
+   */
+  const hoverEditCategory = (isHover: boolean, idx: number): void => {
+    /** 이전 '카테고리 수정 버튼' Hover 목록 */
+    const prevIsEditCategoryHovers = [...isEditCategoryHovers];
+    prevIsEditCategoryHovers[idx] = isHover;
+
+    setIsEditCategoryHovers(prevIsEditCategoryHovers);
+  };
+
+  /**
+   * 일정 삭제 버튼 Hover 여부 관리
+   * @param isHover Hover 여부
+   */
+  const hoverDeleteSchedule = (isHover: boolean): void => {
+    setIsDeleteScheduleHover(isHover);
+  };
+
+  /**
+   * 카테고리 삭제 버튼 Hover 여부 관리
+   * @param isHover Hover 여부
+   */
+  const hoverDeleteCategory = (isHover: boolean, idx: number): void => {
+    /** 이전 '카테고리 삭제 버튼' Hover 목록 */
+    const prevIsDeleteCategoryHovers = [...isDeleteCategoryHovers];
+    prevIsDeleteCategoryHovers[idx] = isHover;
+
+    setIsDeleteCategoryHovers(prevIsDeleteCategoryHovers);
+  };
+
+  /**
+   * 일정 중 해당 날짜가 포함된 시작 날짜와 종료 날짜가 다른 일정들 찾기
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 찾은 일정 목록
+   */
+  const findMultipleScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
+    return multipleSchedules.filter((schedule) => {
+      /** 찾으려는 날짜 */
+      const date: Date = new Date(_year, _month, _day);
+
+      /** 일정들의 시작 날짜와 종료 날짜들 */
+      const {
+        startYear,
+        startMonth,
+        startDay,
+        endYear,
+        endMonth,
+        endDay,
+      }: { startYear: number; startMonth: number; startDay: number; endYear: number; endMonth: number; endDay: number } = schedule;
+
+      /** 시작 날짜 */
+      const convertedStartDate: Date = new Date(startYear, startMonth, startDay);
+      /** 종료 날짜 */
+      const convertedEndDate: Date = new Date(endYear, endMonth, endDay);
+
+      return convertedStartDate <= date && date <= convertedEndDate;
+    });
+  };
+
+  /**
+   * 일정 중 해당 날짜의 시작 날짜와 종료 날짜가 같은 일정
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 찾은 일정 목록
+   */
+  const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
+    return convertedSchedules.filter(
+      (schedule) =>
+        schedule.isSingleDate &&
+        ((schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === _day) ||
+          (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === _day))
+    );
+  };
+
+  /** 일정 표시를 위한 일정들 정보 변환 */
+  const convertSchedules = (): void => {
+    /** 일정 표시를 위한 형식으로 변환하기 위한 임시 저장 */
+    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
+      /** 시작 날짜 */
+      const startDate = new Date(schedule.date[0]);
+      /** 종료 날짜 */
+      const endDate = new Date(schedule.date[1]);
+
+      return {
+        ...schedule,
+        startYear: year,
+        startMonth: startDate.getMonth(),
+        startDay: startDate.getDate(),
+        endYear: year,
+        endMonth: endDate.getMonth(),
+        endDay: endDate.getDate(),
+      } as IConvertedSchedules;
+    });
+
+    setConvertedSchedules(tempSchedules);
+
+    /** 시작 날짜와 종료 날짜가 다른 일정 목록 */
+    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter((schedule) => schedule.isSingleDate === false);
+
+    setMultipleSchedules(tempMultipleSchedules);
+  };
+
+  /** 현재 선택된 카테고리에서 변경 사항 적용 */
+  const checkSelectedCategory = (): void => {
+    /** 카테고리들의 _id로 중복 제거 */
+    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => category._id));
+    /** 선택된 카테고리들 */
+    const selectedCategory: IIScheduleCategory[] = editSchedule.categories;
+    /** 선택된 카테고리에서 변경 사항 적용 */
+    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category._id));
+
+    setEditSchedule((prev) => ({
+      ...prev,
+      categories: filteredSelectedCategory,
+    }));
+  };
+
+  /**
+   * 연도 선택
+   * @param _year 선택한 연도
+   * @param idx 선택한 연도 순번
+   */
+  const selectYear = (_year: number, idx: number): void => {
+    setYear(_year);
+
+    moveSelectedYear(_year, idx);
+  };
+
+  /**
+   * 선택한 년도로 사이드 메뉴 스크롤 이동
+   * @param _year 선택한 연도
+   * @param idx 선택한 연도 순번
+   */
+  const moveSelectedYear = (_year: number, idx: number): void => {
+    // 사이드 메뉴 Ref가 존재하는 지
+    if (siderbarRef.current && yearRefs.current[idx]) {
+      /** 사이드 메뉴 높이 */
+      const siderbarHeight: number = siderbarRef.current.clientHeight;
+      /** 선택된 연도의 요소 높이 */
+      const selectedYearHeight: number = yearRefs.current[idx].clientHeight;
+      /** 선택된 연도의 y좌표 */
+      const selectedYearOffsetTop: number = yearRefs.current[idx].offsetTop;
+
+      /** 스크롤 위치 */
+      const scrollTop: number = selectedYearOffsetTop - siderbarHeight / 2 + selectedYearHeight / 2;
+      siderbarRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
+    }
+  };
+
+  /**
+   * 달 선택
+   * @param idx 선택한 달 순번
+   */
+  const selectMonth = (idx: number): void => {
+    setMonth(idx);
+  };
+
+  /**
+   * 날짜 선택
+   * @param _year 선택 연도
+   * @param _month 선택 달
+   * @param _day 선택 일
+   */
+  const selectDay = (_year: number, _month: number, _day: number): void => {
+    const selectedDay: Date = new Date(_year, _month, _day);
+
+    setLastSelectedDay(selectedDay);
+
+    // 일정 팝업 수정 상태 날짜 수정
+    setEditSchedule((prev) => ({
+      ...prev,
+      date: [selectedDay, selectedDay],
+    }));
+
+    setIsEditSchedule(false);
+    setIsPopupVisible(true);
+  };
+
+  /** 일정 팝업 닫기 */
+  const closePopup = (): void => {
+    setIsPopupVisible(false);
+  };
+
+  /**
+   * 일정 선택
+   * @param schedule 선택한 일정
+   */
+  const selectedSchedule = (schedule: IConvertedSchedules): void => {
+    setSelectedScheduleId(schedule._id);
+
+    /** 일정 시작 날짜 */
+    const startDate = new Date(schedule.startYear, schedule.startMonth, schedule.startDay);
+    /** 일정 종료 날짜 */
+    const endDate = new Date(schedule.endYear, schedule.endMonth, schedule.endDay);
+
+    // 일정 팝업 수정 상태 날짜 수정
+    setEditSchedule({
+      ...schedule,
+      user: (schedule.user as IIUser)._id,
+      date: [startDate, endDate],
+    });
+
+    // 카테고리 생성 상태 초기화
+    setNewCategory((prev) => ({
+      ...prev,
+      createdBy: (schedule.user as IIUser)._id,
+    }));
+
+    setIsCreateSchedule(false);
+    setIsEditSchedule(true);
+  };
+
+  /**
+   * 일정 팝업 수정 상태에서 사용자 선택
+   * @param _user 선택한 사용자
+   */
+  const selectUser = (_user: IIUser): void => {
+    // 일정 팝업이 생성 상태일 시
+    if (isCreateSchedule)
+      setEditSchedule((prev) => ({
+        ...editScheduleInitialState,
+        date: prev.date,
+        user: _user._id,
+      }));
+    // 일정 팝업이 수정 상태일 시
+    else
+      setEditSchedule((prev) => ({
+        ...prev,
+        user: _user._id,
+        categories: [],
+      }));
+
+    // 카테고리 생성 Input 초기화
+    setNewCategory({
+      ...newCategoryInitialState,
+      createdBy: _user._id,
+    });
+
+    setIsUserListOpen(false);
+    setIsCategoryListOpen(false);
+    setEditCategories([]);
+  };
+
+  /**
+   * 카테고리 선택
+   * @param category 카테고리
+   */
+  const selectCategory = (category: IIScheduleCategory): void => {
+    /** 카테고리 수정을 위한 기존 카테고리들 임시 저장 */
+    const tempCategories: IIScheduleCategory[] = editSchedule.categories;
+
+    /** 선택된 카테고리 순번 */
+    const selectedIdx: number = tempCategories.findIndex((_category) => _category.title === category.title);
+
+    /** 새로운 카테고리들 */
+    let newCategories: IIScheduleCategory[] = [];
+
+    // 선택된 카테고리면 선택 해제
+    if (selectedIdx !== -1) newCategories = tempCategories.filter((_, idx) => idx !== selectedIdx);
+    // 선택 안된 카테고리면 선택
+    else newCategories = [...tempCategories, category];
+
+    setEditSchedule((prev) => ({
+      ...prev,
+      categories: newCategories,
+    }));
+  };
+
+  /**
    * 미니 캘린더에서 날짜 선택 시
    * @param isStart '일정 시작 날짜 선택 캘런더'로 사용되고 있는지
    * @param date 선택된 날짜
    */
-  const selectMiniDay = (isStart: boolean, date: Date) => {
+  const selectMiniDay = (isStart: boolean, date: Date): void => {
     // '일정 시작 날짜 선택 캘린더'일 시
     if (isStart)
       setEditSchedule((prev) => ({
@@ -1038,6 +1114,7 @@ export default function Calendar() {
         date: [prev.date[0], date],
       }));
 
+    setIsStartMiniCalendarOpen(false);
     setIsEndMiniCalendarOpen(false);
   };
 
@@ -1223,14 +1300,14 @@ export default function Calendar() {
       <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
         <div className={CSS.subBox} style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}>
           <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>
-            <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} height={30} alt={isSiderbarOpen ? ">" : "<"} />
+            <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} width={30} alt={isSiderbarOpen ? ">" : "<"} />
           </button>
 
           <div className={CSS.content} style={{ width: siderbarWidth }}>
             <ul className={CSS.header}>
               <li>
                 <button type="button" onClick={() => (isYear ? changeYear("prev") : changeMonth("prev"))}>
-                  <Image src={IconPrevWhite} width={24} height={24} alt="Prev" />
+                  <Image src={IconPrevWhite} width={24} alt="Prev" />
                 </button>
               </li>
 
@@ -1252,7 +1329,7 @@ export default function Calendar() {
 
               <li>
                 <button type="button" onClick={() => (isYear ? changeYear("next") : changeMonth("next"))}>
-                  <Image src={IconNextWhite} width={24} height={24} alt="Next" />
+                  <Image src={IconNextWhite} width={24} alt="Next" />
                 </button>
               </li>
             </ul>
@@ -1281,7 +1358,7 @@ export default function Calendar() {
           <ul className={CSS.header}>
             <li>
               <button type="button" onClick={() => changeMonth("prev")}>
-                <Image src={IconPrevBlack} width={24} height={24} alt="Prev" />
+                <Image src={IconPrevBlack} width={24} alt="Prev" />
               </button>
             </li>
 
@@ -1291,7 +1368,7 @@ export default function Calendar() {
 
             <li>
               <button type="button" onClick={() => changeMonth("next")}>
-                <Image src={IconNextBlack} width={24} height={24} alt="Next" />
+                <Image src={IconNextBlack} width={24} alt="Next" />
               </button>
             </li>
           </ul>
@@ -1426,7 +1503,7 @@ export default function Calendar() {
 
                 <div style={{ height: "100%" }}>
                   <button type="button" onClick={closePopup}>
-                    <Image src={IconClose} width={12} height={12} alt="X" />
+                    <Image src={IconClose} width={12} alt="X" />
                   </button>
                 </div>
               </div>
@@ -1454,13 +1531,28 @@ export default function Calendar() {
                     </ul>
 
                     <div className={CSS.btnBox} style={{ justifyContent: isCreateSchedule ? "center" : "space-between" }}>
-                      <button type="button" onClick={isCreateSchedule ? createSchedule : updateSchedule} disabled={isPopupStateEmpty}>
-                        <Image src={isCreateSchedule ? IconPlus : IconEditMain} height={24} alt={isCreateSchedule ? "+" : "Update"} />
+                      <button
+                        type="button"
+                        onClick={isCreateSchedule ? createSchedule : updateSchedule}
+                        disabled={isPopupStateEmpty}
+                        onMouseOver={() => hoverEditSchedule(true)}
+                        onMouseOut={() => hoverEditSchedule(false)}
+                      >
+                        <Image
+                          src={isCreateSchedule ? IconPlus : isEditSchduleHover ? IconEditWritingPrimary : IconEditReadingPrimary}
+                          width={24}
+                          alt={isCreateSchedule ? "+" : "Update"}
+                        />
                       </button>
 
                       {!isCreateSchedule && (
-                        <button type="button" onClick={deleteSchedule}>
-                          <Image src={IconDeleteMain} height={24} alt="Delete" />
+                        <button
+                          type="button"
+                          onClick={deleteSchedule}
+                          onMouseOver={() => hoverDeleteSchedule(true)}
+                          onMouseOut={() => hoverDeleteSchedule(false)}
+                        >
+                          <Image src={isDeleteScheduleHover ? IconDeleteOpenPrimary : IconDeleteClosePrimary} width={24} alt="Delete" />
                         </button>
                       )}
                     </div>

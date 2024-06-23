@@ -9,7 +9,7 @@ import { convertToMinutes } from "@utils/utils";
 import CSS from "./Recovery.module.css";
 
 import IconBack from "@public/img/common/icon_less_than_black.svg";
-import IconCheck from "@public/img/common/icon_check_round_main.svg";
+import IconCheck from "@public/img/common/icon_check_round_primary.svg";
 
 /** EmailSender 자식 */
 interface IEmailSenderProps {

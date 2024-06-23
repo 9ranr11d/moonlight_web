@@ -33,7 +33,7 @@
 .yearMonthToggleBtn {
   display: flex;
   column-gap: 7px;
-  background: var(--sub-color);
+  background: var(--secondary-color);
   padding: 7px;
   border-radius: 5px;
 }
@@ -46,7 +46,7 @@
 
 .yearMonthToggleBtn button:disabled {
   color: var(--font-color);
-  background: var(--white) !important;
+  background: white !important;
 }
 
 .header button,
@@ -61,12 +61,12 @@
   display: flex;
   column-gap: 5px;
   border-radius: 10px 0 0 10px;
-  background: var(--sub-color);
+  background: var(--secondary-color);
   transition: left 0.5s ease-in-out;
 }
 
 .subBox h6 {
-  color: var(--white);
+  color: white;
 }
 
 .subBox .moreBtn {
@@ -81,7 +81,7 @@
 .subBox > .content {
   display: flex;
   flex-direction: column;
-  background: var(--main-color);
+  background: var(--primary-color);
   padding: 10px;
   border-radius: 10px 0 0 10px;
 }
@@ -106,14 +106,14 @@
 
 .subBox > .content > .content button:hover,
 .subBox > .content > .content .selected {
-  background: var(--sub-color);
+  background: var(--secondary-color);
 }
 
 .mainBox {
   width: 70%;
   position: relative;
   padding: 10px;
-  background: var(--white);
+  background: white;
   border-radius: 0 10px 10px 0;
 }
 
@@ -146,11 +146,11 @@
 }
 
 .days button:hover {
-  background: var(--main-color);
+  background: var(--primary-color);
 }
 
 .days button:hover > span {
-  color: var(--white) !important;
+  color: white !important;
 }
 
 .days button > span {
@@ -219,7 +219,7 @@
 }
 
 .days > li > .content:hover .schedules {
-  color: var(--white);
+  color: white;
 }
 
 .days > li > .content .schedules > span > span {
@@ -229,7 +229,7 @@
 }
 
 .days > li > .content:hover .schedules > span > span {
-  border: 1px solid var(--white);
+  border: 1px solid white;
 }
 
 .days .day {
@@ -252,7 +252,7 @@
 
 .multipleSchedules {
   height: 15.5px;
-  color: var(--white) !important;
+  color: white !important;
 }
 
 .miniCalendar {
@@ -260,7 +260,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--white);
+  background: white;
   z-index: 3;
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
@@ -312,7 +312,7 @@
 }
 
 .popup {
-  background: var(--white);
+  background: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
   position: absolute;
   z-index: 2;
@@ -343,7 +343,7 @@
 
 .popup > .header .startDate {
   font-size: 24px;
-  border: 3px solid var(--border-color);
+  border: 2px solid var(--border-color);
 }
 
 .popup > .header > h5 {
@@ -397,21 +397,21 @@
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
   align-items: center;
-  border: 1px solid var(--white);
+  border: 1px solid white;
   padding: 10px;
 }
 
 .popup > .content > ul > li > button:hover {
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--primary-color);
 }
 
 .popup > .content > ul > li > button:active {
-  background: var(--main-color);
-  color: var(--white);
+  background: var(--primary-color);
+  color: white;
 }
 
 .popup > .content > ul > li > button:active .categoriesColor {
-  border: 2px solid var(--white);
+  border: 2px solid white;
 }
 
 .popup > .content > ul > li > button .categoriesColor {
@@ -459,7 +459,7 @@
 .popup > .content > ul > li > ul > li > input[type="radio"] + label {
   display: inline-block;
   padding: 10px;
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--primary-color);
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
@@ -470,8 +470,8 @@
 }
 
 .popup > .content > ul > li > ul > li > .repeating {
-  background: var(--main-color);
-  color: var(--white);
+  background: var(--primary-color);
+  color: white;
 }
 
 .popup > .content > ul > li > ul > li > ul {
@@ -486,7 +486,7 @@
 }
 
 .popup > .content > ul > li > ul > li > ul > li {
-  background: var(--white);
+  background: white;
   padding: 5px;
 }
 
@@ -519,8 +519,8 @@
 
 .user > li > button:hover {
   border-radius: 0;
-  background: var(--main-color);
-  color: var(--white);
+  background: var(--primary-color);
+  color: white;
 }
 .user > li > button:hover > span {
   border-bottom: none;
@@ -553,10 +553,10 @@
 }
 
 .categories > .list {
-  border: 1px solid var(--white);
+  border: 1px solid white;
   border-bottom: 1px solid var(--border-color);
-  grid-template-columns: 1fr 16px 16px;
-  column-gap: 10px;
+  grid-template-columns: 1fr 30px 30px;
+  column-gap: 5px;
 }
 
 .categories > .list > button {
@@ -564,20 +564,20 @@
 }
 
 .categories > .list:hover {
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--primary-color);
 }
 
 .categories > .selectedList {
-  background: var(--main-color) !important;
-  border: 1px solid var(--main-color);
+  background: var(--primary-color) !important;
+  border: 1px solid var(--primary-color);
 }
 
 .categories > .selectedList > button {
-  color: var(--white) !important;
+  color: white !important;
 }
 
 .categories > .selectedList:hover {
-  border: 1px solid var(--white);
+  border: 1px solid white;
 }
 
 .categories .edit {
@@ -603,10 +603,13 @@
 .categories .edit > button {
   width: 30px;
   height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .categories .edit > button:hover {
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--primary-color);
 }
 
 .createCategory {
