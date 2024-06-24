@@ -2,11 +2,16 @@
 
 import React, { useState } from "react";
 
+import Image from "next/image";
+
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux/store";
 import { signIn } from "@redux/slices/AuthSlice";
 
 import CSS from "./SignIn.module.css";
+
+import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
+import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
 
 /** SignIn 자식 */
 interface ISignInProps {
@@ -24,6 +29,9 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [identification, setIdentification] = useState<string>(""); // Identification
   const [password, setPassword] = useState<string>(""); // Password
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
+  const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
+
   /** Input Identification */
   const handleIdentification = (e: any): void => {
     setIdentification(e.target.value);
@@ -37,6 +45,19 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   /** ID/PW 찾기로 전환 */
   const handleRecovery = (): void => {
     recovery();
+  };
+
+  /** 비밀번호 표시 Toggle */
+  const togglePasswordVisibility = (): void => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+
+  /**
+   * 비밀번호 표시 아이콘 Hover 관리
+   * @param isHover Hover 여부
+   */
+  const hoverPasswordVisibility = (isHover: boolean): void => {
+    setIsPasswordVisibleHover(isHover);
   };
 
   /** 로그인 */
@@ -60,14 +81,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         dispatch(
           signIn({
             ...data.user,
-            // _id: data.user._id,
             isAuth: true,
-            // identification: data.user.identification,
-            // nickname: data.user.nickname,
-            // email: data.user.email,
-            // accessLevel: data.user.accessLevel,
-            // accessToken: data.accessToken,
-            // regDate: data.user.regDate,
           })
         );
       })
@@ -83,8 +97,23 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
           <li>
             <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
           </li>
-          <li>
-            <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
+
+          <li style={{ position: "relative" }}>
+            <input type={isPasswordVisible ? "text" : "password"} value={password} onChange={handlePassword} placeholder="Password" />
+
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className={CSS.passwordVisibleBtn}
+              onMouseOver={() => hoverPasswordVisibility(true)}
+              onMouseOut={() => hoverPasswordVisibility(false)}
+            >
+              <Image
+                src={isPasswordVisible ? (isPasswordVisibleHover ? IconEyeClose : IconEyeOpen) : isPasswordVisibleHover ? IconEyeOpen : IconEyeClose}
+                width={15}
+                alt={isPasswordVisible ? "ㅁ" : "ㅡ"}
+              />
+            </button>
           </li>
         </ul>
 

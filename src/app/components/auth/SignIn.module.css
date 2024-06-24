@@ -43,3 +43,20 @@
 .signInBox .innerBox input[type="password"] {
   font-size: 17px;
 }
+
+.passwordVisibleBtn {
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.passwordVisibleBtn:hover {
+  background: none;
+}
