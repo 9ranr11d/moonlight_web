@@ -41,6 +41,7 @@
 
 .signInBox .innerBox input[type="text"],
 .signInBox .innerBox input[type="password"] {
+  width: 100%;
   font-size: 17px;
 }
 
@@ -59,4 +60,21 @@
 
 .passwordVisibleBtn:hover {
   background: none;
+}
+
+@media (max-width: 768px) {
+  .signInBox .innerBox {
+    display: initial;
+  }
+
+  .signInBox .innerBox > ul {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .signInBox .innerBox > button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px 0;
+  }
 }

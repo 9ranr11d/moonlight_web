@@ -42,6 +42,11 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
     setPassword(e.target.value);
   };
 
+  /** Password에서 'Enter'을 누르면 로그인 */
+  const handlePasswordKeyDown = (e: any): void => {
+    if (e.key === "Enter") processSignIn();
+  };
+
   /** ID/PW 찾기로 전환 */
   const handleRecovery = (): void => {
     recovery();
@@ -99,7 +104,13 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
           </li>
 
           <li style={{ position: "relative" }}>
-            <input type={isPasswordVisible ? "text" : "password"} value={password} onChange={handlePassword} placeholder="Password" />
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              value={password}
+              onChange={handlePassword}
+              onKeyDown={handlePasswordKeyDown}
+              placeholder="Password"
+            />
 
             <button
               type="button"

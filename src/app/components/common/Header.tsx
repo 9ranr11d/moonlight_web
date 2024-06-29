@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 import Link from "next/link";
+import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
@@ -10,6 +11,9 @@ import { AppDispatch, RootState } from "@redux/store";
 import CSS from "./header.module.css";
 
 import { processSignOut } from "@utils/utils";
+
+import IconLogoBlack from "@public/img/common/icon_logo_black.svg";
+import IconLogoWhite from "@public/img/common/icon_logo_white.svg";
 
 export default function Header() {
   /** Dispatch */
@@ -35,7 +39,7 @@ export default function Header() {
         <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
-              <h5>MOONLIGHT</h5>
+              <Image src={IconLogoBlack} width={24} alt="Logo" />
             </Link>
           </div>
 
@@ -74,7 +78,7 @@ export default function Header() {
 
         <div className={CSS.beforeSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { top: -30, opacity: 0 } : { top: 30 }}>
           <Link prefetch={true} href={"/"}>
-            <h1>MOONLIGHT</h1>
+            <Image src={IconLogoWhite} width={66} priority alt="Logo" />
           </Link>
         </div>
       </nav>

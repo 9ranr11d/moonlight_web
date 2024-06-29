@@ -83,3 +83,7 @@
   transform: translateX(-50%);
   transition: top 1s ease, opacity 1s ease;
 }
+
+@media (max-width: 768px) {
+  
+}

@@ -1,7 +1,8 @@
 .header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  column-gap: 10px;
   align-items: center;
-  padding-right: 30px;
   margin-bottom: 20px;
 }
 
@@ -9,52 +10,77 @@
   border: none;
   background: none;
   padding: 0;
-  margin-right: 16px;
 }
 
 .header > h3 {
   flex: 1;
 }
 
-.signUpBox > table {
+.signUpBox > .content {
   width: 100%;
   border-collapse: separate;
   border-spacing: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
-.signUpBox > table > tbody > tr:first-child > td > button {
+.signUpBox > .content input {
   width: 100%;
+  font-size: 17px;
 }
 
-.signUpBox > table > tbody > tr > td {
+.signUpBox > .content > li > ul {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.signUpBox > .content > li > ul > li {
   position: relative;
-}
-
-.signUpBox > table > tbody > tr > th {
-  font-size: 17px;
-}
-
-.signUpBox > table input {
   width: 100%;
+}
+
+.signUpBox > .content > li > ul > li:first-child {
+  width: 15%;
   font-size: 17px;
 }
 
-.signUpBox > table > tbody > tr > td > span {
+.signUpBox > .content > li > ul > li > span,
+.signUpBox > .content > li > ul > li > ul > li > span {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
 }
 
+.signUpBox > .content > li > ul > li > ul > li {
+  position: relative;
+}
+
+.identificationLine > ul {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.identificationLine > ul > li:first-child {
+  flex: 1;
+}
+
+.identificationLine > ul button {
+  width: 100%;
+}
+
 .emailLine > ul {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 10px 1fr 120px;
+  display: flex;
   column-gap: 5px;
   align-items: center;
 }
 
 .emailLine > ul button {
+  position: relative;
   width: 120px;
   border-radius: 0;
   color: var(--font-color);
@@ -81,4 +107,18 @@
 
 .okBtnBox {
   margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .signUpBox > .content > li > ul {
+    flex-direction: column;
+  }
+
+  .signUpBox > .content > li > ul > li:first-child {
+    width: 100%;
+  }
+
+  .emailLine > ul {
+    flex-direction: column;
+  }
 }

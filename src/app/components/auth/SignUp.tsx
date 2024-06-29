@@ -7,7 +7,7 @@ import Image from "next/image";
 import CSS from "./SignUp.module.css";
 
 import IconBack from "@public/img/common/icon_less_than_black.svg";
-import IconCheck from "@public/img/common/icon_check_round_primary.svg";
+import IconCheck from "@public/img/common/icon_check_primary.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
 
 /** SignUp 자식 */
@@ -169,53 +169,57 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         <h3>회원가입</h3>
       </div>
 
-      <table>
-        <colgroup>
-          <col style={{ width: "15%" }} />
-          <col style={{ width: "65%" }} />
-          <col style={{ width: "20%" }} />
-        </colgroup>
+      <ul className={CSS.content}>
+        <li>
+          <ul>
+            <li>아이디</li>
+            <li className={CSS.identificationLine}>
+              <ul>
+                <li>
+                  <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
 
-        <tbody>
-          <tr>
-            <th>아이디</th>
-            <td>
-              <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
+                  {!isDuplicateId && (
+                    <span>
+                      <Image src={IconCheck} width={20} height={20} alt="√" />
+                    </span>
+                  )}
+                </li>
+                <li>
+                  <button type="button" onClick={checkDuplicate} disabled={identification.length <= 5}>
+                    중복검사
+                  </button>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
 
-              {!isDuplicateId && (
-                <span>
-                  <Image src={IconCheck} width={20} height={20} alt="√" />
-                </span>
-              )}
-            </td>
-            <td>
-              <button type="button" onClick={checkDuplicate} disabled={identification.length <= 5}>
-                중복검사
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <th>별명</th>
-            <td colSpan={2}>
+        <li>
+          <ul>
+            <li>별명</li>
+            <li>
               <input type="text" value={nickname} onChange={handleNickname} placeholder="Nickname" />
-            </td>
-          </tr>
+            </li>
+          </ul>
+        </li>
 
-          <tr>
-            <th>비밀번호</th>
-            <td colSpan={2}>
+        <li>
+          <ul>
+            <li>비밀번호</li>
+            <li>
               <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
-            </td>
-          </tr>
+            </li>
+          </ul>
+        </li>
 
-          <tr>
-            <th>
+        <li>
+          <ul>
+            <li>
               비밀번호
               <br />
               재확인
-            </th>
-            <td colSpan={2}>
+            </li>
+            <li>
               <input type="password" value={confirmPassword} onChange={handleConfirmPw} placeholder="Confirm Password" />
 
               {isPasswordMatching && (
@@ -223,12 +227,14 @@ export default function SignUp({ completed, back }: ISignUpProps) {
                   <Image src={IconCheck} width={20} height={20} alt="√" />
                 </span>
               )}
-            </td>
-          </tr>
+            </li>
+          </ul>
+        </li>
 
-          <tr>
-            <th>E-mail</th>
-            <td colSpan={2} className={CSS.emailLine}>
+        <li>
+          <ul>
+            <li>E-mail</li>
+            <li className={CSS.emailLine}>
               <ul>
                 <li>
                   <input type="text" value={firstEmail} onChange={handleFirstEmail} placeholder="Identification" />
@@ -259,10 +265,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
                   )}
                 </li>
               </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
       <div className={CSS.okBtnBox}>
         <button type="button" onClick={processSignUp} disabled={isEmpty}>
