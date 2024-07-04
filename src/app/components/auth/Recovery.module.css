@@ -86,6 +86,13 @@
   transform: translateY(-50%);
 }
 
+.loadingBox {
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .mobile {
     display: block;
@@ -103,7 +110,8 @@
     font-size: 18px;
   }
 
-  .content button {
+  .content button,
+  .loadingBox {
     width: 100%;
   }
 

@@ -175,18 +175,18 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
 
             <li>
               <input type="text" value={email} onChange={handleEmail} ref={identificationInputRef} onKeyDown={handleEmailKeyDown} placeholder="E-mail" />
-
-              {isVerifyingEmail && (
-                <span>
-                  <Lottie animationData={LottieLoading} style={{ width: 24 }} />
-                </span>
-              )}
             </li>
 
             <li>
-              <button type="button" onClick={verifyMatch}>
-                {isEmailSent ? "재전송" : "전송"}
-              </button>
+              {isVerifyingEmail ? (
+                <div className={CSS.loadingBox}>
+                  <Lottie animationData={LottieLoading} style={{ width: 24 }} />
+                </div>
+              ) : (
+                <button type="button" onClick={verifyMatch}>
+                  {isEmailSent ? "재전송" : "전송"}
+                </button>
+              )}
             </li>
           </ul>
         </li>
