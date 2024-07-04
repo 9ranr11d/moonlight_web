@@ -92,14 +92,7 @@ export default function Home() {
         dispatch(
           signIn({
             ...data,
-            // _id: data.user._id,
             isAuth: true,
-            // identification: data.user.identification,
-            // nickname: data.user.nickname,
-            // email: data.user.email,
-            // accessLevel: data.user.accessLevel,
-            // accessToken: data.accessToken,
-            // regDate: data.user.regDate,
           })
         )
       )

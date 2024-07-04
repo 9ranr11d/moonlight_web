@@ -32,17 +32,17 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
   const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
 
-  /** Input Identification */
+  /** Identification Input */
   const handleIdentification = (e: any): void => {
     setIdentification(e.target.value);
   };
 
-  /** Input Password */
+  /** Password Input */
   const handlePassword = (e: any): void => {
     setPassword(e.target.value);
   };
 
-  /** Password에서 'Enter'을 누르면 로그인 */
+  /** Password에서 'Enter'를 누를 시 */
   const handlePasswordKeyDown = (e: any): void => {
     if (e.key === "Enter") processSignIn();
   };

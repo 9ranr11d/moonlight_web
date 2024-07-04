@@ -34,7 +34,7 @@ export default function Header() {
   };
 
   return (
-    <header className={CSS.header}>
+    <header className={CSS.header} style={user.isAuth ? { zIndex: 999 } : undefined}>
       <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
         <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
           <div className={CSS.logoBox}>

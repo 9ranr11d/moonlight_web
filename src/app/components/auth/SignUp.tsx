@@ -49,33 +49,33 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     else setIsPwMatching(false);
   }, [password, confirmPassword]);
 
-  /** Input Identification */
+  /** Identification Input */
   const handleIdentification = (e: any): void => {
     setIdentification(e.target.value);
     setIsDuplicateId(true);
   };
 
-  /** Input 별명 */
+  /** 별명 Input */
   const handleNickname = (e: any): void => {
     setNickName(e.target.value);
   };
 
-  /** Input Password */
+  /** Password Input */
   const handlePassword = (e: any): void => {
     setPassword(e.target.value);
   };
 
-  /** Input Password 확인 */
+  /** Password 확인 Input */
   const handleConfirmPw = (e: any): void => {
     setConfirmPassword(e.target.value);
   };
 
-  /** Input E-mail Identification부분 */
+  /** E-mail Identification 부분 Input */
   const handleFirstEmail = (e: any): void => {
     setFirstEmail(e.target.value);
   };
 
-  /** Input E-mail Domain 부분 */
+  /** E-mail Domain 부분 Input */
   const handleLastEmail = (e: any): void => {
     setLastEmail(e.target.value);
   };
@@ -172,7 +172,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       <ul className={CSS.content}>
         <li>
           <ul>
-            <li>아이디</li>
+            <li>
+              <h6>아이디</h6>
+            </li>
+
             <li className={CSS.identificationLine}>
               <ul>
                 <li>
@@ -184,6 +187,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
                     </span>
                   )}
                 </li>
+
                 <li>
                   <button type="button" onClick={checkDuplicate} disabled={identification.length <= 5}>
                     중복검사
@@ -196,7 +200,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         <li>
           <ul>
-            <li>별명</li>
+            <li>
+              <h6>별명</h6>
+            </li>
+
             <li>
               <input type="text" value={nickname} onChange={handleNickname} placeholder="Nickname" />
             </li>
@@ -205,7 +212,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         <li>
           <ul>
-            <li>비밀번호</li>
+            <li>
+              <h6>비밀번호</h6>
+            </li>
+
             <li>
               <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
             </li>
@@ -215,10 +225,9 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         <li>
           <ul>
             <li>
-              비밀번호
-              <br />
-              재확인
+              <h6>비밀번호 재확인</h6>
             </li>
+
             <li>
               <input type="password" value={confirmPassword} onChange={handleConfirmPw} placeholder="Confirm Password" />
 
@@ -233,36 +242,45 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         <li>
           <ul>
-            <li>E-mail</li>
+            <li>
+              <h6>E-mail</h6>
+            </li>
             <li className={CSS.emailLine}>
               <ul>
                 <li>
                   <input type="text" value={firstEmail} onChange={handleFirstEmail} placeholder="Identification" />
                 </li>
+
                 <li>@</li>
-                <li>
-                  <input type="text" value={lastEmail} onChange={handleLastEmail} placeholder="직접 입력" readOnly={lastEmailIdx !== 0} />
-                </li>
-                <li>
-                  <button type="button" onClick={toggleEmailList}>
-                    {emailList[lastEmailIdx]}
 
-                    <div className={CSS.img}>
-                      <Image src={IconTriangle} width={9} alt="▼" />
-                    </div>
-                  </button>
+                <li>
+                  <ul>
+                    <li>
+                      <input type="text" value={lastEmail} onChange={handleLastEmail} placeholder="직접 입력" readOnly={lastEmailIdx !== 0} />
+                    </li>
 
-                  {isEmailListOpen && (
-                    <ul>
-                      {emailList.map((email, idx) => (
-                        <li key={idx}>
-                          <button type="button" onClick={() => selectEmail(idx)}>
-                            {email}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                    <li>
+                      <button type="button" onClick={toggleEmailList}>
+                        {emailList[lastEmailIdx]}
+
+                        <div className={CSS.img}>
+                          <Image src={IconTriangle} width={9} alt="▼" />
+                        </div>
+                      </button>
+
+                      {isEmailListOpen && (
+                        <ul>
+                          {emailList.map((email, idx) => (
+                            <li key={idx}>
+                              <button type="button" onClick={() => selectEmail(idx)}>
+                                {email}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>

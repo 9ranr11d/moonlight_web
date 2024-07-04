@@ -13,6 +13,7 @@ export default function UnderReview() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
+  /** 로그아웃 */
   const clickSignOut = () => {
     processSignOut("다른 아이디로 로그인하시겠습니까?", dispatch);
   };

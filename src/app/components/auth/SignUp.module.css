@@ -36,14 +36,13 @@
   column-gap: 10px;
 }
 
-.signUpBox > .content > li > ul > li {
-  position: relative;
-  width: 100%;
+.signUpBox > .content > li > ul > li:first-child > h6 {
+  width: 65px;
 }
 
-.signUpBox > .content > li > ul > li:first-child {
-  width: 15%;
-  font-size: 17px;
+.signUpBox > .content > li > ul > li:last-child {
+  position: relative;
+  width: 100%;
 }
 
 .signUpBox > .content > li > ul > li > span,
@@ -72,14 +71,7 @@
   width: 100%;
 }
 
-.emailLine > ul {
-  position: relative;
-  display: flex;
-  column-gap: 5px;
-  align-items: center;
-}
-
-.emailLine > ul button {
+.emailLine button {
   position: relative;
   width: 120px;
   border-radius: 0;
@@ -89,18 +81,37 @@
   text-align: left;
 }
 
-.emailLine > ul > li > button .img {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+.emailLine > ul {
+  position: relative;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
 }
 
-.emailLine > ul > li > ul {
+.emailLine > ul > li:first-child {
+  flex: 1;
+}
+.emailLine > ul > li:last-child {
+  flex: 2;
+}
+
+.emailLine > ul > li:last-child > ul {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.emailLine > ul > li:last-child > ul > :last-child > button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.emailLine > ul > li:last-child > ul > :last-child > ul {
   position: absolute;
 }
 
-.emailLine > ul > li > ul > li > button:hover {
+.emailLine > ul > li:last-child > ul > :last-child > ul > li > button:hover {
   background: var(--primary-color);
   color: white;
 }
@@ -114,11 +125,16 @@
     flex-direction: column;
   }
 
-  .signUpBox > .content > li > ul > li:first-child {
+  .signUpBox > .content > li > ul > li:first-child > h6 {
     width: 100%;
   }
 
   .emailLine > ul {
     flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .emailLine > ul > li {
+    width: 100%;
   }
 }

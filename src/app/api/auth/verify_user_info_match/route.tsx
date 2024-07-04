@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { email }: { email: string } = await req.json();
 
     /** E-mail과 일치하는 사용자 정보 */
-    const user: IIUser[] | null = await User.find({ email });
+    const user: IIUser[] | null = await User.findOne({ email });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
     if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
