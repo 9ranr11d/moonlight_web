@@ -22,7 +22,8 @@
     "paths": {
       "@lib/*": ["src/lib/*"],
       "@models/*": ["src/models/*"],
-      "@components/*": ["src/app/components/*"],
+      "@pages/*": ["src/app/(pages)/*"],
+      "@components/*": ["src/components/*"],
       "@public/*": ["public/*"],
       "@redux/*": ["src/redux/*"],
       "@utils/*": ["src/utils/*"]

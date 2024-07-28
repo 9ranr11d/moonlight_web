@@ -113,6 +113,7 @@ caption {
 }
 
 textarea {
+  width: 100%;
   resize: none;
   padding: 10px 20px;
   border: 1px solid var(--border-color);
@@ -128,20 +129,34 @@ textarea:focus {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="number"] {
+  width: 100%;
   padding: 10px 20px;
   border: 1px solid var(--border-color);
   border-radius: 2px;
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder {
+input[type="password"]::placeholder input[type="number"]::placeholder {
   color: var(--placeholder-color);
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="number"]:focus {
   outline: 1px solid var(--secondary-color);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {

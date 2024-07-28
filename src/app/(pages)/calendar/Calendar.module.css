@@ -121,6 +121,15 @@
   column-gap: 30px;
 }
 
+.mainBox > .header button {
+  color: var(--font-color);
+}
+
+.mainBox > .header input[type="number"] {
+  font-size: 20px;
+  text-align: center;
+}
+
 .mainBox > .content {
   flex: 1;
   margin: 0 auto;
@@ -129,6 +138,14 @@
 .mainBox > .content > ul {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.inputYear {
+  width: 90px;
+}
+
+.inputMonth {
+  width: 65px;
 }
 
 .daysOfWeek {
@@ -319,7 +336,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 10px 20px;
+  padding: 20px 20px 10px;
   border-radius: 5px;
   text-align: center;
   display: flex;
@@ -334,9 +351,10 @@
 }
 
 .popup > .header {
+  height: auto;
   margin-bottom: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
@@ -440,13 +458,11 @@
 }
 
 .popup > .content > ul > li > ul > li > textarea {
-  width: 100%;
   border-radius: 5px;
   padding: 10px;
 }
 
 .popup > .content > ul > li > ul > li > input[type="text"] {
-  width: 100%;
   border-radius: 5px;
   padding: 10px;
 }
@@ -595,7 +611,6 @@
 
 .categories .edit > input[type="text"] {
   flex: 1;
-  width: 100%;
   padding: 10px;
 }
 
@@ -619,4 +634,34 @@
 
 .createCategory > button {
   padding: 3px 0;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    flex-direction: column;
+    right: 0 !important;
+    align-items: center;
+  }
+
+  .subBox {
+    display: none;
+  }
+
+  .mainBox {
+    width: 90%;
+    border-radius: 10px;
+  }
+
+  .mainBox > .header {
+    column-gap: 10px;
+  }
+
+  .days > li > .content {
+    height: 50px;
+    padding: 10px 0;
+  }
+
+  .popup {
+    width: 300px;
+  }
 }

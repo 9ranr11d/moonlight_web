@@ -14,7 +14,9 @@ import { IIUser } from "@models/User";
 import { ISchedule, IISchedule, IIISchedule } from "@models/Schedule";
 import { IScheduleCategory, IIScheduleCategory } from "@models/ScheduleCategory";
 
-import { convertDateII } from "src/utils/utils";
+import { convertDateII } from "@utils/utils";
+
+import MiniCalendar from "@components/calendar/MiniCalendar";
 
 import IconPrevWhite from "@public/img/common/icon_less_than_white.svg";
 import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
@@ -35,8 +37,6 @@ import IconDeleteCloseWhite from "@public/img/common/icon_delete_close_white.svg
 import IconExpand from "@public/img/common/icon_expand_primary.svg";
 import IconCollapse from "@public/img/common/icon_collapse_primary.svg";
 import IconPlus from "@public/img/common/icon_plus_primary.svg";
-
-import MiniCalendar from "./MiniCalendar";
 
 /** 일정 수정 Input 제목 인터페이스 */
 interface IEditScheduleTitle extends ISchedule {
@@ -88,10 +88,8 @@ export default function Calendar() {
 
   /** 연도, 월 선택 사이드 메뉴 가로 길이  */
   const siderbarWidth = 250;
-  /** 시작 연도 */
-  const startYear = 2023;
   /** 시작 년도부터 최대 연도 */
-  const MaximumSelectableYear = 100;
+  const MaximumSelectableYear = 12;
 
   /** 일정 수정 Input 제목 */
   const editScheduleTitle: IEditScheduleTitle = {
@@ -124,7 +122,7 @@ export default function Calendar() {
   const siderbarRef = useRef<HTMLUListElement>(null);
 
   /** 사이드 메뉴 연도 Ref */
-  const yearRefs = useRef<HTMLLIElement[]>([]);
+  // const yearRefs = useRef<HTMLLIElement[]>([]);
 
   /** 캘린더 Ref */
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -133,6 +131,8 @@ export default function Calendar() {
 
   const [year, setYear] = useState<number>(currentYear); // 선택된 연도
   const [month, setMonth] = useState<number>(currentMonth); // 선택된 달
+  const [inputYear, setInputYear] = useState<number>(year);
+  const [inputMonth, setInputMonth] = useState<number>(month);
   const [calendarHeight, setCalendarHeight] = useState<number>(0); // 캘린더 높이
 
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>(""); // 선택된 일정 Identification
@@ -151,6 +151,7 @@ export default function Calendar() {
   const [isEditCategoryHovers, setIsEditCategoryHovers] = useState<boolean[]>([]); // 카테고리 수정 버튼 Hover 여부
   const [isDeleteScheduleHover, setIsDeleteScheduleHover] = useState<boolean>(false); // 일정 삭제 버튼 Hover 여부
   const [isDeleteCategoryHovers, setIsDeleteCategoryHovers] = useState<boolean[]>([]); // 카테고리 삭제 버튼 위에 Hover 여부
+  const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false);
 
   const [editCategories, setEditCategories] = useState<IIScheduleCategory[]>([]); // 수정할 일정 정보
   const [userCategories, setUserCategories] = useState<IIScheduleCategory[]>([]); // 현재 사용자의 카테고리들
@@ -168,6 +169,8 @@ export default function Calendar() {
     user: user._id,
   });
 
+  /** 시작 연도 */
+  const startYear = year - MaximumSelectableYear / 2;
   /** 사이드 메뉴의 연도 목록 */
   const years: number[] = Array.from({ length: MaximumSelectableYear }, (_, idx) => startYear + idx);
   /** 사이드 메뉴의 월 목록 */
@@ -247,10 +250,10 @@ export default function Calendar() {
     }
   }, [calendarRef]);
 
-  // 사이드 메뉴 연도/달 선택 상태 변경 시
-  useEffect(() => {
-    if (isYear) moveSelectedYear(year, year - startYear);
-  }, [isYear]);
+  // // 사이드 메뉴 연도/달 선택 상태 변경 시
+  // useEffect(() => {
+  //   if (isYear) moveSelectedYear(year, year - startYear);
+  // }, [isYear]);
 
   // 연도, 달 변경 시
   useEffect(() => {
@@ -538,6 +541,22 @@ export default function Calendar() {
     }
   };
 
+  const handleInputYear = (e: any): void => {
+    const value = e.target.value;
+
+    if (value.length < 5) setInputYear(Number(value));
+  };
+
+  const handleInputMonth = (e: any): void => {
+    const value = e.target.value;
+
+    if (value.length < 3) setInputMonth(Number(value));
+  };
+
+  const handleInputMonthKeyDown = (e: any) => {
+    if (e.key === "Enter") selectInputYearMonth();
+  };
+
   /**
    * 일정 팝업 수정 시, 카테고리 수정 시, 내용 수정
    * @param e 입력 받은 값
@@ -633,6 +652,15 @@ export default function Calendar() {
 
         break;
     }
+  };
+
+  const toggleInputYearMonth = (): void => {
+    if (!isInputYearMonth) {
+      setInputYear(year);
+      setInputMonth(month + 1);
+    }
+
+    setIsInputYearMonth((prev) => !prev);
   };
 
   /** 일정 팝업 수정 상태, 사용자 목록 드롭다운 메뉴 가시 Toggle */
@@ -949,32 +977,33 @@ export default function Calendar() {
    * @param _year 선택한 연도
    * @param idx 선택한 연도 순번
    */
-  const selectYear = (_year: number, idx: number): void => {
+  // const selectYear = (_year: number, idx: number): void => {
+  const selectYear = (_year: number): void => {
     setYear(_year);
 
-    moveSelectedYear(_year, idx);
+    // moveSelectedYear(_year, idx);
   };
 
-  /**
-   * 선택한 년도로 사이드 메뉴 스크롤 이동
-   * @param _year 선택한 연도
-   * @param idx 선택한 연도 순번
-   */
-  const moveSelectedYear = (_year: number, idx: number): void => {
-    // 사이드 메뉴 Ref가 존재하는 지
-    if (siderbarRef.current && yearRefs.current[idx]) {
-      /** 사이드 메뉴 높이 */
-      const siderbarHeight: number = siderbarRef.current.clientHeight;
-      /** 선택된 연도의 요소 높이 */
-      const selectedYearHeight: number = yearRefs.current[idx].clientHeight;
-      /** 선택된 연도의 y좌표 */
-      const selectedYearOffsetTop: number = yearRefs.current[idx].offsetTop;
+  // /**
+  //  * 선택한 년도로 사이드 메뉴 스크롤 이동
+  //  * @param _year 선택한 연도
+  //  * @param idx 선택한 연도 순번
+  //  */
+  // const moveSelectedYear = (_year: number, idx: number): void => {
+  //   // 사이드 메뉴 Ref가 존재하는 지
+  //   if (siderbarRef.current && yearRefs.current[idx]) {
+  //     /** 사이드 메뉴 높이 */
+  //     const siderbarHeight: number = siderbarRef.current.clientHeight;
+  //     /** 선택된 연도의 요소 높이 */
+  //     const selectedYearHeight: number = yearRefs.current[idx].clientHeight;
+  //     /** 선택된 연도의 y좌표 */
+  //     const selectedYearOffsetTop: number = yearRefs.current[idx].offsetTop;
 
-      /** 스크롤 위치 */
-      const scrollTop: number = selectedYearOffsetTop - siderbarHeight / 2 + selectedYearHeight / 2;
-      siderbarRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
-    }
-  };
+  //     /** 스크롤 위치 */
+  //     const scrollTop: number = selectedYearOffsetTop - siderbarHeight / 2 + selectedYearHeight / 2;
+  //     siderbarRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
+  //   }
+  // };
 
   /**
    * 달 선택
@@ -982,6 +1011,15 @@ export default function Calendar() {
    */
   const selectMonth = (idx: number): void => {
     setMonth(idx);
+  };
+
+  const selectInputYearMonth = (): void => {
+    if (inputMonth < 1 || inputMonth > 12) return alert("1~12월 사이로 작성해주세요.");
+
+    setYear(inputYear);
+    setMonth(inputMonth - 1);
+
+    toggleInputYearMonth();
   };
 
   /**
@@ -1294,7 +1332,7 @@ export default function Calendar() {
   };
 
   return (
-    <>
+    <main>
       {isPopupVisible && <button type="button" onClick={closePopup} className={CSS.popupBackground}></button>}
 
       <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
@@ -1344,8 +1382,10 @@ export default function Calendar() {
                     </li>
                   ))
                 : years.map((_year, idx) => (
-                    <li key={idx} ref={(el) => (yearRefs.current[idx] = el!)}>
-                      <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? CSS.selected : undefined}>
+                    // <li key={idx} ref={(el) => (yearRefs.current[idx] = el!)}>
+                    <li key={idx}>
+                      {/* <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? CSS.selected : undefined}> */}
+                      <button type="button" onClick={() => selectYear(_year)} className={year === _year ? CSS.selected : undefined}>
                         <h6>{_year}</h6>
                       </button>
                     </li>
@@ -1355,22 +1395,50 @@ export default function Calendar() {
         </div>
 
         <div className={CSS.mainBox}>
-          <ul className={CSS.header}>
-            <li>
-              <button type="button" onClick={() => changeMonth("prev")}>
-                <Image src={IconPrevBlack} width={24} alt="Prev" />
-              </button>
-            </li>
+          <ul className={CSS.header} style={isInputYearMonth ? { columnGap: 20 } : undefined}>
+            {isInputYearMonth ? (
+              <>
+                <li className={CSS.inputYear}>
+                  <input type="number" value={inputYear} onChange={handleInputYear} placeholder="연도" />
+                </li>
 
-            <li>
-              <h3>{monthNames[month]}</h3>
-            </li>
+                <li className={CSS.inputMonth}>
+                  <input type="number" value={inputMonth} onChange={handleInputMonth} onKeyDown={handleInputMonthKeyDown} placeholder="월" />
+                </li>
 
-            <li>
-              <button type="button" onClick={() => changeMonth("next")}>
-                <Image src={IconNextBlack} width={24} alt="Next" />
-              </button>
-            </li>
+                <li>
+                  <button type="button" onClick={selectInputYearMonth}>
+                    <Image src={IconCheck} width={24} alt="√" />
+                  </button>
+                </li>
+
+                <li>
+                  <button type="button" onClick={toggleInputYearMonth}>
+                    <Image src={IconClose} width={24} alt="X" />
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <button type="button" onClick={() => changeMonth("prev")}>
+                    <Image src={IconPrevBlack} width={24} alt="Prev" />
+                  </button>
+                </li>
+
+                <li>
+                  <button type="button" onClick={toggleInputYearMonth}>
+                    <h3>{monthNames[month]}</h3>
+                  </button>
+                </li>
+
+                <li>
+                  <button type="button" onClick={() => changeMonth("next")}>
+                    <Image src={IconNextBlack} width={24} alt="Next" />
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
 
           <div className={CSS.content} ref={calendarRef}>
@@ -1569,6 +1637,6 @@ export default function Calendar() {
           )}
         </div>
       </div>
-    </>
+    </main>
   );
 }

@@ -41,7 +41,6 @@
 
 .signInBox .innerBox input[type="text"],
 .signInBox .innerBox input[type="password"] {
-  width: 100%;
   font-size: 17px;
 }
 

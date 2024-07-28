@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import CSS from "./Calendar.module.css";
+import CSS from "@pages/calendar/Calendar.module.css";
 
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";
