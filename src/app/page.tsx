@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ import UnderReview from "@components/auth/UnderReview";
 
 /** 시작 페이지 */
 export default function Home() {
+  /** 라우터 */
   const router = useRouter();
 
   /** 사용자 정보 */
@@ -23,6 +24,10 @@ export default function Home() {
 
   const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
   const [isRecovery, setIsRecovery] = useState<boolean>(false); // Identification/Password 찾기 여부
+
+  useEffect(() => {
+    if (user.isAuth && user.accessLevel > 0) router.push("/main");
+  }, [user.isAuth]);
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
@@ -52,9 +57,7 @@ export default function Home() {
   return (
     <main className={CSS.container}>
       {user.isAuth ? (
-        user.accessLevel >= 1 ? (
-          <div></div>
-        ) : (
+        user.accessLevel < 1 && (
           <div className={CSS.authBox}>
             <UnderReview />
           </div>

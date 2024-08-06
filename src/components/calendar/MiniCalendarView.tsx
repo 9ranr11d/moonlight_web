@@ -2,7 +2,9 @@ import React from "react";
 
 import Image from "next/image";
 
-import CSS from "@pages/calendar/Calendar.module.css";
+import CSS from "./CalendarView.module.css";
+
+import { dayOfWeek, monthDays, monthNames } from "@utils/utils";
 
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";
@@ -22,34 +24,18 @@ interface IMiniCalendarProps {
    */
   selectDay: (day: Date) => void;
 
-  /** '일정 시작 날짜 선택 캘린더'로 쓰이고 있는지 */
-  isStart: boolean;
   /** 현재 날짜 */
   currentDate: Date;
   /** 일정 시작 날짜 */
   startDate: Date;
   /** 일정 종료 날짜 */
   endDate: Date;
-  /** 달 이름들 */
-  monthNames: string[];
-  /** 요일 이름 */
-  dayOfWeek: string[];
-  /** 달별 날짜 수 */
-  monthDays: number[];
+  /** '일정 시작 날짜 선택 캘린더'로 쓰이고 있는지 */
+  isStart: boolean;
 }
 
 /** 미니 캘린더 */
-export default function MiniCalendar({
-  changeMonth,
-  selectDay,
-  isStart,
-  currentDate,
-  startDate,
-  endDate,
-  monthNames,
-  dayOfWeek,
-  monthDays,
-}: IMiniCalendarProps) {
+export default function MiniCalendarView({ changeMonth, selectDay, isStart, currentDate, startDate, endDate }: IMiniCalendarProps) {
   /** 현재 연도 */
   const currentYear: number = currentDate.getFullYear();
   /** 현재 달 */
@@ -57,6 +43,8 @@ export default function MiniCalendar({
   /** 현재 일 */
   const currentDay: number = currentDate.getDate();
 
+  /** 일정 시작 연도 */
+  const startYear: number = startDate.getFullYear();
   /** 일정 시작 달 */
   const startMonth: number = startDate.getMonth();
 
@@ -65,8 +53,13 @@ export default function MiniCalendar({
   /** 일정 종료 달 */
   const endMonth: number = endDate.getMonth();
 
+  /** 미니 캘린더 메인 연도 */
+  const miniYear: number = isStart ? startYear : endYear;
+  /** 미니 캘린더 메인 달 */
+  const miniMonth: number = isStart ? startMonth : endMonth;
+
   /** 현재 달의 1일의 요일 */
-  const firstDayOfMonth: number = new Date(endYear, endMonth, 1).getDay();
+  const firstDayOfMonth: number = new Date(miniYear, miniMonth, 1).getDay();
   /** 이전 달 날짜 수 */
   const prevMonthDays: number = endMonth - 1 < 0 ? monthDays[11] : monthDays[endMonth - 1];
   /** 이전 달 마지막 주와 현재 달의 날짜를 합친 수 */
@@ -80,8 +73,8 @@ export default function MiniCalendar({
     <div className={CSS.miniCalendar}>
       <ul className={CSS.header}>
         <li>
-          <button type="button" onClick={() => changeMonth("prev")} disabled={!isStart && !(startMonth > endMonth)}>
-            <Image src={!isStart ? (startMonth > endMonth ? IconPrevBlack : IconPrevGray) : IconPrevBlack} height={15} alt="Prev" />
+          <button type="button" onClick={() => changeMonth("prev")} disabled={!isStart && endDate <= startDate}>
+            <Image src={!isStart ? (endDate <= startDate ? IconPrevGray : IconPrevBlack) : IconPrevBlack} height={15} alt="Prev" />
           </button>
         </li>
 
@@ -90,8 +83,8 @@ export default function MiniCalendar({
         </li>
 
         <li>
-          <button type="button" onClick={() => changeMonth("next")} disabled={isStart && !(startMonth < endMonth)}>
-            <Image src={isStart ? (startMonth < endMonth ? IconNextBlack : IconNextGray) : IconNextBlack} height={15} alt="Next" />
+          <button type="button" onClick={() => changeMonth("next")} disabled={isStart && startDate >= endDate}>
+            <Image src={isStart ? (startDate >= endDate ? IconNextGray : IconNextBlack) : IconNextBlack} height={15} alt="Next" />
           </button>
         </li>
       </ul>
@@ -120,10 +113,10 @@ export default function MiniCalendar({
               : idx + 1 - firstDayOfMonth;
 
             /** 표기할 날짜의 달 */
-            const _month: number = isPrevMonth ? endMonth - 1 : isNextMonth ? endMonth + 1 : endMonth;
+            const _month: number = isPrevMonth ? miniMonth - 1 : isNextMonth ? miniMonth + 1 : miniMonth;
 
-            /** 표기할 전체 날짜 */
-            const thisDate: Date = new Date(endYear, _month, day);
+            /** 표기할 날짜 */
+            const thisDate: Date = new Date(miniYear, _month, day);
 
             /** 비활성화 할 날짜 */
             const isDisabledDate: boolean = isStart ? thisDate > endDate : thisDate < startDate;
@@ -144,7 +137,7 @@ export default function MiniCalendar({
                         ? CSS.subDate
                         : isNextMonth
                         ? CSS.subDate
-                        : endYear === currentYear && endMonth === currentMonth && day === currentDay
+                        : miniYear === currentYear && miniMonth === currentMonth && day === currentDay
                         ? CSS.today
                         : undefined
                     }

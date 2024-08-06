@@ -1,4 +1,11 @@
-.background {
-  background: var(--background);
-  padding: 0 20px;
+.noBackground {
+  background: none;
+  padding: 0;
+  color: var(--font-color);
+  text-align: left;
+}
+
+.thisWeek {
+  width: calc(100% - 40px);
+  margin: 0 20px;
 }

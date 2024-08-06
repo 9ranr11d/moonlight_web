@@ -1,0 +1,21 @@
+.week {
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.week > ul {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.week > ul:first-child {
+  text-align: center;
+}
+
+.day > li {
+  height: 100px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+}
