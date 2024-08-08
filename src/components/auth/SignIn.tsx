@@ -10,6 +10,8 @@ import { signIn } from "@redux/slices/AuthSlice";
 
 import CSS from "./SignIn.module.css";
 
+import { errMsg } from "@utils/utils";
+
 import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
 import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
 
@@ -76,8 +78,9 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        else if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
-        else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
+        else alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -90,7 +93,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
           })
         );
       })
-      .catch((err) => console.error("Process Sign In :", err));
+      .catch((err) => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
   };
 
   return (

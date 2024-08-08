@@ -5,8 +5,8 @@ import dbConnect from "@lib/dbConnect";
 import mongoose from "mongoose";
 
 import Schedule, { IIISchedule } from "@models/Schedule";
-import User, { IIUser, UserSchema } from "@models/User";
-import ScheduleCategory, { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCategory";
+import { IIUser, UserSchema } from "@models/User";
+import { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCategory";
 
 /**
  * 해당 달 +-1달 일정 정보 가져오기
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
     const query = {
       $or: [
         {
-          $and: [{ date: { $gte: startDate } }, { date: { $lte: endDate } }],
+          $and: [{ date: { $exists: true, $type: "array" } }, { date: { $elemMatch: { $gte: startDate } } }, { date: { $elemMatch: { $lte: endDate } } }],
         },
         {
           isRepeating: true,
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
     /** 일정들 반환 */
     return NextResponse.json(schedules, { status: 200 });
   } catch (err) {
-    console.log("Schedule Management GET :", err);
+    console.log("Error in /src/app/api/calendar/schedules_management/[year]/[month] > GET :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

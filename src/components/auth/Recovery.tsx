@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import Lottie from "lottie-react";
 
-import { convertToMinutes } from "@utils/utils";
+import { convertToMinutes, errMsg } from "@utils/utils";
 
 import CSS from "./Recovery.module.css";
 
@@ -121,7 +121,8 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        else if (res.status === 404) {
+
+        if (res.status === 404) {
           alert("유효한 이메일이 아닙니다.");
 
           setIsVerifyingEmail(false);
@@ -134,7 +135,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
 
         sendEmail();
       })
-      .catch((err) => console.error("Verify Match :", err));
+      .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
   };
 
   /** 인증코드 전송 */
@@ -149,7 +150,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -159,7 +160,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
         setIsEmailSent(true);
         setDeadline(maxDeadline);
       })
-      .catch((err) => console.error("Send Email :", err));
+      .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > sendEmail() :", err));
   };
 
   return (
@@ -242,8 +243,9 @@ const Identification = () => {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        else if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        if (res.status === 404) alert("존재하지 않는 아이디입니다.");
+        else alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -251,7 +253,7 @@ const Identification = () => {
         setIdentification(data.identification);
         setIsVerified(true);
       })
-      .catch((err) => console.error("Get User Identification :", err));
+      .catch((err) => console.error("Error in /src/components/auth/Recovery > Identification() > getUserIdentification() :", err));
   };
 
   return (
@@ -337,8 +339,9 @@ const Password = ({ back }: IPasswordProps) => {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        else if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        if (res.status === 404) alert("존재하지 않는 아이디입니다.");
+        else alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -347,7 +350,7 @@ const Password = ({ back }: IPasswordProps) => {
         setUserEmail(data.email);
         setIsAuth(true);
       })
-      .catch((err) => console.error("Check Identification :", err));
+      .catch((err) => console.error("Error in /src/components/auth/Recovery > Password() > checkIdentification() :", err));
   };
 
   /** 비밀번호 변경 */
@@ -361,8 +364,9 @@ const Password = ({ back }: IPasswordProps) => {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        else if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+
+        if (res.status === 404) alert("존재하지 않는 아이디입니다.");
+        else alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -373,7 +377,7 @@ const Password = ({ back }: IPasswordProps) => {
 
         back();
       })
-      .catch((err) => console.error("Chage Password :", err));
+      .catch((err) => console.error("Error in /src/components/auth/Recovery > Password() > changePassword() :", err));
   };
 
   return (

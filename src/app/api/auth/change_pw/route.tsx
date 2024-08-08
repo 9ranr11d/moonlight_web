@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest) {
     // Password 변경 성공 메세지 반환
     return NextResponse.json({ msg: "Password Has Been Successfully Changeed" }, { status: 200 });
   } catch (err) {
-    console.error("Change Pw :", err);
+    console.error("Error in /src/app/api/auth/change_pw > PUT :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

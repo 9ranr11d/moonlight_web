@@ -12,7 +12,7 @@ import { IISchedule, ISchedule } from "@models/Schedule";
 import { IIUser } from "@models/User";
 import { IIScheduleCategory, IScheduleCategory } from "@models/ScheduleCategory";
 
-import { convertDateII } from "@utils/utils";
+import { convertDateII, errMsg } from "@utils/utils";
 
 import MiniCalendarView from "@components/calendar/MiniCalendarView";
 import { IConvertedSchedules } from "@components/calendar/CalendarView";
@@ -212,9 +212,10 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
           <li key={idx}>
             <button type="button" onClick={() => selectedSchedule(schedule)} disabled={user.accessLevel !== 3 && (schedule.user as IIUser)._id !== user._id}>
               <span className={CSS.multiple}>
-                {schedule.categories.map((category, _idx) =>
-                  _idx < 2 ? <span key={_idx} className={CSS.categoriesColor} style={{ background: category.color }}></span> : _idx < 3 && "..."
-                )}
+                {schedule.categories.slice(0, 2).map((category, _idx) => (
+                  <span key={_idx} className={CSS.categoriesColor} style={{ background: category.color }}></span>
+                ))}
+                {schedule.categories.length > 2 && <span>...</span>}
               </span>
 
               <span className={CSS.truncated}>{schedule.title}</span>
@@ -775,7 +776,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getCategories();
       })
-      .catch((err) => console.error("Update Category :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateCategory() :", err));
   };
 
   /** 카테고리 생성 */
@@ -793,7 +794,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -805,7 +806,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 카테고리 추가에 성공하였습니다.");
       })
-      .catch((err) => console.error("Create Category :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > createCategory() :", err));
   };
 
   /** 카테고리 삭제 */
@@ -821,7 +822,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getCategories();
       })
-      .catch((err) => console.error("Delete Duplicate :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteCategory() :", err));
   };
 
   /** 모든 카테고리 목록 가져오기 */
@@ -833,7 +834,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((_categories) => dispatch(setScheduleCategories(_categories)))
-      .catch((err) => console.error("Get Categories :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > getCategories() :", err));
   };
 
   /** 일정 생성 */
@@ -846,7 +847,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -863,7 +864,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 추가에 성공하였습니다.");
       })
-      .catch((err) => console.error("Create Schedule :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > createSchedule() :", err));
   };
 
   /** 일정 정보 갱신 */
@@ -883,7 +884,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getSchedulesCover();
       })
-      .catch((err) => console.error("Update Category :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateSchedule() :", err));
   };
 
   /** 일정 삭제 */
@@ -899,7 +900,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getSchedulesCover();
       })
-      .catch((err) => console.error("Delete Duplicate :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteSchedule() :", err));
   };
 
   return (

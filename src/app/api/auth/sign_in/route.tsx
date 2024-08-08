@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error("Sign In :", err);
+    console.error("Error in /src/app/api/auth/sign_in > POST :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

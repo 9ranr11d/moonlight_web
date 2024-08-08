@@ -13,7 +13,7 @@ import CSS from "./CalendarView.module.css";
 import { IIUser } from "@models/User";
 import { IIISchedule } from "@models/Schedule";
 
-import { dayOfWeek, monthDays, monthNames } from "@utils/utils";
+import { dayOfWeek, errMsg, monthDays, monthNames } from "@utils/utils";
 
 import EventModal from "./EventModal";
 
@@ -171,8 +171,10 @@ export default function CalendarView() {
     return matchingSchedule.length > 0 ? (
       <>
         {matchingSchedule.map((schedule, idx) => (
-          <p key={idx} className={`${CSS.schedules} ${CSS.multipleSchedules}`} style={{ background: schedule.categories[0].color }}>
-            {date.getTime() === new Date(schedule.date[0]).getTime() || date.getTime() === new Date(schedule.date[1]).getTime() ? schedule.title : ""}
+          <p key={idx} className={`${CSS.schedule} ${CSS.multipleSchedules}`} style={{ background: schedule.categories[0].color }}>
+            <span className={CSS.truncated}>
+              {date.getTime() === new Date(schedule.date[0]).getTime() || date.getTime() === new Date(schedule.date[1]).getTime() ? schedule.title : ""}
+            </span>
           </p>
         ))}
       </>
@@ -193,11 +195,12 @@ export default function CalendarView() {
     return schedules.length > 0 ? (
       <>
         {schedules.map((schedule, idx) => (
-          <p key={idx} className={CSS.schedules}>
+          <p key={idx} className={CSS.schedule}>
             <span className={CSS.multiple}>
-              {schedule.categories.map((category, _idx) =>
-                _idx < 2 ? <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span> : _idx < 3 && "..."
-              )}
+              {schedule.categories.slice(0, 2).map((category, _idx) => (
+                <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span>
+              ))}
+              {schedule.categories.length > 2 && <span>...</span>}
             </span>
 
             <span className={CSS.truncated}>{schedule.title}</span>
@@ -214,7 +217,7 @@ export default function CalendarView() {
   const handleInputYear = (e: any): void => {
     const value = e.target.value;
 
-    if (value.length < 5) setInputYear(Number(value));
+    if (value.length < 5) setInputYear(value);
   };
 
   /**
@@ -224,7 +227,7 @@ export default function CalendarView() {
   const handleInputMonth = (e: any): void => {
     const value = e.target.value;
 
-    if (value.length < 4) setInputMonth(Number(value));
+    if (value.length < 4) setInputMonth(value);
   };
 
   /**
@@ -468,12 +471,12 @@ export default function CalendarView() {
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((users) => setUsers(users))
-      .catch((err) => console.error("Get Users :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getUsers() :", err));
   };
 
   /** 일정 가져오기 */
@@ -482,12 +485,12 @@ export default function CalendarView() {
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((_schedules) => dispatch(setSchedules(_schedules)))
-      .catch((err) => console.error("Get Categories :", err));
+      .catch((err) => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getSchedules() :", err));
   };
 
   return (

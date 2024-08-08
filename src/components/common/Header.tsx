@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
@@ -19,13 +20,15 @@ import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
 import IconClose from "@public/img/common/icon_greater_than_black.svg";
 
 export default function Header() {
-  const menus = ["투 두 리스트", "버킷 리스트", "다이어리", "지도", "전국 일주"];
-
+  const router = useRouter();
+  const pathname = usePathname();
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
+
+  const menus = ["투 두 리스트", "버킷 리스트", "다이어리", "지도", "전국 일주"];
 
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false);
@@ -89,7 +92,7 @@ export default function Header() {
           })
         )
       )
-      .catch((err) => console.error("Get User :", err));
+      .catch((err) => console.error("Error in /src/components/common/Header > Header() > getUser() :", err));
   };
 
   /** Refresh Token 확인 */
@@ -98,11 +101,14 @@ export default function Header() {
       .then((res) => {
         if (res.ok) return res.json();
 
+        // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동
+        if (res.status === 400 || res.status === 404) router.push("/");
+
         return res.json().then((data) => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
       .then((data) => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch((err) => console.error("Get Refresh Access Token :", err));
+      .catch((err) => console.error("Error in /src/components/common/Header > Header() > getRefreshAccessToken() :", err));
   };
 
   return (

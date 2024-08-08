@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // 일차하는 사용자의 Identification, email 반환
     return NextResponse.json({ identification: user.identification, email: user.email }, { status: 200 });
   } catch (err) {
-    console.error("Check Id :", err);
+    console.error("Error in /src/app/api/auth/check_id > POST :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

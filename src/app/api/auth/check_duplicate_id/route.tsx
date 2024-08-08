@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // 해당 Identification를 가진 사용자가 없을 시 '사용 가능' 메세지 반환
     return NextResponse.json({ msg: "Identification is Available" }, { status: 200 });
   } catch (err) {
-    console.error("Check Duplicate Id :", err);
+    console.error("Error in /src/app/api/auth/check_duplicate_id > POST :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

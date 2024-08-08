@@ -16,7 +16,7 @@ export async function GET() {
     // 카테고리들 반환
     return NextResponse.json(categories, { status: 200 });
   } catch (err) {
-    console.error("Categories Management GET :", err);
+    console.error("Error in /src/app/api/calendar/categories_management > GET :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json({ msg: "Success" }, { status: 200 });
   } catch (err) {
-    console.error("Categories Management POST :", err);
+    console.error("Error in /src/app/api/calendar/categories_management > POST :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
@@ -67,7 +67,7 @@ export async function PUT(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json(updatedScheduleCategory, { status: 200 });
   } catch (err) {
-    console.log("Schedule Management PUT :", err);
+    console.log("Error in /src/app/api/calendar/categories_management > PUT :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
@@ -88,7 +88,7 @@ export async function DELETE(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json({ msg: "Success" }, { status: 200 });
   } catch (err) {
-    console.error("Categories Mamagement DELETE :", err);
+    console.error("Error in /src/app/api/calendar/categories_management > DELETE :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

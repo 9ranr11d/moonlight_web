@@ -5,9 +5,8 @@
 }
 
 .week > ul {
-  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .week > ul:first-child {
@@ -18,4 +17,32 @@
   height: 100px;
   padding: 5px;
   border: 1px solid var(--border-color);
+}
+
+.schedule {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.bulletPoint {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  column-gap: 5px;
+}
+
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

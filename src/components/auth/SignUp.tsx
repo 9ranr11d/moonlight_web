@@ -6,6 +6,8 @@ import Image from "next/image";
 
 import CSS from "./SignUp.module.css";
 
+import { errMsg } from "@utils/utils";
+
 import IconBack from "@public/img/common/icon_less_than_black.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
@@ -123,7 +125,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((data) => console.log(data.msg))
-      .catch((err) => console.error("Check Duplicate :", err));
+      .catch((err) => console.error("Error in /src/components/auth/SignUp > checkDuplicate() :", err));
   };
 
   /** 회원가입 */
@@ -147,7 +149,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       .then((res) => {
         if (res.ok) return res.json();
 
-        alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+        alert(errMsg);
 
         return res.json().then((data) => Promise.reject(data.msg));
       })
@@ -156,7 +158,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         completed();
       })
-      .catch((err) => console.error("Process Sign Up :", err));
+      .catch((err) => console.error("Error in /src/components/auth/SignUp > processSignUp() :", err));
   };
 
   return (

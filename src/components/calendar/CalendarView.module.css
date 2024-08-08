@@ -137,7 +137,7 @@
 
 .mainBox > .content > ul {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .inputYear {
@@ -227,24 +227,24 @@
   color: var(--font-color);
 }
 
-.days > li > .content .schedules {
+.days > li > .content .schedule {
   display: flex;
   align-items: center;
   column-gap: 3px;
   color: var(--font-color);
 }
 
-.days > li > .content:hover .schedules {
+.days > li > .content:hover .schedule {
   color: white;
 }
 
-.days > li > .content .schedules > span > span {
+.days > li > .content .schedule > span > span {
   display: inline-block;
   width: 10px;
   height: 10px;
 }
 
-.days > li > .content:hover .schedules > span > span {
+.days > li > .content:hover .schedule > span > span {
   border: 1px solid white;
 }
 
@@ -293,7 +293,7 @@
 
 .miniCalendar > .content > ul {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .miniCalendar > .content > .days > li {

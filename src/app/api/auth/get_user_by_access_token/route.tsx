@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Get User By Access Token :", err);
+    console.error("Error in /src/app/api/auth/get_user_by_access_token > POST :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
