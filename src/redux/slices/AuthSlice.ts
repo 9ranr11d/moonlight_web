@@ -19,6 +19,8 @@ const initialState: IAuthState = {
   identification: "",
   nickname: "",
   email: "",
+  signUpMethod: "web",
+  coupleCode: "",
   accessLevel: 0,
   accessToken: "",
   regDate: "",

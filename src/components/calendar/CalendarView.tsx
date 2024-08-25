@@ -46,6 +46,8 @@ export default function CalendarView() {
 
   /** 일정 */
   const calendar = useSelector((state: RootState) => state.calendarReducer);
+  /** 사용자 정보 */
+  const user = useSelector((state: RootState) => state.authReducer);
 
   /** 오늘 날짜 */
   const today: Date = new Date();
@@ -481,7 +483,7 @@ export default function CalendarView() {
 
   /** 일정 가져오기 */
   const getSchedules = (): void => {
-    fetch(`/api/calendar/schedules_management/${year}/${month}`)
+    fetch(`/api/calendar/schedules_management/${year}/${month}/${user._id}/${user.coupleCode}`)
       .then((res) => {
         if (res.ok) return res.json();
 

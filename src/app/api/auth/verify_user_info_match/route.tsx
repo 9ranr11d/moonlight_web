@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // 일치하는 사용자가 있을 시 성공 메세지 반환
     return NextResponse.json({ msg: "E-mail is Available" }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/verify_user_info_match > POST :", err);
+    console.error("Error in /src/app/api/auth/verify_user_info_match > POST() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

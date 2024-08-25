@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     // 블러 처리한 사용자 Identification 반환
     return NextResponse.json({ identification: modifiedId }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/get_user_id_by_email > POST :", err);
+    console.error("Error in /src/app/api/auth/get_user_id_by_email > POST() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

@@ -13,6 +13,8 @@ export default function ThisWeek() {
 
   const calendar = useSelector((state: RootState) => state.calendarReducer);
 
+  const user = useSelector((state: RootState) => state.authReducer);
+
   const today: Date = new Date();
   const currentYear: number = today.getFullYear();
   const currentMonth: number = today.getMonth();
@@ -21,11 +23,11 @@ export default function ThisWeek() {
   const thisSunday: Date = new Date(currentYear, currentMonth, currentDay - today.getDay());
 
   useEffect(() => {
-    getSchedules();
-  }, []);
+    if (user.isAuth) getSchedules();
+  }, [user]);
 
   const getSchedules = (): void => {
-    fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}`)
+    fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
       .then((res) => {
         if (res.ok) return res.json();
 

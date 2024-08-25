@@ -8,11 +8,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { refreshAccessToken, signIn } from "@redux/slices/AuthSlice";
+import { refreshAccessToken } from "@redux/slices/AuthSlice";
 
-import CSS from "./header.module.css";
+import CSS from "./Header.module.css";
 
-import { processSignOut } from "@utils/utils";
+import { getUser } from "@utils/utils";
+
+import ProfileModal from "./ProfileModal";
 
 import IconLogoBlack from "@public/img/common/icon_logo_black.svg";
 import IconLogoWhite from "@public/img/common/icon_logo_white.svg";
@@ -39,7 +41,7 @@ export default function Header() {
     if (user.isAuth) return;
 
     // AccessToken이 있는지, 없는지
-    if (user.accessToken.length !== 0) getUser(user.accessToken);
+    if (user.accessToken.length !== 0) getUser(user.accessToken, dispatch);
     else getRefreshAccessToken();
   }, [user]);
 
@@ -55,6 +57,11 @@ export default function Header() {
     return () => clearInterval(interval);
   }, [user.accessToken]);
 
+  useEffect(() => {
+    setIsUserPanelOpen(false);
+    setIsSideMenuOpen(false);
+  }, [pathname]);
+
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
     setIsUserPanelOpen((prev) => !prev);
@@ -64,35 +71,8 @@ export default function Header() {
     setIsSideMenuOpen((prev) => !prev);
   };
 
-  const clickSignOut = () => {
-    if (processSignOut("로그아웃 하시겠습니까?", dispatch)) setIsUserPanelOpen(false);
-  };
-
-  /** Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인 */
-  const getUser = (accessToken: string): void => {
-    /** 보낼 Access Token */
-    const data: { accessToken: string } = { accessToken };
-
-    fetch("/api/auth/get_user_by_access_token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-
-        return res.json().then((data) => Promise.reject(data.msg));
-      })
-      .then((data) =>
-        // 사용자 정보 AuthSlice(Redux)에 저장
-        dispatch(
-          signIn({
-            ...data,
-            isAuth: true,
-          })
-        )
-      )
-      .catch((err) => console.error("Error in /src/components/common/Header > Header() > getUser() :", err));
+  const closeUserPanel = (): void => {
+    setIsUserPanelOpen(false);
   };
 
   /** Refresh Token 확인 */
@@ -135,22 +115,7 @@ export default function Header() {
                   {user.nickname}
                 </button>
 
-                <div className={CSS.option} style={isUserPanelOpen ? undefined : { display: "none" }}>
-                  <h6>{user.nickname}님</h6>
-
-                  <ul>
-                    <li>
-                      <button type="button" onClick={(): void => console.log("내 정보")}>
-                        정보
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" onClick={clickSignOut}>
-                        로그아웃
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                {isUserPanelOpen && <ProfileModal closeModal={closeUserPanel} />}
               </li>
             </ul>
 

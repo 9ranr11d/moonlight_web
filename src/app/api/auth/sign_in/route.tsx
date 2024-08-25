@@ -43,9 +43,11 @@ export async function POST(req: NextRequest) {
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(
       {
-        user,
-        isAuth: true,
-        accessToken: accessToken,
+        user: {
+          ...user.toJSON(),
+          isAuth: true,
+          accessToken: accessToken,
+        },
       },
       {
         status: 200,
@@ -53,7 +55,7 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error("Error in /src/app/api/auth/sign_in > POST :", err);
+    console.error("Error in /src/app/api/auth/sign_in > POST() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

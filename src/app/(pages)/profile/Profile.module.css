@@ -1,0 +1,37 @@
+.background {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  column-gap: 5px;
+}
+
+.background > div {
+  background: white;
+  border-radius: 5px;
+}
+
+.sideMenu {
+  padding: 5px;
+}
+
+.sideMenu > ul {
+  width: 100%;
+}
+
+.sideMenu > ul > li > button {
+  width: 100%;
+  background: none;
+  color: var(--font-color);
+}
+
+.sideMenu > ul > li > button:hover {
+  background: var(--disabled-color-ii);
+}
+
+.sideMenu > ul > li > .selected {
+  border-radius: 5px 0 0 5px;
+  border-right: 2px solid var(--primary-color);
+}
+
+.content {
+  padding: 10px 20px 20px;
+}

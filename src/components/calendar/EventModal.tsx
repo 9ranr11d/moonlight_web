@@ -287,9 +287,9 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
                   userCategories.map((category, idx) =>
                     editCategories.some((_category) => _category._id === category._id) ? (
                       <li key={idx} className={CSS.edit}>
-                        <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", category._id)} />
+                        <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", String(category._id))} />
 
-                        <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", category._id)} />
+                        <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", String(category._id))} />
 
                         <button type="button" onClick={() => updateCategory(category)}>
                           <Image src={IconCheck} width={16} alt="√" />
@@ -372,7 +372,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         <button
           type="button"
-          onClick={() => deleteCategory(category._id)}
+          onClick={() => deleteCategory(String(category._id))}
           onMouseOver={() => hoverDeleteCategory(true, idx)}
           onMouseOut={() => hoverDeleteCategory(false, idx)}
         >
@@ -385,11 +385,11 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   /** 현재 선택된 카테고리에서 변경 사항 적용 */
   const checkSelectedCategory = (): void => {
     /** 카테고리들의 _id로 중복 제거 */
-    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => category._id));
+    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => String(category._id)));
     /** 선택된 카테고리들 */
     const selectedCategory: IIScheduleCategory[] = editSchedule.categories;
     /** 선택된 카테고리에서 변경 사항 적용 */
-    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(category._id));
+    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(String(category._id)));
 
     setEditSchedule((prev) => ({
       ...prev,
@@ -669,7 +669,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param schedule 선택한 일정
    */
   const selectedSchedule = (schedule: IConvertedSchedules): void => {
-    setSelectedScheduleId(schedule._id);
+    setSelectedScheduleId(String(schedule._id));
 
     /** 일정 시작 날짜 */
     const startDate = new Date(schedule.startYear, schedule.startMonth, schedule.startDay);
@@ -679,14 +679,14 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     // 일정 팝업 수정 상태 날짜 수정
     setEditSchedule({
       ...schedule,
-      user: (schedule.user as IIUser)._id,
+      user: String((schedule.user as IIUser)._id),
       date: [startDate, endDate],
     });
 
     // 카테고리 생성 상태 초기화
     setNewCategory((prev) => ({
       ...prev,
-      createdBy: (schedule.user as IIUser)._id,
+      createdBy: String((schedule.user as IIUser)._id),
     }));
 
     setIsCreateSchedule(false);
@@ -703,20 +703,20 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       setEditSchedule((prev) => ({
         ...editScheduleInitialState,
         date: prev.date,
-        user: _user._id,
+        user: String(_user._id),
       }));
     // 일정 팝업이 수정 상태일 시
     else
       setEditSchedule((prev) => ({
         ...prev,
-        user: _user._id,
+        user: String(_user._id),
         categories: [],
       }));
 
     // 카테고리 생성 Input 초기화
     setNewCategory({
       ...newCategoryInitialState,
-      createdBy: _user._id,
+      createdBy: String(_user._id),
     });
 
     setIsUserListOpen(false);

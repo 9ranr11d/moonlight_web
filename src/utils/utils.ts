@@ -1,10 +1,10 @@
 import { AppDispatch } from "@redux/store";
-import { signOut } from "@redux/slices/AuthSlice";
+import { signIn, signOut } from "@redux/slices/AuthSlice";
+
+export const errMsg = "오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.";
 
 const today = new Date();
 const year = today.getFullYear();
-
-export const errMsg = "오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.";
 
 /** 사이드 메뉴의 월 목록 */
 export const monthDays: number[] = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -99,4 +99,46 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
     .catch((err) => console.error("Error in /src/utils/utils > processSignOut() :", err));
 
   return true;
+};
+
+/** Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인 */
+export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
+  if (!accessToken) return console.error("Access Token is missing.");
+
+  /** 보낼 Access Token */
+  const data: { accessToken: string } = { accessToken };
+
+  fetch("/api/auth/get_user_by_access_token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (res.ok) return res.json();
+
+      return res.json().then((data) => Promise.reject(data.msg));
+    })
+    .then((data) =>
+      // 사용자 정보 AuthSlice(Redux)에 저장
+      dispatch(
+        signIn({
+          ...data,
+          isAuth: true,
+        })
+      )
+    )
+    .catch((err) => console.error("Error in /src/utils/utils > getUser() :", err));
+};
+
+export const copyClipBoard = (text: string): void => {
+  if (text.length > 0) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("클립보드에 복사되었습니다.");
+      })
+      .catch((err) => {
+        console.error("Error in /src/utils/utils > copyClipBoard() :", err);
+      });
+  }
 };

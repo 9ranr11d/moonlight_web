@@ -8,6 +8,10 @@ export interface IUser {
   nickname: string;
   /** E-mail */
   email: string;
+  /** 회원가입 방법: { web: 웹, android: 안드로이드 앱, ios: 아이폰 앱 } */
+  signUpMethod: "web" | "android" | "ios";
+  /** 커플 코드 */
+  coupleCode?: string;
   /** 열람 권한: { 0: 심사중, 1: 방문자, 2: 연인, 3: 관리자} */
   accessLevel: number;
   /** 회원가입 날짜 */
@@ -32,6 +36,15 @@ export const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
   password: { type: String, required: true },
   nickname: { type: String, required: true },
   email: { type: String, required: true },
+  signUpMethod: {
+    type: String,
+    enum: ["web", "android", "ios"],
+    required: true,
+  },
+  coupleCode: {
+    type: String,
+    default: null,
+  },
   accessLevel: {
     type: Number,
     required: true,

@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     // Access Token을 반환
     return NextResponse.json({ accessToken }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/refresh_access_token > GET :", err);
+    console.error("Error in /src/app/api/auth/refresh_access_token > GET() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

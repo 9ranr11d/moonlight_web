@@ -1,0 +1,24 @@
+.container > .title {
+  margin-bottom: 20px;
+}
+
+.container > .desc {
+  margin-bottom: 20px;
+}
+
+.container > .desc > h5 {
+  margin-bottom: 10px;
+}
+
+.container > .desc > p > span {
+  font-family: "pretendard_bold";
+}
+
+.codeInput {
+  width: 50% !important;
+}
+
+.btnBox {
+  display: flex;
+  column-gap: 10px;
+}

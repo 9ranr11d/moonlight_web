@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     // 인증코드 반환
     return NextResponse.json({ verificationCode: verificationCode }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/email_verification > POST :", err);
+    console.error("Error in /src/app/api/auth/email_verification > POST() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }

@@ -18,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json(user, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/get_users_with_high_access_level > GET :", err);
+    console.error("Error in /src/app/api/auth/get_users_with_high_access_level > GET() :", err);
 
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
