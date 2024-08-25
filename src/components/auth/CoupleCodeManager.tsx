@@ -121,7 +121,7 @@ export default function CoupleCodeManager() {
             <h5>발급된 커플 코드가 있습니다.</h5>
 
             <p>
-              &#8251; 발급 된 <span>'커플 코드'</span>를 연인에게 공유하세요.
+              &#8251; 발급 된 <span>&apos;커플 코드&apos;</span>를 연인에게 공유하세요.
             </p>
 
             <div style={{ marginTop: 20 }}>
@@ -148,10 +148,10 @@ export default function CoupleCodeManager() {
             ) : (
               <>
                 <p>
-                  &#8251; 공유 받은 <span>'커플 코드'</span>가 없을 시 아래 <span>'커플 코드 발급'</span> 버튼으로 커플 코드를 발급해주세요.
+                  &#8251; 공유 받은 <span>&apos;커플 코드&apos;</span>가 없을 시 아래 <span>&apos;커플 코드 발급&apos;</span> 버튼으로 커플 코드를 발급해주세요.
                 </p>
                 <p>
-                  &nbsp;&nbsp;&nbsp;(동일한 <span>'커플 코드'</span>를 등록한 사용자끼리 정보를 공유할 수 있습니다.)
+                  &nbsp;&nbsp;&nbsp;(동일한 <span>&apos;커플 코드&apos;</span>를 등록한 사용자끼리 정보를 공유할 수 있습니다.)
                 </p>
               </>
             )}

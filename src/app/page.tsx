@@ -29,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     if (user.isAuth && user.accessLevel > 0) router.push("/home");
-  }, [user.isAuth]);
+  }, [user.isAuth, user.accessLevel, router]);
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
