@@ -1,0 +1,136 @@
+.header {
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header > nav {
+  padding: 10px 30px;
+  background: #ffffffcc;
+  transition: height 1s ease, padding 1s ease;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  background-color: var(--modal-background-color);
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.background button {
+  width: 100%;
+  height: 100%;
+}
+
+.sideMenu {
+  transition: right 1s ease, opacity 1s ease;
+  position: absolute;
+  top: 0;
+  background: white;
+  width: 80%;
+  height: 100vh;
+  padding: 10px;
+  z-index: 1001;
+  border-radius: 5px 0 0 5px;
+}
+
+.sideMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sideMenu > ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.afterSignInBox {
+  position: relative;
+  transition: bottom 1s ease, opacity 1s ease;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  column-gap: 30px;
+}
+
+.logoBox {
+  margin: auto;
+}
+
+.logoBox h5 {
+  font-family: "sf_pro_bold";
+}
+
+.menuBox {
+  width: 100%;
+  margin: auto;
+}
+
+.menuBox button,
+.background button,
+.sideMenu button {
+  border: none;
+  background: none;
+  color: var(--font-color);
+  padding: 0;
+}
+
+.menuBox button:active,
+.background button:active,
+.sideMenu button:active {
+  background: none;
+}
+
+.menuBox > ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuBox > ul > li:last-child {
+  position: relative;
+  text-align: center;
+  cursor: initial;
+}
+
+.mobile {
+  display: none;
+}
+
+.beforeSignInBox {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: top 1s ease, opacity 1s ease;
+}
+
+@media (max-width: 768px) {
+  .afterSignInBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logoBox {
+    margin: initial;
+  }
+
+  .menuBox {
+    width: auto;
+    margin: initial;
+  }
+
+  .menuBox > ul {
+    display: none;
+  }
+
+  .mobile {
+    display: initial;
+  }
+}
