@@ -5,7 +5,9 @@ import { RootState } from "@redux/store";
 
 import CSS from "./CoupleCodeManager.module.css";
 
-import { copyClipBoard, errMsg, getUser } from "@utils/utils";
+import { errMsg } from "@constants/msg";
+
+import { copyClipBoard, getUser } from "@utils/index";
 
 export default function CoupleCodeManager() {
   const dispatch = useDispatch();

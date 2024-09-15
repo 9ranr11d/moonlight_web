@@ -6,7 +6,8 @@ import { RootState } from "@redux/store";
 
 import CSS from "./ThisWeek.module.css";
 
-import { dayOfWeek, errMsg } from "@utils/utils";
+import { errMsg } from "@constants/msg";
+import { dayOfWeek } from "@constants/date";
 
 export default function ThisWeek() {
   const dispatch = useDispatch();

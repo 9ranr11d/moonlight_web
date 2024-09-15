@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import CSS from "./CalendarView.module.css";
 
-import { dayOfWeek, monthDays, monthNames } from "@utils/utils";
+import { dayOfWeek, monthDays, monthNames } from "@constants/date";
 
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";

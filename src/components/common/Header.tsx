@@ -12,12 +12,14 @@ import { refreshAccessToken } from "@redux/slices/AuthSlice";
 
 import CSS from "./Header.module.css";
 
-import { getUser } from "@utils/utils";
+import { mainMenus } from "@constants/menu";
+
+import { getUser } from "@utils/index";
 
 import ProfileModal from "./ProfileModal";
 
-import IconLogoBlack from "@public/img/common/icon_logo_black.svg";
-import IconLogoWhite from "@public/img/common/icon_logo_white.svg";
+import IconLogoSquare from "@public/img/common/icon_logo_square.svg";
+import IconLogoHorizontal from "@public/img/common/icon_logo_horizontal.svg";
 import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
 import IconClose from "@public/img/common/icon_greater_than_black.svg";
 
@@ -29,8 +31,6 @@ export default function Header() {
 
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
-
-  const menus = ["투 두 리스트", "버킷 리스트", "다이어리", "지도", "전국 일주"];
 
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false);
@@ -92,22 +92,20 @@ export default function Header() {
   };
 
   return (
-    <header className={CSS.header} style={user.isAuth ? { zIndex: 999 } : undefined}>
+    <header style={user.isAuth ? { zIndex: 999 } : undefined}>
       <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
         <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
-              <Image src={IconLogoBlack} width={24} alt="Logo" />
+              <Image src={IconLogoHorizontal} width={150} alt="Logo" />
             </Link>
           </div>
 
           <div className={CSS.menuBox}>
             <ul>
-              {menus.map((menu, idx) => (
+              {mainMenus.map((menu, idx) => (
                 <li key={idx}>
-                  <button type="button" onClick={() => alert(menu)}>
-                    {menu}
-                  </button>
+                  <Link href={menu.path}>{menu.title}</Link>
                 </li>
               ))}
               <li>
@@ -127,7 +125,7 @@ export default function Header() {
 
         <div className={CSS.beforeSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { top: -30, opacity: 0 } : { top: 30 }}>
           <Link prefetch={true} href={"/"}>
-            <Image src={IconLogoWhite} width={66} priority alt="Logo" />
+            <Image src={IconLogoSquare} width={100} priority alt="Logo" />
           </Link>
         </div>
       </nav>
@@ -150,11 +148,9 @@ export default function Header() {
         </div>
 
         <ul>
-          {menus.map((menu, idx) => (
+          {mainMenus.map((menu, idx) => (
             <li key={idx}>
-              <button type="button" onClick={() => alert(menu)}>
-                <h6>{menu}</h6>
-              </button>
+              <Link href={menu.path}>{menu.title}</Link>
             </li>
           ))}
         </ul>

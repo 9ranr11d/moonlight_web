@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules } from "@redux/slices/CalendarSlice";
 
-import CSS from "./CalendarView.module.css";
-
 import { IIUser } from "@models/User";
 import { IIISchedule } from "@models/Schedule";
 
-import { dayOfWeek, errMsg, monthDays, monthNames } from "@utils/utils";
+import CSS from "./CalendarView.module.css";
+
+import { dayOfWeek, monthDays, monthNames } from "@constants/date";
+import { errMsg } from "@constants/msg";
 
 import EventModal from "./EventModal";
 

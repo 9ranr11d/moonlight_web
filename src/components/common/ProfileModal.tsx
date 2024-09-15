@@ -9,7 +9,7 @@ import { RootState } from "@redux/store";
 
 import CSS from "./ProfileModal.module.css";
 
-import { processSignOut } from "@utils/utils";
+import { processSignOut } from "@utils/index";
 
 interface IProfileModal {
   closeModal: () => void;
@@ -30,9 +30,9 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
 
       <ul>
         <li>
-          <button type="button">
-            <Link href={"/profile"}>정보</Link>
-          </button>
+          <Link href={"/profile"}>
+            <button type="button">정보</button>
+          </Link>
         </li>
         <li>
           <button type="button" onClick={clickSignOut}>

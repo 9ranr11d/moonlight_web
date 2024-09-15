@@ -6,9 +6,10 @@ import Image from "next/image";
 
 import Lottie from "lottie-react";
 
-import { convertToMinutes, errMsg } from "@utils/utils";
-
 import CSS from "./Recovery.module.css";
+
+import { errMsg } from "@constants/msg";
+import { convertToMinutes } from "@utils/index";
 
 import LottieLoading from "@public/json/loading_1.json";
 

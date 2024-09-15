@@ -30,6 +30,10 @@
   background: var(--disabled-color-i);
 }
 
+.tapBox > button:hover {
+  background: var(--click-color);
+}
+
 .tapBox > button:disabled {
   background: var(--primary-color);
 }

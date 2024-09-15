@@ -1,20 +1,7 @@
-.header {
-  width: 100%;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.header > nav {
-  padding: 10px 30px;
-  background: #ffffffcc;
-  transition: height 1s ease, padding 1s ease;
-}
-
 .background {
   position: absolute;
   top: 0;
-  background-color: var(--modal-background-color);
+  background-color: var(--background-color-iii);
   width: 100%;
   height: 100vh;
   z-index: 1000;
@@ -107,6 +94,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  justify-content: center;
   transition: top 1s ease, opacity 1s ease;
 }
 

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import CSS from "./SignUp.module.css";
 
-import { errMsg } from "@utils/utils";
+import { errMsg } from "@constants/msg";
 
 import IconBack from "@public/img/common/icon_less_than_black.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";

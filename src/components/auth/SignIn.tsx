@@ -10,7 +10,7 @@ import { signIn } from "@redux/slices/AuthSlice";
 
 import CSS from "./SignIn.module.css";
 
-import { errMsg } from "@utils/utils";
+import { errMsg } from "@constants/msg";
 
 import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
 import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";

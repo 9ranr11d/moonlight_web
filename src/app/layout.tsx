@@ -6,6 +6,7 @@ import "./globals.css";
 import Provider from "@redux/Provider";
 
 import Header from "@components/common/Header";
+import Footer from "@components/common/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Provider>
           <Header />
+
           {children}
+
+          <Footer />
         </Provider>
       </body>
     </html>

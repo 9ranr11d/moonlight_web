@@ -1,19 +1,6 @@
 import { AppDispatch } from "@redux/store";
 import { signIn, signOut } from "@redux/slices/AuthSlice";
-
-export const errMsg = "오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.";
-
-const today = new Date();
-const year = today.getFullYear();
-
-/** 사이드 메뉴의 월 목록 */
-export const monthDays: number[] = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-/** 달 이름 */
-export const monthNames: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-
-/** 요일 이름 */
-export const dayOfWeek: string[] = ["일", "월", "화", "수", "목", "금", "토"];
+import { errMsg } from "@constants/msg";
 
 /**
  * 시간 형식 설정
@@ -85,7 +72,7 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
     .then((res) => {
       if (res.ok) return res.json();
 
-      alert("오류가 발생했습니다. 지속된다면 관리자에게 문의를 넣어주세요.");
+      alert(errMsg);
 
       return res.json().then((data) => Promise.reject(data.msg));
     })
@@ -116,6 +103,8 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
     .then((res) => {
       if (res.ok) return res.json();
 
+      alert(errMsg);
+
       return res.json().then((data) => Promise.reject(data.msg));
     })
     .then((data) =>
@@ -139,6 +128,8 @@ export const copyClipBoard = (text: string): void => {
       })
       .catch((err) => {
         console.error("Error in /src/utils/utils > copyClipBoard() :", err);
+
+        alert(errMsg);
       });
   }
 };

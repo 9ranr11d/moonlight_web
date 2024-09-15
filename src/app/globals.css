@@ -1,13 +1,14 @@
 :root {
-  --primary-color: #d8aaff;
-  --secondary-color: #bb86fc;
-  --background-color: #d8aaff33;
-  --modal-background-color: #00000099;
+  --primary-color: #b67a80;
+  --secondary-color: #7295a4;
+  --click-color: #ae5861;
+  --background-color-i: linear-gradient(to bottom, #8b9da4 0%, #b7a0a1 80%, #b7a0a1 100%);
+  --background-color-ii: #1f1b29;
+  --background-color-iii: #00000099;
   --font-color: #111;
   --placeholder-color: #72787f;
-  --click-color: #454c53;
   --border-color: #d9d9d9;
-  --disabled-color-i: #9ea4aa;
+  --disabled-color-i: #c3c7cd;
   --disabled-color-ii: #ddd;
 
   --bright-blue: #00bfff;
@@ -33,17 +34,42 @@ body {
   font-size: 12px;
   font-weight: 400;
   color: var(--font-color);
-  background: var(--background-color);
+  background: var(--background-color-i);
 }
 
 main,
-header {
+header,
+footer {
   max-width: 1920px;
   margin: 0 auto;
 }
 
+header {
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+header > nav {
+  padding: 10px 30px;
+  background: #ffffffcc;
+  transition: height 1s ease, padding 1s ease;
+}
+
 main {
-  padding: 110px 20px 0;
+  min-height: 100vh;
+  padding: 110px 20px 20px;
+}
+
+footer {
+  padding: 20px;
+  background: var(--background-color-ii);
+  color: white;
+}
+
+footer > nav {
+  margin-bottom: 20px;
 }
 
 ul,
@@ -58,7 +84,7 @@ a {
 }
 
 a:hover {
-  color: var(--click-color);
+  color: var(--placeholder-color);
 }
 
 h1,
@@ -145,7 +171,7 @@ input[type="password"]::placeholder input[type="number"]::placeholder {
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus {
-  outline: 1px solid var(--secondary-color);
+  outline: 1px solid var(--click-color);
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -197,7 +223,7 @@ button {
 }
 
 button:active {
-  background: var(--secondary-color);
+  background: var(--click-color);
 }
 
 button:disabled {

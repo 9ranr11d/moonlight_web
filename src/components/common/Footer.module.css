@@ -1,0 +1,17 @@
+.title {
+  margin-bottom: 10px;
+}
+
+.menus {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menus li {
+  margin-right: 10px;
+}
+
+.menus li:not(:last-child)::after {
+  content: "|";
+  margin-left: 10px;
+}

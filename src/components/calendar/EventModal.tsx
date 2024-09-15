@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { setScheduleCategories } from "@redux/slices/CalendarSlice";
 
-import CSS from "./EventModal.module.css";
-
 import { IISchedule, ISchedule } from "@models/Schedule";
 import { IIUser } from "@models/User";
 import { IIScheduleCategory, IScheduleCategory } from "@models/ScheduleCategory";
 
-import { convertDateII, errMsg } from "@utils/utils";
+import CSS from "./EventModal.module.css";
+
+import { errMsg } from "@constants/msg";
+
+import { convertDateII } from "@utils/index";
 
 import MiniCalendarView from "@components/calendar/MiniCalendarView";
 import { IConvertedSchedules } from "@components/calendar/CalendarView";
