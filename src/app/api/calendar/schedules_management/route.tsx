@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
 
+    // date: 날짜, user: 사용자, title: 일정 제목, categories: 카테고리들, content: 내용, isRepeating: 반복 여부
     const { date, user, title, categories, content, isRepeating }: IISchedule = await req.json();
 
     /** 시작 날짜와 종료 날짜가 같은 일정인지 */
@@ -46,6 +47,7 @@ export async function PUT(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
+    // _id: 카테고리 _id, date: 날짜, user: 사용자, title: 일정 제목, categories: 카테고리들, content: 내용, isRepeating: 반복 여부
     const { _id, date, user, title, categories, content, isRepeating }: IIISchedule = await req.json();
 
     /** 수정할 일정 정보 */

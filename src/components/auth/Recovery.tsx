@@ -38,28 +38,29 @@ interface IRecoveryProps {
 
 /** E-mail 인증 */
 const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
-  /** 인증코드 입력 제한시간 최대값 */
+  /** 인증 코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
   /** E-mail 아이디 부분 Input Ref */
   const identificationInputRef = useRef<HTMLInputElement>(null);
-  /** 인증코드 입력 Input Ref */
+  /** 인증 코드 입력 Input Ref */
   const verificationCodeInputRef = useRef<HTMLInputElement>(null);
 
   const [email, setEmail] = useState<string>(""); // 입력된 E-mail
-  const [verificationCode, setVerificationCode] = useState<string>(""); // 인증코드
-  const [verificationInput, setVerificationInput] = useState<string>(""); // 입력 받은 인증코드
+  const [verificationCode, setVerificationCode] = useState<string>(""); // 인증 코드
+  const [verificationInput, setVerificationInput] = useState<string>(""); // 입력 받은 인증 코드
 
-  const [isEmailSent, setIsEmailSent] = useState<boolean>(false); // 인증코드 발송 여부
-  const [isVerifyingEmail, setIsVerifyingEmail] = useState<boolean>(false); // 유효한 E-mail인지 판단하고, 유효할 시 인증코드 발송을 했는지
+  const [isEmailSent, setIsEmailSent] = useState<boolean>(false); // 인증 코드 발송 여부
+  const [isVerifyingEmail, setIsVerifyingEmail] = useState<boolean>(false); // 유효한 E-mail인지 판단하고, 유효할 시 인증 코드 발송을 했는지
 
-  const [deadline, setDeadline] = useState<number>(0); // 인증코드 입력 제한시간
+  const [deadline, setDeadline] = useState<number>(0); // 인증 코드 입력 제한시간
 
+  // '아이디' 텍스트 입력 필드로 포커스
   useEffect(() => {
     if (isAutoFocus && identificationInputRef.current) identificationInputRef.current.focus();
   }, [isAutoFocus]);
 
-  // 인증코드 입력 제한시간 감소
+  // 인증 코드 입력 제한시간 감소
   useEffect(() => {
     let timerId: any;
 
@@ -70,6 +71,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
     };
   }, [deadline]);
 
+  // 인증 E-mail 전송 시 인증 코드 텍스트 입력 필드로 포커스
   useEffect(() => {
     if (isEmailSent && verificationCodeInputRef.current) verificationCodeInputRef.current.focus();
   }, [isEmailSent]);
@@ -87,17 +89,17 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
     if (e.key === "Enter") verifyMatch();
   };
 
-  /** 인증코드 Input */
+  /** 인증 코드 Input */
   const handleVerificationInput = (e: any): void => {
     setVerificationInput(e.target.value);
   };
 
-  /** 인증코드 Input에서 'Enter'를 누를 시 */
+  /** 인증 코드 Input에서 'Enter'를 누를 시 */
   const handleVerificationInputKeyDown = (e: any): void => {
     if (e.key === "Enter") checkVerificationCode();
   };
 
-  /** 인증코드가 유효한지 확인 */
+  /** 인증 코드가 유효한지 확인 */
   const checkVerificationCode = (): void => {
     if (verificationInput === verificationCode) {
       if (deadline > 0) {
@@ -105,7 +107,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
 
         verified(email);
       } else alert("제한 시간이 초과되었습니다.");
-    } else alert("인증코드가 잘못되었습니다.");
+    } else alert("인증 코드가 잘못되었습니다.");
   };
 
   /** DB에 등록 되어있는 E-mail인지 확인 */
@@ -139,7 +141,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
       .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
   };
 
-  /** 인증코드 전송 */
+  /** 인증 코드 전송 */
   const sendEmail = (): void => {
     const data: { email: string } = { email };
 
@@ -197,7 +199,7 @@ const EmailSender = ({ verified, isAutoFocus }: IEmailSenderProps) => {
           <li>
             <ul>
               <li>
-                <h6>인증코드</h6>
+                <h6>인증 코드</h6>
               </li>
               <li>
                 <input
@@ -274,7 +276,7 @@ const Identification = () => {
 
 /** Password 찾기 */
 const Password = ({ back }: IPasswordProps) => {
-  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
   const [isAuth, setIsAuth] = useState<boolean>(false); // Identification 인증 여부
   const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
@@ -285,6 +287,7 @@ const Password = ({ back }: IPasswordProps) => {
   const [password, setPassword] = useState<string>(""); // 새로 만들 Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
 
+  // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
   useEffect(() => {
     if (isEmailMatching && passwordInputRef.current) passwordInputRef.current.focus();
   }, [isEmailMatching]);

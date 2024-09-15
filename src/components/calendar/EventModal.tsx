@@ -129,7 +129,6 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const renderSelectedEditCategoryIcon = (idx: number): any => {
     return isEditCategoryHovers[idx] ? IconEditWritingWhite : IconEditReadingWhite;
   };
-
   /** 수정 상태가 아닌 카테고리 수정 아이콘 */
   const renderUnSelectedEditCategoryIcon = (idx: number): any => {
     return isEditCategoryHovers[idx] ? IconEditWritingPrimary : IconEditReadingPrimary;
@@ -786,7 +785,10 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     setIsCreateCategory(false);
 
     // 카테고리 이름 중복 허용 X
-    if (userCategories.some((category) => category.title === newCategory.title)) return alert("이미 있는 카테고리입니다.");
+    if (userCategories.some((category) => category.title === newCategory.title)) {
+      alert("이미 있는 카테고리입니다.");
+      return;
+    }
 
     fetch("/api/calendar/categories_management", {
       method: "POST",

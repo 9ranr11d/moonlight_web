@@ -131,7 +131,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   /** 회원가입 */
   const processSignUp = (): void => {
     // Password Password 재확인이 일치하지 않을 때
-    if (password !== confirmPassword) return alert("비밀번호가 일치하지 않습니다.");
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
 
     /** 회원가입에 필요한 사용자 정보 */
     const data: { identification: string; nickname: string; password: string; email: string } = {

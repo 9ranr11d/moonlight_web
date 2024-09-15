@@ -88,9 +88,17 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
   return true;
 };
 
-/** Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인 */
+/**
+ * Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인
+ * @param accessToken Access Token
+ * @param dispatch Dispatch
+ */
 export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
-  if (!accessToken) return console.error("Access Token is missing.");
+  // Access Token이 없을 시
+  if (!accessToken) {
+    console.error("Access Token is missing.");
+    return;
+  }
 
   /** 보낼 Access Token */
   const data: { accessToken: string } = { accessToken };
@@ -119,6 +127,10 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
     .catch((err) => console.error("Error in /src/utils/utils > getUser() :", err));
 };
 
+/**
+ * 클립보드로 복사
+ * @param text 복사할 문자열
+ */
 export const copyClipBoard = (text: string): void => {
   if (text.length > 0) {
     navigator.clipboard

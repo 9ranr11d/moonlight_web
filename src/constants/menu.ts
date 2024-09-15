@@ -1,3 +1,4 @@
+/** 메인 메뉴들 */
 export const mainMenus = [
   { title: "투 두 리스트", path: "/" },
   { title: "버킷 리스트", path: "/" },

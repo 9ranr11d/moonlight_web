@@ -9,6 +9,7 @@ import CSS from "./Footer.module.css";
 import { mainTitle } from "@constants/index";
 import { mainMenus } from "@constants/menu";
 
+/** Footer */
 export default function Footer() {
   return (
     <footer>

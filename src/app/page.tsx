@@ -22,11 +22,10 @@ export default function Home() {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
-  // console.log(user);
-
   const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
   const [isRecovery, setIsRecovery] = useState<boolean>(false); // Identification/Password 찾기 여부
 
+  // 로그인 정보가 있을 시 '메인 홈'으로
   useEffect(() => {
     if (user.isAuth && user.accessLevel > 0) router.push("/home");
   }, [user.isAuth, user.accessLevel, router]);

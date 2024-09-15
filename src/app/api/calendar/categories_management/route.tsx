@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
+    // title: 카테고리 이름, color: 카테고리 색상, createdBy: 만든 날짜
     const { title, color, createdBy }: IScheduleCategory = await req.json();
 
     /** 생설할 카테고리 정보 */

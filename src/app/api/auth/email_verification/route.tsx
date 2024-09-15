@@ -13,10 +13,10 @@ export async function POST(req: NextRequest) {
     // E-mail
     const { email }: { email: string } = await req.json();
 
-    /** 인증코드 */
+    /** 인증 코드 */
     const verificationCode: string = Math.random().toString(36).slice(2, 8);
 
-    /** 인증코드가 포함된 E-maili 양식 */
+    /** 인증 코드가 포함된 E-maili 양식 */
     const content: string = `
       <html>
         <head>
@@ -66,9 +66,7 @@ export async function POST(req: NextRequest) {
       html: content,
     });
 
-    console.log(verificationCode);
-
-    // 인증코드 반환
+    // 인증 코드 반환
     return NextResponse.json({ verificationCode: verificationCode }, { status: 200 });
   } catch (err) {
     console.error("Error in /src/app/api/auth/email_verification > POST() :", err);

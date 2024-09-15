@@ -4,6 +4,8 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IUser {
   /** Identification */
   identification: string;
+  /** 프로필 이미지 url */
+  profileImgURL?: string;
   /** 별명 */
   nickname: string;
   /** E-mail */
@@ -34,6 +36,7 @@ export const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
     minlength: 5,
   },
   password: { type: String, required: true },
+  profileImgURL: { type: String },
   nickname: { type: String, required: true },
   email: { type: String, required: true },
   signUpMethod: {

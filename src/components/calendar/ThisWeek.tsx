@@ -9,24 +9,35 @@ import CSS from "./ThisWeek.module.css";
 import { errMsg } from "@constants/msg";
 import { dayOfWeek } from "@constants/date";
 
+/** 현재 주의 일정 표시 */
 export default function ThisWeek() {
+  /** Dispatch */
   const dispatch = useDispatch();
 
+  /** 캘린더 정보들 */
   const calendar = useSelector((state: RootState) => state.calendarReducer);
 
+  /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
+  /** 오늘 날짜 */
   const today: Date = new Date();
+  /** 현재 연도 */
   const currentYear: number = today.getFullYear();
+  /** 현재 달 */
   const currentMonth: number = today.getMonth();
+  /** 현재 일 */
   const currentDay: number = today.getDate();
 
+  /** 현재 주의 일요일 날짜 */
   const thisSunday: Date = new Date(currentYear, currentMonth, currentDay - today.getDay());
 
+  // 로그인 시 일정 정보 가져오기
   useEffect(() => {
     if (user.isAuth) getSchedules();
   }, [user]);
 
+  /** 일정 정보 가져오기 */
   const getSchedules = (): void => {
     fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
       .then((res) => {

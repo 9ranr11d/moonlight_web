@@ -11,15 +11,20 @@ import CSS from "./ProfileModal.module.css";
 
 import { processSignOut } from "@utils/index";
 
+/** 사용자 정보 수정 모달 자식들 */
 interface IProfileModal {
   closeModal: () => void;
 }
 
+/** 사용자 정보 수정 모달 */
 export default function ProfileModal({ closeModal }: IProfileModal) {
+  /** Dispatch */
   const dispatch = useDispatch();
 
+  /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
+  /** '로그아웃' 클릭 시 */
   const clickSignOut = () => {
     if (processSignOut("로그아웃 하시겠습니까?", dispatch)) closeModal();
   };

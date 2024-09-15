@@ -23,9 +23,13 @@ import IconLogoHorizontal from "@public/img/common/icon_logo_horizontal.svg";
 import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
 import IconClose from "@public/img/common/icon_greater_than_black.svg";
 
+/** Header */
 export default function Header() {
+  /** Router */
   const router = useRouter();
+  /** 현재 도메인 경로 */
   const pathname = usePathname();
+
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,7 +37,7 @@ export default function Header() {
   const user = useSelector((state: RootState) => state.authReducer);
 
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
 
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
@@ -57,6 +61,7 @@ export default function Header() {
     return () => clearInterval(interval);
   }, [user.accessToken]);
 
+  // 도메인 경로 변경 시 메뉴 불가시로 설정
   useEffect(() => {
     setIsUserPanelOpen(false);
     setIsSideMenuOpen(false);
@@ -67,10 +72,12 @@ export default function Header() {
     setIsUserPanelOpen((prev) => !prev);
   };
 
+  /** 사이드 메뉴 Toogle */
   const toggleSideMenu = (): void => {
     setIsSideMenuOpen((prev) => !prev);
   };
 
+  /** 사용자 정보 창 닫기 */
   const closeUserPanel = (): void => {
     setIsUserPanelOpen(false);
   };

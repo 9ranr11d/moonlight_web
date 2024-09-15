@@ -441,7 +441,10 @@ export default function CalendarView() {
 
   /** 연도, 달 텍스트 입력 필드 '확인' 버튼 클릭 시 */
   const selectInputYearMonth = (): void => {
-    if (inputMonth < 1 || inputMonth > 12) return alert("1~12월 사이로 작성해주세요.");
+    if (inputMonth < 1 || inputMonth > 12) {
+      alert("1~12월 사이로 작성해주세요.");
+      return;
+    }
 
     setYear(inputYear);
     setMonth(inputMonth - 1);

@@ -11,7 +11,9 @@ import CSS from "./Home.module.css";
 
 import ThisWeek from "@components/calendar/ThisWeek";
 
+/** 메인 홈 */
 export default function Home() {
+  /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
   return (
