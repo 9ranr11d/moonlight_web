@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <main className={CSS.background}>
-      <Link href={"/profile?menu=coupleCodeManager"}>{user.coupleCode ? "커플 코드 수정" : "커플 코드 발급"}</Link>
+      <Link href={"/profile?menu=code"}>{user.coupleCode ? "커플 코드 수정" : "커플 코드 발급"}</Link>
 
       <Link href={"/calendar"}>
         <div className={CSS.thisWeek}>

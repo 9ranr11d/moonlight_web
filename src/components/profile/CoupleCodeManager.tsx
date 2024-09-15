@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 
-import CSS from "./CoupleCodeManager.module.css";
+import CSS from "./ProfileEdit.module.css";
 
 import { errMsg } from "@constants/msg";
 

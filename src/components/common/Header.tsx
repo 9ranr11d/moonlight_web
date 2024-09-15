@@ -16,7 +16,7 @@ import { mainMenus } from "@constants/menu";
 
 import { getUser } from "@utils/index";
 
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "../profile/ProfileModal";
 
 import IconLogoSquare from "@public/img/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/img/common/icon_logo_horizontal.svg";

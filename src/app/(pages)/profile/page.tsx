@@ -6,10 +6,16 @@ import { useSearchParams } from "next/navigation";
 
 import CSS from "./Profile.module.css";
 
-import CoupleCodeManager from "@components/auth/CoupleCodeManager";
+import CoupleCodeManager from "@components/profile/CoupleCodeManager";
+import ProfileEdit from "@components/profile/ProfileEdit";
 
 export default function Profile() {
-  const profileMenu = [
+  const profileMenus = [
+    {
+      id: "edit",
+      title: "사용자 정보 수정",
+      content: <ProfileEdit />,
+    },
     {
       id: "code",
       title: "커플 코드 관리",
@@ -20,7 +26,7 @@ export default function Profile() {
   const searchParams = useSearchParams();
   const menu = searchParams.get("menu");
 
-  const initMenuIdx = profileMenu.findIndex((_menu) => _menu.id === menu);
+  const initMenuIdx = profileMenus.findIndex((_menu) => _menu.id === menu);
 
   const [selectedMenu, setSelectedMenu] = useState<number>(initMenuIdx !== -1 ? initMenuIdx : 0);
 
@@ -32,7 +38,7 @@ export default function Profile() {
     <main className={CSS.background}>
       <div className={CSS.sideMenu}>
         <ul>
-          {profileMenu.map((menu, idx) => (
+          {profileMenus.map((menu, idx) => (
             <li key={idx}>
               <button type="button" onClick={() => selectMenu(idx)} className={selectedMenu === idx ? CSS.selected : undefined}>
                 {menu.title}
@@ -42,7 +48,7 @@ export default function Profile() {
         </ul>
       </div>
 
-      <div className={CSS.content}>{profileMenu[selectedMenu].content}</div>
+      <div className={CSS.content}>{profileMenus[selectedMenu].content}</div>
     </main>
   );
 }

@@ -1,20 +1,25 @@
 <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_85_2)">
-<g clip-path="url(#clip1_85_2)">
-<mask id="mask0_85_2" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+<g clip-path="url(#clip0_206_192)">
+<mask id="mask0_206_192" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
 <path d="M128 0H0V128H128V0Z" fill="white"/>
 </mask>
-<g mask="url(#mask0_85_2)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M127.932 14.1421L113.79 0L101.769 12.0208L115.911 26.1629L127.932 14.1421ZM113.79 28.2843L99.6477 14.1421L45.4737 68.3162L38 89.9319L59.6158 82.4583L113.79 28.2843Z" fill="#D8AAFF"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M77.2586 20.0001C78.5847 20.0001 79.8565 19.4733 80.7942 18.5356L90.7943 8.53553C93.9441 5.38571 91.7133 -6.649e-07 87.2588 0L5 1.2279e-05C2.23858 1.26912e-05 0 2.23859 0 5.00001V123C0 125.761 2.23858 128 5 128H123C125.761 128 128 125.761 128 123V40.0292C128 35.5806 122.627 33.3471 119.473 36.485L109.473 46.4359C108.53 47.3743 108 48.6498 108 49.9801V103C108 105.762 105.761 108 103 108H25C22.2386 108 20 105.762 20 103V25.0001C20 22.2387 22.2386 20.0001 25 20.0001H77.2586Z" fill="#D8AAFF"/>
+<g mask="url(#mask0_206_192)">
+<mask id="mask1_206_192" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+<path d="M128 0H0V128H128V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask1_206_192)">
+<mask id="mask2_206_192" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+<path d="M128 0H0V128H128V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask2_206_192)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M127.932 14.1421L113.79 0L101.769 12.0208L115.911 26.1629L127.932 14.1421ZM113.79 28.2843L99.6477 14.1421L45.4737 68.3162L38 89.9319L59.6158 82.4583L113.79 28.2843Z" fill="#B67A80"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M77.2586 20.0001C78.5847 20.0001 79.8565 19.4733 80.7942 18.5356L90.7943 8.53553C93.9441 5.38571 91.7133 -6.649e-07 87.2588 0L5 1.2279e-05C2.23858 1.26912e-05 0 2.23859 0 5.00001V123C0 125.761 2.23858 128 5 128H123C125.761 128 128 125.761 128 123V40.0292C128 35.5806 122.627 33.3471 119.473 36.485L109.473 46.4359C108.53 47.3743 108 48.6498 108 49.9801V103C108 105.762 105.761 108 103 108H25C22.2386 108 20 105.762 20 103V25.0001C20 22.2387 22.2386 20.0001 25 20.0001H77.2586Z" fill="#B67A80"/>
+</g>
 </g>
 </g>
 </g>
 <defs>
-<clipPath id="clip0_85_2">
-<rect width="128" height="128" fill="white"/>
-</clipPath>
-<clipPath id="clip1_85_2">
+<clipPath id="clip0_206_192">
 <rect width="128" height="128" fill="white"/>
 </clipPath>
 </defs>
