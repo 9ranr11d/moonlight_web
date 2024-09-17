@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "./slices/AuthSlice";
 import calendarReducer from "./slices/CalendarSlice";
+import backdropReducer from "./slices/Backdrop";
 
 /** Redux Store */
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     /** 인증 정보 */
     authReducer,
     calendarReducer,
+    backdropReducer,
   },
 });
 

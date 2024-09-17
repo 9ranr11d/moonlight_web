@@ -9,9 +9,7 @@ import CSS from "./Profile.module.css";
 import CoupleCodeManager from "@components/profile/CoupleCodeManager";
 import ProfileEdit from "@components/profile/ProfileEdit";
 
-/**
- * 사용자 정보 수정
- */
+/** 사용자 정보 수정 */
 export default function Profile() {
   /** 사용자 정보 수정 메뉴들 */
   const profileMenus = [

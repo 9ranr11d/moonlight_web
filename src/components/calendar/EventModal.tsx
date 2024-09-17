@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
@@ -16,6 +18,7 @@ import { errMsg } from "@constants/msg";
 
 import { convertDateII } from "@utils/index";
 
+import Modal from "@components/common/Modal";
 import MiniCalendarView from "@components/calendar/MiniCalendarView";
 import { IConvertedSchedules } from "@components/calendar/CalendarView";
 
@@ -908,7 +911,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   };
 
   return (
-    <div className={CSS.modal}>
+    <Modal className={CSS.modal}>
       <div className={CSS.header}>
         {isEditSchedule && (
           <button type="button" onClick={toggleCreateSchedule}>
@@ -1032,6 +1035,6 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
           <Image src={IconPlus} width={24} alt="+" />
         </button>
       )}
-    </div>
+    </Modal>
   );
 }

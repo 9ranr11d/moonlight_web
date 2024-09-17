@@ -20,7 +20,7 @@
   width: 80%;
   height: 100vh;
   padding: 10px;
-  z-index: 1001;
+  z-index: 1003;
   border-radius: 5px 0 0 5px;
 }
 
@@ -92,9 +92,9 @@
 .beforeSignInBox {
   display: inline-block;
   position: absolute;
+  z-index: 1003;
   left: 50%;
   transform: translateX(-50%);
-  justify-content: center;
   transition: top 1s ease, opacity 1s ease;
 }
 

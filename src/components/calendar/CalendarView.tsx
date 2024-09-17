@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules } from "@redux/slices/CalendarSlice";
+import { hideBackdrop, showBackdrop } from "@redux/slices/Backdrop";
 
 import { IIUser } from "@models/User";
 import { IIISchedule } from "@models/Schedule";
@@ -49,6 +50,8 @@ export default function CalendarView() {
   const calendar = useSelector((state: RootState) => state.calendarReducer);
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
+  /** Backdrop */
+  const backdrop = useSelector((state: RootState) => state.backdropReducer);
 
   /** 오늘 날짜 */
   const today: Date = new Date();
@@ -84,7 +87,7 @@ export default function CalendarView() {
   const [isYear, setIsYear] = useState<boolean>(false); // 사이드 메뉴에서 연도 선택 상태인지
   const [isSiderbarOpen, setIsSiderbarOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 일정 추가, 수정 ,삭제 모달 가시 유무
-  const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false);
+  const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false); // 연도 텍스트 입력 필드 가시 유무
 
   const [users, setUsers] = useState<IIUser[]>([]); // 전체 사용자 목록
 
@@ -109,8 +112,8 @@ export default function CalendarView() {
 
   // 시작 시
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (user.isAuth) getUsers();
+  }, [user]);
 
   // 일정 목록의 변경이 있을 시
   useEffect(() => {
@@ -140,22 +143,13 @@ export default function CalendarView() {
 
   // 연도, 달 변경 시
   useEffect(() => {
-    getSchedules();
-  }, [year, month]);
+    if (user.isAuth) getSchedules();
+  }, [year, month, user]);
 
-  // 팝업 가시 상태 변경 시
+  // Backdrop랑 EventModal 동조화
   useEffect(() => {
-    /** <body> */
-    const body: HTMLElement = document.body;
-
-    // 팝업 켜질 시 스크롤 방지를 위해
-    if (isModalVisible) body.style.overflow = "hidden";
-    else body.style.overflow = "auto";
-
-    return () => {
-      body.style.overflow = "auto";
-    };
-  }, [isModalVisible]);
+    if (!backdrop.isVisible) closeModal();
+  }, [backdrop.isVisible]);
 
   /**
    * 시작 날짜와 종료 날짜가 다른 일정 렌더링
@@ -463,11 +457,15 @@ export default function CalendarView() {
 
     setLastSelectedDay(selectedDay);
 
+    dispatch(showBackdrop());
+
     setIsModalVisible(true);
   };
 
   /** 일정 팝업 닫기 */
   const closeModal = (): void => {
+    dispatch(hideBackdrop());
+
     setIsModalVisible(false);
   };
 
@@ -501,8 +499,6 @@ export default function CalendarView() {
 
   return (
     <div>
-      {isModalVisible && <button type="button" onClick={closeModal} className={CSS.modalBackground}></button>}
-
       <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
         <div className={CSS.subBox} style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}>
           <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>

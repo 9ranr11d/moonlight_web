@@ -8,6 +8,8 @@ export interface IUser {
   profileImgURL?: string;
   /** 별명 */
   nickname: string;
+  // /** 휴대전화 번호 */
+  // phoneNumber: string;
   /** E-mail */
   email: string;
   /** 회원가입 방법: { web: 웹, android: 안드로이드 앱, ios: 아이폰 앱 } */
@@ -38,6 +40,7 @@ export const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
   password: { type: String, required: true },
   profileImgURL: { type: String },
   nickname: { type: String, required: true },
+  // phoneNumber: { type: String, required: true },
   email: { type: String, required: true },
   signUpMethod: {
     type: String,

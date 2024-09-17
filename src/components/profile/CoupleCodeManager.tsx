@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +16,7 @@ export default function CoupleCodeManager() {
   /** Dispatch */
   const dispatch = useDispatch();
 
-  /** 사용장 정보 */
+  /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
   const [isCodeInputVisible, setIsCodeInputVisible] = useState<boolean>(false); // 커플 코드 텍스트 입력 필드 가시 유무
