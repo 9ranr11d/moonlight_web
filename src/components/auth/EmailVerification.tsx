@@ -11,16 +11,20 @@ import { convertToMinutes } from "@utils/index";
 
 import LottieLoading from "@public/json/loading_round_white_1.json";
 
-/** EmailSender 자식 */
-interface IEmailSenderProps {
+/** EmailVerification 자식 */
+interface IEmailVerificationProps {
+  /** 제목 */
+  title: string;
   /** 인증 된 E-mail 반환 */
   verified: (email: string) => void;
   /** Identification 자동 포커스 할 지 */
   isAutoFocus: boolean;
+  /** 입력한 E-mail을 DB에 있는 지 체크할 지 */
+  isEmailCheckEnabled: boolean;
 }
 
 /** E-mail 인증 */
-export default function EmailSender({ verified, isAutoFocus }: IEmailSenderProps) {
+export default function EmailVerification({ title, verified, isAutoFocus, isEmailCheckEnabled }: IEmailVerificationProps) {
   /** 인증 코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
@@ -98,30 +102,32 @@ export default function EmailSender({ verified, isAutoFocus }: IEmailSenderProps
     setIsEmailSent(false);
     setIsVerifyingEmail(true);
 
-    const data: { email: string } = { email };
+    if (isEmailCheckEnabled) {
+      const data: { email: string } = { email };
 
-    fetch("/api/auth/verify_user_info_match", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-
-        if (res.status === 404) {
-          alert("유효한 이메일이 아닙니다.");
-
-          setIsVerifyingEmail(false);
-        }
-
-        return res.json().then((data) => Promise.reject(data.msg));
+      fetch("/api/auth/verify_user_info_match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       })
-      .then((data) => {
-        console.log(data.msg);
+        .then((res) => {
+          if (res.ok) return res.json();
 
-        sendEmail();
-      })
-      .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
+          if (res.status === 404) {
+            alert("유효한 이메일이 아닙니다.");
+
+            setIsVerifyingEmail(false);
+          }
+
+          return res.json().then((data) => Promise.reject(data.msg));
+        })
+        .then((data) => {
+          console.log(data.msg);
+
+          sendEmail();
+        })
+        .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
+    } else sendEmail();
   };
 
   /** 인증 코드 전송 */
@@ -151,9 +157,9 @@ export default function EmailSender({ verified, isAutoFocus }: IEmailSenderProps
 
   return (
     <>
-      <h5>본인확인 이메일로 인증</h5>
+      <h5>{title}</h5>
 
-      <ul>
+      <ul className={CSS.email}>
         <li>
           <ul>
             <li>
@@ -165,8 +171,18 @@ export default function EmailSender({ verified, isAutoFocus }: IEmailSenderProps
             </li>
 
             <li style={{ display: "flex", justifyContent: "center" }}>
-              <button type="button" onClick={verifyMatch} style={{ width: "100%" }}>
-                {isVerifyingEmail ? <Lottie animationData={LottieLoading} style={{ width: 24 }} /> : <p>{isEmailSent ? "재전송" : "전송"}</p>}
+              <button type="button" onClick={verifyMatch} style={{ position: "relative" }}>
+                {isVerifyingEmail ? (
+                  <>
+                    <Lottie
+                      animationData={LottieLoading}
+                      style={{ width: 24, height: 24, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+                    />
+                    &nbsp;
+                  </>
+                ) : (
+                  <p>{isEmailSent ? "재전송" : "전송"}</p>
+                )}
               </button>
             </li>
           </ul>

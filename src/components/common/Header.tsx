@@ -40,7 +40,7 @@ export default function Header() {
   /** Backdrop */
   const backdrop = useSelector((state: RootState) => state.backdropReducer);
 
-  const [isHidden, setIsHidden] = useState(false); // 로그인 전 로고 불가시 여부
+  const [isHidden, setIsHidden] = useState<boolean>(false); // 로그인 전 로고 불가시 여부
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
 
@@ -48,6 +48,7 @@ export default function Header() {
   useEffect(() => {
     // 이미 로그인이 된 상태면 패스
     if (user.isAuth) return;
+    else setIsHidden(false);
 
     // AccessToken이 있는지, 없는지
     if (user.accessToken.length !== 0) getUser(user.accessToken, dispatch);

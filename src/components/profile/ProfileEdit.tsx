@@ -6,7 +6,7 @@ import CSS from "./ProfileEdit.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { showBackdrop } from "@redux/slices/Backdrop";
+import { hideBackdrop, showBackdrop } from "@redux/slices/Backdrop";
 
 import Lottie from "lottie-react";
 
@@ -18,7 +18,8 @@ import LottieLoading from "@public/json/loading_round_black_1.json";
 
 import Modal from "@components/common/Modal";
 
-import EmailUpdateForm from "./EmailUpdateForm";
+import EmailVerification from "@components/auth/EmailVerification";
+import { getUser } from "@utils/index";
 
 interface IEditableFields {
   id: string;
@@ -82,7 +83,14 @@ export default function ProfileEdit() {
   const renderModal = (): JSX.Element => {
     switch (renderModalType) {
       case "email":
-        return <EmailUpdateForm />;
+        return (
+          <EmailVerification
+            title="새로운 이메일을 입력해주세요."
+            verified={(email) => verifyEmailSuccess(email)}
+            isAutoFocus={true}
+            isEmailCheckEnabled={false}
+          />
+        );
       default:
         return <p>{errMsg}</p>;
     }
@@ -112,6 +120,43 @@ export default function ProfileEdit() {
     }
   };
 
+  const closeModal = () => {
+    setIsModalVisible(false);
+
+    setRenderModalType("");
+  };
+
+  const verifyEmailSuccess = (email: string) => {
+    dispatch(hideBackdrop());
+
+    closeModal();
+
+    updateEmail(email);
+  };
+
+  const updateEmail = (email: string) => {
+    const data = { _id: user._id, email: email };
+
+    fetch("/api/auth/change_user_info", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+
+        return res.json().then((data) => Promise.reject(data.msg));
+      })
+      .then((data) => {
+        console.log(data.msg);
+
+        alert("이메일이 성공적으로 바뀌었습니다.");
+
+        getUser(user.accessToken, dispatch);
+      })
+      .catch((err) => console.error("Error in /src/components/profile/ProfileEdit > ProfileEdit() => updateEmail() :", err));
+  };
+
   return (
     <>
       {user.isAuth ? (
@@ -120,11 +165,11 @@ export default function ProfileEdit() {
 
           <div className={CSS.desc}>{user.isAuth && renderFields()}</div>
 
-          {isModalVisible && <Modal>{renderModal()}</Modal>}
+          {isModalVisible && <Modal close={closeModal}>{renderModal()}</Modal>}
         </div>
       ) : (
         <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Lottie animationData={LottieLoading} style={{ width: 30 }} />
+          <Lottie animationData={LottieLoading} style={{ width: 30, height: 30 }} />
         </div>
       )}
     </>

@@ -49,7 +49,7 @@ export default function CoupleCodeManager() {
   const registerCoupleCode = (): void => {
     const data = { id: user._id, coupleCode };
 
-    fetch("/api/auth/registerCoupleCode", {
+    fetch("/api/auth/register_couple_code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

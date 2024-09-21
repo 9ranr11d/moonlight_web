@@ -8,7 +8,7 @@ import CSS from "./Recovery.module.css";
 
 import { errMsg } from "@constants/msg";
 
-import EmailSender from "./EmailSender";
+import EmailVerification from "./EmailVerification";
 import Identification from "./Identification";
 import Password from "./Password";
 

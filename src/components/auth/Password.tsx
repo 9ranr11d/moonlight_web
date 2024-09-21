@@ -6,7 +6,7 @@ import Image from "next/image";
 import CSS from "./Recovery.module.css";
 
 import { errMsg } from "@constants/msg";
-import EmailSender from "./EmailSender";
+import EmailVerification from "./EmailVerification";
 
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 
@@ -164,7 +164,7 @@ export default function Password({ back }: IPasswordProps) {
           </ul>
         </>
       ) : !isEmailMatching ? (
-        <EmailSender verified={(email) => checkEmail(email)} isAutoFocus={true} />
+        <EmailVerification title="이메일로 본인 인증" verified={(email) => checkEmail(email)} isAutoFocus={true} isEmailCheckEnabled={true} />
       ) : (
         <>
           <h5>바꿀 비밀번호를 입력</h5>

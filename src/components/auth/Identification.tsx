@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { errMsg } from "@constants/msg";
 
-import EmailSender from "./EmailSender";
+import EmailVerification from "./EmailVerification";
 
 /** Identification 찾기 */
 export default function Identification() {
@@ -42,7 +42,7 @@ export default function Identification() {
   return (
     <>
       {!isVerified ? (
-        <EmailSender verified={(email) => getUserIdentification(email)} isAutoFocus={false} />
+        <EmailVerification title="이메일로 본인 인증" verified={(email) => getUserIdentification(email)} isAutoFocus={false} isEmailCheckEnabled={true} />
       ) : (
         <div>
           <h4>찾으시는 아이디는</h4>

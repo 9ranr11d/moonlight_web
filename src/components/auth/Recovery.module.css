@@ -78,15 +78,19 @@
   flex: 1;
 }
 
-.content > ul > li > ul > li:first-child > h6 {
-  width: 65px;
-}
-
 .content > ul > li > ul > li > span {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.email > li > ul > li:first-child {
+  width: 80px;
+}
+
+.email > li > ul > li:last-child > button {
+  width: 80px;
 }
 
 @media (max-width: 768px) {
@@ -122,5 +126,9 @@
 
   .content > ul > li > ul > li:first-child > h6 {
     width: initial;
+  }
+
+  .email > li > ul > li:last-child > button {
+    width: 100%;
   }
 }

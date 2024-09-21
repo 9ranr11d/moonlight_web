@@ -127,7 +127,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         </ul>
 
         <button type="button" onClick={processSignIn}>
-          <h5>로그인</h5>
+          <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
         </button>
       </div>
 

@@ -45,6 +45,8 @@ export async function POST(req: NextRequest) {
       </html>
     `;
 
+    console.log("email_verification verificationCode :", verificationCode);
+
     /** 송신할 관리자 E-mail 정보 */
     const transporter = nodemailer.createTransport({
       service: "gmail",
