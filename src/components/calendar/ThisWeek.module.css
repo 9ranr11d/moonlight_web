@@ -17,11 +17,11 @@
   height: 100px;
   padding: 5px;
   border: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
 .schedule {
-  display: grid;
-  grid-template-columns: 40px 1fr;
+  display: flex;
   align-items: center;
   column-gap: 5px;
 }
