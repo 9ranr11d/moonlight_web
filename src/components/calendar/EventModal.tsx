@@ -911,7 +911,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   };
 
   return (
-    <Modal className={CSS.modal}>
+    <Modal close={closeModal} className={CSS.modal}>
       <div className={CSS.header}>
         {isEditSchedule && (
           <button type="button" onClick={toggleCreateSchedule}>
@@ -976,11 +976,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
           )}
         </h5>
 
-        <div style={{ height: "100%" }}>
-          <button type="button" onClick={closeModal}>
-            <Image src={IconClose} width={12} alt="X" />
-          </button>
-        </div>
+        <div style={{ height: "100%" }} />
       </div>
 
       <div className={CSS.content}>
