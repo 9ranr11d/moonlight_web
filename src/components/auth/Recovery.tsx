@@ -1,14 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import Image from "next/image";
 
 import CSS from "./Recovery.module.css";
 
-import { errMsg } from "@constants/msg";
-
-import EmailVerification from "./EmailVerification";
 import Identification from "./Identification";
 import Password from "./Password";
 

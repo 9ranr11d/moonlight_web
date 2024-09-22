@@ -14,17 +14,19 @@ import IconCheck from "@public/img/common/icon_check_primary.svg";
 interface IPasswordProps {
   /** 뒤로가기 */
   back: () => void;
+  /** Identification */
+  identification?: string;
 }
 
 /** Password 찾기 */
-export default function Password({ back }: IPasswordProps) {
+export default function Password({ back, identification }: IPasswordProps) {
   const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
-  const [isAuth, setIsAuth] = useState<boolean>(false); // Identification 인증 여부
+  const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // Identification 인증 여부
   const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
   const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
 
-  const [identification, setIdentification] = useState<string>(""); // 인증할 Identification
+  const [_identification, set_identification] = useState<string>(identification || ""); // 인증할 Identification
   const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
   const [password, setPassword] = useState<string>(""); // 새로 만들 Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
@@ -42,7 +44,7 @@ export default function Password({ back }: IPasswordProps) {
 
   /** Identification Input */
   const handleIdentification = (e: any): void => {
-    setIdentification(e.target.value);
+    set_identification(e.target.value);
   };
 
   /** Identification Input에서 'Enter'를 누를 시 */
@@ -76,7 +78,7 @@ export default function Password({ back }: IPasswordProps) {
 
   /** Identification 인증 */
   const checkIdentification = (): void => {
-    const data = { identification };
+    const data: { identification: string } = { identification: _identification };
 
     fetch("/api/auth/check_id", {
       method: "POST",
@@ -92,7 +94,7 @@ export default function Password({ back }: IPasswordProps) {
         return res.json().then((data) => Promise.reject(data.msg));
       })
       .then((data) => {
-        setIdentification(data.identification);
+        set_identification(data.identification);
         setUserEmail(data.email);
         setIsAuth(true);
       })
@@ -101,7 +103,7 @@ export default function Password({ back }: IPasswordProps) {
 
   /** 비밀번호 변경 */
   const changePassword = (): void => {
-    const data = { identification, password };
+    const data: { identification: string; password: string } = { identification: _identification, password };
 
     fetch("/api/auth/change_pw", {
       method: "PUT",

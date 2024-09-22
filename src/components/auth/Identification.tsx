@@ -17,7 +17,7 @@ export default function Identification() {
    * @param email E-mail
    */
   const getUserIdentification = (email: string): void => {
-    const data = { email };
+    const data: { email: string } = { email };
 
     fetch("/api/auth/get_user_id_by_email", {
       method: "POST",

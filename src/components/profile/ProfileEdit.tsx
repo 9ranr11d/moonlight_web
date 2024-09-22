@@ -14,12 +14,17 @@ import { IUser } from "@models/User";
 
 import { errMsg } from "@constants/msg";
 
+import { getUser } from "@utils/index";
+
 import LottieLoading from "@public/json/loading_round_black_1.json";
 
 import Modal from "@components/common/Modal";
+import Password from "@components/auth/Password";
+import EmailUpdateForm from "./EmailUpdateForm";
 
-import EmailVerification from "@components/auth/EmailVerification";
-import { getUser } from "@utils/index";
+interface IProfileEditProps {
+  changePage: (code: string) => void;
+}
 
 interface IEditableFields {
   id: string;
@@ -28,7 +33,7 @@ interface IEditableFields {
 }
 
 /** 사용자 정보 수정 */
-export default function ProfileEdit() {
+export default function ProfileEdit({ changePage }: IProfileEditProps) {
   const editableFields: IEditableFields[] = [
     { id: "identification", name: "아이디", type: "readOnly" },
     { id: "email", name: "E-mail", type: "requiresVerification" },
@@ -45,10 +50,35 @@ export default function ProfileEdit() {
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
+  const [disabledBtn, setDisabledBtn] = useState<{ [key in keyof IUser]?: boolean }>({});
+
   const [renderModalType, setRenderModalType] = useState<string>("");
 
   useEffect(() => {
-    if (user.isAuth) setUserData(user);
+    const initialDisabledState: { [key in keyof IUser]?: boolean } = {};
+
+    editableFields.forEach((field) => {
+      const key = field.id as keyof IUser;
+      initialDisabledState[key] = true;
+    });
+
+    setDisabledBtn(initialDisabledState);
+  }, []);
+
+  useEffect(() => {
+    if (user.isAuth) {
+      setUserData(user);
+
+      const newDisabledBtn: { [key in keyof IUser]?: boolean } = {};
+
+      editableFields.forEach((field) => {
+        const key = field.id as keyof IUser;
+
+        newDisabledBtn[key] = userData[key] === user[key];
+      });
+
+      setDisabledBtn(newDisabledBtn);
+    }
   }, [user]);
 
   const renderFields = (): JSX.Element[] => {
@@ -62,18 +92,25 @@ export default function ProfileEdit() {
           {field.type === "readOnly" ? (
             <p>{userData[key]?.toString()}</p>
           ) : field.type === "requiresVerification" ? (
-            <div>
+            <>
               <p>{userData[key]?.toString()}</p>
-              <button type="button" onClick={() => goToVerification(field)}>
+
+              <button type="button" onClick={() => confirmUpdate(field)}>
                 변경하기
               </button>
-            </div>
+            </>
           ) : field.type === "hidden" ? (
-            <button type="button" onClick={() => goToVerification(field)}>
+            <button type="button" onClick={() => confirmUpdate(field)}>
               변경하기
             </button>
           ) : (
-            <input name={field.id} type="text" value={userData[key]?.toString() || ""} onChange={handleField} />
+            <>
+              <input type="text" value={userData[key]?.toString() || ""} onChange={(e) => handleField(e, key)} />
+
+              <button type="button" onClick={() => confirmUpdate(field)} disabled={disabledBtn[key]}>
+                변경하기
+              </button>
+            </>
           )}
         </div>
       );
@@ -83,26 +120,26 @@ export default function ProfileEdit() {
   const renderModal = (): JSX.Element => {
     switch (renderModalType) {
       case "email":
-        return (
-          <EmailVerification
-            title="새로운 이메일을 입력해주세요."
-            verified={(email) => verifyEmailSuccess(email)}
-            isAutoFocus={true}
-            isEmailCheckEnabled={false}
-          />
-        );
+        return <EmailUpdateForm verifyEmailSuccess={(email) => verifyEmailSuccess(email)} />;
+      case "password":
+        return <Password back={() => alert("취소되었습니다")} identification={user.identification} />;
       default:
         return <p>{errMsg}</p>;
     }
   };
 
-  const handleField = (e: any): void => {
-    const { name, value } = e.target;
+  const handleField = (e: any, key: keyof IUser): void => {
+    const { value } = e.target;
 
-    setUserData((prev) => ({ ...prev, [name]: value }));
+    setUserData((prev) => ({ ...prev, [key]: value }));
+
+    setDisabledBtn((prev) => ({
+      ...prev,
+      [key]: value === user[key]?.toString(),
+    }));
   };
 
-  const goToVerification = (field: IEditableFields): void => {
+  const confirmUpdate = (field: IEditableFields): void => {
     switch (field.id) {
       case "email":
       case "password":
@@ -111,16 +148,24 @@ export default function ProfileEdit() {
         dispatch(showBackdrop());
 
         setIsModalVisible(true);
+
+        break;
+      case "nickname":
+        updateUserInfo({ nickname: userData.nickname });
+
         break;
       case "coupleCode":
+        changePage("code");
+
         break;
       default:
         alert(errMsg);
+
         break;
     }
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsModalVisible(false);
 
     setRenderModalType("");
@@ -131,11 +176,11 @@ export default function ProfileEdit() {
 
     closeModal();
 
-    updateEmail(email);
+    updateUserInfo({ email: email });
   };
 
-  const updateEmail = (email: string) => {
-    const data = { _id: user._id, email: email };
+  const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
+    const data: { _id: string; email?: string; nickname?: string } = { _id: user._id, ...userInfo };
 
     fetch("/api/auth/change_user_info", {
       method: "PUT",
@@ -150,7 +195,7 @@ export default function ProfileEdit() {
       .then((data) => {
         console.log(data.msg);
 
-        alert("이메일이 성공적으로 바뀌었습니다.");
+        alert("사용자 정보가 성공적으로 바뀌었습니다.");
 
         getUser(user.accessToken, dispatch);
       })

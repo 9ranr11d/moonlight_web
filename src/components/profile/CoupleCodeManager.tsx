@@ -47,7 +47,7 @@ export default function CoupleCodeManager() {
 
   /** 커플 코드 유효성 검사 */
   const registerCoupleCode = (): void => {
-    const data = { id: user._id, coupleCode };
+    const data: { id: string; coupleCode: string } = { id: user._id, coupleCode };
 
     fetch("/api/auth/register_couple_code", {
       method: "POST",
@@ -85,7 +85,7 @@ export default function CoupleCodeManager() {
       }
     }
 
-    const data = { _id: user._id, id: user.identification };
+    const data: { _id: string; id: string } = { _id: user._id, id: user.identification };
 
     fetch("/api/auth/issue_couple_code", {
       method: "POST",

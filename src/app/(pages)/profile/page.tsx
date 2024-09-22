@@ -11,12 +11,20 @@ import ProfileEdit from "@components/profile/ProfileEdit";
 
 /** 사용자 정보 수정 */
 export default function Profile() {
+  const findPageNum = (code: string | null): number => {
+    if (!code) return 0;
+
+    const idx = profileMenus.findIndex((_menu) => _menu.id === code);
+
+    return idx !== -1 ? idx : 0;
+  };
+
   /** 사용자 정보 수정 메뉴들 */
   const profileMenus = [
     {
       id: "edit",
       title: "사용자 정보 수정",
-      content: <ProfileEdit />,
+      content: <ProfileEdit changePage={(code) => changePage(code)} />,
     },
     {
       id: "code",
@@ -30,16 +38,20 @@ export default function Profile() {
   /** 처음 선택된 메뉴 */
   const menu = searchParams.get("menu");
   /** 처음 선택된 메뉴 순서 */
-  const initMenuIdx = profileMenus.findIndex((_menu) => _menu.id === menu);
+  const initMenuIdx = findPageNum(menu);
 
-  const [selectedMenu, setSelectedMenu] = useState<number>(initMenuIdx !== -1 ? initMenuIdx : 0); // 선택된 메뉴
+  const [selectedMenu, setSelectedMenu] = useState<number>(initMenuIdx); // 선택된 메뉴
 
   /**
    * 메뉴 선택
-   * @param menu 선택된 메뉴 순서
+   * @param idx 선택된 메뉴 순서
    */
-  const selectMenu = (menu: number): void => {
-    setSelectedMenu(menu);
+  const selectMenu = (idx: number): void => {
+    setSelectedMenu(idx);
+  };
+
+  const changePage = (code: string): void => {
+    setSelectedMenu(findPageNum(code));
   };
 
   return (
