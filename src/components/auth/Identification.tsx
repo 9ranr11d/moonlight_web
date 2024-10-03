@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import EmailVerification from "./EmailVerification";
 
@@ -24,25 +24,25 @@ export default function Identification() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert(errMsg);
+        else alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         setIdentification(data.identification);
         setIsVerified(true);
       })
-      .catch((err) => console.error("Error in /src/components/auth/Recovery > Identification() > getUserIdentification() :", err));
+      .catch(err => console.error("Error in /src/components/auth/Recovery > Identification() > getUserIdentification() :", err));
   };
 
   return (
     <>
       {!isVerified ? (
-        <EmailVerification title="이메일로 본인 인증" verified={(email) => getUserIdentification(email)} isAutoFocus={false} isEmailCheckEnabled={true} />
+        <EmailVerification title="이메일로 본인 인증" verified={email => getUserIdentification(email)} isAutoFocus={false} isEmailCheckEnabled={true} />
       ) : (
         <div>
           <h4>찾으시는 아이디는</h4>

@@ -10,7 +10,7 @@ import { signIn } from "@redux/slices/AuthSlice";
 
 import CSS from "./SignIn.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
 import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
@@ -56,7 +56,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
 
   /** 비밀번호 표시 Toggle */
   const togglePasswordVisibility = (): void => {
-    setIsPasswordVisible((prev) => !prev);
+    setIsPasswordVisible(prev => !prev);
   };
 
   /**
@@ -76,19 +76,19 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
-        else alert(errMsg);
+        else alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(signIn(data.user));
       })
-      .catch((err) => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
+      .catch(err => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
   };
 
   return (

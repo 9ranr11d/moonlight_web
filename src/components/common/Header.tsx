@@ -82,7 +82,7 @@ export default function Header() {
 
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
-    setIsUserPanelOpen((prev) => !prev);
+    setIsUserPanelOpen(prev => !prev);
   };
 
   /** 사이드 메뉴 Toogle */
@@ -90,7 +90,7 @@ export default function Header() {
     if (isSideMenuOpen) dispatch(hideBackdrop());
     else dispatch(showBackdrop());
 
-    setIsSideMenuOpen((prev) => !prev);
+    setIsSideMenuOpen(prev => !prev);
   };
 
   /** 로그인 전 로고 불가시 여부 */
@@ -108,17 +108,17 @@ export default function Header() {
   /** Refresh Token 확인 */
   const getRefreshAccessToken = (): void => {
     fetch("/api/auth/refresh_access_token")
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동
         if (res.status === 400 || res.status === 404) router.push("/");
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
-      .then((data) => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch((err) => console.error("Error in /src/components/common/Header > Header() > getRefreshAccessToken() :", err));
+      .then(data => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
+      .catch(err => console.error("Error in /src/components/common/Header > Header() > getRefreshAccessToken() :", err));
   };
 
   return (

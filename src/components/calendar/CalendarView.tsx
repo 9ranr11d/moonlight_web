@@ -15,7 +15,7 @@ import { IIISchedule } from "@models/Schedule";
 import CSS from "./CalendarView.module.css";
 
 import { dayOfWeek, monthDays, monthNames } from "@constants/date";
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import EventModal from "./EventModal";
 
@@ -237,7 +237,7 @@ export default function CalendarView() {
 
   /** 사이드 메뉴 가시 상태 설정 */
   const toggleSiderbar = (): void => {
-    setIsSiderbarOpen((prev) => !prev);
+    setIsSiderbarOpen(prev => !prev);
   };
 
   /**
@@ -266,7 +266,7 @@ export default function CalendarView() {
       setInputMonth(month + 1);
     }
 
-    setIsInputYearMonth((prev) => !prev);
+    setIsInputYearMonth(prev => !prev);
   };
 
   /**
@@ -277,12 +277,12 @@ export default function CalendarView() {
     switch (direction) {
       // 이전 년도로 이동
       case "prev":
-        setYear((prev) => prev - 1);
+        setYear(prev => prev - 1);
 
         break;
       // 다음 년도로 이동
       case "next":
-        setYear((prev) => prev + 1);
+        setYear(prev => prev + 1);
 
         break;
     }
@@ -296,20 +296,20 @@ export default function CalendarView() {
     switch (direction) {
       // 이전 달로 이동
       case "prev":
-        if (month > 0) setMonth((prev) => prev - 1);
+        if (month > 0) setMonth(prev => prev - 1);
         // 1월이면 이전 연도 12월로 이동
         else {
-          setYear((prev) => prev - 1);
+          setYear(prev => prev - 1);
           setMonth(11);
         }
 
         break;
       // 다음 달로 이동
       case "next":
-        if (month < 11) setMonth((prev) => prev + 1);
+        if (month < 11) setMonth(prev => prev + 1);
         // 12월이면 다음 연도 1월로 이동
         else {
-          setYear((prev) => prev + 1);
+          setYear(prev => prev + 1);
           setMonth(0);
         }
 
@@ -325,7 +325,7 @@ export default function CalendarView() {
    * @returns 찾은 일정 목록
    */
   const findMultipleScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
-    return multipleSchedules.filter((schedule) => {
+    return multipleSchedules.filter(schedule => {
       /** 찾으려는 날짜 */
       const date: Date = new Date(_year, _month, _day);
 
@@ -357,7 +357,7 @@ export default function CalendarView() {
    */
   const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
     return convertedSchedules.filter(
-      (schedule) =>
+      schedule =>
         schedule.isSingleDate &&
         ((schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === _day) ||
           (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === _day))
@@ -367,7 +367,7 @@ export default function CalendarView() {
   /** 일정 표시를 위한 일정들 정보 변환 */
   const convertSchedules = (): void => {
     /** 일정 표시를 위한 형식으로 변환하기 위한 임시 저장 */
-    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map((schedule) => {
+    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map(schedule => {
       /** 시작 날짜 */
       const startDate = new Date(schedule.date[0]);
       /** 종료 날짜 */
@@ -387,7 +387,7 @@ export default function CalendarView() {
     setConvertedSchedules(tempSchedules);
 
     /** 시작 날짜와 종료 날짜가 다른 일정 목록 */
-    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter((schedule) => schedule.isSingleDate === false);
+    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter(schedule => schedule.isSingleDate === false);
 
     setMultipleSchedules(tempMultipleSchedules);
   };
@@ -472,29 +472,29 @@ export default function CalendarView() {
   /** 모든 사용자 목록 */
   const getUsers = (): void => {
     fetch("/api/auth/get_users_with_high_access_level")
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((users) => setUsers(users))
-      .catch((err) => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getUsers() :", err));
+      .then(users => setUsers(users))
+      .catch(err => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getUsers() :", err));
   };
 
   /** 일정 가져오기 */
   const getSchedules = (): void => {
     fetch(`/api/calendar/schedules_management/${year}/${month}/${user._id}/${user.coupleCode}`)
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((_schedules) => dispatch(setSchedules(_schedules)))
-      .catch((err) => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getSchedules() :", err));
+      .then(_schedules => dispatch(setSchedules(_schedules)))
+      .catch(err => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getSchedules() :", err));
   };
 
   return (

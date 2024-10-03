@@ -16,23 +16,28 @@ interface IModalProps {
   style?: CSSProperties;
   children: ReactNode;
 
-  close: () => void;
+  close?: () => void;
 }
 
 export default function Modal({ className = "", style = {}, close, ...props }: IModalProps) {
   const dispatch = useDispatch();
 
-  const clickClose = () => {
-    dispatch(hideBackdrop());
+  const clickClose = (): void => {
+    if (close) {
+      dispatch(hideBackdrop());
 
-    close();
+      close();
+    }
   };
 
   return (
     <div className={`${CSS.modal} ${className}`} style={style}>
-      <button type="button" onClick={clickClose} style={{ position: "absolute", top: 10, right: 10, background: "none", padding: 0 }}>
-        <Image src={IconClose} width={20} height={20} alt="X" />
-      </button>
+      {close && (
+        <button type="button" onClick={clickClose} style={{ position: "absolute", top: 10, right: 10, background: "none", padding: 0 }}>
+          <Image src={IconClose} width={20} height={20} alt="X" />
+        </button>
+      )}
+
       {props.children}
     </div>
   );

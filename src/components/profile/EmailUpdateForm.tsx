@@ -17,7 +17,7 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
           <EmailVerification
             key="step1"
             title="새로운 이메일을 입력해주세요."
-            verified={(email) => verifyEmailSuccess(email)}
+            verified={email => verifyEmailSuccess(email)}
             isAutoFocus={true}
             isEmailCheckEnabled={false}
           />
@@ -28,7 +28,7 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
           <EmailVerification
             key="step0"
             title="이메일로 본인 인증"
-            verified={(email) => proceedWithVerifiedEmail(email)}
+            verified={email => proceedWithVerifiedEmail(email)}
             isAutoFocus={true}
             isEmailCheckEnabled={true}
           />

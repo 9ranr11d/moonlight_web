@@ -40,7 +40,7 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
     const usersWithCoupleCode = await User.find({ coupleCode: coupleCode }).select("_id").lean();
 
     // 사용자의 _id 배열
-    const userIds = usersWithCoupleCode.map((user) => user._id);
+    const userIds = usersWithCoupleCode.map(user => user._id);
 
     /** 조건: 시작 날짜와 종료 날짜 사아의 일정과 반복 설정 되어있는 일정 */
     const query = {

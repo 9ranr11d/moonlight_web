@@ -1,9 +1,27 @@
+"use client";
+
 import React from "react";
 
-export default function NotFound() {
+import Lottie from "lottie-react";
+
+import Modal from "@components/common/Modal";
+
+import LottieLoading from "@public/json/loading_moon.json";
+
+export default function Loading() {
   return (
-    <div>
-      <h1>하하 로딩중이다 이녀석아</h1>
-    </div>
+    <main>
+      <Modal>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 30 }}>
+          <Lottie animationData={LottieLoading} style={{ width: 100, height: 100 }} />
+        </div>
+
+        <h3>
+          달이 차오르고 있습니다.
+          <br />
+          한숨 주무시고 오세요.
+        </h3>
+      </Modal>
+    </main>
   );
 }

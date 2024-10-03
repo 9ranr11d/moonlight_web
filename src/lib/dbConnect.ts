@@ -22,7 +22,7 @@ export default async function dbConnect() {
     cached.promise = mongoose
       .set({ debug: true, strictQuery: false })
       .connect(`${MONGODB_URI}`)
-      .then((mongoose) => {
+      .then(mongoose => {
         console.log("Successfully connected to MongoDB");
         return mongoose;
       });

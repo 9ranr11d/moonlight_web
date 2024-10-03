@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import CSS from "./SignUp.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import IconBack from "@public/img/common/icon_less_than_black.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
@@ -89,7 +89,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
   /** E-mail 자동완성 목록 Toggle */
   const toggleEmailList = (): void => {
-    setIsEmailListOpen((prev) => !prev);
+    setIsEmailListOpen(prev => !prev);
   };
 
   /**
@@ -112,7 +112,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok || res.status === 409) {
           const is409 = res.status === 409;
           setIsDuplicateId(is409);
@@ -122,10 +122,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
           return res.json();
         }
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => console.log(data.msg))
-      .catch((err) => console.error("Error in /src/components/auth/SignUp > checkDuplicate() :", err));
+      .then(data => console.log(data.msg))
+      .catch(err => console.error("Error in /src/components/auth/SignUp > checkDuplicate() :", err));
   };
 
   /** 회원가입 */
@@ -149,19 +149,19 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         completed();
       })
-      .catch((err) => console.error("Error in /src/components/auth/SignUp > processSignUp() :", err));
+      .catch(err => console.error("Error in /src/components/auth/SignUp > processSignUp() :", err));
   };
 
   return (

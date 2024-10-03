@@ -7,7 +7,7 @@ import { RootState } from "@redux/store";
 
 import CSS from "./ProfileEdit.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import { copyClipBoard, getUser } from "@utils/index";
 
@@ -42,7 +42,7 @@ export default function CoupleCodeManager() {
   const toggleShowCodeInput = (): void => {
     setCoupleCode("");
 
-    setIsCodeInputVisible((prev) => !prev);
+    setIsCodeInputVisible(prev => !prev);
   };
 
   /** 커플 코드 유효성 검사 */
@@ -54,14 +54,14 @@ export default function CoupleCodeManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         alert("커플 코드가 등록되었습니다.");
@@ -70,7 +70,7 @@ export default function CoupleCodeManager() {
 
         toggleShowCodeInput();
       })
-      .catch((err) => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode() :", err));
+      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode() :", err));
   };
 
   /** 커플 코드 발급 */
@@ -92,21 +92,21 @@ export default function CoupleCodeManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         alert("커플 코드가 발급되었습니다.");
 
         getUser(user.accessToken, dispatch);
       })
-      .catch((err) => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode() :", err));
+      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode() :", err));
   };
 
   /** 커플 코드 삭제 */
@@ -119,17 +119,17 @@ export default function CoupleCodeManager() {
     }
 
     fetch(`/api/auth/issue_couple_code?id=${user._id}&coupleCode=${user.coupleCode}`, { method: "DELETE" })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         getUser(user.accessToken, dispatch);
       })
-      .catch((err) => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode() :", err));
+      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode() :", err));
   };
 
   return (

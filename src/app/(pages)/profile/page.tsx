@@ -14,7 +14,7 @@ export default function Profile() {
   const findPageNum = (code: string | null): number => {
     if (!code) return 0;
 
-    const idx = profileMenus.findIndex((_menu) => _menu.id === code);
+    const idx = profileMenus.findIndex(_menu => _menu.id === code);
 
     return idx !== -1 ? idx : 0;
   };
@@ -24,7 +24,7 @@ export default function Profile() {
     {
       id: "edit",
       title: "사용자 정보 수정",
-      content: <ProfileEdit changePage={(code) => changePage(code)} />,
+      content: <ProfileEdit changePage={code => changePage(code)} />,
     },
     {
       id: "code",

@@ -12,15 +12,15 @@ import Lottie from "lottie-react";
 
 import { IUser } from "@models/User";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import { getUser } from "@utils/index";
-
-import LottieLoading from "@public/json/loading_round_black_1.json";
 
 import Modal from "@components/common/Modal";
 import Password from "@components/auth/Password";
 import EmailUpdateForm from "./EmailUpdateForm";
+
+import LottieLoading from "@public/json/loading_round_black.json";
 
 interface IProfileEditProps {
   changePage: (code: string) => void;
@@ -57,7 +57,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   useEffect(() => {
     const initialDisabledState: { [key in keyof IUser]?: boolean } = {};
 
-    editableFields.forEach((field) => {
+    editableFields.forEach(field => {
       const key = field.id as keyof IUser;
       initialDisabledState[key] = true;
     });
@@ -71,7 +71,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
       const newDisabledBtn: { [key in keyof IUser]?: boolean } = {};
 
-      editableFields.forEach((field) => {
+      editableFields.forEach(field => {
         const key = field.id as keyof IUser;
 
         newDisabledBtn[key] = userData[key] === user[key];
@@ -82,35 +82,39 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   }, [user]);
 
   const renderFields = (): JSX.Element[] => {
-    return editableFields.map((field) => {
+    return editableFields.map(field => {
       const key = field.id as keyof IUser;
 
       return (
         <div key={field.id}>
-          <p>{field.name}</p>
+          <h6>{field.name}</h6>
 
           {field.type === "readOnly" ? (
-            <p>{userData[key]?.toString()}</p>
+            <div className={CSS.content}>
+              <p>{userData[key]?.toString()}</p>
+            </div>
           ) : field.type === "requiresVerification" ? (
-            <>
+            <div className={CSS.content}>
               <p>{userData[key]?.toString()}</p>
 
               <button type="button" onClick={() => confirmUpdate(field)}>
                 변경하기
               </button>
-            </>
+            </div>
           ) : field.type === "hidden" ? (
-            <button type="button" onClick={() => confirmUpdate(field)}>
-              변경하기
-            </button>
+            <div className={CSS.content} style={{ display: "initial" }}>
+              <button type="button" onClick={() => confirmUpdate(field)}>
+                변경하기
+              </button>
+            </div>
           ) : (
-            <>
-              <input type="text" value={userData[key]?.toString() || ""} onChange={(e) => handleField(e, key)} />
+            <div className={CSS.content}>
+              <input type="text" value={userData[key]?.toString() || ""} onChange={e => handleField(e, key)} />
 
               <button type="button" onClick={() => confirmUpdate(field)} disabled={disabledBtn[key]}>
                 변경하기
               </button>
-            </>
+            </div>
           )}
         </div>
       );
@@ -120,20 +124,20 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   const renderModal = (): JSX.Element => {
     switch (renderModalType) {
       case "email":
-        return <EmailUpdateForm verifyEmailSuccess={(email) => verifyEmailSuccess(email)} />;
+        return <EmailUpdateForm verifyEmailSuccess={email => verifyEmailSuccess(email)} />;
       case "password":
         return <Password back={() => alert("취소되었습니다")} identification={user.identification} />;
       default:
-        return <p>{errMsg}</p>;
+        return <p>{ERR_MSG}</p>;
     }
   };
 
   const handleField = (e: any, key: keyof IUser): void => {
     const { value } = e.target;
 
-    setUserData((prev) => ({ ...prev, [key]: value }));
+    setUserData(prev => ({ ...prev, [key]: value }));
 
-    setDisabledBtn((prev) => ({
+    setDisabledBtn(prev => ({
       ...prev,
       [key]: value === user[key]?.toString(),
     }));
@@ -159,7 +163,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
         break;
       default:
-        alert(errMsg);
+        alert(ERR_MSG);
 
         break;
     }
@@ -187,19 +191,19 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         alert("사용자 정보가 성공적으로 바뀌었습니다.");
 
         getUser(user.accessToken, dispatch);
       })
-      .catch((err) => console.error("Error in /src/components/profile/ProfileEdit > ProfileEdit() => updateEmail() :", err));
+      .catch(err => console.error("Error in /src/components/profile/ProfileEdit > ProfileEdit() => updateEmail() :", err));
   };
 
   return (
@@ -208,7 +212,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
         <div className={CSS.container}>
           <h3 className={CSS.title}>사용자 정보 수정</h3>
 
-          <div className={CSS.desc}>{user.isAuth && renderFields()}</div>
+          {user.isAuth && <div className={`${CSS.desc} ${CSS.profileInfo}`}>{renderFields()}</div>}
 
           {isModalVisible && <Modal close={closeModal}>{renderModal()}</Modal>}
         </div>

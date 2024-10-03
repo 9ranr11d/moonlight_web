@@ -6,10 +6,10 @@ import Lottie from "lottie-react";
 
 import CSS from "./Recovery.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 import { convertToMinutes } from "@utils/index";
 
-import LottieLoading from "@public/json/loading_round_white_1.json";
+import LottieLoading from "@public/json/loading_round_white.json";
 
 /** EmailVerification 자식 */
 interface IEmailVerificationProps {
@@ -51,7 +51,7 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
   useEffect(() => {
     let timerId: any;
 
-    deadline > 0 ? (timerId = setTimeout(() => setDeadline((prev) => prev - 1), 1000)) : clearTimeout(timerId);
+    deadline > 0 ? (timerId = setTimeout(() => setDeadline(prev => prev - 1), 1000)) : clearTimeout(timerId);
 
     return () => {
       clearTimeout(timerId);
@@ -110,7 +110,7 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-        .then((res) => {
+        .then(res => {
           if (res.ok) return res.json();
 
           if (res.status === 404) {
@@ -119,14 +119,14 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
             setIsVerifyingEmail(false);
           }
 
-          return res.json().then((data) => Promise.reject(data.msg));
+          return res.json().then(data => Promise.reject(data.msg));
         })
-        .then((data) => {
+        .then(data => {
           console.log(data.msg);
 
           sendEmail();
         })
-        .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
+        .catch(err => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
     } else sendEmail();
   };
 
@@ -139,20 +139,20 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         setVerificationCode(data.verificationCode);
         setIsVerifyingEmail(false);
         setIsEmailSent(true);
         setDeadline(maxDeadline);
       })
-      .catch((err) => console.error("Error in /src/components/auth/Recovery > EmailSender() > sendEmail() :", err));
+      .catch(err => console.error("Error in /src/components/auth/Recovery > EmailSender() > sendEmail() :", err));
   };
 
   return (

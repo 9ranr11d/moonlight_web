@@ -2,10 +2,23 @@
 
 import React from "react";
 
-export default function NotFound() {
+import Image from "next/image";
+
+import Modal from "@components/common/Modal";
+
+import IconNoEntry from "@public/img/common/icon_no_entry_primary.svg";
+import { ERR_MSG } from "@constants/msg";
+
+export default function Error() {
   return (
-    <div>
-      <h1>하하 에러다 이녀석아</h1>
-    </div>
+    <main>
+      <Modal>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 30 }}>
+          <Image src={IconNoEntry} width={200} height={200} alt="X" />
+        </div>
+
+        <h3>{ERR_MSG}</h3>
+      </Modal>
+    </main>
   );
 }

@@ -14,7 +14,7 @@ import { IIScheduleCategory, IScheduleCategory } from "@models/ScheduleCategory"
 
 import CSS from "./EventModal.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 import { convertDateII } from "@utils/index";
 
@@ -126,7 +126,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const editScheduleStateEndDate: Date = editSchedule.date[1];
 
   /** 일정 수정 시, 빈 값이 있는지 */
-  const isModalStateEmpty: boolean = Object.values(editSchedule).some((value) => value === "" || (Array.isArray(value) && value.length === 0));
+  const isModalStateEmpty: boolean = Object.values(editSchedule).some(value => value === "" || (Array.isArray(value) && value.length === 0));
 
   /** 수정 상태인 카테고리 수정 아이콘 */
   const renderSelectedEditCategoryIcon = (idx: number): any => {
@@ -158,7 +158,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   // 캘린더의 카테고리, 사용자 변경 시
   useEffect(() => {
-    setUserCategories(calendar.categories.filter((category) => category.createdBy === editSchedule.user)); // 현재 사용자의 카테고리 목록
+    setUserCategories(calendar.categories.filter(category => category.createdBy === editSchedule.user)); // 현재 사용자의 카테고리 목록
   }, [calendar.categories, editSchedule.user]);
 
   // 일정 팝업 수정 상태 변경 시
@@ -183,7 +183,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   useEffect(() => {
     // 일정 팝업 수정 상태 날짜 수정
-    setEditSchedule((prev) => ({
+    setEditSchedule(prev => ({
       ...prev,
       date: [lastSelectedDate, lastSelectedDate],
     }));
@@ -247,7 +247,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
         return (
           <>
             <button type="button" onClick={toggleUserList} disabled={user.accessLevel < 3} style={isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
-              <span>{users.find((_user) => _user._id === value)?.nickname}</span>
+              <span>{users.find(_user => _user._id === value)?.nickname}</span>
 
               {user.accessLevel >= 3 && <Image src={isUserListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isUserListOpen ? "▲" : "▼"} />}
             </button>
@@ -267,10 +267,10 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
         );
       // 일정 제목
       case "title":
-        return <input type="text" value={value} onChange={(e) => handleModalText(key, e)} placeholder="입력해주세요." />;
+        return <input type="text" value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." />;
       // 일정 내용
       case "content":
-        return <textarea value={value} onChange={(e) => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
+        return <textarea value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
       // 카테고리
       case "categories":
         return (
@@ -289,11 +289,11 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
               <ul className={CSS.categories}>
                 {userCategories.length > 0 &&
                   userCategories.map((category, idx) =>
-                    editCategories.some((_category) => _category._id === category._id) ? (
+                    editCategories.some(_category => _category._id === category._id) ? (
                       <li key={idx} className={CSS.edit}>
-                        <input type="color" value={category.color} onChange={(e) => handleEditCategoryColorTitle(e, "color", String(category._id))} />
+                        <input type="color" value={category.color} onChange={e => handleEditCategoryColorTitle(e, "color", String(category._id))} />
 
-                        <input type="text" value={category.title} onChange={(e) => handleEditCategoryColorTitle(e, "title", String(category._id))} />
+                        <input type="text" value={category.title} onChange={e => handleEditCategoryColorTitle(e, "title", String(category._id))} />
 
                         <button type="button" onClick={() => updateCategory(category)}>
                           <Image src={IconCheck} width={16} alt="√" />
@@ -357,7 +357,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    */
   const renderCategories = (category: IIScheduleCategory, idx: number): JSX.Element => {
     /** 선택된 카테고리인지 */
-    const isSelected: IIScheduleCategory | undefined = editSchedule.categories.find((_category) => _category._id === category._id);
+    const isSelected: IIScheduleCategory | undefined = editSchedule.categories.find(_category => _category._id === category._id);
 
     return (
       <li key={idx} className={isSelected ? `${CSS.selectedList} ${CSS.list}` : CSS.list}>
@@ -389,13 +389,13 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   /** 현재 선택된 카테고리에서 변경 사항 적용 */
   const checkSelectedCategory = (): void => {
     /** 카테고리들의 _id로 중복 제거 */
-    const categoriesSet: Set<string> = new Set(calendar.categories.map((category) => String(category._id)));
+    const categoriesSet: Set<string> = new Set(calendar.categories.map(category => String(category._id)));
     /** 선택된 카테고리들 */
     const selectedCategory: IIScheduleCategory[] = editSchedule.categories;
     /** 선택된 카테고리에서 변경 사항 적용 */
-    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter((category) => categoriesSet.has(String(category._id)));
+    const filteredSelectedCategory: IIScheduleCategory[] = selectedCategory.filter(category => categoriesSet.has(String(category._id)));
 
-    setEditSchedule((prev) => ({
+    setEditSchedule(prev => ({
       ...prev,
       categories: filteredSelectedCategory,
     }));
@@ -419,7 +419,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param e 수정할 내용
    */
   const handleModalText = (key: string, e: any): void => {
-    setEditSchedule((prev) => ({
+    setEditSchedule(prev => ({
       ...prev,
       [key]: e.target.value,
     }));
@@ -436,7 +436,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     const tempCategories: IIScheduleCategory[] = [...userCategories];
 
     /** 변경할 카테고리의 순번 */
-    const categoryIdx: number = userCategories.findIndex((category) => category._id === _id);
+    const categoryIdx: number = userCategories.findIndex(category => category._id === _id);
 
     // 수정할 카테고리 찾았을 시
     if (categoryIdx !== -1) {
@@ -458,7 +458,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param e 색상
    */
   const handleCreateCategoryColor = (e: any): void => {
-    setNewCategory((prev) => ({
+    setNewCategory(prev => ({
       ...prev,
       color: e.target.value,
     }));
@@ -469,7 +469,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param e 카테고리 제목
    */
   const handleCreateCategoryTitle = (e: any): void => {
-    setNewCategory((prev) => ({
+    setNewCategory(prev => ({
       ...prev,
       title: e.target.value,
     }));
@@ -480,7 +480,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param e 반복 여부
    */
   const handleRepeating = (e: any): void => {
-    setEditSchedule((prev) => ({
+    setEditSchedule(prev => ({
       ...prev,
       isRepeating: e.target.value === "repeating" ? true : false,
     }));
@@ -516,7 +516,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 카테고리 생성 Toggle */
   const toggleCreateCategory = (): void => {
-    setIsCreateCategory((prev) => !prev);
+    setIsCreateCategory(prev => !prev);
   };
 
   /**
@@ -563,13 +563,13 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
     // 바뀔 날짜가 '일정 시작 날짜 선택 캘린더'일 시
     if (isStart)
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...prev,
         date: [newDate, prev.date[1]],
       }));
     // 바뀔 날짜가 '일정 종료 날짜 선택 캘린더'일 시
     else
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...prev,
         date: [prev.date[0], newDate],
       }));
@@ -579,7 +579,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const toggleCreateSchedule = (): void => {
     // 초기화
     if (!isEditSchedule) setIsCreateSchedule(true);
-    setIsEditSchedule((prev) => !prev);
+    setIsEditSchedule(prev => !prev);
   };
 
   /** 일정 시작 날짜 선택 캘런더 Toggle */
@@ -587,7 +587,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     // '일정 시작 날짜 선택 캘린더'가 켜지면 '일정 종료 날짜 선택 캘린더'는 종료
     if (!isStartMiniCalendarOpen) setIsEndMiniCalendarOpen(false);
 
-    setIsStartMiniCalendarOpen((prev) => !prev);
+    setIsStartMiniCalendarOpen(prev => !prev);
   };
 
   /** 일정 종료 날짜 선택 캘린더 Toggle */
@@ -595,18 +595,18 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     // '일정 종료 날짜 선택 캘린더'가 켜지면 '일정 시작 날짤 선택 캘런더'는 종료
     if (!isEndMiniCalendarOpen) setIsStartMiniCalendarOpen(false);
 
-    setIsEndMiniCalendarOpen((prev) => !prev);
+    setIsEndMiniCalendarOpen(prev => !prev);
   };
 
   /** 일정 팝업 수정 상태, 사용자 목록 드롭다운 메뉴 가시 Toggle */
   const toggleUserList = (): void => {
-    setIsUserListOpen((prev) => !prev);
+    setIsUserListOpen(prev => !prev);
   };
 
   /** 카테고리 선택 드롭다운 메뉴 Toggle */
   const toggleCategory = (): void => {
     setIsCreateCategory(false);
-    setIsCategoryListOpen((prev) => !prev);
+    setIsCategoryListOpen(prev => !prev);
   };
 
   /**
@@ -620,9 +620,9 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     const tempEditCategories: IIScheduleCategory[] = [...editCategories];
 
     /** 수정 전 카테고리 순번 */
-    const categoryIdx: number = tempCategories.findIndex((_category) => _category._id === category._id);
+    const categoryIdx: number = tempCategories.findIndex(_category => _category._id === category._id);
     /** 수정 중인 카테고리 순번 */
-    const existingIdx: number = tempEditCategories.findIndex((_category) => _category._id === category._id);
+    const existingIdx: number = tempEditCategories.findIndex(_category => _category._id === category._id);
 
     // 수정 중인 카테고리일 시
     if (existingIdx !== -1) {
@@ -653,13 +653,13 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const selectMiniDay = (isStart: boolean, date: Date): void => {
     // '일정 시작 날짜 선택 캘린더'일 시
     if (isStart)
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...prev,
         date: [date, prev.date[1]],
       }));
     // '일정 종료 날짜 선택 캘린더'일 시
     else
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...prev,
         date: [prev.date[0], date],
       }));
@@ -688,7 +688,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     });
 
     // 카테고리 생성 상태 초기화
-    setNewCategory((prev) => ({
+    setNewCategory(prev => ({
       ...prev,
       createdBy: String((schedule.user as IIUser)._id),
     }));
@@ -704,14 +704,14 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const selectUser = (_user: IIUser): void => {
     // 일정 팝업이 생성 상태일 시
     if (isCreateSchedule)
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...editScheduleInitialState,
         date: prev.date,
         user: String(_user._id),
       }));
     // 일정 팝업이 수정 상태일 시
     else
-      setEditSchedule((prev) => ({
+      setEditSchedule(prev => ({
         ...prev,
         user: String(_user._id),
         categories: [],
@@ -737,7 +737,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     const tempCategories: IIScheduleCategory[] = editSchedule.categories;
 
     /** 선택된 카테고리 순번 */
-    const selectedIdx: number = tempCategories.findIndex((_category) => _category.title === category.title);
+    const selectedIdx: number = tempCategories.findIndex(_category => _category.title === category.title);
 
     /** 새로운 카테고리들 */
     let newCategories: IIScheduleCategory[] = [];
@@ -747,7 +747,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     // 선택 안된 카테고리면 선택
     else newCategories = [...tempCategories, category];
 
-    setEditSchedule((prev) => ({
+    setEditSchedule(prev => ({
       ...prev,
       categories: newCategories,
     }));
@@ -770,17 +770,17 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(category),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         toggleEditCategory(data);
 
         getCategories();
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateCategory() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateCategory() :", err));
   };
 
   /** 카테고리 생성 */
@@ -788,7 +788,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     setIsCreateCategory(false);
 
     // 카테고리 이름 중복 허용 X
-    if (userCategories.some((category) => category.title === newCategory.title)) {
+    if (userCategories.some(category => category.title === newCategory.title)) {
       alert("이미 있는 카테고리입니다.");
       return;
     }
@@ -798,14 +798,14 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newCategory),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         getCategories();
@@ -813,35 +813,35 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 카테고리 추가에 성공하였습니다.");
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > createCategory() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > createCategory() :", err));
   };
 
   /** 카테고리 삭제 */
   const deleteCategory = (_id: string): void => {
     fetch(`/api/calendar/categories_management?_id=${_id}`, { method: "DELETE" })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         getCategories();
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteCategory() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteCategory() :", err));
   };
 
   /** 모든 카테고리 목록 가져오기 */
   const getCategories = (): void => {
     fetch("/api/calendar/categories_management")
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((_categories) => dispatch(setScheduleCategories(_categories)))
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > getCategories() :", err));
+      .then(_categories => dispatch(setScheduleCategories(_categories)))
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > getCategories() :", err));
   };
 
   /** 일정 생성 */
@@ -851,17 +851,17 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
-        setEditSchedule((prev) => ({
+        setEditSchedule(prev => ({
           ...editScheduleInitialState,
           date: prev.date,
           user: user._id,
@@ -871,7 +871,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 추가에 성공하였습니다.");
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > createSchedule() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > createSchedule() :", err));
   };
 
   /** 일정 정보 갱신 */
@@ -881,33 +881,33 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         getSchedulesCover();
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateSchedule() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateSchedule() :", err));
   };
 
   /** 일정 삭제 */
   const deleteSchedule = (): void => {
     fetch(`/api/calendar/schedules_management?_id=${selectedScheduleId}`, { method: "DELETE" })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         getSchedulesCover();
       })
-      .catch((err) => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteSchedule() :", err));
+      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteSchedule() :", err));
   };
 
   return (
@@ -937,8 +937,8 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
               {isStartMiniCalendarOpen && (
                 <MiniCalendarView
-                  changeMonth={(direction) => changeMiniMonth(true, direction)}
-                  selectDay={(day) => selectMiniDay(true, day)}
+                  changeMonth={direction => changeMiniMonth(true, direction)}
+                  selectDay={day => selectMiniDay(true, day)}
                   isStart={true}
                   currentDate={today}
                   startDate={editScheduleStateStartDate}
@@ -963,8 +963,8 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
                 </button>
                 {isEndMiniCalendarOpen && (
                   <MiniCalendarView
-                    changeMonth={(direction) => changeMiniMonth(false, direction)}
-                    selectDay={(day) => selectMiniDay(false, day)}
+                    changeMonth={direction => changeMiniMonth(false, direction)}
+                    selectDay={day => selectMiniDay(false, day)}
                     isStart={false}
                     currentDate={today}
                     startDate={editScheduleStateStartDate}

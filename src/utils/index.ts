@@ -1,6 +1,6 @@
 import { AppDispatch } from "@redux/store";
 import { signIn, signOut } from "@redux/slices/AuthSlice";
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 
 /**
  * 시간 형식 설정
@@ -69,21 +69,21 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
   if (!confirmSignOut) return false;
 
   fetch("/api/auth/sign_out", { method: "POST" })
-    .then((res) => {
+    .then(res => {
       if (res.ok) return res.json();
 
-      alert(errMsg);
+      alert(ERR_MSG);
 
-      return res.json().then((data) => Promise.reject(data.msg));
+      return res.json().then(data => Promise.reject(data.msg));
     })
-    .then((data) => {
+    .then(data => {
       console.log(data.msg);
 
       alert("로그아웃 됐습니다.");
 
       dispatch(signOut());
     })
-    .catch((err) => console.error("Error in /src/utils/utils > processSignOut() :", err));
+    .catch(err => console.error("Error in /src/utils/utils > processSignOut() :", err));
 
   return true;
 };
@@ -108,14 +108,14 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   })
-    .then((res) => {
+    .then(res => {
       if (res.ok) return res.json();
 
-      alert(errMsg);
+      alert(ERR_MSG);
 
-      return res.json().then((data) => Promise.reject(data.msg));
+      return res.json().then(data => Promise.reject(data.msg));
     })
-    .then((data) =>
+    .then(data =>
       // 사용자 정보 AuthSlice(Redux)에 저장
       dispatch(
         signIn({
@@ -124,7 +124,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
         })
       )
     )
-    .catch((err) => console.error("Error in /src/utils/utils > getUser() :", err));
+    .catch(err => console.error("Error in /src/utils/utils > getUser() :", err));
 };
 
 /**
@@ -138,10 +138,10 @@ export const copyClipBoard = (text: string): void => {
       .then(() => {
         alert("클립보드에 복사되었습니다.");
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("Error in /src/utils/utils > copyClipBoard() :", err);
 
-        alert(errMsg);
+        alert(ERR_MSG);
       });
   }
 };

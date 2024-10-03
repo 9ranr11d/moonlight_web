@@ -8,7 +8,7 @@ import { RootState } from "@redux/store";
 
 import CSS from "./ThisWeek.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 import { dayOfWeek } from "@constants/date";
 
 /** 현재 주의 일정 표시 */
@@ -42,15 +42,15 @@ export default function ThisWeek() {
   /** 일정 정보 가져오기 */
   const getSchedules = (): void => {
     fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
-        alert(errMsg);
+        alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((schedules) => dispatch(setSchedules(schedules)))
-      .catch((err) => console.error("Error in /src/components/calendar/ThisWeek > ThisWeek() > getSchedules() :", err));
+      .then(schedules => dispatch(setSchedules(schedules)))
+      .catch(err => console.error("Error in /src/components/calendar/ThisWeek > ThisWeek() > getSchedules() :", err));
   };
 
   return (
@@ -67,7 +67,7 @@ export default function ThisWeek() {
         {Array.from({ length: 7 }, (_, idx) => {
           const thisDate: Date = new Date(thisSunday.getFullYear(), thisSunday.getMonth(), thisSunday.getDate() + idx);
 
-          const schedules = calendar.schedules.filter((schedule) => {
+          const schedules = calendar.schedules.filter(schedule => {
             const [startDate, endDate] = schedule.date;
 
             return thisDate >= new Date(startDate) && thisDate <= new Date(endDate);

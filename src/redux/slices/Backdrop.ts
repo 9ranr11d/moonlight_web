@@ -12,13 +12,13 @@ export const Backdrop = createSlice({
   name: "backdrop",
   initialState,
   reducers: {
-    showBackdrop: (state) => {
+    showBackdrop: state => {
       return {
         ...state,
         isVisible: true,
       };
     },
-    hideBackdrop: (state) => {
+    hideBackdrop: state => {
       return {
         ...state,
         isVisible: false,

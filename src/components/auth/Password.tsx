@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import CSS from "./Recovery.module.css";
 
-import { errMsg } from "@constants/msg";
+import { ERR_MSG } from "@constants/msg";
 import EmailVerification from "./EmailVerification";
 
 import IconCheck from "@public/img/common/icon_check_primary.svg";
@@ -85,20 +85,20 @@ export default function Password({ back, identification }: IPasswordProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert(errMsg);
+        else alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         set_identification(data.identification);
         setUserEmail(data.email);
         setIsAuth(true);
       })
-      .catch((err) => console.error("Error in /src/components/auth/Recovery > Password() > checkIdentification() :", err));
+      .catch(err => console.error("Error in /src/components/auth/Recovery > Password() > checkIdentification() :", err));
   };
 
   /** 비밀번호 변경 */
@@ -110,22 +110,22 @@ export default function Password({ back, identification }: IPasswordProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert(errMsg);
+        else alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         console.log(data.msg);
 
         alert("비밀번호가 성공적으로 바뀌었습니다.");
 
         back();
       })
-      .catch((err) => console.error("Error in /src/components/auth/Recovery > Password() > changePassword() :", err));
+      .catch(err => console.error("Error in /src/components/auth/Recovery > Password() > changePassword() :", err));
   };
 
   return (
@@ -166,7 +166,7 @@ export default function Password({ back, identification }: IPasswordProps) {
           </ul>
         </>
       ) : !isEmailMatching ? (
-        <EmailVerification title="이메일로 본인 인증" verified={(email) => checkEmail(email)} isAutoFocus={true} isEmailCheckEnabled={true} />
+        <EmailVerification title="이메일로 본인 인증" verified={email => checkEmail(email)} isAutoFocus={true} isEmailCheckEnabled={true} />
       ) : (
         <>
           <h5>바꿀 비밀번호를 입력</h5>

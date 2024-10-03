@@ -33,5 +33,39 @@
 }
 
 .content {
-  padding: 10px 20px 20px;
+  padding: 10px 40px 20px;
+}
+
+@media (max-width: 768px) {
+  .background {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 10px 20px 20px;
+  }
+
+  .sideMenu {
+    background: none !important;
+    margin-bottom: 10px;
+  }
+
+  .sideMenu > ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5px;
+    row-gap: 5px;
+  }
+
+  .sideMenu > ul > li > button {
+    border-radius: 1px;
+    background: white;
+  }
+
+  .sideMenu > ul > li > .selected {
+    border-radius: 1px;
+    border: 2px solid var(--primary-color);
+  }
 }

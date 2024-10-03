@@ -26,3 +26,57 @@
   display: flex;
   column-gap: 10px;
 }
+
+.profileInfo > div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  column-gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profileInfo > div > .content {
+  display: grid;
+  grid-template-columns: 250px 100px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.profileInfo > div > .content > p {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .btnBox {
+    justify-content: center;
+  }
+
+  .profileInfo > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profileInfo > div > h6 {
+    margin-bottom: 5px;
+  }
+
+  .profileInfo > div > .content {
+    display: initial;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .profileInfo > div > .content > p,
+  .profileInfo > div > .content > input {
+    text-align: center;
+  }
+
+  .profileInfo > div > .content > button {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .code > h3 {
+    font-size: 25px;
+  }
+}
