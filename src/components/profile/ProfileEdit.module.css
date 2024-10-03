@@ -46,6 +46,32 @@
   font-size: 16px;
 }
 
+.modal > h5 {
+  margin-bottom: 10px;
+}
+
+.modal > ul > li {
+  margin-bottom: 10px;
+}
+
+.modal > ul > li > ul {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.modal > ul > li > ul > li {
+  position: relative;
+}
+
+.modal > ul > li > ul > li > span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 @media (max-width: 768px) {
   .btnBox {
     justify-content: center;
@@ -74,6 +100,10 @@
   .profileInfo > div > .content > button {
     width: 100%;
     margin-top: 5px;
+  }
+
+  .code {
+    width: 100%;
   }
 
   .code > h3 {

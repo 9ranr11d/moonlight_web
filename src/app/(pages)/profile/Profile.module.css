@@ -23,6 +23,14 @@
   color: var(--font-color);
 }
 
+.sideMenu > ul > li:first-child > button {
+  border-radius: 5px 0 0 0;
+}
+
+.sideMenu > ul > li:last-child > button {
+  border-radius: 0 0 5px 0;
+}
+
 .sideMenu > ul > li > button:hover {
   background: var(--disabled-color-ii);
 }

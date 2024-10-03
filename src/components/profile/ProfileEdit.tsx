@@ -126,7 +126,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
       case "email":
         return <EmailUpdateForm verifyEmailSuccess={email => verifyEmailSuccess(email)} />;
       case "password":
-        return <Password back={() => alert("취소되었습니다")} identification={user.identification} />;
+        return <Password back={() => alert("취소되었습니다")} identification={user.identification} inputEmail={user.email} />;
       default:
         return <p>{ERR_MSG}</p>;
     }
@@ -214,7 +214,11 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
           {user.isAuth && <div className={`${CSS.desc} ${CSS.profileInfo}`}>{renderFields()}</div>}
 
-          {isModalVisible && <Modal close={closeModal}>{renderModal()}</Modal>}
+          {isModalVisible && (
+            <Modal close={closeModal}>
+              <div className={CSS.modal}>{renderModal()}</div>
+            </Modal>
+          )}
         </div>
       ) : (
         <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>

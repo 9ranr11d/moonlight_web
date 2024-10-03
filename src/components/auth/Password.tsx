@@ -16,10 +16,12 @@ interface IPasswordProps {
   back: () => void;
   /** Identification */
   identification?: string;
+  /** 선 입력 E-mail */
+  inputEmail?: string;
 }
 
 /** Password 찾기 */
-export default function Password({ back, identification }: IPasswordProps) {
+export default function Password({ back, identification, inputEmail }: IPasswordProps) {
   const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
   const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // Identification 인증 여부
@@ -166,7 +168,13 @@ export default function Password({ back, identification }: IPasswordProps) {
           </ul>
         </>
       ) : !isEmailMatching ? (
-        <EmailVerification title="이메일로 본인 인증" verified={email => checkEmail(email)} isAutoFocus={true} isEmailCheckEnabled={true} />
+        <EmailVerification
+          title="이메일로 본인 인증"
+          verified={email => checkEmail(email)}
+          isAutoFocus={true}
+          isEmailCheckEnabled={true}
+          {...(inputEmail && { inputEmail })}
+        />
       ) : (
         <>
           <h5>바꿀 비밀번호를 입력</h5>

@@ -8,6 +8,7 @@ import Modal from "@components/common/Modal";
 
 import LottieLoading from "@public/json/loading_moon.json";
 
+/** 로딩 페이지 */
 export default function Loading() {
   return (
     <main>

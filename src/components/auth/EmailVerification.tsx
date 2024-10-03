@@ -15,16 +15,19 @@ import LottieLoading from "@public/json/loading_round_white.json";
 interface IEmailVerificationProps {
   /** 제목 */
   title: string;
-  /** 인증 된 E-mail 반환 */
-  verified: (email: string) => void;
   /** Identification 자동 포커스 할 지 */
   isAutoFocus: boolean;
   /** 입력한 E-mail을 DB에 있는 지 체크할 지 */
   isEmailCheckEnabled: boolean;
+  /** 선 입력 E-mail */
+  inputEmail?: string;
+
+  /** 인증 된 E-mail 반환 */
+  verified: (email: string) => void;
 }
 
 /** E-mail 인증 */
-export default function EmailVerification({ title, verified, isAutoFocus, isEmailCheckEnabled }: IEmailVerificationProps) {
+export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnabled, inputEmail, verified }: IEmailVerificationProps) {
   /** 인증 코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
@@ -33,7 +36,7 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
   /** 인증 코드 입력 Input Ref */
   const verificationCodeInputRef = useRef<HTMLInputElement>(null);
 
-  const [email, setEmail] = useState<string>(""); // 입력된 E-mail
+  const [email, setEmail] = useState<string>(inputEmail || ""); // 입력된 E-mail
   const [verificationCode, setVerificationCode] = useState<string>(""); // 인증 코드
   const [verificationInput, setVerificationInput] = useState<string>(""); // 입력 받은 인증 코드
 
@@ -62,6 +65,10 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
   useEffect(() => {
     if (isEmailSent && verificationCodeInputRef.current) verificationCodeInputRef.current.focus();
   }, [isEmailSent]);
+
+  useEffect(() => {
+    if (inputEmail) verifyMatch();
+  }, [inputEmail]);
 
   /** E-mail Input */
   const handleEmail = (e: any): void => {
@@ -167,7 +174,15 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
             </li>
 
             <li>
-              <input type="text" value={email} onChange={handleEmail} ref={emailInputRef} onKeyDown={handleEmailKeyDown} placeholder="E-mail" />
+              <input
+                type="text"
+                value={email}
+                onChange={handleEmail}
+                ref={emailInputRef}
+                onKeyDown={handleEmailKeyDown}
+                placeholder="E-mail"
+                disabled={!!inputEmail}
+              />
             </li>
 
             <li style={{ display: "flex", justifyContent: "center" }}>
@@ -194,6 +209,7 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
               <li>
                 <h6>인증 코드</h6>
               </li>
+
               <li>
                 <input
                   type="text"
@@ -206,6 +222,7 @@ export default function EmailVerification({ title, verified, isAutoFocus, isEmai
 
                 <span>{convertToMinutes(deadline)}</span>
               </li>
+
               <li>
                 <button type="button" onClick={checkVerificationCode} disabled={deadline === 0}>
                   확인

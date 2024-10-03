@@ -8,12 +8,16 @@ import { hideBackdrop } from "@redux/slices/Backdrop";
 
 import CSS from "./Backdrop.module.css";
 
+/** 'Modal' 배경 화면 */
 export default function Backdrop() {
+  /** Dispatch */
   const dispatch = useDispatch();
 
+  /** 배경 화면 Reducer */
   const backdrop = useSelector((state: RootState) => state.backdropReducer);
 
-  const closeBackdrop = () => {
+  /** 배경 화면 클릭 시 */
+  const closeBackdrop = (): void => {
     dispatch(hideBackdrop());
   };
 

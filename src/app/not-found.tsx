@@ -8,6 +8,7 @@ import Modal from "@components/common/Modal";
 
 import IconNoEntry from "@public/img/common/icon_no_entry_primary.svg";
 
+/** 404 페이지 */
 export default function NotFound() {
   return (
     <main>

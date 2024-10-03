@@ -6,9 +6,11 @@ import Image from "next/image";
 
 import Modal from "@components/common/Modal";
 
-import IconNoEntry from "@public/img/common/icon_no_entry_primary.svg";
 import { ERR_MSG } from "@constants/msg";
 
+import IconNoEntry from "@public/img/common/icon_no_entry_primary.svg";
+
+/** 에러 페이지 */
 export default function Error() {
   return (
     <main>

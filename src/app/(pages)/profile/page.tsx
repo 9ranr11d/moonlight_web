@@ -50,6 +50,10 @@ export default function Profile() {
     setSelectedMenu(idx);
   };
 
+  /**
+   * 메뉴 변경
+   * @param code 선택된 메뉴 'code'
+   */
   const changePage = (code: string): void => {
     setSelectedMenu(findPageNum(code));
   };

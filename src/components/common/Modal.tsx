@@ -11,17 +11,25 @@ import CSS from "./Modal.module.css";
 
 import IconClose from "@public/img/common/icon_close_primary.svg";
 
+/** 'Modal' 자식들 */
 interface IModalProps {
+  /** 적용 될 'className' */
   className?: string;
+  /** 적용 될 'style' */
   style?: CSSProperties;
+  /** 적용 될 'Component'들 */
   children: ReactNode;
 
+  /** 닫기 */
   close?: () => void;
 }
 
+/** Modal */
 export default function Modal({ className = "", style = {}, close, ...props }: IModalProps) {
+  /** Dispatch */
   const dispatch = useDispatch();
 
+  /** '닫기' 클릭 시 */
   const clickClose = (): void => {
     if (close) {
       dispatch(hideBackdrop());

@@ -1,15 +1,27 @@
 "use client";
 
-import EmailVerification from "@components/auth/EmailVerification";
 import React, { useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@redux/store";
+
+import EmailVerification from "@components/auth/EmailVerification";
+
+/** E-mail 수정 Form 자식들 */
 interface IEmailUpdateFormProps {
   verifyEmailSuccess: (email: string) => void;
 }
 
+/** E-mail 수정 Form */
 export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateFormProps) {
-  const [step, setStep] = useState<number>(0);
+  /** Dispatch */
+  const dispatch = useDispatch();
 
+  const user = useSelector((state: RootState) => state.authReducer);
+
+  const [step, setStep] = useState<number>(0); // 단계
+
+  /** 단계 별 렌더할 Component */
   const renderForm = () => {
     switch (step) {
       case 1:
@@ -28,15 +40,16 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
           <EmailVerification
             key="step0"
             title="이메일로 본인 인증"
-            verified={email => proceedWithVerifiedEmail(email)}
+            verified={proceedWithVerifiedEmail}
             isAutoFocus={true}
             isEmailCheckEnabled={true}
+            inputEmail={user.email}
           />
         );
     }
   };
 
-  const proceedWithVerifiedEmail = (email: string): void => {
+  const proceedWithVerifiedEmail = (): void => {
     setStep(1);
   };
 
