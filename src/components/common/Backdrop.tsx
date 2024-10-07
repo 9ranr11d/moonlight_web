@@ -8,7 +8,7 @@ import { hideBackdrop } from "@redux/slices/Backdrop";
 
 import CSS from "./Backdrop.module.css";
 
-/** 'Modal' 배경 화면 */
+/** Modal 배경 화면 */
 export default function Backdrop() {
   /** Dispatch */
   const dispatch = useDispatch();

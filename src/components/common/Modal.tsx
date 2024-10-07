@@ -11,7 +11,7 @@ import CSS from "./Modal.module.css";
 
 import IconClose from "@public/img/common/icon_close_primary.svg";
 
-/** 'Modal' 자식들 */
+/** Modal 자식들 */
 interface IModalProps {
   /** 적용 될 'className' */
   className?: string;

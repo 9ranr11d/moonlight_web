@@ -17,7 +17,7 @@ export default function NotFound() {
           <Image src={IconNoEntry} width={200} height={200} alt="X" />
         </div>
 
-        <h3>도메인 주소가 잘못되었습니다.</h3>
+        <h3>잘못된 접근입니다.</h3>
       </Modal>
     </main>
   );

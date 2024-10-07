@@ -27,6 +27,7 @@
       "@public/*": ["public/*"],
       "@redux/*": ["src/redux/*"],
       "@constants/*": ["src/constants/*"],
+      "@hook/*": ["src/hook/*"],
       "@utils/*": ["src/utils/*"]
     }
   },

@@ -9,7 +9,9 @@ export const store = configureStore({
   reducer: {
     /** 인증 정보 */
     authReducer,
+    /** 캘린더 정보 */
     calendarReducer,
+    /** Modal 배경화면 정보 */
     backdropReducer,
   },
 });

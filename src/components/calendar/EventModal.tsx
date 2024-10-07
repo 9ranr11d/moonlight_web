@@ -39,6 +39,7 @@ import IconDeleteCloseWhite from "@public/img/common/icon_delete_close_white.svg
 import IconDeleteOpenPrimary from "@public/img/common/icon_delete_open_primary.svg";
 import IconDeleteClosePrimary from "@public/img/common/icon_delete_close_primary.svg";
 
+/** Event Modal 자식들 */
 interface IEventModalProps {
   closeModal: () => void;
   getSchedules: () => void;
@@ -56,6 +57,7 @@ interface IEditScheduleTitle extends ISchedule {
   isRepeating: string;
 }
 
+/** Event Modal */
 export default function EventModal({ closeModal, findMultipleScheduleByDate, findScheduleByDate, users, getSchedules, lastSelectedDate }: IEventModalProps) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +67,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   /** 일정 */
   const calendar = useSelector((state: RootState) => state.calendarReducer);
 
+  /** 오늘 날짜 */
   const today: Date = new Date();
 
   /** 일정 수정 Input 제목 */
@@ -181,8 +184,8 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     }
   }, [isEditSchedule]);
 
+  // 일정 팝업 수정 상태 날짜 수정 시
   useEffect(() => {
-    // 일정 팝업 수정 상태 날짜 수정
     setEditSchedule(prev => ({
       ...prev,
       date: [lastSelectedDate, lastSelectedDate],
@@ -753,7 +756,8 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     }));
   };
 
-  const getSchedulesCover = () => {
+  /** 스케줄 가져오기 전 초기화 */
+  const setInit = (): void => {
     setIsCategoryListOpen(false);
     setIsEditSchedule(false);
 
@@ -867,7 +871,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
           user: user._id,
         }));
 
-        getSchedulesCover();
+        setInit();
 
         alert("일정 추가에 성공하였습니다.");
       })
@@ -889,7 +893,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       .then(data => {
         console.log(data.msg);
 
-        getSchedulesCover();
+        setInit();
       })
       .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateSchedule() :", err));
   };
@@ -905,7 +909,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       .then(data => {
         console.log(data.msg);
 
-        getSchedulesCover();
+        setInit();
       })
       .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteSchedule() :", err));
   };

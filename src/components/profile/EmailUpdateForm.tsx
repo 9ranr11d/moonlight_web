@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 
 import EmailVerification from "@components/auth/EmailVerification";
@@ -14,9 +14,7 @@ interface IEmailUpdateFormProps {
 
 /** E-mail 수정 Form */
 export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateFormProps) {
-  /** Dispatch */
-  const dispatch = useDispatch();
-
+  /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
   const [step, setStep] = useState<number>(0); // 단계
@@ -49,6 +47,7 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
     }
   };
 
+  /** 이메일 인증 완료 */
   const proceedWithVerifiedEmail = (): void => {
     setStep(1);
   };

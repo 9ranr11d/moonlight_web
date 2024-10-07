@@ -18,7 +18,17 @@ export default function Home() {
 
   return (
     <main className={CSS.background}>
-      <Link href={"/profile?menu=code"}>{user.coupleCode ? "커플 코드 수정" : "커플 코드 발급"}</Link>
+      <div className={CSS.coupleCode}>
+        <div className={CSS.content}>
+          <h3>{user.nickname}님</h3>
+
+          <h3>{user.coupleCode ? "커플 코드로 연인과 일정을 공유하세요." : "커플 코드를 발급받고 연인과 공유하세요."}</h3>
+
+          <Link href={"/profile?menu=code"}>
+            <button type="button">{user.coupleCode ? "커플 코드 관리" : "커플 코드 발급"}</button>
+          </Link>
+        </div>
+      </div>
 
       <Link href={"/calendar"}>
         <div className={CSS.thisWeek}>

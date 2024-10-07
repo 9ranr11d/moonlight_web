@@ -1,4 +1,6 @@
+/** 오늘 날짜 */
 const today = new Date();
+/** 오늘 연도 */
 const year = today.getFullYear();
 
 /** 사이드 메뉴의 월 목록 */
