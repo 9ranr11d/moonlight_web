@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 
-import CSS from "./NaverMap.module.css";
+import CSS from "./Map.module.css";
 
 import useGeoloaction from "@hook/useGeolocation";
 
@@ -17,8 +17,10 @@ export default function NaverMap() {
 
   const [map, setMap] = useState<naver.maps.Map | null>(null);
 
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   useEffect(() => {
-    const initMap = () => {
+    const initMap = (): void => {
       const mapOptions = {
         center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lng),
         logoControl: false,
@@ -28,6 +30,7 @@ export default function NaverMap() {
 
       if (mapRef.current) {
         const naverMap = new naver.maps.Map(mapRef.current, mapOptions);
+
         setMap(naverMap);
       }
     };
@@ -36,21 +39,83 @@ export default function NaverMap() {
     else {
       const mapScript = document.createElement("script");
       mapScript.onload = () => initMap();
-      mapScript.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`;
+      mapScript.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`;
       document.head.appendChild(mapScript);
     }
   }, [currentLocation]);
 
-  const handleMoveToCurrentLocation = () => {
+  const handleSearchQuery = (e: any): void => {
+    setSearchQuery(e.target.value);
+  };
+
+  const moveToCurrentLocation = (): void => {
     if (map) {
       const newCenter = new naver.maps.LatLng(currentLocation.lat, currentLocation.lng);
       map.setCenter(newCenter);
     }
   };
 
+  const searchLocation = (): void => {
+    if (!map || !searchQuery) return;
+
+    // naver.maps.Service.geocode({ query: searchQuery }, (status, response) => {
+    //   if (status === naver.maps.Service.Status.ERROR) {
+    //     alert("검색 결과가 없습니다.");
+
+    //     return;
+    //   }
+
+    //   const result = response.v2.addresses[0];
+
+    //   const newLocation = new naver.maps.LatLng(Number(result.y), Number(result.x));
+
+    //   map.setCenter(newLocation);
+
+    //   if (marker) marker.setPosition(newLocation);
+    //   else {
+    //     const newMarker = new naver.maps.Marker({
+    //       position: newLocation,
+    //       map: map,
+    //     });
+
+    //     setMarker(newMarker);
+    //   }
+
+    //   const infoWindow = new naver.maps.InfoWindow({
+    //     content: `<div style="padding:10px;"><b>${searchQuery}</b><br/>${result.roadAddress}</div>`,
+    //   });
+
+    //   if (marker) infoWindow.open(map, marker);
+    //   else infoWindow.open(map, newLocation);
+    // });
+
+    fetch("/api/map/naver_search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ searchQuery: searchQuery }),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log("Result :", data);
+      })
+      .catch(err => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
+  };
+
   return (
     <div ref={mapRef} style={{ width: "100%", height: "calc(100vh - 200px)", position: "relative" }}>
-      <button type="button" onClick={handleMoveToCurrentLocation} className={CSS.currentLocationBtn}>
+      <div className={CSS.searchInput}>
+        <input type="text" value={searchQuery} onChange={handleSearchQuery} placeholder="검색할 장소나 주소 입력" />
+
+        <button type="button" onClick={searchLocation}>
+          검색
+        </button>
+      </div>
+
+      <button type="button" onClick={moveToCurrentLocation} className={CSS.currentLocationBtn}>
         <Image src={IconCurrentPosition} width={30} height={30} alt="ㅇ" />
       </button>
     </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 /** 현재 위치 인터페이스 */
-interface ICurrentLocation {
+export interface ICurrentLocation {
   /** 위도 */
   lat: number;
   /** 경도 */

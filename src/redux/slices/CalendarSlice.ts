@@ -4,7 +4,7 @@ import { IIISchedule } from "@models/Schedule";
 import { IIScheduleCategory } from "@models/ScheduleCategory";
 
 /** 초가값 인터페이스 */
-interface ScheduleCategoriesState {
+interface IScheduleCategoriesState {
   /** 일정 */
   schedules: IIISchedule[];
   /** 일정 카테고리 */
@@ -12,7 +12,7 @@ interface ScheduleCategoriesState {
 }
 
 /** 초기값 */
-const initialState: ScheduleCategoriesState = {
+const initialState: IScheduleCategoriesState = {
   schedules: [],
   categories: [],
 };
@@ -27,7 +27,7 @@ export const Calendar = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSchedules: (state, action: PayloadAction<IIISchedule[]>): ScheduleCategoriesState => {
+    setSchedules: (state, action: PayloadAction<IIISchedule[]>): IScheduleCategoriesState => {
       return {
         ...state,
         schedules: action.payload,
@@ -38,7 +38,7 @@ export const Calendar = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setScheduleCategories: (state, action: PayloadAction<IIScheduleCategory[]>): ScheduleCategoriesState => {
+    setScheduleCategories: (state, action: PayloadAction<IIScheduleCategory[]>): IScheduleCategoriesState => {
       return {
         ...state,
         categories: action.payload,

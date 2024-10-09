@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { refreshAccessToken } from "@redux/slices/AuthSlice";
-import { hideBackdrop, showBackdrop } from "@redux/slices/Backdrop";
+import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
 import CSS from "./Header.module.css";
 

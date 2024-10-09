@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules } from "@redux/slices/CalendarSlice";
-import { hideBackdrop, showBackdrop } from "@redux/slices/Backdrop";
+import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
 import { IIUser } from "@models/User";
 import { IIISchedule } from "@models/Schedule";

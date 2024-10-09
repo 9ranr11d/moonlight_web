@@ -6,7 +6,7 @@ import CSS from "./ProfileEdit.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { hideBackdrop, showBackdrop } from "@redux/slices/Backdrop";
+import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
 import Lottie from "lottie-react";
 

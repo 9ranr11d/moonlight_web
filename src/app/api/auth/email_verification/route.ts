@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 /** 관리자 E-mail Identification */
-const adminMail: string = process.env.NODEMAILER_ID!;
+const ADMIN_MAIL: string = process.env.NODEMAILER_ID!;
 /** 관리자 E-mail PassWord(앱 비밀번호) */
-const adminPassword: string = process.env.NODEMAILER_PW!;
+const ADMIN_PASSWORD: string = process.env.NODEMAILER_PW!;
 
 /** 이메일 인증 */
 export async function POST(req: NextRequest) {
@@ -55,14 +55,14 @@ export async function POST(req: NextRequest) {
       secure: false,
       requireTLS: true,
       auth: {
-        user: adminMail,
-        pass: adminPassword,
+        user: ADMIN_MAIL,
+        pass: ADMIN_PASSWORD,
       },
     });
 
     // E-mail 송신
     await transporter.sendMail({
-      from: adminMail,
+      from: ADMIN_MAIL,
       to: email,
       subject: "MOONLIGHT 이메일 인증",
       html: content,

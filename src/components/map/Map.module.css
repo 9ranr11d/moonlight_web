@@ -1,6 +1,22 @@
+.searchInput {
+  position: absolute;
+  width: 300px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  z-index: 1;
+}
+
+.searchInput > button {
+  width: 100px;
+}
+
 .currentLocationBtn {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   right: 10px;
   z-index: 1;
   background: white;

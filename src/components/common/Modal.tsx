@@ -5,7 +5,7 @@ import React, { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 
 import { useDispatch } from "react-redux";
-import { hideBackdrop } from "@redux/slices/Backdrop";
+import { hideBackdrop } from "@redux/slices/BackdropSlice";
 
 import CSS from "./Modal.module.css";
 
