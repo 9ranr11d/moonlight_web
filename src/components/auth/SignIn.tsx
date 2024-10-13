@@ -88,7 +88,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(signIn(data.user));
       })
-      .catch(err => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
+      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
   };
 
   return (

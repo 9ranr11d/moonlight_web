@@ -133,7 +133,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
 
           sendEmail();
         })
-        .catch(err => console.error("Error in /src/components/auth/Recovery > EmailSender() > verifyMatch() :", err));
+        .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :", err));
     } else sendEmail();
   };
 
@@ -159,7 +159,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
         setIsEmailSent(true);
         setDeadline(maxDeadline);
       })
-      .catch(err => console.error("Error in /src/components/auth/Recovery > EmailSender() > sendEmail() :", err));
+      .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
   };
 
   return (

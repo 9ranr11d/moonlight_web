@@ -118,7 +118,7 @@ export default function Header() {
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
       .then(data => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch(err => console.error("Error in /src/components/common/Header > Header() > getRefreshAccessToken() :", err));
+      .catch(err => console.error("/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :", err));
   };
 
   return (

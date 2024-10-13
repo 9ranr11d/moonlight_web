@@ -784,7 +784,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getCategories();
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateCategory() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateCategory()에서 오류가 발생했습니다. :", err));
   };
 
   /** 카테고리 생성 */
@@ -817,7 +817,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 카테고리 추가에 성공하였습니다.");
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > createCategory() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createCategory()에서 오류가 발생했습니다. :", err));
   };
 
   /** 카테고리 삭제 */
@@ -833,7 +833,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         getCategories();
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteCategory() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteCategory()에서 오류가 발생했습니다. :", err));
   };
 
   /** 모든 카테고리 목록 가져오기 */
@@ -845,7 +845,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(_categories => dispatch(setScheduleCategories(_categories)))
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > getCategories() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > getCategories()에서 오류가 발생했습니다. :", err));
   };
 
   /** 일정 생성 */
@@ -875,7 +875,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         alert("일정 추가에 성공하였습니다.");
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > createSchedule() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createSchedule()에서 오류가 발생했습니다. :", err));
   };
 
   /** 일정 정보 갱신 */
@@ -895,7 +895,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         setInit();
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > updateSchedule() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateSchedule()에서 오류가 발생했습니다. :", err));
   };
 
   /** 일정 삭제 */
@@ -911,7 +911,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
         setInit();
       })
-      .catch(err => console.error("Error in /src/components/calendar/EventModal > EventModal() > deleteSchedule() :", err));
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteSchedule()에서 오류가 발생했습니다. :", err));
   };
 
   return (

@@ -245,7 +245,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("Error in /src/components/profile/ProfileEdit > ProfileEdit() => updateEmail() :", err));
+      .catch(err => console.error("/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :", err));
   };
 
   return (

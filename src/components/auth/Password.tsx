@@ -100,7 +100,7 @@ export default function Password({ back, identification, inputEmail }: IPassword
         setUserEmail(data.email);
         setIsAuth(true);
       })
-      .catch(err => console.error("Error in /src/components/auth/Recovery > Password() > checkIdentification() :", err));
+      .catch(err => console.error("/src/components/auth/Recovery > Password() > checkIdentification()에서 오류가 발생했습니다. :", err));
   };
 
   /** 비밀번호 변경 */
@@ -127,7 +127,7 @@ export default function Password({ back, identification, inputEmail }: IPassword
 
         back();
       })
-      .catch(err => console.error("Error in /src/components/auth/Recovery > Password() > changePassword() :", err));
+      .catch(err => console.error("/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :", err));
   };
 
   return (

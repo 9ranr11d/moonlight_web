@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest) {
     const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     /** 해싱된 Password */
     const hashedPassword: string = await bcrypt.hash(password, 10);
@@ -28,10 +28,10 @@ export async function PUT(req: NextRequest) {
     await User.findByIdAndUpdate(user._id, { password: hashedPassword }, { new: true });
 
     // Password 변경 성공 메세지 반환
-    return NextResponse.json({ msg: "Password Has Been Successfully Changeed" }, { status: 200 });
+    return NextResponse.json({ msg: "비밀번호가 성공적으로 바뀌었습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/change_pw > PUT() :", err);
+    console.error("/src/app/api/auth/change_pw > PUT()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

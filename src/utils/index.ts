@@ -83,7 +83,7 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
 
       dispatch(signOut());
     })
-    .catch(err => console.error("Error in /src/utils/utils > processSignOut() :", err));
+    .catch(err => console.error("/src/utils/utils > processSignOut()에서 오류가 발생했습니다. :", err));
 
   return true;
 };
@@ -96,7 +96,8 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
 export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
   // Access Token이 없을 시
   if (!accessToken) {
-    console.error("Access Token is missing.");
+    console.error("Access Token을 찾지 못했습니다.");
+
     return;
   }
 
@@ -124,7 +125,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
         })
       )
     )
-    .catch(err => console.error("Error in /src/utils/utils > getUser() :", err));
+    .catch(err => console.error("/src/utils/utils > getUser()에서 오류가 발생했습니다. :", err));
 };
 
 /**
@@ -139,7 +140,7 @@ export const copyClipBoard = (text: string): void => {
         alert("클립보드에 복사되었습니다.");
       })
       .catch(err => {
-        console.error("Error in /src/utils/utils > copyClipBoard() :", err);
+        console.error("/src/utils/utils > copyClipBoard()에서 오류가 발생했습니다. :", err);
 
         alert(ERR_MSG);
       });

@@ -17,13 +17,13 @@ export async function POST(req: NextRequest) {
     const user: IIUser[] | null = await User.findOne({ email });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     // 일치하는 사용자가 있을 시 성공 메세지 반환
-    return NextResponse.json({ msg: "E-mail is Available" }, { status: 200 });
+    return NextResponse.json({ msg: "유효한 E-mail입니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/verify_user_info_match > POST() :", err);
+    console.error("/src/app/api/auth/verify_user_info_match > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

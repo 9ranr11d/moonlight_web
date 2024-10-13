@@ -125,7 +125,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(data => console.log(data.msg))
-      .catch(err => console.error("Error in /src/components/auth/SignUp > checkDuplicate() :", err));
+      .catch(err => console.error("/src/components/auth/SignUp > checkDuplicate()에서 오류가 발생했습니다. :", err));
   };
 
   /** 회원가입 */
@@ -161,7 +161,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         completed();
       })
-      .catch(err => console.error("Error in /src/components/auth/SignUp > processSignUp() :", err));
+      .catch(err => console.error("/src/components/auth/SignUp > processSignUp()에서 오류가 발생했습니다. :", err));
   };
 
   return (

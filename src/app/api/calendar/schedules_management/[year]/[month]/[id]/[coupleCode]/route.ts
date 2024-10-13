@@ -61,8 +61,8 @@ export async function GET(req: NextRequest, { params }: { params: { year: string
     /** 일정들 반환 */
     return NextResponse.json(schedules, { status: 200 });
   } catch (err) {
-    console.log("Error in /src/app/api/calendar/schedules_management/[year]/[month] > GET() :", err);
+    console.error("/src/app/api/calendar/schedules_management/[year]/[month] > GET()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

@@ -36,7 +36,7 @@ export default function Identification() {
         setIdentification(data.identification);
         setIsVerified(true);
       })
-      .catch(err => console.error("Error in /src/components/auth/Recovery > Identification() > getUserIdentification() :", err));
+      .catch(err => console.error("/src/components/auth/Recovery > Identification() > getUserIdentification()에서 오류가 발생했습니다. :", err));
   };
 
   return (

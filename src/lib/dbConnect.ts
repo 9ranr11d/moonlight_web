@@ -23,7 +23,8 @@ export default async function dbConnect() {
       .set({ debug: true, strictQuery: false })
       .connect(`${MONGODB_URI}`)
       .then(mongoose => {
-        console.log("Successfully connected to MongoDB");
+        console.log("MongoDB에 연결 성공했습니다.");
+
         return mongoose;
       });
   }

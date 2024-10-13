@@ -33,11 +33,11 @@ export async function POST(req: NextRequest) {
     await newSchedule.save();
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.log("Error in /src/app/api/calendar/schedules_management > POST() :", err);
+    console.error("/src/app/api/calendar/schedules_management > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -65,14 +65,14 @@ export async function PUT(req: NextRequest) {
     );
 
     // 수정할 일정이 없을 시 404에러 반환
-    if (!updatedSchedule) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!updatedSchedule) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.log("Error in /src/app/api/calendar/schedules_management > PUT() :", err);
+    console.error("/src/app/api/calendar/schedules_management > PUT()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -89,10 +89,10 @@ export async function DELETE(req: NextRequest) {
     await Schedule.findByIdAndDelete(_id);
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.log("Error in /src/app/api/calendar/schedules_management > DELETE() :", err);
+    console.error("/src/app/api/calendar/schedules_management > DELETE()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

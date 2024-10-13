@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       </html>
     `;
 
-    console.log("email_verification verificationCode :", verificationCode);
+    console.log("인증 코드 :", verificationCode);
 
     /** 송신할 관리자 E-mail 정보 */
     const transporter = nodemailer.createTransport({
@@ -71,8 +71,8 @@ export async function POST(req: NextRequest) {
     // 인증 코드 반환
     return NextResponse.json({ verificationCode: verificationCode }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/email_verification > POST() :", err);
+    console.error("/src/app/api/auth/email_verification > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류" }, { status: 500 });
   }
 }

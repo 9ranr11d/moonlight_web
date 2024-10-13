@@ -17,13 +17,13 @@ export async function POST(req: NextRequest) {
     const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     // 일차하는 사용자의 Identification, email 반환
     return NextResponse.json({ identification: user.identification, email: user.email }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/check_id > POST() :", err);
+    console.error("/src/app/api/auth/check_id > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

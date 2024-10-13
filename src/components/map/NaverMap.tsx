@@ -100,9 +100,9 @@ export default function NaverMap() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(data => {
-        console.log("Result :", data);
+        console.log("검색 결과 :", data);
       })
-      .catch(err => console.error("Error in /src/components/auth/SignIn > SignIn() > processSignIn() :", err));
+      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
   };
 
   return (

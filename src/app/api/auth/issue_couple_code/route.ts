@@ -20,11 +20,11 @@ export async function POST(req: NextRequest) {
     await User.findByIdAndUpdate(_id, { coupleCode: `${id}-${coupleCode}` }, { new: true });
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Couple code generated successfully" }, { status: 200 });
+    return NextResponse.json({ msg: "성공적으로 커플 코드가 발급되었습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/issue_couple_code > POST() :", err);
+    console.error("/src/app/api/auth/issue_couple_code > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -40,20 +40,20 @@ export async function DELETE(req: NextRequest) {
     const coupleCode = req.nextUrl.searchParams.get("coupleCode");
 
     // 전송된 커플 코드가 있는 지 확인
-    if (!coupleCode) return NextResponse.json({ msg: "coupleCode is required" }, { status: 400 });
+    if (!coupleCode) return NextResponse.json({ msg: "커플 코드가 필요합니다." }, { status: 400 });
 
     /** _id와 커플 코드가 일치한 사용자의 커플 코드 삭제 */
     const result = await User.updateOne({ _id: id, coupleCode }, { $unset: { coupleCode: "" } });
 
     // _id와 커플 코드가 일치한지 확인
-    if (result.modifiedCount === 0) return NextResponse.json({ msg: "No users found with the given coupleCode" }, { status: 404 });
+    if (result.modifiedCount === 0) return NextResponse.json({ msg: "해당 커플 코드로 사용자를 찾을 수 없습니다." }, { status: 404 });
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/issue_couple_code > DELETE() :", err);
+    console.error("/src/app/api/auth/issue_couple_code > DELETE()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" });
+    return NextResponse.json({ msg: "서버 오류입니다." });
   }
 }
 

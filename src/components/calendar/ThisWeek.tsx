@@ -50,7 +50,7 @@ export default function ThisWeek() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(schedules => dispatch(setSchedules(schedules)))
-      .catch(err => console.error("Error in /src/components/calendar/ThisWeek > ThisWeek() > getSchedules() :", err));
+      .catch(err => console.error("/src/components/calendar/ThisWeek > ThisWeek() > getSchedules()에서 오류가 발생했습니다. :", err));
   };
 
   return (

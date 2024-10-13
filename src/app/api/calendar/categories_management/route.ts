@@ -16,9 +16,9 @@ export async function GET() {
     // 카테고리들 반환
     return NextResponse.json(categories, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/calendar/categories_management > GET() :", err);
+    console.error("/src/app/api/calendar/categories_management > GET()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -42,11 +42,11 @@ export async function POST(req: NextRequest) {
     await newScheduleCategory.save();
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/calendar/categories_management > POST() :", err);
+    console.error("/src/app/api/calendar/categories_management > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -63,14 +63,14 @@ export async function PUT(req: NextRequest) {
     const updatedScheduleCategory = await ScheduleCategory.findByIdAndUpdate(_id, { color, title }, { new: true });
 
     // 갱신할 카테고리 정보를 못 찾았을 시 404에러 반환
-    if (!updatedScheduleCategory) return NextResponse.json({ msg: "Schedule Category Not Found" }, { status: 404 });
+    if (!updatedScheduleCategory) return NextResponse.json({ msg: "카테고리가 없습니다." }, { status: 404 });
 
     // 성공 메세지 반환
     return NextResponse.json(updatedScheduleCategory, { status: 200 });
   } catch (err) {
-    console.log("Error in /src/app/api/calendar/categories_management > PUT() :", err);
+    console.error("/src/app/api/calendar/categories_management > PUT()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }
 
@@ -87,10 +87,10 @@ export async function DELETE(req: NextRequest) {
     await ScheduleCategory.findByIdAndDelete(_id);
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/calendar/categories_management > DELETE() :", err);
+    console.error("/src/app/api/calendar/categories_management > DELETE()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
     const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     /** 해싱한 Password 찾은 사용자의 Password 일치 여부 */
     const passwordMatch: boolean = await bcrypt.compare(password, user.password);
 
     // Password 사용자의 Password가 일치하지 않을 시 404 Error 반환
-    if (!passwordMatch) return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
+    if (!passwordMatch) return NextResponse.json({ msg: "비밀번호가 일치하지 않습니다." }, { status: 401 });
 
     /** 사용자 Identification로 발급받은 Access Token */
     const accessToken: string = sign(user.identification);
@@ -55,8 +55,8 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error("Error in /src/app/api/auth/sign_in > POST() :", err);
+    console.error("/src/app/api/auth/sign_in > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

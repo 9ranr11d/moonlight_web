@@ -70,7 +70,7 @@ export default function CoupleCodeManager() {
 
         toggleShowCodeInput();
       })
-      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode() :", err));
+      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode()에서 오류가 발생했습니다. :", err));
   };
 
   /** 커플 코드 발급 */
@@ -106,7 +106,7 @@ export default function CoupleCodeManager() {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode() :", err));
+      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode()에서 오류가 발생했습니다. :", err));
   };
 
   /** 커플 코드 삭제 */
@@ -129,7 +129,7 @@ export default function CoupleCodeManager() {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("Error in /src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode() :", err));
+      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode()에서 오류가 발생했습니다. :", err));
   };
 
   return (

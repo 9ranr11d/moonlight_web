@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const user: IIUser | null = await User.findOne({ identification: result.userIdentification });
 
     // 얻은 userId와 동일한 Identification를 가진 사용자 정보가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "User Not Found" }, { status: 404 });
+    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
 
     // 찾은 사용자 정보와 Access Token 반환
     return NextResponse.json(
@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Error in /src/app/api/auth/get_user_by_access_token > POST() :", err);
+    console.error("/src/app/api/auth/get_user_by_access_token > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

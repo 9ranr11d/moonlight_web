@@ -8,15 +8,15 @@ export async function POST() {
 
     // Refresh Token을 저장한 Cookie 삭제
     return NextResponse.json(
-      { msg: "Sign Out Success" },
+      { msg: "로그아웃 되었습니다." },
       {
         status: 200,
         headers: { "Set-Cookie": `refreshToken=; HttpOnly; path=/; Expires=${pastTime.toUTCString()}; Max-Age=0; Secure; SameSite=Strict;` },
       }
     );
   } catch (err) {
-    console.error("Error in /src/app/api/auth/sign_out > POST() :", err);
+    console.error("/src/app/api/auth/sign_out > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

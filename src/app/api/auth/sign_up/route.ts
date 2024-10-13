@@ -32,10 +32,10 @@ export async function POST(req: NextRequest) {
     await newUser.save();
 
     // 회원가입 성공 메세지 반환
-    return NextResponse.json({ msg: "Success" }, { status: 200 });
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
-    console.error("Error in /src/app/api/auth/sign_up > POST() :", err);
+    console.error("/src/app/api/auth/sign_up > POST()에서 오류가 발생했습니다. :", err);
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }
 }

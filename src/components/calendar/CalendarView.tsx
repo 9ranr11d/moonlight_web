@@ -480,7 +480,7 @@ export default function CalendarView() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(users => setUsers(users))
-      .catch(err => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getUsers() :", err));
+      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :", err));
   };
 
   /** 일정 가져오기 */
@@ -494,7 +494,7 @@ export default function CalendarView() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(_schedules => dispatch(setSchedules(_schedules)))
-      .catch(err => console.error("Error in /src/components/calendar/CalendarView > CalendarView() > getSchedules() :", err));
+      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :", err));
   };
 
   return (
