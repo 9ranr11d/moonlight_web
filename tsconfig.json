@@ -27,8 +27,9 @@
       "@public/*": ["public/*"],
       "@redux/*": ["src/redux/*"],
       "@constants/*": ["src/constants/*"],
-      "@hook/*": ["src/hook/*"],
-      "@utils/*": ["src/utils/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

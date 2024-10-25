@@ -25,11 +25,6 @@ export default function Home() {
   const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
   const [isRecovery, setIsRecovery] = useState<boolean>(false); // Identification/Password 찾기 여부
 
-  // 로그인 정보가 있을 시 '메인 홈'으로
-  useEffect(() => {
-    if (user.isAuth && user.accessLevel > 0) router.push("/home");
-  }, [user.isAuth, user.accessLevel, router]);
-
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
     setIsSignUp(true);
@@ -54,6 +49,11 @@ export default function Home() {
   const handleRecoveryBack = (): void => {
     setIsRecovery(false);
   };
+
+  // 로그인 정보가 있을 시 '메인 홈'으로
+  useEffect(() => {
+    if (user.isAuth && user.accessLevel > 0) router.push("/home");
+  }, [user.isAuth, user.accessLevel, router]);
 
   return (
     <main className={CSS.container}>

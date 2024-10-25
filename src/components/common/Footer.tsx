@@ -4,18 +4,18 @@ import Link from "next/link";
 
 import CSS from "./Footer.module.css";
 
-import { mainTitle } from "@constants/index";
-import { mainMenus } from "@constants/menu";
+import { MAIN_TITLE } from "@constants/index";
+import { MAIN_MENUS } from "@constants/menu";
 
 /** Footer */
 export default function Footer() {
   return (
     <footer>
-      <h6 className={CSS.title}>{mainTitle}</h6>
+      <h6 className={CSS.title}>{MAIN_TITLE}</h6>
 
       <nav>
         <ul className={CSS.menus}>
-          {mainMenus.map((menu, idx) => (
+          {MAIN_MENUS.map((menu, idx) => (
             <li key={idx}>
               <Link href={menu.path}>{menu.title}</Link>
             </li>

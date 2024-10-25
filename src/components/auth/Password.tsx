@@ -33,39 +33,28 @@ export default function Password({ back, identification, inputEmail }: IPassword
   const [password, setPassword] = useState<string>(""); // 새로 만들 Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
 
-  // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
-  useEffect(() => {
-    if (isEmailMatching && passwordInputRef.current) passwordInputRef.current.focus();
-  }, [isEmailMatching]);
-
-  // Password랑 Password 확인 일치 여부 판단
-  useEffect(() => {
-    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
-    else setIsPwMatching(false);
-  }, [password, confirmPassword]);
-
   /** Identification Input */
-  const handleIdentification = (e: any): void => {
+  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
     set_identification(e.target.value);
   };
 
   /** Identification Input에서 'Enter'를 누를 시 */
-  const handleIdentificationKeyDown = (e: any): void => {
+  const handleIdentificationKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") checkIdentification();
   };
 
   /** Password Input */
-  const handlePassword = (e: any): void => {
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
   /** Password 확인 Input */
-  const handleConfirmPw = (e: any): void => {
+  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setConfirmPassword(e.target.value);
   };
 
   /** Password 확인 Input에서 'Enter'를 누를 시 */
-  const handleConfirmPwKeyDown = (e: any): void => {
+  const handleConfirmPwKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") changePassword();
   };
 
@@ -129,6 +118,17 @@ export default function Password({ back, identification, inputEmail }: IPassword
       })
       .catch(err => console.error("/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :", err));
   };
+
+  // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
+  useEffect(() => {
+    if (isEmailMatching && passwordInputRef.current) passwordInputRef.current.focus();
+  }, [isEmailMatching]);
+
+  // Password랑 Password 확인 일치 여부 판단
+  useEffect(() => {
+    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
+    else setIsPwMatching(false);
+  }, [password, confirmPassword]);
 
   return (
     <>

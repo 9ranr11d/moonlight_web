@@ -35,17 +35,17 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
 
   /** Identification Input */
-  const handleIdentification = (e: any): void => {
+  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setIdentification(e.target.value);
   };
 
   /** Password Input */
-  const handlePassword = (e: any): void => {
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
   /** Password에서 'Enter'를 누를 시 */
-  const handlePasswordKeyDown = (e: any): void => {
+  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") processSignIn();
   };
 

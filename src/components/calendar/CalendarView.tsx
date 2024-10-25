@@ -14,7 +14,7 @@ import { IIISchedule } from "@models/Schedule";
 
 import CSS from "./CalendarView.module.css";
 
-import { dayOfWeek, monthDays, monthNames } from "@constants/date";
+import { DAY_OF_WEEK, MONTH_DAYS, MONTH_NAMES } from "@constants/date";
 import { ERR_MSG } from "@constants/msg";
 
 import EventModal from "./EventModal";
@@ -102,54 +102,13 @@ export default function CalendarView() {
   /** 현재 달의 1일의 요일 */
   const firstDayOfMonth: number = new Date(year, month, 1).getDay();
   /** 이전 달 날짜 수 */
-  const prevMonthDays: number = month - 1 < 0 ? monthDays[11] : monthDays[month - 1];
+  const prevMonthDays: number = month - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[month - 1];
   /** 이전 달 마지막 주와 현재 달의 날짜를 합친 수 */
-  const monthDaysWithPrevLastWeek: number = monthDays[month] + firstDayOfMonth;
+  const monthDaysWithPrevLastWeek: number = MONTH_DAYS[month] + firstDayOfMonth;
   /** 현재 달 마지막 주에 남은 날짜 수 */
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
   const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
-
-  // 시작 시
-  useEffect(() => {
-    if (user.isAuth) getUsers();
-  }, [user]);
-
-  // 일정 목록의 변경이 있을 시
-  useEffect(() => {
-    convertSchedules();
-  }, [calendar.schedules]);
-
-  /** 캘린더 변경 시 */
-  useEffect(() => {
-    if (calendarRef.current) {
-      /** 캘린더 높이 변경 */
-      const updatedCalendarHeight = () => {
-        setCalendarHeight(calendarRef.current?.offsetHeight || 0);
-      };
-
-      updatedCalendarHeight();
-
-      /** 캘린더 내용물 변경 감지센서 */
-      const observer = new MutationObserver(updatedCalendarHeight);
-      observer.observe(calendarRef.current, { childList: true, subtree: true });
-    }
-  }, [calendarRef]);
-
-  // // 사이드 메뉴 연도/달 선택 상태 변경 시
-  // useEffect(() => {
-  //   if (isYear) moveSelectedYear(year, year - startYear);
-  // }, [isYear]);
-
-  // 연도, 달 변경 시
-  useEffect(() => {
-    if (user.isAuth) getSchedules();
-  }, [year, month, user]);
-
-  // Backdrop랑 EventModal 동조화
-  useEffect(() => {
-    if (!backdrop.isVisible) closeModal();
-  }, [backdrop.isVisible]);
 
   /**
    * 시작 날짜와 종료 날짜가 다른 일정 렌더링
@@ -211,27 +170,27 @@ export default function CalendarView() {
    * 연도 텍스트 입력 필드 관리
    * @param e 수정할 내용
    */
-  const handleInputYear = (e: any): void => {
+  const handleInputYear = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
 
-    if (value.length < 5) setInputYear(value);
+    if (value.length < 5) setInputYear(Number(value));
   };
 
   /**
    * 달 텍스트 입력 필드 관리
    * @param e 수정할 내용
    */
-  const handleInputMonth = (e: any): void => {
+  const handleInputMonth = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
 
-    if (value.length < 4) setInputMonth(value);
+    if (value.length < 4) setInputMonth(Number(value));
   };
 
   /**
    * 달 텍스트 입력 필드에서 'Enter' 클릭 시
    * @param e 클릭한 키
    */
-  const handleInputMonthKeyDown = (e: any) => {
+  const handleInputMonthKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") selectInputYearMonth();
   };
 
@@ -497,6 +456,47 @@ export default function CalendarView() {
       .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :", err));
   };
 
+  // 시작 시
+  useEffect(() => {
+    if (user.isAuth) getUsers();
+  }, [user]);
+
+  // 일정 목록의 변경이 있을 시
+  useEffect(() => {
+    convertSchedules();
+  }, [calendar.schedules]);
+
+  /** 캘린더 변경 시 */
+  useEffect(() => {
+    if (calendarRef.current) {
+      /** 캘린더 높이 변경 */
+      const updatedCalendarHeight = () => {
+        setCalendarHeight(calendarRef.current?.offsetHeight || 0);
+      };
+
+      updatedCalendarHeight();
+
+      /** 캘린더 내용물 변경 감지센서 */
+      const observer = new MutationObserver(updatedCalendarHeight);
+      observer.observe(calendarRef.current, { childList: true, subtree: true });
+    }
+  }, [calendarRef]);
+
+  // // 사이드 메뉴 연도/달 선택 상태 변경 시
+  // useEffect(() => {
+  //   if (isYear) moveSelectedYear(year, year - startYear);
+  // }, [isYear]);
+
+  // 연도, 달 변경 시
+  useEffect(() => {
+    if (user.isAuth) getSchedules();
+  }, [year, month, user]);
+
+  // Backdrop랑 EventModal 동조화
+  useEffect(() => {
+    if (!backdrop.isVisible) closeModal();
+  }, [backdrop.isVisible]);
+
   return (
     <div>
       <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
@@ -538,7 +538,7 @@ export default function CalendarView() {
 
             <ul className={CSS.content} style={{ height: calendarHeight, paddingRight: isYear ? 5 : 0 }} ref={siderbarRef}>
               {!isYear
-                ? monthNames.map((monthName, idx) => (
+                ? MONTH_NAMES.map((monthName, idx) => (
                     <li key={idx}>
                       <button type="button" onClick={() => selectMonth(idx)} className={idx === month ? CSS.selected : undefined}>
                         <h6>{monthName}</h6>
@@ -592,7 +592,7 @@ export default function CalendarView() {
 
                 <li>
                   <button type="button" onClick={toggleInputYearMonth}>
-                    <h3>{monthNames[month]}</h3>
+                    <h3>{MONTH_NAMES[month]}</h3>
                   </button>
                 </li>
 
@@ -607,7 +607,7 @@ export default function CalendarView() {
 
           <div className={CSS.content} ref={calendarRef}>
             <ul className={CSS.daysOfWeek}>
-              {dayOfWeek.map((day, idx) => (
+              {DAY_OF_WEEK.map((day, idx) => (
                 <li key={idx}>
                   <h6>{day}</h6>
                 </li>

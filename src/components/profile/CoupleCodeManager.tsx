@@ -24,12 +24,12 @@ export default function CoupleCodeManager() {
   const [coupleCode, setCoupleCode] = useState<string>(""); // 커플 커드 텍스트 입력 필드 내용
 
   /** 커플 코드 입력 */
-  const handleCoupleCode = (e: any): void => {
+  const handleCoupleCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setCoupleCode(e.target.value);
   };
 
   /** 커플 코드 텍스트 입력 필드에서 키 누를 시 호출 */
-  const handleCoupleCodeKeyDown = (e: any): void => {
+  const handleCoupleCodeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") registerCoupleCode();
   };
 

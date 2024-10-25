@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import CSS from "./CalendarView.module.css";
 
-import { dayOfWeek, monthDays, monthNames } from "@constants/date";
+import { DAY_OF_WEEK, MONTH_DAYS, MONTH_NAMES } from "@constants/date";
 
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";
@@ -63,9 +63,9 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
   /** 현재 달의 1일의 요일 */
   const firstDayOfMonth: number = new Date(miniYear, miniMonth, 1).getDay();
   /** 이전 달 날짜 수 */
-  const prevMonthDays: number = endMonth - 1 < 0 ? monthDays[11] : monthDays[endMonth - 1];
+  const prevMonthDays: number = endMonth - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[endMonth - 1];
   /** 이전 달 마지막 주와 현재 달의 날짜를 합친 수 */
-  const monthDaysWithPrevLastWeek: number = monthDays[endMonth] + firstDayOfMonth;
+  const monthDaysWithPrevLastWeek: number = MONTH_DAYS[endMonth] + firstDayOfMonth;
   /** 현재 달 마지막 주에 남은 날짜 수 */
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
@@ -81,7 +81,7 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
         </li>
 
         <li>
-          <h5>{monthNames[isStart ? startMonth : endMonth]}</h5>
+          <h5>{MONTH_NAMES[isStart ? startMonth : endMonth]}</h5>
         </li>
 
         <li>
@@ -93,7 +93,7 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
 
       <div className={CSS.content}>
         <ul className={CSS.daysOfWeek}>
-          {dayOfWeek.map((day, idx) => (
+          {DAY_OF_WEEK.map((day, idx) => (
             <li key={idx}>
               <h6>{day}</h6>
             </li>

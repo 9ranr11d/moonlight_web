@@ -1,26 +1,52 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+import { ILatLng } from "@interfaces/index";
+
+import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
+
 interface IMapState {
-  places: kakao.maps.services.Places[];
+  searchedPlaces: kakao.maps.services.PlacesSearchResult;
+  mapCenter: ILatLng;
+  activeMarkerIdx: number;
 }
 
 const initialState: IMapState = {
-  places: [],
+  searchedPlaces: [],
+  mapCenter: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
+  activeMarkerIdx: -1,
 };
 
 export const Map = createSlice({
   name: "map",
   initialState,
   reducers: {
-    setPlaces: (state, action: PayloadAction<kakao.maps.services.Places[]>): IMapState => {
+    setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>): IMapState => {
       return {
         ...state,
-        places: action.payload,
+        searchedPlaces: action.payload,
+      };
+    },
+    setMapCenter: (state, action: PayloadAction<ILatLng>): IMapState => {
+      return {
+        ...state,
+        mapCenter: action.payload,
+      };
+    },
+    resetSearchPlaces: state => {
+      return {
+        ...state,
+        searchedPlaces: [],
+      };
+    },
+    setActiveMarkerIdx: (state, action: PayloadAction<number>): IMapState => {
+      return {
+        ...state,
+        activeMarkerIdx: action.payload,
       };
     },
   },
 });
 
-export const { setPlaces } = Map.actions;
+export const { setSearchedPlaces, setMapCenter, resetSearchPlaces, setActiveMarkerIdx } = Map.actions;
 
 export default Map.reducer;

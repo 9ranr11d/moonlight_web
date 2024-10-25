@@ -6,9 +6,9 @@ import Image from "next/image";
 
 import CSS from "./Map.module.css";
 
-import useGeoloaction from "@hook/useGeolocation";
+import useGeoloaction from "@hooks/useGeolocation";
 
-import IconCurrentPosition from "@public/img/map/icon_current_position.svg";
+import IconCurrentPosition from "@public/img/map/icon_current_position_black.svg";
 
 export default function NaverMap() {
   const { currentLocation } = useGeoloaction();
@@ -19,32 +19,7 @@ export default function NaverMap() {
 
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    const initMap = (): void => {
-      const mapOptions = {
-        center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lng),
-        logoControl: false,
-        scaleControl: false,
-        zoom: 17,
-      };
-
-      if (mapRef.current) {
-        const naverMap = new naver.maps.Map(mapRef.current, mapOptions);
-
-        setMap(naverMap);
-      }
-    };
-
-    if (window.naver && window.naver.maps) initMap();
-    else {
-      const mapScript = document.createElement("script");
-      mapScript.onload = () => initMap();
-      mapScript.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`;
-      document.head.appendChild(mapScript);
-    }
-  }, [currentLocation]);
-
-  const handleSearchQuery = (e: any): void => {
+  const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(e.target.value);
   };
 
@@ -104,6 +79,31 @@ export default function NaverMap() {
       })
       .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
   };
+
+  useEffect(() => {
+    const initMap = (): void => {
+      const mapOptions = {
+        center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lng),
+        logoControl: false,
+        scaleControl: false,
+        zoom: 17,
+      };
+
+      if (mapRef.current) {
+        const naverMap = new naver.maps.Map(mapRef.current, mapOptions);
+
+        setMap(naverMap);
+      }
+    };
+
+    if (window.naver && window.naver.maps) initMap();
+    else {
+      const mapScript = document.createElement("script");
+      mapScript.onload = () => initMap();
+      mapScript.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`;
+      document.head.appendChild(mapScript);
+    }
+  }, [currentLocation]);
 
   return (
     <div ref={mapRef} style={{ width: "100%", height: "calc(100vh - 200px)", position: "relative" }}>

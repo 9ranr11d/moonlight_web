@@ -60,36 +60,6 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
   const [renderModalType, setRenderModalType] = useState<string>(""); // 사용자 정보 수정 모달에 렌더할 컴포넌트
 
-  // 모든 사용자 정보 속성 수정상태 비활성화
-  useEffect(() => {
-    const initialDisabledState: { [key in keyof IUser]?: boolean } = {};
-
-    editableFields.forEach(field => {
-      const key = field.id as keyof IUser;
-
-      initialDisabledState[key] = true;
-    });
-
-    setDisabledBtn(initialDisabledState);
-  }, []);
-
-  // 사용자 정보가 수정된 상태인지 파악
-  useEffect(() => {
-    if (user.isAuth) {
-      setUserData(user);
-
-      const newDisabledBtn: { [key in keyof IUser]?: boolean } = {};
-
-      editableFields.forEach(field => {
-        const key = field.id as keyof IUser;
-
-        newDisabledBtn[key] = userData[key] === user[key];
-      });
-
-      setDisabledBtn(newDisabledBtn);
-    }
-  }, [user]);
-
   /**
    * 사용자 정보 속성 렌더링
    * @returns 사용자 정보 속성
@@ -157,7 +127,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * @param e event
    * @param key 사용자 정보 속성
    */
-  const handleField = (e: any, key: keyof IUser): void => {
+  const handleField = (e: React.ChangeEvent<HTMLInputElement>, key: keyof IUser): void => {
     const { value } = e.target;
 
     setUserData(prev => ({ ...prev, [key]: value }));
@@ -247,6 +217,36 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
       })
       .catch(err => console.error("/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :", err));
   };
+
+  // 모든 사용자 정보 속성 수정상태 비활성화
+  useEffect(() => {
+    const initialDisabledState: { [key in keyof IUser]?: boolean } = {};
+
+    editableFields.forEach(field => {
+      const key = field.id as keyof IUser;
+
+      initialDisabledState[key] = true;
+    });
+
+    setDisabledBtn(initialDisabledState);
+  }, []);
+
+  // 사용자 정보가 수정된 상태인지 파악
+  useEffect(() => {
+    if (user.isAuth) {
+      setUserData(user);
+
+      const newDisabledBtn: { [key in keyof IUser]?: boolean } = {};
+
+      editableFields.forEach(field => {
+        const key = field.id as keyof IUser;
+
+        newDisabledBtn[key] = userData[key] === user[key];
+      });
+
+      setDisabledBtn(newDisabledBtn);
+    }
+  }, [user]);
 
   return (
     <>

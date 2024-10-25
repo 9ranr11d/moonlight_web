@@ -45,33 +45,8 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
 
   const [deadline, setDeadline] = useState<number>(0); // 인증 코드 입력 제한시간
 
-  // '아이디' 텍스트 입력 필드로 포커스
-  useEffect(() => {
-    if (isAutoFocus && emailInputRef.current) emailInputRef.current.focus();
-  }, [isAutoFocus]);
-
-  // 인증 코드 입력 제한시간 감소
-  useEffect(() => {
-    let timerId: any;
-
-    deadline > 0 ? (timerId = setTimeout(() => setDeadline(prev => prev - 1), 1000)) : clearTimeout(timerId);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [deadline]);
-
-  // 인증 E-mail 전송 시 인증 코드 텍스트 입력 필드로 포커스
-  useEffect(() => {
-    if (isEmailSent && verificationCodeInputRef.current) verificationCodeInputRef.current.focus();
-  }, [isEmailSent]);
-
-  useEffect(() => {
-    if (inputEmail) verifyMatch();
-  }, [inputEmail]);
-
   /** E-mail Input */
-  const handleEmail = (e: any): void => {
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setIsEmailSent(false);
     setVerificationCode("");
     setVerificationInput("");
@@ -79,17 +54,17 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
   };
 
   /** Email에서 'Enter'를 누를 시 */
-  const handleEmailKeyDown = (e: any): void => {
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") verifyMatch();
   };
 
   /** 인증 코드 Input */
-  const handleVerificationInput = (e: any): void => {
+  const handleVerificationInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setVerificationInput(e.target.value);
   };
 
   /** 인증 코드 Input에서 'Enter'를 누를 시 */
-  const handleVerificationInputKeyDown = (e: any): void => {
+  const handleVerificationInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") checkVerificationCode();
   };
 
@@ -161,6 +136,31 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
       })
       .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
   };
+
+  // '아이디' 텍스트 입력 필드로 포커스
+  useEffect(() => {
+    if (isAutoFocus && emailInputRef.current) emailInputRef.current.focus();
+  }, [isAutoFocus]);
+
+  // 인증 코드 입력 제한시간 감소
+  useEffect(() => {
+    let timerId: any;
+
+    deadline > 0 ? (timerId = setTimeout(() => setDeadline(prev => prev - 1), 1000)) : clearTimeout(timerId);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [deadline]);
+
+  // 인증 E-mail 전송 시 인증 코드 텍스트 입력 필드로 포커스
+  useEffect(() => {
+    if (isEmailSent && verificationCodeInputRef.current) verificationCodeInputRef.current.focus();
+  }, [isEmailSent]);
+
+  useEffect(() => {
+    if (inputEmail) verifyMatch();
+  }, [inputEmail]);
 
   return (
     <>

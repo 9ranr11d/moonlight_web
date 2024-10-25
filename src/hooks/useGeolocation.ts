@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 
-/** 현재 위치 인터페이스 */
-export interface ICurrentLocation {
-  /** 위도 */
-  lat: number;
-  /** 경도 */
-  lng: number;
-}
+import { ILatLng } from "@interfaces/index";
+
+import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
 
 /** Geolocation Position 인터페이스 */
 interface IGeolocationPosition {
@@ -22,9 +18,9 @@ interface IGeolocationPosition {
  */
 export default function useGeoloaction() {
   // 현재 위치
-  const [currentLocation, setCurrentLocation] = useState<ICurrentLocation>({
-    lat: 35.8655,
-    lng: 128.5934,
+  const [currentLocation, setCurrentLocation] = useState<ILatLng>({
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   });
 
   const [locationLoading, setLocationLoading] = useState<boolean>(false); // 현재 위치 로드 여부
@@ -38,20 +34,36 @@ export default function useGeoloaction() {
      * @param location Geolocation 좌표 정보
      */
     const success = (location: IGeolocationPosition) => {
+      const lat = location.coords.latitude;
+      const lng = location.coords.longitude;
+
+      console.log("현재 위치를 가져오는데 성공했습니다.");
+      console.log("위도 :", lat, ", 경도 :", lng);
+
       setCurrentLocation({
         lat: location.coords.latitude,
         lng: location.coords.longitude,
       });
+
       setLocationLoading(false);
     };
 
     /** Error */
     const error = () => {
-      setCurrentLocation({ lat: 37.5666103, lng: 126.9783882 });
+      console.log("현재 위치를 가져오는데 실패했습니다. 위도와 경도가 기본값으로 설정됩니다.");
+      console.log("위도 :", DEFAULT_LAT, ", 경도 :", DEFAULT_LNG);
+
+      setCurrentLocation({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
+
       setLocationLoading(false);
     };
 
     if (navigator.geolocation) navigator.geolocation.getCurrentPosition(success, error);
+    else {
+      console.log("현재 사용 중인 브라우저가 Geolocation을 지원하지 않습니다.");
+
+      setLocationLoading(false);
+    }
   };
 
   // 현재 위치 가져오기

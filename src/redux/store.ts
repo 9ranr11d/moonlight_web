@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/AuthSlice";
 import calendarReducer from "./slices/CalendarSlice";
 import backdropReducer from "./slices/BackdropSlice";
-import mapSlice from "./slices/mapSlice";
+import mapReducer from "./slices/mapSlice";
 
 /** Redux Store */
 export const store = configureStore({
@@ -14,7 +14,8 @@ export const store = configureStore({
     calendarReducer,
     /** Modal 배경화면 정보 */
     backdropReducer,
-    mapSlice,
+    /** 지도 정보 */
+    mapReducer,
   },
 });
 

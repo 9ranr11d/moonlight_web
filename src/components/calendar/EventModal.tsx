@@ -149,51 +149,6 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     return isDeleteCategoryHovers[idx] ? IconDeleteOpenPrimary : IconDeleteClosePrimary;
   };
 
-  // 시작 시
-  useEffect(() => {
-    getCategories();
-  }, []);
-
-  // 카테고리 변경 시
-  useEffect(() => {
-    checkSelectedCategory();
-  }, [calendar.categories]);
-
-  // 캘린더의 카테고리, 사용자 변경 시
-  useEffect(() => {
-    setUserCategories(calendar.categories.filter(category => category.createdBy === editSchedule.user)); // 현재 사용자의 카테고리 목록
-  }, [calendar.categories, editSchedule.user]);
-
-  // 일정 팝업 수정 상태 변경 시
-  useEffect(() => {
-    // 팝업 수정 상태가 꺼졌을 시
-    if (!isEditSchedule) {
-      setEditSchedule({
-        ...editScheduleInitialState,
-        user: user._id,
-        date: [lastSelectedDate, lastSelectedDate],
-      });
-
-      setNewCategory(newCategoryInitialState);
-
-      setIsUserListOpen(false);
-      setIsCategoryListOpen(false);
-      setIsCreateCategory(false);
-      setIsStartMiniCalendarOpen(false);
-      setIsEndMiniCalendarOpen(false);
-    }
-  }, [isEditSchedule]);
-
-  // 일정 팝업 수정 상태 날짜 수정 시
-  useEffect(() => {
-    setEditSchedule(prev => ({
-      ...prev,
-      date: [lastSelectedDate, lastSelectedDate],
-    }));
-
-    setIsEditSchedule(false);
-  }, [lastSelectedDate]);
-
   /** 조회한 날짜의 팝업 속 일정 렌더링 */
   const renderModalSchedules = (): JSX.Element => {
     /** 선택한 날짜 */
@@ -421,7 +376,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param key 수정할 Input
    * @param e 수정할 내용
    */
-  const handleModalText = (key: string, e: any): void => {
+  const handleModalText = (key: string, e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>): void => {
     setEditSchedule(prev => ({
       ...prev,
       [key]: e.target.value,
@@ -434,7 +389,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param key color: 색상, title: 카테고리 이름
    * @param _id 수정 시, 카테고리 _id
    */
-  const handleEditCategoryColorTitle = (e: any, key: "color" | "title", _id: string): void => {
+  const handleEditCategoryColorTitle = (e: React.ChangeEvent<HTMLInputElement>, key: "color" | "title", _id: string): void => {
     /** 수정을 위한 임시 저장 */
     const tempCategories: IIScheduleCategory[] = [...userCategories];
 
@@ -460,7 +415,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * 생성할 카테고리 색상 입력
    * @param e 색상
    */
-  const handleCreateCategoryColor = (e: any): void => {
+  const handleCreateCategoryColor = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNewCategory(prev => ({
       ...prev,
       color: e.target.value,
@@ -471,7 +426,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * 생성할 카테고리 제목 입력
    * @param e 카테고리 제목
    */
-  const handleCreateCategoryTitle = (e: any): void => {
+  const handleCreateCategoryTitle = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNewCategory(prev => ({
       ...prev,
       title: e.target.value,
@@ -482,7 +437,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * 일정 팝업 수정 상태 시, 반복 여부 설정
    * @param e 반복 여부
    */
-  const handleRepeating = (e: any): void => {
+  const handleRepeating = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEditSchedule(prev => ({
       ...prev,
       isRepeating: e.target.value === "repeating" ? true : false,
@@ -913,6 +868,51 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       })
       .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteSchedule()에서 오류가 발생했습니다. :", err));
   };
+
+  // 시작 시
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  // 카테고리 변경 시
+  useEffect(() => {
+    checkSelectedCategory();
+  }, [calendar.categories]);
+
+  // 캘린더의 카테고리, 사용자 변경 시
+  useEffect(() => {
+    setUserCategories(calendar.categories.filter(category => category.createdBy === editSchedule.user)); // 현재 사용자의 카테고리 목록
+  }, [calendar.categories, editSchedule.user]);
+
+  // 일정 팝업 수정 상태 변경 시
+  useEffect(() => {
+    // 팝업 수정 상태가 꺼졌을 시
+    if (!isEditSchedule) {
+      setEditSchedule({
+        ...editScheduleInitialState,
+        user: user._id,
+        date: [lastSelectedDate, lastSelectedDate],
+      });
+
+      setNewCategory(newCategoryInitialState);
+
+      setIsUserListOpen(false);
+      setIsCategoryListOpen(false);
+      setIsCreateCategory(false);
+      setIsStartMiniCalendarOpen(false);
+      setIsEndMiniCalendarOpen(false);
+    }
+  }, [isEditSchedule]);
+
+  // 일정 팝업 수정 상태 날짜 수정 시
+  useEffect(() => {
+    setEditSchedule(prev => ({
+      ...prev,
+      date: [lastSelectedDate, lastSelectedDate],
+    }));
+
+    setIsEditSchedule(false);
+  }, [lastSelectedDate]);
 
   return (
     <Modal close={closeModal} className={CSS.modal}>

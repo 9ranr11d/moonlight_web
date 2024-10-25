@@ -13,7 +13,7 @@ import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
 import CSS from "./Header.module.css";
 
-import { mainMenus } from "@constants/menu";
+import { MAIN_MENUS } from "@constants/menu";
 
 import { getUser } from "@utils/index";
 
@@ -43,42 +43,6 @@ export default function Header() {
   const [isHidden, setIsHidden] = useState<boolean>(false); // 로그인 전 로고 불가시 여부
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
-
-  // Access Token, Refresh Token으로 자동 로그인
-  useEffect(() => {
-    // 이미 로그인이 된 상태면 패스
-    if (user.isAuth) return;
-    else setIsHidden(false);
-
-    // AccessToken이 있는지, 없는지
-    if (user.accessToken.length !== 0) getUser(user.accessToken, dispatch);
-    else getRefreshAccessToken();
-  }, [user]);
-
-  // 50분마다 Access Token 자동 재발급
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getRefreshAccessToken();
-    }, 50 * 60 * 1000);
-
-    // 로그아웃 시 Access Token 자동 재발급 취소
-    if (!user.isAuth) return clearInterval(interval);
-
-    return () => clearInterval(interval);
-  }, [user.accessToken]);
-
-  // 도메인 경로 변경 시 메뉴 불가시로 설정
-  useEffect(() => {
-    setIsUserPanelOpen(false);
-    setIsSideMenuOpen(false);
-
-    dispatch(hideBackdrop());
-  }, [pathname]);
-
-  // Backdrop이랑 SideMenu 동조화
-  useEffect(() => {
-    if (!backdrop.isVisible) setIsSideMenuOpen(false);
-  }, [backdrop.isVisible]);
 
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
@@ -121,6 +85,42 @@ export default function Header() {
       .catch(err => console.error("/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :", err));
   };
 
+  // Access Token, Refresh Token으로 자동 로그인
+  useEffect(() => {
+    // 이미 로그인이 된 상태면 패스
+    if (user.isAuth) return;
+    else setIsHidden(false);
+
+    // AccessToken이 있는지, 없는지
+    if (user.accessToken.length !== 0) getUser(user.accessToken, dispatch);
+    else getRefreshAccessToken();
+  }, [user]);
+
+  // 50분마다 Access Token 자동 재발급
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getRefreshAccessToken();
+    }, 50 * 60 * 1000);
+
+    // 로그아웃 시 Access Token 자동 재발급 취소
+    if (!user.isAuth) return clearInterval(interval);
+
+    return () => clearInterval(interval);
+  }, [user.accessToken]);
+
+  // 도메인 경로 변경 시 메뉴 불가시로 설정
+  useEffect(() => {
+    setIsUserPanelOpen(false);
+    setIsSideMenuOpen(false);
+
+    dispatch(hideBackdrop());
+  }, [pathname]);
+
+  // Backdrop이랑 SideMenu 동조화
+  useEffect(() => {
+    if (!backdrop.isVisible) setIsSideMenuOpen(false);
+  }, [backdrop.isVisible]);
+
   return (
     <header style={user.isAuth ? { zIndex: 999 } : undefined}>
       <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
@@ -133,7 +133,7 @@ export default function Header() {
 
           <div className={CSS.menuBox}>
             <ul>
-              {mainMenus.map((menu, idx) => (
+              {MAIN_MENUS.map((menu, idx) => (
                 <li key={idx}>
                   <Link href={menu.path}>{menu.title}</Link>
                 </li>
@@ -186,7 +186,7 @@ export default function Header() {
         </div>
 
         <ul>
-          {mainMenus.map((menu, idx) => (
+          {MAIN_MENUS.map((menu, idx) => (
             <li key={idx}>
               <Link href={menu.path}>{menu.title}</Link>
             </li>

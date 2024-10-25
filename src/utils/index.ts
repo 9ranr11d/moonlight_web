@@ -1,5 +1,6 @@
 import { AppDispatch } from "@redux/store";
 import { signIn, signOut } from "@redux/slices/AuthSlice";
+
 import { ERR_MSG } from "@constants/msg";
 
 /**
@@ -83,7 +84,7 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
 
       dispatch(signOut());
     })
-    .catch(err => console.error("/src/utils/utils > processSignOut()에서 오류가 발생했습니다. :", err));
+    .catch(err => console.error("/src/utils/index > processSignOut()에서 오류가 발생했습니다. :", err));
 
   return true;
 };
@@ -125,7 +126,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
         })
       )
     )
-    .catch(err => console.error("/src/utils/utils > getUser()에서 오류가 발생했습니다. :", err));
+    .catch(err => console.error("/src/utils/index > getUser()에서 오류가 발생했습니다. :", err));
 };
 
 /**
@@ -140,7 +141,7 @@ export const copyClipBoard = (text: string): void => {
         alert("클립보드에 복사되었습니다.");
       })
       .catch(err => {
-        console.error("/src/utils/utils > copyClipBoard()에서 오류가 발생했습니다. :", err);
+        console.error("/src/utils/index > copyClipBoard()에서 오류가 발생했습니다. :", err);
 
         alert(ERR_MSG);
       });

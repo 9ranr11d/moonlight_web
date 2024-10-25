@@ -9,7 +9,7 @@ import { RootState } from "@redux/store";
 import CSS from "./ThisWeek.module.css";
 
 import { ERR_MSG } from "@constants/msg";
-import { dayOfWeek } from "@constants/date";
+import { DAY_OF_WEEK } from "@constants/date";
 
 /** 현재 주의 일정 표시 */
 export default function ThisWeek() {
@@ -34,11 +34,6 @@ export default function ThisWeek() {
   /** 현재 주의 일요일 날짜 */
   const thisSunday: Date = new Date(currentYear, currentMonth, currentDay - today.getDay());
 
-  // 로그인 시 일정 정보 가져오기
-  useEffect(() => {
-    if (user.isAuth) getSchedules();
-  }, [user]);
-
   /** 일정 정보 가져오기 */
   const getSchedules = (): void => {
     fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
@@ -53,10 +48,15 @@ export default function ThisWeek() {
       .catch(err => console.error("/src/components/calendar/ThisWeek > ThisWeek() > getSchedules()에서 오류가 발생했습니다. :", err));
   };
 
+  // 로그인 시 일정 정보 가져오기
+  useEffect(() => {
+    if (user.isAuth) getSchedules();
+  }, [user]);
+
   return (
     <div className={CSS.week}>
       <ul>
-        {dayOfWeek.map((day, idx) => (
+        {DAY_OF_WEEK.map((day, idx) => (
           <li key={idx}>
             <h6>{day}</h6>
           </li>
