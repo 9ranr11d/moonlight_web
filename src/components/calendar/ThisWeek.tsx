@@ -36,7 +36,7 @@ export default function ThisWeek() {
 
   /** 일정 정보 가져오기 */
   const getSchedules = (): void => {
-    fetch(`/api/calendar/schedules_management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
+    fetch(`/api/calendar/schedulesManagement/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`)
       .then(res => {
         if (res.ok) return res.json();
 

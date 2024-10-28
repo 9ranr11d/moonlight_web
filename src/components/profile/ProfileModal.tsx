@@ -13,6 +13,7 @@ import { processSignOut } from "@utils/index";
 
 /** 사용자 정보 수정 모달 자식들 */
 interface IProfileModal {
+  /** 닫기 */
   closeModal: () => void;
 }
 

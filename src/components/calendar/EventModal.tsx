@@ -41,11 +41,30 @@ import IconDeleteClosePrimary from "@public/img/common/icon_delete_close_primary
 
 /** Event Modal 자식들 */
 interface IEventModalProps {
+  /** 닫기 */
   closeModal: () => void;
+  /** 일정 가져오기 */
   getSchedules: () => void;
+  /**
+   * 일정 중 해당 날짜가 포함된 시작 날짜와 종료 날짜가 다른 일정들 찾기
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 찾은 일정 목록
+   */
   findMultipleScheduleByDate: (year: number, month: number, day: number) => IConvertedSchedules[];
+  /**
+   * 일정 중 해당 날짜의 시작 날짜와 종료 날짜가 같은 일정
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 찾은 일정 목록
+   */
   findScheduleByDate: (year: number, month: number, day: number) => IConvertedSchedules[];
+
+  /** 마지막 선택 날짜 */
   lastSelectedDate: Date;
+  /** 사용자 정보 */
   users: IIUser[];
 }
 
@@ -101,10 +120,10 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   const [isEditSchedule, setIsEditSchedule] = useState<boolean>(false); // 일정 수정 상태인지
   const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false); // 일정 생성 상태인지
-  const [isStartMiniCalendarOpen, setIsStartMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 시작 날짜 선택 캘린더 가시 유무
-  const [isEndMiniCalendarOpen, setIsEndMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 종료 날짜 선택 캘린더 가시 유무
-  const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false); // 일정 수정 시, 사용자 선택 드롭다운 메뉴 가시 유무
-  const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false); // 일정 수정 시, 카테고리 드롭다운 메뉴 가시 유무
+  const [isStartMiniCalendarOpen, setIsStartMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 시작 날짜 선택 캘린더 가시 여부
+  const [isEndMiniCalendarOpen, setIsEndMiniCalendarOpen] = useState<boolean>(false); // 일정 수정 시, 종료 날짜 선택 캘린더 가시 여부
+  const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false); // 일정 수정 시, 사용자 선택 드롭다운 메뉴 가시 여부
+  const [isCategoryListOpen, setIsCategoryListOpen] = useState<boolean>(false); // 일정 수정 시, 카테고리 드롭다운 메뉴 가시 여부
   const [isCreateCategory, setIsCreateCategory] = useState<boolean>(false); // 일정 수정 시, 카테고리 생성 여부
   const [isEditSchduleHover, setIsEditScheduleHover] = useState<boolean>(false); // 일정 수정 버튼 Hover 여부
   const [isDeleteScheduleHover, setIsDeleteScheduleHover] = useState<boolean>(false); // 일정 삭제 버튼 Hover 여부
@@ -702,7 +721,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
     // 선택된 카테고리면 선택 해제
     if (selectedIdx !== -1) newCategories = tempCategories.filter((_, idx) => idx !== selectedIdx);
-    // 선택 안된 카테고리면 선택
+    // 선택 안 된 카테고리면 선택
     else newCategories = [...tempCategories, category];
 
     setEditSchedule(prev => ({
@@ -711,7 +730,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     }));
   };
 
-  /** 스케줄 가져오기 전 초기화 */
+  /** 일정 가져오기 전 초기화 */
   const setInit = (): void => {
     setIsCategoryListOpen(false);
     setIsEditSchedule(false);
@@ -724,7 +743,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param category 업데이트할 카테고리
    */
   const updateCategory = (category: IIScheduleCategory): void => {
-    fetch("/api/calendar/categories_management", {
+    fetch("/api/calendar/categoriesManagement", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(category),
@@ -752,7 +771,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       return;
     }
 
-    fetch("/api/calendar/categories_management", {
+    fetch("/api/calendar/categoriesManagement", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newCategory),
@@ -777,7 +796,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 카테고리 삭제 */
   const deleteCategory = (_id: string): void => {
-    fetch(`/api/calendar/categories_management?_id=${_id}`, { method: "DELETE" })
+    fetch(`/api/calendar/categoriesManagement?_id=${_id}`, { method: "DELETE" })
       .then(res => {
         if (res.ok) return res.json();
 
@@ -793,7 +812,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 모든 카테고리 목록 가져오기 */
   const getCategories = (): void => {
-    fetch("/api/calendar/categories_management")
+    fetch("/api/calendar/categoriesManagement")
       .then(res => {
         if (res.ok) return res.json();
 
@@ -805,7 +824,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 일정 생성 */
   const createSchedule = (): void => {
-    fetch("/api/calendar/schedules_management", {
+    fetch("/api/calendar/schedulesManagement", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
@@ -835,7 +854,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 일정 정보 갱신 */
   const updateSchedule = (): void => {
-    fetch("/api/calendar/schedules_management", {
+    fetch("/api/calendar/schedulesManagement", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
@@ -855,7 +874,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
   /** 일정 삭제 */
   const deleteSchedule = (): void => {
-    fetch(`/api/calendar/schedules_management?_id=${selectedScheduleId}`, { method: "DELETE" })
+    fetch(`/api/calendar/schedulesManagement?_id=${selectedScheduleId}`, { method: "DELETE" })
       .then(res => {
         if (res.ok) return res.json();
 

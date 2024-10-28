@@ -69,7 +69,7 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
   // 사용자가 취소 누를 시
   if (!confirmSignOut) return false;
 
-  fetch("/api/auth/sign_out", { method: "POST" })
+  fetch("/api/auth/signOut", { method: "POST" })
     .then(res => {
       if (res.ok) return res.json();
 
@@ -105,7 +105,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
   /** 보낼 Access Token */
   const data: { accessToken: string } = { accessToken };
 
-  fetch("/api/auth/get_user_by_access_token", {
+  fetch("/api/auth/getUserByAccessToken", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

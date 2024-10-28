@@ -9,6 +9,10 @@ import EmailVerification from "@components/auth/EmailVerification";
 
 /** E-mail 수정 Form 자식들 */
 interface IEmailUpdateFormProps {
+  /**
+   * E-mail 인증 성공 시
+   * @param email 인증 성공한 E-mail
+   */
   verifyEmailSuccess: (email: string) => void;
 }
 

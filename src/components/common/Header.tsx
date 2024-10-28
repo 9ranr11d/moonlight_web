@@ -42,7 +42,7 @@ export default function Header() {
 
   const [isHidden, setIsHidden] = useState<boolean>(false); // 로그인 전 로고 불가시 여부
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 여부
 
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
@@ -71,7 +71,7 @@ export default function Header() {
 
   /** Refresh Token 확인 */
   const getRefreshAccessToken = (): void => {
-    fetch("/api/auth/refresh_access_token")
+    fetch("/api/auth/refreshAccessToken")
       .then(res => {
         if (res.ok) return res.json();
 

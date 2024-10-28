@@ -71,7 +71,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const processSignIn = (): void => {
     const data: { identification: string; password: string } = { identification, password };
 
-    fetch("/api/auth/sign_in", {
+    fetch("/api/auth/signIn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

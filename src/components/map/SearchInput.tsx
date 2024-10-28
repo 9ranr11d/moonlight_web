@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { resetSearchPlaces, setSearchedPlaces } from "@redux/slices/mapSlice";
+import { IAddress, resetSearchPlaces, setSearchedAddress, setSearchedPlaces } from "@redux/slices/mapSlice";
 
 import CSS from "./Map.module.css";
 
@@ -14,36 +14,82 @@ import Modal from "@components/common/Modal";
 
 import IconClose from "@public/img/common/icon_close_black.svg";
 import IconSearch from "@public/img/common/icon_search_white.svg";
-import IconExpand from "@public/img/common/icon_greater_than_white.svg";
-import IconCollapse from "@public/img/common/icon_less_than_white.svg";
+import IconExpand from "@public/img/common/icon_expand_white.svg";
+import IconCollapse from "@public/img/common/icon_collapse_white.svg";
 
+/** Search Input 자식들 */
 interface ISearchInputProps {
-  moveToLocation: (lat: number, lng: number) => void;
+  /** 검색 결과 목록 선택 시 */
+  selectedResult: (idx: number) => void;
 }
 
-export default function SearchInput({ moveToLocation }: ISearchInputProps) {
+/** 검색 결과 목록 Style */
+interface IPanelStyle {
+  /** Background */
+  background: string;
+  /** Box Shadow */
+  boxShadow: string;
+}
+
+/** 검색창 */
+export default function SearchInput({ selectedResult }: ISearchInputProps) {
+  /** Dispatch */
   const dispatch = useDispatch();
 
+  /** 지도 Reducer */
   const mapReducer = useSelector((state: RootState) => state.mapReducer);
 
-  const placesBoxRef = useRef<HTMLDivElement>(null);
-  const placeRefs = useRef<HTMLLIElement[]>([]);
+  /** 검색 결과들의 Box Ref */
+  const resultsRef = useRef<HTMLDivElement>(null);
+  /** 검색 결과들 Ref */
+  const resultRefs = useRef<HTMLLIElement[]>([]);
 
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [modalMsg, setModalMsg] = useState<string>("");
-  const [panelBackground, setPanelBackground] = useState<string>("none");
+  // 검색 결과 목록 Style
+  const [panelStyle, setPanelStyle] = useState<IPanelStyle>({
+    background: "none",
+    boxShadow: "none",
+  });
 
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isSearchPanelVisible, setIsSearchPanelVisible] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>(""); // 검색어
+  const [modalMsg, setModalMsg] = useState<string>(""); // 알림 Modal에 띄울 Message
 
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 알림 Modal 가시 여부
+  const [isSearchPanelVisible, setIsSearchPanelVisible] = useState<boolean>(false); // 검색 결과 목록 가시 여부
+
+  /** 검색 결과가 있는 지 */
+  const hasSearchResults = mapReducer.searchedPlaces.length > 0 || mapReducer.searchedAddress.length > 0;
+
+  /**
+   * 주소 형식 변환
+   * @param addressType 주소 타입
+   * @returns 지명 | 도로명 | 지번 주소 | 도로명 주소 | 알 수 없음
+   */
+  const formatAddressType = (addressType: IAddress["address_type"]): string => {
+    switch (addressType) {
+      case "REGION":
+        return "지명";
+      case "ROAD":
+        return "도로명";
+      case "REGION_ADDR":
+        return "지번 주소";
+      case "ROAD_ADDR":
+        return "도로명 주소";
+      default:
+        return "알 수 없음";
+    }
+  };
+
+  /** 검색창 검색어 관리 */
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(e.target.value);
   };
 
+  /** 검색창 '키' 누름 시 */
   const handleSearchQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") searchLocation();
+    if (e.key === "Enter") searchAddress();
   };
 
+  /** 검색어 초기화 */
   const clickResetSearchPlaces = (): void => {
     setSearchQuery("");
     setIsSearchPanelVisible(false);
@@ -51,28 +97,57 @@ export default function SearchInput({ moveToLocation }: ISearchInputProps) {
     dispatch(resetSearchPlaces());
   };
 
-  const panelController = (): void => {
+  /** 검색 결과 목록 Toggle */
+  const panelToggle = (): void => {
     setIsSearchPanelVisible(prev => !prev);
   };
 
-  const moveActivePlace = (idx: number): void => {
-    if (placesBoxRef.current && placeRefs.current[idx]) {
-      const placesBoxRefHeight: number = placesBoxRef.current.clientHeight;
-      const activePlaceHeight: number = placeRefs.current[idx].clientHeight;
-      const activePlaceOffsetTop: number = placeRefs.current[idx].offsetTop;
+  /**
+   * 선택한 검색 결과로 스크롤
+   * @param idx 스크롤 할 검색 결과 순서
+   */
+  const scrollToSelectedResult = (idx: number): void => {
+    if (resultsRef.current && resultRefs.current[idx]) {
+      /** 검색 결과들 Box 높이 */
+      const resultsRefHeight: number = resultsRef.current.clientHeight;
+      /** 선택한 검색 결과의 높이 */
+      const selectedResultHeight: number = resultRefs.current[idx].clientHeight;
+      /** 선택한 검색 결과의 위쪽 좌표 */
+      const selectedResultOffsetTop: number = resultRefs.current[idx].offsetTop;
 
-      const scrollTop: number = activePlaceOffsetTop - placesBoxRefHeight / 2 + activePlaceHeight / 2;
+      /** 스크롤할 거리 */
+      const scrollTop: number = selectedResultOffsetTop - resultsRefHeight / 2 + selectedResultHeight / 2;
 
-      placesBoxRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
+      resultsRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
     }
   };
 
-  const searchLocation = (): void => {
+  /** 주소 검색 */
+  const searchAddress = (): void => {
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(searchQuery, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setIsSearchPanelVisible(true);
+
+        dispatch(setSearchedAddress(result));
+      } else {
+        console.error("주소 검색에 실패했습니다 :", status);
+
+        // 주소로 검색되지 않을 시 '키워드'로 검색
+        searchPlace();
+      }
+    });
+  };
+
+  /** 키워드 검색 */
+  const searchPlace = (): void => {
     const places = new kakao.maps.services.Places();
 
+    /** 검색 옵션 */
     const options = {
-      location: new kakao.maps.LatLng(mapReducer.mapCenter.lat, mapReducer.mapCenter.lng),
-      radius: 10000,
+      location: new kakao.maps.LatLng(mapReducer.mapCenter.lat, mapReducer.mapCenter.lng), // 현 위치를 기준으로
+      radius: 10000, // 반경(1당 1m)
     };
 
     places.keywordSearch(
@@ -83,7 +158,7 @@ export default function SearchInput({ moveToLocation }: ISearchInputProps) {
 
           dispatch(setSearchedPlaces(data));
         } else {
-          console.error("검색 실패했습니다 :", status);
+          console.error("장소 검색에 실패했습니다 :", status);
 
           switch (status) {
             case kakao.maps.services.Status.ZERO_RESULT:
@@ -101,6 +176,7 @@ export default function SearchInput({ moveToLocation }: ISearchInputProps) {
               break;
           }
 
+          // 오류 코드 알림 Modal로 잠깐 띄우기
           setIsModalVisible(true);
 
           setTimeout(() => {
@@ -114,59 +190,86 @@ export default function SearchInput({ moveToLocation }: ISearchInputProps) {
     );
   };
 
+  // 검색 결과 목록을 열고 닫을 시 Style 변경
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     if (!isSearchPanelVisible) {
       timer = setTimeout(() => {
-        setPanelBackground("none");
+        setPanelStyle({
+          background: "none",
+          boxShadow: "none",
+        });
       }, 300);
-    } else setPanelBackground("var(--background-color-iv)");
+    } else setPanelStyle({ background: "var(--background-color-iv)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.2)" });
 
     return () => clearTimeout(timer);
   }, [isSearchPanelVisible]);
 
+  // Marker 클릭으로 'selectedIdx' 변경 시 해당 검색 결과로 목록 스크롤
   useEffect(() => {
-    if (mapReducer.activeMarkerIdx !== -1) moveActivePlace(mapReducer.activeMarkerIdx);
-  }, [mapReducer.activeMarkerIdx]);
+    if (mapReducer.selectedIdx !== -1) {
+      const result = mapReducer.searchedAddress.length > 0 ? mapReducer.searchedAddress : mapReducer.searchedPlaces;
+
+      console.log("선택한 정보 :", result[mapReducer.selectedIdx]);
+
+      scrollToSelectedResult(mapReducer.selectedIdx);
+    }
+  }, [mapReducer.selectedIdx]);
 
   return (
     <>
-      <div
-        className={`${CSS.searchBox} ${mapReducer.searchedPlaces.length > 0 && isSearchPanelVisible ? CSS.searched : undefined}`}
-        style={{ background: panelBackground }}
-      >
+      <div className={`${CSS.searchBox} ${hasSearchResults && isSearchPanelVisible ? CSS.searched : undefined}`} style={panelStyle}>
         <div className={CSS.searchInput}>
           <span>
             <input type="text" value={searchQuery} onChange={handleSearchQuery} onKeyDown={handleSearchQueryKeyDown} placeholder="검색할 장소나 주소 입력" />
 
-            {mapReducer.searchedPlaces.length > 0 && (
+            {hasSearchResults && (
               <button type="button" onClick={clickResetSearchPlaces}>
                 <Image src={IconClose} width={15} height={15} alt="X" />
               </button>
             )}
           </span>
 
-          <button type="button" onClick={searchLocation}>
+          <button type="button" onClick={searchAddress}>
             <Image src={IconSearch} width={15} height={15} alt="검색" />
           </button>
         </div>
 
-        <div className={CSS.places} ref={placesBoxRef}>
-          {mapReducer.searchedPlaces.length > 0 && (
+        <div className={CSS.results} ref={resultsRef}>
+          {hasSearchResults && (
             <ul>
+              {mapReducer.searchedAddress.map((address, idx) => (
+                <li
+                  key={idx}
+                  ref={el => {
+                    if (el) resultRefs.current[idx] = el;
+                  }}
+                >
+                  <button type="button" className={mapReducer.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                    <ul>
+                      <li>
+                        <h6>{address.address_name}</h6>
+                      </li>
+
+                      <li>
+                        <p className={CSS.category}>{formatAddressType(address.address_type)}</p>
+                      </li>
+
+                      <li>{address.address ? address.address.address_name : address.road_address.address_name}</li>
+                    </ul>
+                  </button>
+                </li>
+              ))}
+
               {mapReducer.searchedPlaces.map((place, idx) => (
                 <li
                   key={idx}
                   ref={el => {
-                    if (el) placeRefs.current[idx] = el;
+                    if (el) resultRefs.current[idx] = el;
                   }}
                 >
-                  <button
-                    type="button"
-                    className={mapReducer.activeMarkerIdx === idx ? CSS.activePlace : undefined}
-                    onClick={() => moveToLocation(Number(place.y), Number(place.x))}
-                  >
+                  <button type="button" className={mapReducer.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
                     <ul>
                       <li>
                         <h6>{place.place_name}</h6>
@@ -187,9 +290,9 @@ export default function SearchInput({ moveToLocation }: ISearchInputProps) {
           )}
         </div>
 
-        {mapReducer.searchedPlaces.length > 0 && (
+        {hasSearchResults && (
           <div className={CSS.panelControlBox}>
-            <button type="button" onClick={panelController}>
+            <button type="button" onClick={panelToggle}>
               <Image src={isSearchPanelVisible ? IconCollapse : IconExpand} width={15} height={15} alt=">"></Image>
             </button>
           </div>

@@ -72,10 +72,11 @@
 
 .content > ul > li > ul > li {
   position: relative;
+  flex: 1;
 }
 
 .content > ul > li > ul > li:nth-child(2) {
-  flex: 1;
+  flex: 3;
 }
 
 .content > ul > li > ul > li > span {
@@ -91,6 +92,10 @@
 
 .email > li > ul > li:last-child > button {
   width: 80px;
+}
+
+.recoveryBox {
+  width: 100%;
 }
 
 @media (max-width: 768px) {

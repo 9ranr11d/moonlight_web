@@ -96,7 +96,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   const checkDuplicate = (): void => {
     const data: { identification: string } = { identification };
 
-    fetch("/api/auth/check_duplicate_id", {
+    fetch("/api/auth/checkDuplicateId", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -133,7 +133,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       email: `${firstEmail}@${lastEmail}`,
     };
 
-    fetch("/api/auth/sign_up", {
+    fetch("/api/auth/signUp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

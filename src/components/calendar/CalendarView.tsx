@@ -85,9 +85,9 @@ export default function CalendarView() {
   const [calendarHeight, setCalendarHeight] = useState<number>(0); // 캘린더 높이
 
   const [isYear, setIsYear] = useState<boolean>(false); // 사이드 메뉴에서 연도 선택 상태인지
-  const [isSiderbarOpen, setIsSiderbarOpen] = useState<boolean>(false); // 사이드 메뉴 가시 유무
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 일정 추가, 수정 ,삭제 모달 가시 유무
-  const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false); // 연도 텍스트 입력 필드 가시 유무
+  const [isSiderbarOpen, setIsSiderbarOpen] = useState<boolean>(false); // 사이드 메뉴 가시 여부
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 일정 추가, 수정 ,삭제 모달 가시 여부
+  const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false); // 연도 텍스트 입력 필드 가시 여부
 
   const [users, setUsers] = useState<IIUser[]>([]); // 전체 사용자 목록
 
@@ -430,7 +430,7 @@ export default function CalendarView() {
 
   /** 모든 사용자 목록 */
   const getUsers = (): void => {
-    fetch("/api/auth/get_users_with_high_access_level")
+    fetch("/api/auth/getUsersWithHighAccessLevel")
       .then(res => {
         if (res.ok) return res.json();
 
@@ -444,7 +444,7 @@ export default function CalendarView() {
 
   /** 일정 가져오기 */
   const getSchedules = (): void => {
-    fetch(`/api/calendar/schedules_management/${year}/${month}/${user._id}/${user.coupleCode}`)
+    fetch(`/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`)
       .then(res => {
         if (res.ok) return res.json();
 

@@ -87,7 +87,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
     if (isEmailCheckEnabled) {
       const data: { email: string } = { email };
 
-      fetch("/api/auth/verify_user_info_match", {
+      fetch("/api/auth/verifyUserInfoMatch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -116,7 +116,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
   const sendEmail = (): void => {
     const data: { email: string } = { email };
 
-    fetch("/api/auth/email_verification", {
+    fetch("/api/auth/emailVerification", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

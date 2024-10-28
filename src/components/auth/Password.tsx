@@ -71,7 +71,7 @@ export default function Password({ back, identification, inputEmail }: IPassword
   const checkIdentification = (): void => {
     const data: { identification: string } = { identification: _identification };
 
-    fetch("/api/auth/check_id", {
+    fetch("/api/auth/checkId", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -96,7 +96,7 @@ export default function Password({ back, identification, inputEmail }: IPassword
   const changePassword = (): void => {
     const data: { identification: string; password: string } = { identification: _identification, password };
 
-    fetch("/api/auth/change_pw", {
+    fetch("/api/auth/changePw", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -136,7 +136,7 @@ export default function Password({ back, identification, inputEmail }: IPassword
         <>
           <h5 className={CSS.nonMobile}>비밀번호를 찾고자하는 아이디를 입력해주세요.</h5>
           <h5 className={CSS.mobile}>
-            비밀전호를 찾고자하는
+            비밀번호를 찾고자하는
             <br />
             아이디를 입력해주세요.
           </h5>

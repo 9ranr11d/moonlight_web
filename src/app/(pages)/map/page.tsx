@@ -2,8 +2,6 @@
 
 import React from "react";
 
-import CSS from "./Map.module.css";
-
 // import NaverMap from "@components/map/NaverMap";
 import KakaoMap from "@components/map/KakaoMap";
 

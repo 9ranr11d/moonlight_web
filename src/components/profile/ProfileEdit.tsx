@@ -54,7 +54,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
   const [userData, setUserData] = useState<IUser>(user || {}); // 현재 사용자 정보
 
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 사용자 정보 수정 Modal 가시 유무
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 사용자 정보 수정 Modal 가시 여부
 
   const [disabledBtn, setDisabledBtn] = useState<{ [key in keyof IUser]?: boolean }>({}); // 비활성화 할 버튼들
 
@@ -198,7 +198,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
     const data: { _id: string; email?: string; nickname?: string } = { _id: user._id, ...userInfo };
 
-    fetch("/api/auth/change_user_info", {
+    fetch("/api/auth/changeUserInfo", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

@@ -19,7 +19,7 @@ export default function CoupleCodeManager() {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authReducer);
 
-  const [isCodeInputVisible, setIsCodeInputVisible] = useState<boolean>(false); // 커플 코드 텍스트 입력 필드 가시 유무
+  const [isCodeInputVisible, setIsCodeInputVisible] = useState<boolean>(false); // 커플 코드 텍스트 입력 필드 가시 여부
 
   const [coupleCode, setCoupleCode] = useState<string>(""); // 커플 커드 텍스트 입력 필드 내용
 
@@ -38,7 +38,7 @@ export default function CoupleCodeManager() {
     if (user.coupleCode) copyClipBoard(user.coupleCode);
   };
 
-  /** 커플 코드 텍스트 입력 필드 가시 유무 Toggle */
+  /** 커플 코드 텍스트 입력 필드 가시 여부 Toggle */
   const toggleShowCodeInput = (): void => {
     setCoupleCode("");
 
@@ -49,7 +49,7 @@ export default function CoupleCodeManager() {
   const registerCoupleCode = (): void => {
     const data: { id: string; coupleCode: string } = { id: user._id, coupleCode };
 
-    fetch("/api/auth/register_couple_code", {
+    fetch("/api/auth/registerCoupleCode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -87,7 +87,7 @@ export default function CoupleCodeManager() {
 
     const data: { _id: string; id: string } = { _id: user._id, id: user.identification };
 
-    fetch("/api/auth/issue_couple_code", {
+    fetch("/api/auth/issueCoupleCode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -118,7 +118,7 @@ export default function CoupleCodeManager() {
       return;
     }
 
-    fetch(`/api/auth/issue_couple_code?id=${user._id}&coupleCode=${user.coupleCode}`, { method: "DELETE" })
+    fetch(`/api/auth/issueCoupleCode?id=${user._id}&coupleCode=${user.coupleCode}`, { method: "DELETE" })
       .then(res => {
         if (res.ok) return res.json();
 

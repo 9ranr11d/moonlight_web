@@ -4,49 +4,110 @@ import { ILatLng } from "@interfaces/index";
 
 import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
 
-interface IMapState {
-  searchedPlaces: kakao.maps.services.PlacesSearchResult;
-  mapCenter: ILatLng;
-  activeMarkerIdx: number;
+/** 주소 인터페이스 */
+export interface IAddress {
+  /** 주소 명 */
+  address_name: string;
+  /** 주소 형식 */
+  address_type: "REGION" | "ROAD" | "REGION_ADDR" | "ROAD_ADDR";
+  /** 위도 */
+  x: string;
+  /** 경도 */
+  y: string;
+  /** 주소 정보 */
+  address: kakao.maps.services.Address;
+  /** 도로명 주소 정보 */
+  road_address: kakao.maps.services.RoadAaddress;
 }
 
+/** 초기값 인터페이스  */
+interface IMapState {
+  /** 검색한 주소 목록 */
+  searchedAddress: IAddress[];
+  /** 검색한 장소 목록 */
+  searchedPlaces: kakao.maps.services.PlacesSearchResult;
+  /** 지도 중심 좌표 */
+  mapCenter: ILatLng;
+  /** 선택된 검색 결과 순서 */
+  selectedIdx: number;
+}
+
+/** 초기값 */
 const initialState: IMapState = {
+  searchedAddress: [],
   searchedPlaces: [],
   mapCenter: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
-  activeMarkerIdx: -1,
+  selectedIdx: -1,
 };
 
+/** 지도 정보 */
 export const Map = createSlice({
   name: "map",
   initialState,
   reducers: {
+    /**
+     * 주소 검색 결과 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setSearchedAddress: (state, action: PayloadAction<IAddress[]>): IMapState => {
+      return {
+        ...state,
+        searchedAddress: action.payload,
+        searchedPlaces: [],
+        selectedIdx: -1,
+      };
+    },
+    /**
+     * 장소 검색 결과 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
     setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>): IMapState => {
       return {
         ...state,
+        searchedAddress: [],
         searchedPlaces: action.payload,
+        selectedIdx: -1,
       };
     },
+    /**
+     * 지도 중심 좌표 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
     setMapCenter: (state, action: PayloadAction<ILatLng>): IMapState => {
       return {
         ...state,
         mapCenter: action.payload,
       };
     },
+    /**
+     * 검색 결과 목록 초기화
+     * @param state 기존 정보
+     */
     resetSearchPlaces: state => {
       return {
         ...state,
+        searchedAddress: [],
         searchedPlaces: [],
+        selectedPlaceIdx: -1,
       };
     },
-    setActiveMarkerIdx: (state, action: PayloadAction<number>): IMapState => {
+    /**
+     * 선택한 검색 결과 순서 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setSelectedIdx: (state, action: PayloadAction<number>): IMapState => {
       return {
         ...state,
-        activeMarkerIdx: action.payload,
+        selectedIdx: action.payload,
       };
     },
   },
 });
 
-export const { setSearchedPlaces, setMapCenter, resetSearchPlaces, setActiveMarkerIdx } = Map.actions;
+export const { setSearchedAddress, setSearchedPlaces, setMapCenter, resetSearchPlaces, setSelectedIdx } = Map.actions;
 
 export default Map.reducer;
