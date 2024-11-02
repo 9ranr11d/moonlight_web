@@ -1,5 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+import { IFavoriteLocation } from "@models/FavoriteLocation";
+
 import { ILatLng } from "@interfaces/index";
 
 import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
@@ -26,6 +28,8 @@ interface IMapState {
   searchedAddress: IAddress[];
   /** 검색한 장소 목록 */
   searchedPlaces: kakao.maps.services.PlacesSearchResult;
+  /** 즐겨찾기 장소 목록 */
+  favoriteLocations: IFavoriteLocation[];
   /** 지도 중심 좌표 */
   mapCenter: ILatLng;
   /** 선택된 검색 결과 순서 */
@@ -36,6 +40,7 @@ interface IMapState {
 const initialState: IMapState = {
   searchedAddress: [],
   searchedPlaces: [],
+  favoriteLocations: [],
   mapCenter: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
   selectedIdx: -1,
 };
@@ -50,60 +55,45 @@ export const Map = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSearchedAddress: (state, action: PayloadAction<IAddress[]>): IMapState => {
-      return {
-        ...state,
-        searchedAddress: action.payload,
-        searchedPlaces: [],
-        selectedIdx: -1,
-      };
+    setSearchedAddress: (state, action: PayloadAction<IAddress[]>) => {
+      state.searchedAddress = action.payload;
+      state.searchedPlaces = [];
+      state.selectedIdx = -1;
     },
     /**
      * 장소 검색 결과 저장
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>): IMapState => {
-      return {
-        ...state,
-        searchedAddress: [],
-        searchedPlaces: action.payload,
-        selectedIdx: -1,
-      };
+    setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>) => {
+      state.searchedAddress = [];
+      state.searchedPlaces = action.payload;
+      state.selectedIdx = -1;
     },
     /**
      * 지도 중심 좌표 저장
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setMapCenter: (state, action: PayloadAction<ILatLng>): IMapState => {
-      return {
-        ...state,
-        mapCenter: action.payload,
-      };
+    setMapCenter: (state, action: PayloadAction<ILatLng>) => {
+      state.mapCenter = action.payload;
     },
     /**
      * 검색 결과 목록 초기화
      * @param state 기존 정보
      */
     resetSearchPlaces: state => {
-      return {
-        ...state,
-        searchedAddress: [],
-        searchedPlaces: [],
-        selectedPlaceIdx: -1,
-      };
+      state.searchedAddress = [];
+      state.searchedPlaces = [];
+      state.selectedIdx = -1;
     },
     /**
      * 선택한 검색 결과 순서 저장
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSelectedIdx: (state, action: PayloadAction<number>): IMapState => {
-      return {
-        ...state,
-        selectedIdx: action.payload,
-      };
+    setSelectedIdx: (state, action: PayloadAction<number>) => {
+      state.selectedIdx = action.payload;
     },
   },
 });

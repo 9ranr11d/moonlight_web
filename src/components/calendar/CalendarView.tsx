@@ -110,60 +110,32 @@ export default function CalendarView() {
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
   const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
-  /**
-   * 시작 날짜와 종료 날짜가 다른 일정 렌더링
-   * @param _year 연도
-   * @param _month 달
-   * @param _day 일
-   * @returns 일정
-   */
-  const renderMultipleSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
-    /** 렌더링할 날짜 */
-    const date: Date = new Date(_year, _month, _day);
+  /** 모든 사용자 목록 */
+  const getUsers = (): void => {
+    fetch("/api/auth/getUsersWithHighAccessLevel")
+      .then(res => {
+        if (res.ok) return res.json();
 
-    /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 다른 일정들 */
-    const matchingSchedule: IConvertedSchedules[] = findMultipleScheduleByDate(_year, _month, _day);
+        alert(ERR_MSG);
 
-    return matchingSchedule.length > 0 ? (
-      <>
-        {matchingSchedule.map((schedule, idx) => (
-          <p key={idx} className={`${CSS.schedule} ${CSS.multipleSchedules}`} style={{ background: schedule.categories[0].color }}>
-            <span className={CSS.truncated}>
-              {date.getTime() === new Date(schedule.date[0]).getTime() || date.getTime() === new Date(schedule.date[1]).getTime() ? schedule.title : ""}
-            </span>
-          </p>
-        ))}
-      </>
-    ) : null;
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(users => setUsers(users))
+      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :", err));
   };
 
-  /**
-   * 시작 날짜와 종료 날짜가 같은 일정 렌더링
-   * @param _year 연도
-   * @param _month 달
-   * @param _day 일
-   * @returns 일정
-   */
-  const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
-    /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 같은 일정들 */
-    const schedules: IConvertedSchedules[] = findScheduleByDate(_year, _month, _day);
+  /** 일정 가져오기 */
+  const getSchedules = (): void => {
+    fetch(`/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`)
+      .then(res => {
+        if (res.ok) return res.json();
 
-    return schedules.length > 0 ? (
-      <>
-        {schedules.map((schedule, idx) => (
-          <p key={idx} className={CSS.schedule}>
-            <span className={CSS.multiple}>
-              {schedule.categories.slice(0, 2).map((category, _idx) => (
-                <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span>
-              ))}
-              {schedule.categories.length > 2 && <span>...</span>}
-            </span>
+        alert(ERR_MSG);
 
-            <span className={CSS.truncated}>{schedule.title}</span>
-          </p>
-        ))}
-      </>
-    ) : null;
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(_schedules => dispatch(setSchedules(_schedules)))
+      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :", err));
   };
 
   /**
@@ -413,7 +385,6 @@ export default function CalendarView() {
    */
   const selectDay = (_year: number, _month: number, _day: number): void => {
     const selectedDay: Date = new Date(_year, _month, _day);
-
     setLastSelectedDay(selectedDay);
 
     dispatch(showBackdrop());
@@ -428,32 +399,60 @@ export default function CalendarView() {
     setIsModalVisible(false);
   };
 
-  /** 모든 사용자 목록 */
-  const getUsers = (): void => {
-    fetch("/api/auth/getUsersWithHighAccessLevel")
-      .then(res => {
-        if (res.ok) return res.json();
+  /**
+   * 시작 날짜와 종료 날짜가 다른 일정 렌더링
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 일정
+   */
+  const renderMultipleSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
+    /** 렌더링할 날짜 */
+    const date: Date = new Date(_year, _month, _day);
 
-        alert(ERR_MSG);
+    /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 다른 일정들 */
+    const matchingSchedule: IConvertedSchedules[] = findMultipleScheduleByDate(_year, _month, _day);
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(users => setUsers(users))
-      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :", err));
+    return matchingSchedule.length > 0 ? (
+      <>
+        {matchingSchedule.map((schedule, idx) => (
+          <p key={idx} className={`${CSS.schedule} ${CSS.multipleSchedules}`} style={{ background: schedule.categories[0].color }}>
+            <span className={CSS.truncated}>
+              {date.getTime() === new Date(schedule.date[0]).getTime() || date.getTime() === new Date(schedule.date[1]).getTime() ? schedule.title : ""}
+            </span>
+          </p>
+        ))}
+      </>
+    ) : null;
   };
 
-  /** 일정 가져오기 */
-  const getSchedules = (): void => {
-    fetch(`/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`)
-      .then(res => {
-        if (res.ok) return res.json();
+  /**
+   * 시작 날짜와 종료 날짜가 같은 일정 렌더링
+   * @param _year 연도
+   * @param _month 달
+   * @param _day 일
+   * @returns 일정
+   */
+  const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
+    /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 같은 일정들 */
+    const schedules: IConvertedSchedules[] = findScheduleByDate(_year, _month, _day);
 
-        alert(ERR_MSG);
+    return schedules.length > 0 ? (
+      <>
+        {schedules.map((schedule, idx) => (
+          <p key={idx} className={CSS.schedule}>
+            <span className={CSS.multiple}>
+              {schedule.categories.slice(0, 2).map((category, _idx) => (
+                <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span>
+              ))}
+              {schedule.categories.length > 2 && <span>...</span>}
+            </span>
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(_schedules => dispatch(setSchedules(_schedules)))
-      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :", err));
+            <span className={CSS.truncated}>{schedule.title}</span>
+          </p>
+        ))}
+      </>
+    ) : null;
   };
 
   // 시작 시

@@ -46,4 +46,5 @@ const ScheduleSchema: mongoose.Schema<IIISchedule> = new Schema<IIISchedule>({
   isRepeating: { type: Boolean, default: false },
 });
 
+// 정의된 'Schedule'모델이 없으면 새로운 'Schedule'모델 생성
 export default mongoose.models.Schedule || mongoose.model<IIISchedule>("Schedule", ScheduleSchema);

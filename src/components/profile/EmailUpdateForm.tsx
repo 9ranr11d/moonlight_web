@@ -23,6 +23,11 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
 
   const [step, setStep] = useState<number>(0); // 단계
 
+  /** 이메일 인증 완료 */
+  const proceedWithVerifiedEmail = (): void => {
+    setStep(1);
+  };
+
   /** 단계 별 렌더할 Component */
   const renderForm = () => {
     switch (step) {
@@ -49,11 +54,6 @@ export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateForm
           />
         );
     }
-  };
-
-  /** 이메일 인증 완료 */
-  const proceedWithVerifiedEmail = (): void => {
-    setStep(1);
   };
 
   return <>{renderForm()}</>;

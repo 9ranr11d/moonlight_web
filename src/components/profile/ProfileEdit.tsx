@@ -61,65 +61,30 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   const [renderModalType, setRenderModalType] = useState<string>(""); // 사용자 정보 수정 모달에 렌더할 컴포넌트
 
   /**
-   * 사용자 정보 속성 렌더링
-   * @returns 사용자 정보 속성
+   * 사용자 정보 수정
+   * @param userInfo 수정할 정보
    */
-  const renderFields = (): JSX.Element[] => {
-    return editableFields.map(field => {
-      const key = field.id as keyof IUser;
+  const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
+    const data: { _id: string; email?: string; nickname?: string } = { _id: user._id, ...userInfo };
 
-      return (
-        <div key={field.id}>
-          <h6>{field.name}</h6>
+    fetch("/api/auth/changeUserInfo", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
 
-          {field.type === "readOnly" ? (
-            <div className={CSS.content}>
-              <p>{userData[key]?.toString()}</p>
-            </div>
-          ) : field.type === "requiresVerification" ? (
-            <div className={CSS.content}>
-              <p>{userData[key]?.toString()}</p>
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
 
-              <button type="button" onClick={() => confirmUpdate(field)}>
-                변경하기
-              </button>
-            </div>
-          ) : field.type === "hidden" ? (
-            <div className={CSS.content} style={{ display: "initial" }}>
-              <button type="button" onClick={() => confirmUpdate(field)}>
-                변경하기
-              </button>
-            </div>
-          ) : (
-            <div className={CSS.content}>
-              <input type="text" value={userData[key]?.toString() || ""} onChange={e => handleField(e, key)} />
+        alert("사용자 정보가 성공적으로 바뀌었습니다.");
 
-              <button type="button" onClick={() => confirmUpdate(field)} disabled={disabledBtn[key]}>
-                변경하기
-              </button>
-            </div>
-          )}
-        </div>
-      );
-    });
-  };
-
-  /**
-   * 사용자 정보 수정 Modal 렌더링
-   * @returns Modal 내용물
-   */
-  const renderModal = (): JSX.Element => {
-    switch (renderModalType) {
-      // E-mail 수정
-      case "email":
-        return <EmailUpdateForm verifyEmailSuccess={email => verifyEmailSuccess(email)} />;
-      // 비밀번호 변경
-      case "password":
-        return <Password back={() => alert("취소되었습니다")} identification={user.identification} inputEmail={user.email} />;
-      // Error Message
-      default:
-        return <p>{ERR_MSG}</p>;
-    }
+        getUser(user.accessToken, dispatch);
+      })
+      .catch(err => console.error("/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :", err));
   };
 
   /**
@@ -192,30 +157,65 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   };
 
   /**
-   * 사용자 정보 수정
-   * @param userInfo 수정할 정보
+   * 사용자 정보 속성 렌더링
+   * @returns 사용자 정보 속성
    */
-  const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
-    const data: { _id: string; email?: string; nickname?: string } = { _id: user._id, ...userInfo };
+  const renderFields = (): JSX.Element[] => {
+    return editableFields.map(field => {
+      const key = field.id as keyof IUser;
 
-    fetch("/api/auth/changeUserInfo", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+      return (
+        <div key={field.id}>
+          <h6>{field.name}</h6>
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
+          {field.type === "readOnly" ? (
+            <div className={CSS.content}>
+              <p>{userData[key]?.toString()}</p>
+            </div>
+          ) : field.type === "requiresVerification" ? (
+            <div className={CSS.content}>
+              <p>{userData[key]?.toString()}</p>
 
-        alert("사용자 정보가 성공적으로 바뀌었습니다.");
+              <button type="button" onClick={() => confirmUpdate(field)}>
+                변경하기
+              </button>
+            </div>
+          ) : field.type === "hidden" ? (
+            <div className={CSS.content} style={{ display: "initial" }}>
+              <button type="button" onClick={() => confirmUpdate(field)}>
+                변경하기
+              </button>
+            </div>
+          ) : (
+            <div className={CSS.content}>
+              <input type="text" value={userData[key]?.toString() || ""} onChange={e => handleField(e, key)} />
 
-        getUser(user.accessToken, dispatch);
-      })
-      .catch(err => console.error("/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :", err));
+              <button type="button" onClick={() => confirmUpdate(field)} disabled={disabledBtn[key]}>
+                변경하기
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    });
+  };
+
+  /**
+   * 사용자 정보 수정 Modal 렌더링
+   * @returns Modal 내용물
+   */
+  const renderModal = (): JSX.Element => {
+    switch (renderModalType) {
+      // E-mail 수정
+      case "email":
+        return <EmailUpdateForm verifyEmailSuccess={email => verifyEmailSuccess(email)} />;
+      // 비밀번호 변경
+      case "password":
+        return <Password back={() => alert("취소되었습니다")} identification={user.identification} inputEmail={user.email} />;
+      // Error Message
+      default:
+        return <p>{ERR_MSG}</p>;
+    }
   };
 
   // 모든 사용자 정보 속성 수정상태 비활성화

@@ -60,4 +60,5 @@ export const UserSchema: mongoose.Schema<IIUser> = new Schema<IIUser>({
   regDate: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.User || mongoose.model<IIUser>("User", UserSchema); // 정의된 'User'모델이 없으면 새로운 'User'모델 생성
+// 정의된 'User'모델이 없으면 새로운 'User'모델 생성
+export default mongoose.models.User || mongoose.model<IIUser>("User", UserSchema);

@@ -151,216 +151,166 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const isModalStateEmpty: boolean = Object.values(editSchedule).some(value => value === "" || (Array.isArray(value) && value.length === 0));
 
   /** 수정 상태인 카테고리 수정 아이콘 */
-  const renderSelectedEditCategoryIcon = (idx: number): any => {
-    return isEditCategoryHovers[idx] ? IconEditWritingWhite : IconEditReadingWhite;
-  };
+  const selectedEditCategoryIcon = (idx: number): string => (isEditCategoryHovers[idx] ? IconEditWritingWhite : IconEditReadingWhite);
+
   /** 수정 상태가 아닌 카테고리 수정 아이콘 */
-  const renderUnSelectedEditCategoryIcon = (idx: number): any => {
-    return isEditCategoryHovers[idx] ? IconEditWritingPrimary : IconEditReadingPrimary;
-  };
+  const unSelectedEditCategoryIcon = (idx: number): string => (isEditCategoryHovers[idx] ? IconEditWritingPrimary : IconEditReadingPrimary);
 
   /** 수정 상태인 카테고리 삭제 아이콘 */
-  const renderSelectedDeleteCategoryIcon = (idx: number): any => {
-    return isDeleteCategoryHovers[idx] ? IconDeleteOpenWhite : IconDeleteCloseWhite;
-  };
+  const selectedDeleteCategoryIcon = (idx: number): string => (isDeleteCategoryHovers[idx] ? IconDeleteOpenWhite : IconDeleteCloseWhite);
+
   /** 수정 상태가 아닌 카테고리 삭제 아이콘 */
-  const renderUnSelectedDeleteCategoryIcon = (idx: number): any => {
-    return isDeleteCategoryHovers[idx] ? IconDeleteOpenPrimary : IconDeleteClosePrimary;
-  };
-
-  /** 조회한 날짜의 팝업 속 일정 렌더링 */
-  const renderModalSchedules = (): JSX.Element => {
-    /** 선택한 날짜 */
-    const selectedDate = new Date(editScheduleStateStartDate);
-
-    /** 선택한 날짜의 연도 */
-    const _year: number = selectedDate.getFullYear();
-    /** 선택한 날짜의 달 */
-    const _month: number = selectedDate.getMonth();
-    /** 선택한 날짜의 일 */
-    const _day: number = selectedDate.getDate();
-
-    /** 선택한 날짜의 시작 날짜와 종료 날짜가 다른 일정들 */
-    const modalMultipleSchedules: IConvertedSchedules[] = findMultipleScheduleByDate(_year, _month, _day);
-    /** 선택한 날짜의 시작 날짜와 종료 날짜가 같은 일정들 */
-    const schedules: IConvertedSchedules[] = findScheduleByDate(_year, _month, _day);
-    /** 선택한 날짜의 모든 일정들 */
-    const totalSchedules: IConvertedSchedules[] = [...modalMultipleSchedules, ...schedules];
-
-    return totalSchedules.length > 0 ? (
-      <ul className={CSS.schedules}>
-        {totalSchedules.map((schedule, idx) => (
-          <li key={idx}>
-            <button type="button" onClick={() => selectedSchedule(schedule)} disabled={user.accessLevel !== 3 && (schedule.user as IIUser)._id !== user._id}>
-              <span className={CSS.multiple}>
-                {schedule.categories.slice(0, 2).map((category, _idx) => (
-                  <span key={_idx} className={CSS.categoriesColor} style={{ background: category.color }}></span>
-                ))}
-                {schedule.categories.length > 2 && <span>...</span>}
-              </span>
-
-              <span className={CSS.truncated}>{schedule.title}</span>
-
-              <span className={CSS.truncated}>{(schedule.user as IIUser).nickname}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>일정이 없습니다.</p>
-    );
-  };
+  const unSelectedDeleteCategoryIcon = (idx: number): string => (isDeleteCategoryHovers[idx] ? IconDeleteOpenPrimary : IconDeleteClosePrimary);
 
   /**
-   * 일정 팝업 수정 상태 시, 사용할 Input 렌더링
-   * @param key 제목
-   * @param value 해당 내용
-   * @returns Input
+   * 카테고리 정보 갱신
+   * @param category 업데이트할 카테고리
    */
-  const renderModalInputs = (key: string, value: any): JSX.Element | null => {
-    switch (key) {
-      // 사용자
-      case "user":
-        return (
-          <>
-            <button type="button" onClick={toggleUserList} disabled={user.accessLevel < 3} style={isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
-              <span>{users.find(_user => _user._id === value)?.nickname}</span>
+  const updateCategory = (category: IIScheduleCategory): void => {
+    fetch("/api/calendar/categoriesManagement", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(category),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
 
-              {user.accessLevel >= 3 && <Image src={isUserListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isUserListOpen ? "▲" : "▼"} />}
-            </button>
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        toggleEditCategory(data);
 
-            {isUserListOpen && (
-              <ul className={CSS.user}>
-                {users.map((_user, idx) => (
-                  <li key={idx}>
-                    <button type="button" onClick={() => selectUser(_user)}>
-                      <span className={CSS.truncated}>{_user.nickname}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </>
-        );
-      // 일정 제목
-      case "title":
-        return <input type="text" value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." />;
-      // 일정 내용
-      case "content":
-        return <textarea value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
-      // 카테고리
-      case "categories":
-        return (
-          <>
-            <button type="button" onClick={toggleCategory} style={isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
-              <span className={`${CSS.selectedCategories} ${CSS.multiple}`}>
-                {value.length > 0
-                  ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
-                  : "선택된 카테고리가 없습니다."}
-              </span>
+        getCategories();
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateCategory()에서 오류가 발생했습니다. :", err));
+  };
 
-              <Image src={isCategoryListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isCategoryListOpen ? "▲" : "▼"} />
-            </button>
+  /** 카테고리 생성 */
+  const createCategory = (): void => {
+    setIsCreateCategory(false);
 
-            {isCategoryListOpen && (
-              <ul className={CSS.categories}>
-                {userCategories.length > 0 &&
-                  userCategories.map((category, idx) =>
-                    editCategories.some(_category => _category._id === category._id) ? (
-                      <li key={idx} className={CSS.edit}>
-                        <input type="color" value={category.color} onChange={e => handleEditCategoryColorTitle(e, "color", String(category._id))} />
+    // 카테고리 이름 중복 허용 X
+    if (userCategories.some(category => category.title === newCategory.title)) {
+      alert("이미 있는 카테고리입니다.");
 
-                        <input type="text" value={category.title} onChange={e => handleEditCategoryColorTitle(e, "title", String(category._id))} />
-
-                        <button type="button" onClick={() => updateCategory(category)}>
-                          <Image src={IconCheck} width={16} alt="√" />
-                        </button>
-
-                        <button type="button" onClick={() => toggleEditCategory(category)}>
-                          <Image src={IconClose} width={16} alt="X" />
-                        </button>
-                      </li>
-                    ) : (
-                      renderCategories(category, idx)
-                    )
-                  )}
-
-                {isCreateCategory && (
-                  <li className={`${CSS.edit} ${CSS.createCategory}`} style={{ bottom: 24 }}>
-                    <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
-
-                    <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
-
-                    <button type="button" onClick={createCategory}>
-                      <Image src={IconPlus} width={12} alt="+" />
-                    </button>
-                  </li>
-                )}
-
-                <li className={CSS.createCategory}>
-                  <button type="button" onClick={toggleCreateCategory} style={{ borderRadius: 0 }}>
-                    <Image src={!isCreateCategory ? IconExpand : IconCollapse} width={12} alt={!isCreateCategory ? "▼" : "▲"} />
-                  </button>
-                </li>
-              </ul>
-            )}
-          </>
-        );
-      // 일정 반복 여부
-      case "isRepeating":
-        return (
-          <>
-            <input type="radio" id="repeating" name="isRepeating" value="repeating" checked={editSchedule.isRepeating} onChange={handleRepeating} />
-            <label htmlFor="repeating" className={editSchedule.isRepeating ? CSS.repeating : undefined}>
-              반복
-            </label>
-
-            <input type="radio" id="nonrepeating" name="isRepeating" value="nonrepeating" checked={!editSchedule.isRepeating} onChange={handleRepeating} />
-            <label htmlFor="nonrepeating" className={!editSchedule.isRepeating ? CSS.repeating : undefined}>
-              반복 안함
-            </label>
-          </>
-        );
-      default:
-        return null;
+      return;
     }
+
+    fetch("/api/calendar/categoriesManagement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newCategory),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
+
+        getCategories();
+        setNewCategory(newCategoryInitialState);
+
+        alert("일정 카테고리 추가에 성공하였습니다.");
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createCategory()에서 오류가 발생했습니다. :", err));
   };
 
-  /**
-   * 일정 수정 팝업에서 카테고리들 렌더링
-   * @param category 카테고리
-   * @param idx 카테고리 순번
-   * @returns 카테고리
-   */
-  const renderCategories = (category: IIScheduleCategory, idx: number): JSX.Element => {
-    /** 선택된 카테고리인지 */
-    const isSelected: IIScheduleCategory | undefined = editSchedule.categories.find(_category => _category._id === category._id);
+  /** 카테고리 삭제 */
+  const deleteCategory = (_id: string): void => {
+    fetch(`/api/calendar/categoriesManagement?_id=${_id}`, { method: "DELETE" })
+      .then(res => {
+        if (res.ok) return res.json();
 
-    return (
-      <li key={idx} className={isSelected ? `${CSS.selectedList} ${CSS.list}` : CSS.list}>
-        <button type="button" onClick={() => selectCategory(category)} className={CSS.truncated}>
-          <span>{category.title}</span>
-        </button>
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
 
-        <button
-          type="button"
-          onClick={() => (isSelected ? alert("수정하려면 선택을 해제해주세요.") : toggleEditCategory(category))}
-          onMouseOver={() => hoverEditCategory(true, idx)}
-          onMouseOut={() => hoverEditCategory(false, idx)}
-        >
-          <Image src={isSelected ? renderSelectedEditCategoryIcon(idx) : renderUnSelectedEditCategoryIcon(idx)} width={16} alt="Edit" />
-        </button>
+        getCategories();
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteCategory()에서 오류가 발생했습니다. :", err));
+  };
 
-        <button
-          type="button"
-          onClick={() => deleteCategory(String(category._id))}
-          onMouseOver={() => hoverDeleteCategory(true, idx)}
-          onMouseOut={() => hoverDeleteCategory(false, idx)}
-        >
-          <Image src={isSelected ? renderSelectedDeleteCategoryIcon(idx) : renderUnSelectedDeleteCategoryIcon(idx)} width={16} alt="Delete" />
-        </button>
-      </li>
-    );
+  /** 모든 카테고리 목록 가져오기 */
+  const getCategories = (): void => {
+    fetch("/api/calendar/categoriesManagement")
+      .then(res => {
+        if (res.ok) return res.json();
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(_categories => dispatch(setScheduleCategories(_categories)))
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > getCategories()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** 일정 생성 */
+  const createSchedule = (): void => {
+    fetch("/api/calendar/schedulesManagement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editSchedule),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
+
+        setEditSchedule(prev => ({
+          ...editScheduleInitialState,
+          date: prev.date,
+          user: user._id,
+        }));
+
+        setInit();
+
+        alert("일정 추가에 성공하였습니다.");
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createSchedule()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** 일정 정보 갱신 */
+  const updateSchedule = (): void => {
+    fetch("/api/calendar/schedulesManagement", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editSchedule),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
+
+        setInit();
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateSchedule()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** 일정 삭제 */
+  const deleteSchedule = (): void => {
+    fetch(`/api/calendar/schedulesManagement?_id=${selectedScheduleId}`, { method: "DELETE" })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        console.log(data.msg);
+
+        setInit();
+      })
+      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteSchedule()에서 오류가 발생했습니다. :", err));
   };
 
   /** 현재 선택된 카테고리에서 변경 사항 적용 */
@@ -556,6 +506,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
   const toggleCreateSchedule = (): void => {
     // 초기화
     if (!isEditSchedule) setIsCreateSchedule(true);
+
     setIsEditSchedule(prev => !prev);
   };
 
@@ -738,154 +689,199 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     getSchedules();
   };
 
+  /** 조회한 날짜의 팝업 속 일정 렌더링 */
+  const renderModalSchedules = (): JSX.Element => {
+    /** 선택한 날짜 */
+    const selectedDate = new Date(editScheduleStateStartDate);
+
+    /** 선택한 날짜의 연도 */
+    const _year: number = selectedDate.getFullYear();
+    /** 선택한 날짜의 달 */
+    const _month: number = selectedDate.getMonth();
+    /** 선택한 날짜의 일 */
+    const _day: number = selectedDate.getDate();
+
+    /** 선택한 날짜의 시작 날짜와 종료 날짜가 다른 일정들 */
+    const modalMultipleSchedules: IConvertedSchedules[] = findMultipleScheduleByDate(_year, _month, _day);
+    /** 선택한 날짜의 시작 날짜와 종료 날짜가 같은 일정들 */
+    const schedules: IConvertedSchedules[] = findScheduleByDate(_year, _month, _day);
+    /** 선택한 날짜의 모든 일정들 */
+    const totalSchedules: IConvertedSchedules[] = [...modalMultipleSchedules, ...schedules];
+
+    return totalSchedules.length > 0 ? (
+      <ul className={CSS.schedules}>
+        {totalSchedules.map((schedule, idx) => (
+          <li key={idx}>
+            <button type="button" onClick={() => selectedSchedule(schedule)} disabled={user.accessLevel !== 3 && (schedule.user as IIUser)._id !== user._id}>
+              <span className={CSS.multiple}>
+                {schedule.categories.slice(0, 2).map((category, _idx) => (
+                  <span key={_idx} className={CSS.categoriesColor} style={{ background: category.color }}></span>
+                ))}
+                {schedule.categories.length > 2 && <span>...</span>}
+              </span>
+
+              <span className={CSS.truncated}>{schedule.title}</span>
+
+              <span className={CSS.truncated}>{(schedule.user as IIUser).nickname}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>일정이 없습니다.</p>
+    );
+  };
+
   /**
-   * 카테고리 정보 갱신
-   * @param category 업데이트할 카테고리
+   * 일정 팝업 수정 상태 시, 사용할 Input 렌더링
+   * @param key 제목
+   * @param value 해당 내용
+   * @returns Input
    */
-  const updateCategory = (category: IIScheduleCategory): void => {
-    fetch("/api/calendar/categoriesManagement", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(category),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+  const renderModalInputs = (key: string, value: any): JSX.Element | null => {
+    switch (key) {
+      // 사용자
+      case "user":
+        return (
+          <>
+            <button type="button" onClick={toggleUserList} disabled={user.accessLevel < 3} style={isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
+              <span>{users.find(_user => _user._id === value)?.nickname}</span>
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        toggleEditCategory(data);
+              {user.accessLevel >= 3 && <Image src={isUserListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isUserListOpen ? "▲" : "▼"} />}
+            </button>
 
-        getCategories();
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateCategory()에서 오류가 발생했습니다. :", err));
-  };
+            {isUserListOpen && (
+              <ul className={CSS.user}>
+                {users.map((_user, idx) => (
+                  <li key={idx}>
+                    <button type="button" onClick={() => selectUser(_user)}>
+                      <span className={CSS.truncated}>{_user.nickname}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        );
+      // 일정 제목
+      case "title":
+        return <input type="text" value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." />;
+      // 일정 내용
+      case "content":
+        return <textarea value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
+      // 카테고리
+      case "categories":
+        return (
+          <>
+            <button type="button" onClick={toggleCategory} style={isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
+              <span className={`${CSS.selectedCategories} ${CSS.multiple}`}>
+                {value.length > 0
+                  ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
+                  : "선택된 카테고리가 없습니다."}
+              </span>
 
-  /** 카테고리 생성 */
-  const createCategory = (): void => {
-    setIsCreateCategory(false);
+              <Image src={isCategoryListOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isCategoryListOpen ? "▲" : "▼"} />
+            </button>
 
-    // 카테고리 이름 중복 허용 X
-    if (userCategories.some(category => category.title === newCategory.title)) {
-      alert("이미 있는 카테고리입니다.");
-      return;
+            {isCategoryListOpen && (
+              <ul className={CSS.categories}>
+                {userCategories.length > 0 &&
+                  userCategories.map((category, idx) =>
+                    editCategories.some(_category => _category._id === category._id) ? (
+                      <li key={idx} className={CSS.edit}>
+                        <input type="color" value={category.color} onChange={e => handleEditCategoryColorTitle(e, "color", String(category._id))} />
+
+                        <input type="text" value={category.title} onChange={e => handleEditCategoryColorTitle(e, "title", String(category._id))} />
+
+                        <button type="button" onClick={() => updateCategory(category)}>
+                          <Image src={IconCheck} width={16} alt="√" />
+                        </button>
+
+                        <button type="button" onClick={() => toggleEditCategory(category)}>
+                          <Image src={IconClose} width={16} alt="X" />
+                        </button>
+                      </li>
+                    ) : (
+                      renderCategories(category, idx)
+                    )
+                  )}
+
+                {isCreateCategory && (
+                  <li className={`${CSS.edit} ${CSS.createCategory}`} style={{ bottom: 24 }}>
+                    <input type="color" value={newCategory.color} onChange={handleCreateCategoryColor} />
+
+                    <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
+
+                    <button type="button" onClick={createCategory}>
+                      <Image src={IconPlus} width={12} alt="+" />
+                    </button>
+                  </li>
+                )}
+
+                <li className={CSS.createCategory}>
+                  <button type="button" onClick={toggleCreateCategory} style={{ borderRadius: 0 }}>
+                    <Image src={!isCreateCategory ? IconExpand : IconCollapse} width={12} alt={!isCreateCategory ? "▼" : "▲"} />
+                  </button>
+                </li>
+              </ul>
+            )}
+          </>
+        );
+      // 일정 반복 여부
+      case "isRepeating":
+        return (
+          <>
+            <input type="radio" id="repeating" name="isRepeating" value="repeating" checked={editSchedule.isRepeating} onChange={handleRepeating} />
+            <label htmlFor="repeating" className={editSchedule.isRepeating ? CSS.repeating : undefined}>
+              반복
+            </label>
+
+            <input type="radio" id="nonrepeating" name="isRepeating" value="nonrepeating" checked={!editSchedule.isRepeating} onChange={handleRepeating} />
+            <label htmlFor="nonrepeating" className={!editSchedule.isRepeating ? CSS.repeating : undefined}>
+              반복 안함
+            </label>
+          </>
+        );
+      default:
+        return null;
     }
-
-    fetch("/api/calendar/categoriesManagement", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newCategory),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        getCategories();
-        setNewCategory(newCategoryInitialState);
-
-        alert("일정 카테고리 추가에 성공하였습니다.");
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createCategory()에서 오류가 발생했습니다. :", err));
   };
 
-  /** 카테고리 삭제 */
-  const deleteCategory = (_id: string): void => {
-    fetch(`/api/calendar/categoriesManagement?_id=${_id}`, { method: "DELETE" })
-      .then(res => {
-        if (res.ok) return res.json();
+  /**
+   * 일정 수정 팝업에서 카테고리들 렌더링
+   * @param category 카테고리
+   * @param idx 카테고리 순번
+   * @returns 카테고리
+   */
+  const renderCategories = (category: IIScheduleCategory, idx: number): JSX.Element => {
+    /** 선택된 카테고리인지 */
+    const isSelected: IIScheduleCategory | undefined = editSchedule.categories.find(_category => _category._id === category._id);
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
+    return (
+      <li key={idx} className={isSelected ? `${CSS.selectedList} ${CSS.list}` : CSS.list}>
+        <button type="button" onClick={() => selectCategory(category)} className={CSS.truncated}>
+          <span>{category.title}</span>
+        </button>
 
-        getCategories();
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteCategory()에서 오류가 발생했습니다. :", err));
-  };
+        <button
+          type="button"
+          onClick={() => (isSelected ? alert("수정하려면 선택을 해제해주세요.") : toggleEditCategory(category))}
+          onMouseOver={() => hoverEditCategory(true, idx)}
+          onMouseOut={() => hoverEditCategory(false, idx)}
+        >
+          <Image src={isSelected ? selectedEditCategoryIcon(idx) : unSelectedEditCategoryIcon(idx)} width={16} alt="Edit" />
+        </button>
 
-  /** 모든 카테고리 목록 가져오기 */
-  const getCategories = (): void => {
-    fetch("/api/calendar/categoriesManagement")
-      .then(res => {
-        if (res.ok) return res.json();
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(_categories => dispatch(setScheduleCategories(_categories)))
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > getCategories()에서 오류가 발생했습니다. :", err));
-  };
-
-  /** 일정 생성 */
-  const createSchedule = (): void => {
-    fetch("/api/calendar/schedulesManagement", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editSchedule),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        setEditSchedule(prev => ({
-          ...editScheduleInitialState,
-          date: prev.date,
-          user: user._id,
-        }));
-
-        setInit();
-
-        alert("일정 추가에 성공하였습니다.");
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > createSchedule()에서 오류가 발생했습니다. :", err));
-  };
-
-  /** 일정 정보 갱신 */
-  const updateSchedule = (): void => {
-    fetch("/api/calendar/schedulesManagement", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editSchedule),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        setInit();
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > updateSchedule()에서 오류가 발생했습니다. :", err));
-  };
-
-  /** 일정 삭제 */
-  const deleteSchedule = (): void => {
-    fetch(`/api/calendar/schedulesManagement?_id=${selectedScheduleId}`, { method: "DELETE" })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        setInit();
-      })
-      .catch(err => console.error("/src/components/calendar/EventModal > EventModal() > deleteSchedule()에서 오류가 발생했습니다. :", err));
+        <button
+          type="button"
+          onClick={() => deleteCategory(String(category._id))}
+          onMouseOver={() => hoverDeleteCategory(true, idx)}
+          onMouseOut={() => hoverDeleteCategory(false, idx)}
+        >
+          <Image src={isSelected ? selectedDeleteCategoryIcon(idx) : unSelectedDeleteCategoryIcon(idx)} width={16} alt="Delete" />
+        </button>
+      </li>
+    );
   };
 
   // 시작 시

@@ -37,7 +37,7 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const mapReducer = useSelector((state: RootState) => state.mapReducer);
+  const map = useSelector((state: RootState) => state.mapReducer);
 
   /** 검색 결과들의 Box Ref */
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
   const [isSearchPanelVisible, setIsSearchPanelVisible] = useState<boolean>(false); // 검색 결과 목록 가시 여부
 
   /** 검색 결과가 있는 지 */
-  const hasSearchResults = mapReducer.searchedPlaces.length > 0 || mapReducer.searchedAddress.length > 0;
+  const hasSearchResults = map.searchedPlaces.length > 0 || map.searchedAddress.length > 0;
 
   /**
    * 주소 형식 변환
@@ -133,6 +133,7 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
         dispatch(setSearchedAddress(result));
       } else {
         console.error("주소 검색에 실패했습니다 :", status);
+        console.error("키워드 검색을 시작합니다.");
 
         // 주소로 검색되지 않을 시 '키워드'로 검색
         searchPlace();
@@ -146,7 +147,7 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
 
     /** 검색 옵션 */
     const options = {
-      location: new kakao.maps.LatLng(mapReducer.mapCenter.lat, mapReducer.mapCenter.lng), // 현 위치를 기준으로
+      location: new kakao.maps.LatLng(map.mapCenter.lat, map.mapCenter.lng), // 현 위치를 기준으로
       radius: 10000, // 반경(1당 1m)
     };
 
@@ -208,14 +209,14 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
 
   // Marker 클릭으로 'selectedIdx' 변경 시 해당 검색 결과로 목록 스크롤
   useEffect(() => {
-    if (mapReducer.selectedIdx !== -1) {
-      const result = mapReducer.searchedAddress.length > 0 ? mapReducer.searchedAddress : mapReducer.searchedPlaces;
+    if (map.selectedIdx !== -1) {
+      const result = map.searchedAddress.length > 0 ? map.searchedAddress : map.searchedPlaces;
 
-      console.log("선택한 정보 :", result[mapReducer.selectedIdx]);
+      console.log("선택한 정보 :", result[map.selectedIdx]);
 
-      scrollToSelectedResult(mapReducer.selectedIdx);
+      scrollToSelectedResult(map.selectedIdx);
     }
-  }, [mapReducer.selectedIdx]);
+  }, [map.selectedIdx]);
 
   return (
     <>
@@ -239,14 +240,14 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
         <div className={CSS.results} ref={resultsRef}>
           {hasSearchResults && (
             <ul>
-              {mapReducer.searchedAddress.map((address, idx) => (
+              {map.searchedAddress.map((address, idx) => (
                 <li
                   key={idx}
                   ref={el => {
                     if (el) resultRefs.current[idx] = el;
                   }}
                 >
-                  <button type="button" className={mapReducer.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                  <button type="button" className={map.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
                     <ul>
                       <li>
                         <h6>{address.address_name}</h6>
@@ -262,14 +263,14 @@ export default function SearchInput({ selectedResult }: ISearchInputProps) {
                 </li>
               ))}
 
-              {mapReducer.searchedPlaces.map((place, idx) => (
+              {map.searchedPlaces.map((place, idx) => (
                 <li
                   key={idx}
                   ref={el => {
                     if (el) resultRefs.current[idx] = el;
                   }}
                 >
-                  <button type="button" className={mapReducer.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                  <button type="button" className={map.selectedIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
                     <ul>
                       <li>
                         <h6>{place.place_name}</h6>

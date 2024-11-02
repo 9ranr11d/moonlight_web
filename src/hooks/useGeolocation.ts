@@ -23,11 +23,11 @@ export default function useGeoloaction() {
     lng: DEFAULT_LNG,
   });
 
-  const [locationLoading, setLocationLoading] = useState<boolean>(false); // 현재 위치 로드 여부
+  const [isLocationLoading, setIsLocationLoading] = useState<boolean>(true); // 현재 위치 로드 여부
 
   /** 현재 위치 가져오기 */
   const getCurrentPosition = () => {
-    setLocationLoading(true);
+    setIsLocationLoading(true);
 
     /**
      * 현재 위치 가져오기
@@ -45,7 +45,7 @@ export default function useGeoloaction() {
         lng: location.coords.longitude,
       });
 
-      setLocationLoading(false);
+      setIsLocationLoading(false);
     };
 
     /** Error */
@@ -55,14 +55,14 @@ export default function useGeoloaction() {
 
       setCurrentLocation({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
 
-      setLocationLoading(false);
+      setIsLocationLoading(false);
     };
 
     if (navigator.geolocation) navigator.geolocation.getCurrentPosition(success, error);
     else {
       console.log("현재 사용 중인 브라우저가 Geolocation을 지원하지 않습니다.");
 
-      setLocationLoading(false);
+      setIsLocationLoading(false);
     }
   };
 
@@ -71,5 +71,5 @@ export default function useGeoloaction() {
     getCurrentPosition();
   }, []);
 
-  return { currentLocation, locationLoading, getCurrentPosition };
+  return { currentLocation, isLocationLoading, getCurrentPosition };
 }

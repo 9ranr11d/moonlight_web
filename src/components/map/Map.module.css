@@ -115,3 +115,8 @@
 .currentLocationBtn:active {
   background: var(--border-color);
 }
+
+.searchedOverlay > button {
+  background: none;
+  padding: 0;
+}

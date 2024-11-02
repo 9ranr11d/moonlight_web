@@ -33,29 +33,27 @@ export const Auth = createSlice({
   reducers: {
     /**
      * 로그인
-     * @param _ 기존 정보
+     * @param state 기존 정보
      * @param action 받아온 값
      */
-    signIn: (_, action: PayloadAction<IAuthState>): IAuthState => {
-      return {
-        ...action.payload,
-        isAuth: true,
-      };
+    signIn: (state, action: PayloadAction<IAuthState>) => {
+      Object.assign(state, action.payload); // 기존 상태에 action.payload 병합
+      state.isAuth = true;
     },
-    /** 로그아웃 */
-    signOut: (): IAuthState => {
-      return initialState;
+    /**
+     * 로그아웃
+     * @param state 기존 정보
+     */
+    signOut: state => {
+      Object.assign(state, initialState); // 상태를 초기값으로 재설정
     },
     /**
      * Refresh Token으로 재발행 된 Access Token 저장
      * @param State 기존 정보
      * @param action 받아온 값
      */
-    refreshAccessToken: (State: IAuthState, action: PayloadAction<{ accessToken: string }>): IAuthState => {
-      return {
-        ...State,
-        accessToken: action.payload.accessToken,
-      };
+    refreshAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
+      state.accessToken = action.payload.accessToken;
     },
   },
 });

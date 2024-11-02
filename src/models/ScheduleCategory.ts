@@ -28,4 +28,5 @@ export const ScheduleCategorySchema: mongoose.Schema<IIScheduleCategory> = new S
   regDate: { type: Date, default: Date.now },
 });
 
+// 정의된 'ScheduleCategory'모델이 없으면 새로운 'ScheduleCategory'모델 생성
 export default mongoose.models.ScheduleCategory || mongoose.model<IIScheduleCategory>("ScheduleCategory", ScheduleCategorySchema);

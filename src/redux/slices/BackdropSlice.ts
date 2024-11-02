@@ -20,20 +20,14 @@ export const Backdrop = createSlice({
      * @param state 기존 정보
      */
     showBackdrop: state => {
-      return {
-        ...state,
-        isVisible: true,
-      };
+      state.isVisible = true;
     },
     /**
      * 배경화면 불가시
      * @param state 기존 정보
      */
     hideBackdrop: state => {
-      return {
-        ...state,
-        isVisible: false,
-      };
+      state.isVisible = false;
     },
   },
 });

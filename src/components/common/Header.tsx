@@ -44,6 +44,22 @@ export default function Header() {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 여부
 
+  /** Refresh Token 확인 */
+  const getRefreshAccessToken = (): void => {
+    fetch("/api/auth/refreshAccessToken")
+      .then(res => {
+        if (res.ok) return res.json();
+
+        // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동
+        if (res.status === 400 || res.status === 404) router.push("/");
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
+      .then(data => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
+      .catch(err => console.error("/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :", err));
+  };
+
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
     setIsUserPanelOpen(prev => !prev);
@@ -67,22 +83,6 @@ export default function Header() {
   /** 사용자 정보 창 닫기 */
   const closeUserPanel = (): void => {
     setIsUserPanelOpen(false);
-  };
-
-  /** Refresh Token 확인 */
-  const getRefreshAccessToken = (): void => {
-    fetch("/api/auth/refreshAccessToken")
-      .then(res => {
-        if (res.ok) return res.json();
-
-        // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동
-        if (res.status === 400 || res.status === 404) router.push("/");
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
-      .then(data => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch(err => console.error("/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :", err));
   };
 
   // Access Token, Refresh Token으로 자동 로그인

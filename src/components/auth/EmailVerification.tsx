@@ -45,40 +45,6 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
 
   const [deadline, setDeadline] = useState<number>(0); // 인증 코드 입력 제한시간
 
-  /** E-mail Input */
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setIsEmailSent(false);
-    setVerificationCode("");
-    setVerificationInput("");
-    setEmail(e.target.value);
-  };
-
-  /** Email에서 'Enter'를 누를 시 */
-  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") verifyMatch();
-  };
-
-  /** 인증 코드 Input */
-  const handleVerificationInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setVerificationInput(e.target.value);
-  };
-
-  /** 인증 코드 Input에서 'Enter'를 누를 시 */
-  const handleVerificationInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") checkVerificationCode();
-  };
-
-  /** 인증 코드가 유효한지 확인 */
-  const checkVerificationCode = (): void => {
-    if (verificationInput === verificationCode) {
-      if (deadline > 0) {
-        alert("인증되었습니다.");
-
-        verified(email);
-      } else alert("제한 시간이 초과되었습니다.");
-    } else alert("인증 코드가 잘못되었습니다.");
-  };
-
   /** DB에 등록 되어있는 E-mail인지 확인 */
   const verifyMatch = (): void => {
     setIsEmailSent(false);
@@ -135,6 +101,40 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
         setDeadline(maxDeadline);
       })
       .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** E-mail Input */
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setIsEmailSent(false);
+    setVerificationCode("");
+    setVerificationInput("");
+    setEmail(e.target.value);
+  };
+
+  /** Email에서 'Enter'를 누를 시 */
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") verifyMatch();
+  };
+
+  /** 인증 코드 Input */
+  const handleVerificationInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setVerificationInput(e.target.value);
+  };
+
+  /** 인증 코드 Input에서 'Enter'를 누를 시 */
+  const handleVerificationInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") checkVerificationCode();
+  };
+
+  /** 인증 코드가 유효한지 확인 */
+  const checkVerificationCode = (): void => {
+    if (verificationInput === verificationCode) {
+      if (deadline > 0) {
+        alert("인증되었습니다.");
+
+        verified(email);
+      } else alert("제한 시간이 초과되었습니다.");
+    } else alert("인증 코드가 잘못되었습니다.");
   };
 
   // '아이디' 텍스트 입력 필드로 포커스

@@ -34,6 +34,30 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
   const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
 
+  /** 로그인 */
+  const processSignIn = (): void => {
+    const data: { identification: string; password: string } = { identification, password };
+
+    fetch("/api/auth/signIn", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
+        else alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {
+        // 사용자 정보 AuthSlice(Redux)에 저장
+        dispatch(signIn(data.user));
+      })
+      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
+  };
+
   /** Identification Input */
   const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setIdentification(e.target.value);
@@ -65,30 +89,6 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
    */
   const hoverPasswordVisibility = (isHover: boolean): void => {
     setIsPasswordVisibleHover(isHover);
-  };
-
-  /** 로그인 */
-  const processSignIn = (): void => {
-    const data: { identification: string; password: string } = { identification, password };
-
-    fetch("/api/auth/signIn", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
-        else alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        // 사용자 정보 AuthSlice(Redux)에 저장
-        dispatch(signIn(data.user));
-      })
-      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
   };
 
   return (

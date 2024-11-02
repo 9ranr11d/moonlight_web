@@ -23,28 +23,6 @@ export default function CoupleCodeManager() {
 
   const [coupleCode, setCoupleCode] = useState<string>(""); // 커플 커드 텍스트 입력 필드 내용
 
-  /** 커플 코드 입력 */
-  const handleCoupleCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setCoupleCode(e.target.value);
-  };
-
-  /** 커플 코드 텍스트 입력 필드에서 키 누를 시 호출 */
-  const handleCoupleCodeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") registerCoupleCode();
-  };
-
-  /** 커플 코드 클립보드 복사 */
-  const clickCoupleCode = (): void => {
-    if (user.coupleCode) copyClipBoard(user.coupleCode);
-  };
-
-  /** 커플 코드 텍스트 입력 필드 가시 여부 Toggle */
-  const toggleShowCodeInput = (): void => {
-    setCoupleCode("");
-
-    setIsCodeInputVisible(prev => !prev);
-  };
-
   /** 커플 코드 유효성 검사 */
   const registerCoupleCode = (): void => {
     const data: { id: string; coupleCode: string } = { id: user._id, coupleCode };
@@ -130,6 +108,28 @@ export default function CoupleCodeManager() {
         getUser(user.accessToken, dispatch);
       })
       .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** 커플 코드 입력 */
+  const handleCoupleCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setCoupleCode(e.target.value);
+  };
+
+  /** 커플 코드 텍스트 입력 필드에서 키 누를 시 호출 */
+  const handleCoupleCodeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") registerCoupleCode();
+  };
+
+  /** 커플 코드 클립보드 복사 */
+  const clickCoupleCode = (): void => {
+    if (user.coupleCode) copyClipBoard(user.coupleCode);
+  };
+
+  /** 커플 코드 텍스트 입력 필드 가시 여부 Toggle */
+  const toggleShowCodeInput = (): void => {
+    setCoupleCode("");
+
+    setIsCodeInputVisible(prev => !prev);
   };
 
   return (

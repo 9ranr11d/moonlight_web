@@ -33,40 +33,6 @@ export default function Password({ back, identification, inputEmail }: IPassword
   const [password, setPassword] = useState<string>(""); // 새로 만들 Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
 
-  /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    set_identification(e.target.value);
-  };
-
-  /** Identification Input에서 'Enter'를 누를 시 */
-  const handleIdentificationKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") checkIdentification();
-  };
-
-  /** Password Input */
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
-  };
-
-  /** Password 확인 Input */
-  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setConfirmPassword(e.target.value);
-  };
-
-  /** Password 확인 Input에서 'Enter'를 누를 시 */
-  const handleConfirmPwKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") changePassword();
-  };
-
-  /**
-   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
-   * @param email E-mail
-   */
-  const checkEmail = (email: string): void => {
-    if (email === userEmail) setIsEmailMatching(true);
-    else alert("이메일이 일치하지 않습니다.");
-  };
-
   /** Identification 인증 */
   const checkIdentification = (): void => {
     const data: { identification: string } = { identification: _identification };
@@ -117,6 +83,40 @@ export default function Password({ back, identification, inputEmail }: IPassword
         back();
       })
       .catch(err => console.error("/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** Identification Input */
+  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    set_identification(e.target.value);
+  };
+
+  /** Identification Input에서 'Enter'를 누를 시 */
+  const handleIdentificationKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") checkIdentification();
+  };
+
+  /** Password Input */
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setPassword(e.target.value);
+  };
+
+  /** Password 확인 Input */
+  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setConfirmPassword(e.target.value);
+  };
+
+  /** Password 확인 Input에서 'Enter'를 누를 시 */
+  const handleConfirmPwKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") changePassword();
+  };
+
+  /**
+   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
+   * @param email E-mail
+   */
+  const checkEmail = (email: string): void => {
+    if (email === userEmail) setIsEmailMatching(true);
+    else alert("이메일이 일치하지 않습니다.");
   };
 
   // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스

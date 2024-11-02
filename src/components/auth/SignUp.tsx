@@ -40,58 +40,6 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
   const isEmpty: boolean = isDuplicateId || !nickname || !isPasswordMatching || !firstEmail || !lastEmail;
 
-  /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setIdentification(e.target.value);
-    setIsDuplicateId(true);
-  };
-
-  /** 별명 Input */
-  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setNickName(e.target.value);
-  };
-
-  /** Password Input */
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
-  };
-
-  /** Password 확인 Input */
-  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setConfirmPassword(e.target.value);
-  };
-
-  /** E-mail Identification 부분 Input */
-  const handleFirstEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFirstEmail(e.target.value);
-  };
-
-  /** E-mail Domain 부분 Input */
-  const handleLastEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setLastEmail(e.target.value);
-  };
-
-  /** 뒤로가기 */
-  const goBack = (): void => {
-    back();
-  };
-
-  /** E-mail 자동완성 목록 Toggle */
-  const toggleEmailList = (): void => {
-    setIsEmailListOpen(prev => !prev);
-  };
-
-  /**
-   * E-mail 자동완성 목록 선택 시
-   * @param idx 몇 번째 E-mail인지
-   */
-  const selectEmail = (idx: number): void => {
-    if (idx === 0) setLastEmail("");
-
-    setLastEmailIdx(idx);
-    setIsEmailListOpen(false);
-  };
-
   /** Identification 중복 확인 */
   const checkDuplicate = (): void => {
     const data: { identification: string } = { identification };
@@ -151,6 +99,58 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         completed();
       })
       .catch(err => console.error("/src/components/auth/SignUp > processSignUp()에서 오류가 발생했습니다. :", err));
+  };
+
+  /** Identification Input */
+  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setIdentification(e.target.value);
+    setIsDuplicateId(true);
+  };
+
+  /** 별명 Input */
+  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setNickName(e.target.value);
+  };
+
+  /** Password Input */
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setPassword(e.target.value);
+  };
+
+  /** Password 확인 Input */
+  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setConfirmPassword(e.target.value);
+  };
+
+  /** E-mail Identification 부분 Input */
+  const handleFirstEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFirstEmail(e.target.value);
+  };
+
+  /** E-mail Domain 부분 Input */
+  const handleLastEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setLastEmail(e.target.value);
+  };
+
+  /** 뒤로가기 */
+  const goBack = (): void => {
+    back();
+  };
+
+  /** E-mail 자동완성 목록 Toggle */
+  const toggleEmailList = (): void => {
+    setIsEmailListOpen(prev => !prev);
+  };
+
+  /**
+   * E-mail 자동완성 목록 선택 시
+   * @param idx 몇 번째 E-mail인지
+   */
+  const selectEmail = (idx: number): void => {
+    if (idx === 0) setLastEmail("");
+
+    setLastEmailIdx(idx);
+    setIsEmailListOpen(false);
   };
 
   // E-mail 자동완성 선택 시 lastEmail에 자동입력

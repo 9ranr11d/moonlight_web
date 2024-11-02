@@ -2,7 +2,6 @@
 
 import React from "react";
 
-// import NaverMap from "@components/map/NaverMap";
 import KakaoMap from "@components/map/KakaoMap";
 
 export default function Map() {
