@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     await newUser.save();
 
     // 회원가입 성공 메세지 반환
-    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
+    return NextResponse.json({ msg: "회원가입 되었습니다.." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/auth/signUp > POST()에서 오류가 발생했습니다. :", err);
 

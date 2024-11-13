@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { WritableDraft } from "immer";
 
-import { IFavoriteLocation } from "@models/FavoriteLocation";
+import { IIFavoriteLocation } from "@models/FavoriteLocation";
 
 import { ILatLng } from "@interfaces/index";
 
@@ -29,11 +30,13 @@ interface IMapState {
   /** 검색한 장소 목록 */
   searchedPlaces: kakao.maps.services.PlacesSearchResult;
   /** 즐겨찾기 장소 목록 */
-  favoriteLocations: IFavoriteLocation[];
+  favoriteLocations: WritableDraft<IIFavoriteLocation>[];
   /** 지도 중심 좌표 */
   mapCenter: ILatLng;
-  /** 선택된 검색 결과 순서 */
-  selectedIdx: number;
+  /** 마지막 검색 좌표 */
+  lastCenter: ILatLng;
+  /** 선택된 장소 순서 */
+  selectedLocationIdx: number;
 }
 
 /** 초기값 */
@@ -42,7 +45,8 @@ const initialState: IMapState = {
   searchedPlaces: [],
   favoriteLocations: [],
   mapCenter: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
-  selectedIdx: -1,
+  lastCenter: { lat: DEFAULT_LAT, lng: DEFAULT_LNG },
+  selectedLocationIdx: -1,
 };
 
 /** 지도 정보 */
@@ -58,7 +62,7 @@ export const Map = createSlice({
     setSearchedAddress: (state, action: PayloadAction<IAddress[]>) => {
       state.searchedAddress = action.payload;
       state.searchedPlaces = [];
-      state.selectedIdx = -1;
+      state.selectedLocationIdx = -1;
     },
     /**
      * 장소 검색 결과 저장
@@ -68,7 +72,17 @@ export const Map = createSlice({
     setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>) => {
       state.searchedAddress = [];
       state.searchedPlaces = action.payload;
-      state.selectedIdx = -1;
+      state.selectedLocationIdx = -1;
+    },
+    /**
+     * 즐겨찾기 목록 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setFavoriteLocations: (state, action: PayloadAction<{ locations: WritableDraft<IIFavoriteLocation>[]; resetSelection: boolean }>) => {
+      state.favoriteLocations = action.payload.locations;
+
+      if (action.payload.resetSelection) state.selectedLocationIdx = -1;
     },
     /**
      * 지도 중심 좌표 저장
@@ -79,25 +93,34 @@ export const Map = createSlice({
       state.mapCenter = action.payload;
     },
     /**
+     * 마지막 검색 좌표 저장
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setLastCenter: (state, action: PayloadAction<ILatLng>) => {
+      state.lastCenter = action.payload;
+    },
+    /**
      * 검색 결과 목록 초기화
      * @param state 기존 정보
      */
     resetSearchPlaces: state => {
       state.searchedAddress = [];
       state.searchedPlaces = [];
-      state.selectedIdx = -1;
+      state.selectedLocationIdx = -1;
     },
     /**
      * 선택한 검색 결과 순서 저장
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSelectedIdx: (state, action: PayloadAction<number>) => {
-      state.selectedIdx = action.payload;
+    setSelectedLocationIdx: (state, action: PayloadAction<number>) => {
+      state.selectedLocationIdx = action.payload;
     },
   },
 });
 
-export const { setSearchedAddress, setSearchedPlaces, setMapCenter, resetSearchPlaces, setSelectedIdx } = Map.actions;
+export const { setSearchedAddress, setSearchedPlaces, setFavoriteLocations, setMapCenter, setLastCenter, resetSearchPlaces, setSelectedLocationIdx } =
+  Map.actions;
 
 export default Map.reducer;

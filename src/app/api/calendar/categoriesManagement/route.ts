@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     await newScheduleCategory.save();
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
+    return NextResponse.json({ msg: "카테고리를 생성했습니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/calendar/categoriesManagement > POST()에서 오류가 발생했습니다. :", err);
 
@@ -87,7 +87,7 @@ export async function DELETE(req: NextRequest) {
     await ScheduleCategory.findByIdAndDelete(_id);
 
     // 성공 메세지 반환
-    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
+    return NextResponse.json({ msg: "카테고리를 삭제했습니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/calendar/categoriesManagement > DELETE()에서 오류가 발생했습니다. :", err);
 
