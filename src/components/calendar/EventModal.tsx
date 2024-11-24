@@ -27,7 +27,8 @@ import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
 import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
 import IconClose from "@public/img/common/icon_close_primary.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
-import IconPlus from "@public/img/common/icon_plus_primary.svg";
+import IconPlusPrimary from "@public/img/common/icon_plus_primary.svg";
+import IconPlusBlack from "@public/img/common/icon_plus_black.svg";
 import IconExpand from "@public/img/common/icon_expand_primary.svg";
 import IconCollapse from "@public/img/common/icon_collapse_primary.svg";
 import IconEditWritingWhite from "@public/img/common/icon_edit_writing_white.svg";
@@ -69,28 +70,23 @@ interface IEventModalProps {
 }
 
 /** 일정 수정 Input 제목 인터페이스 */
-interface IEditScheduleTitle extends ISchedule {
+interface IEditScheduleLabels extends ISchedule {
   /** 카테고리 Input 제목 */
   categories: string;
   /** 반복 여부 Input 제목 */
   isRepeating: string;
 }
 
+/** 일정 값 타입 */
+type TypeScheduleValue = string | IIUser | Date[] | boolean | IIScheduleCategory[];
+
 /** Event Modal */
 export default function EventModal({ closeModal, findMultipleScheduleByDate, findScheduleByDate, users, getSchedules, lastSelectedDate }: IEventModalProps) {
-  /** Dispatch */
-  const dispatch = useDispatch<AppDispatch>();
-
-  /** 현재 사용자 */
-  const user = useSelector((state: RootState) => state.authReducer);
-  /** 일정 */
-  const calendar = useSelector((state: RootState) => state.calendarReducer);
-
   /** 오늘 날짜 */
   const today: Date = new Date();
 
   /** 일정 수정 Input 제목 */
-  const editScheduleTitle: IEditScheduleTitle = {
+  const editScheduleLabels: IEditScheduleLabels = {
     user: "사용자",
     title: "일정 이름",
     categories: "카테고리",
@@ -108,6 +104,14 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
     content: "",
     isRepeating: false,
   };
+
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
+  /** 현재 사용자 */
+  const user = useSelector((state: RootState) => state.authReducer);
+  /** 일정 */
+  const calendar = useSelector((state: RootState) => state.calendarReducer);
 
   /** 새 카테고리 기본 값 */
   const newCategoryInitialState: IScheduleCategory = {
@@ -738,7 +742,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
    * @param value 해당 내용
    * @returns Input
    */
-  const renderModalInputs = (key: string, value: any): JSX.Element | null => {
+  const renderModalInputs = (key: string, value: TypeScheduleValue): JSX.Element | null => {
     switch (key) {
       // 사용자
       case "user":
@@ -765,18 +769,18 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
         );
       // 일정 제목
       case "title":
-        return <input type="text" value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." />;
+        return <input type="text" value={value as string} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." />;
       // 일정 내용
       case "content":
-        return <textarea value={value} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
+        return <textarea value={value as string} onChange={e => handleModalText(key, e)} placeholder="입력해주세요." style={{ height: 100 }} />;
       // 카테고리
       case "categories":
         return (
           <>
             <button type="button" onClick={toggleCategory} style={isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined}>
               <span className={`${CSS.selectedCategories} ${CSS.multiple}`}>
-                {value.length > 0
-                  ? value.map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
+                {(value as IIScheduleCategory[]).length > 0
+                  ? (value as IIScheduleCategory[]).map((category: IIScheduleCategory, idx: number) => <span key={idx}>{category.title}</span>)
                   : "선택된 카테고리가 없습니다."}
               </span>
 
@@ -813,7 +817,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
                     <input type="text" value={newCategory.title} onChange={handleCreateCategoryTitle} placeholder="카테고리 이름" />
 
                     <button type="button" onClick={createCategory}>
-                      <Image src={IconPlus} width={12} alt="+" />
+                      <Image src={IconPlusPrimary} width={12} alt="+" />
                     </button>
                   </li>
                 )}
@@ -934,7 +938,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
       <div className={CSS.header}>
         {isEditSchedule && (
           <button type="button" onClick={toggleCreateSchedule}>
-            <Image src={IconPrevBlack} width={12} alt="<" />
+            <Image src={IconPrevBlack} width={20} alt="<" />
           </button>
         )}
 
@@ -1005,14 +1009,14 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
           <>
             <ul>
               {Object.entries(editSchedule).map(([key, value], idx) => {
-                const isKeyInScheduleModalTitle: boolean = key in editScheduleTitle;
+                const isKeyInScheduleModalLables: boolean = key in editScheduleLabels;
 
-                if (!isKeyInScheduleModalTitle) return null;
+                if (!isKeyInScheduleModalLables) return null;
 
                 return (
                   <li key={idx}>
                     <ul>
-                      <li>{`${editScheduleTitle[key as keyof IEditScheduleTitle]}`}</li>
+                      <li>{`${editScheduleLabels[key as keyof IEditScheduleLabels]}`}</li>
                       <li>{renderModalInputs(key, value)}</li>
                     </ul>
                   </li>
@@ -1029,7 +1033,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
                 onMouseOut={() => hoverEditSchedule(false)}
               >
                 <Image
-                  src={isCreateSchedule ? IconPlus : isEditSchduleHover ? IconEditWritingPrimary : IconEditReadingPrimary}
+                  src={isCreateSchedule ? IconPlusPrimary : isEditSchduleHover ? IconEditWritingPrimary : IconEditReadingPrimary}
                   width={24}
                   alt={isCreateSchedule ? "+" : "Update"}
                 />
@@ -1047,7 +1051,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
       {!isEditSchedule && (
         <button type="button" onClick={toggleCreateSchedule}>
-          <Image src={IconPlus} width={24} alt="+" />
+          <Image src={IconPlusBlack} width={24} alt="+" />
         </button>
       )}
     </Modal>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "git checkout main && git merge minseob && git push origin main"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.1.0",

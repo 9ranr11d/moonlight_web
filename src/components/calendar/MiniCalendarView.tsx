@@ -71,6 +71,8 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
   const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
+  console.log("내가 원하는 정보 :", isStart, startDate, endDate);
+
   return (
     <div className={CSS.miniCalendar}>
       <ul className={CSS.header}>
@@ -85,8 +87,8 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
         </li>
 
         <li>
-          <button type="button" onClick={() => changeMonth("next")} disabled={isStart && startDate >= endDate}>
-            <Image src={isStart ? (startDate >= endDate ? IconNextGray : IconNextBlack) : IconNextBlack} height={15} alt="Next" />
+          <button type="button" onClick={() => changeMonth("next")} disabled={isStart && startDate.getMonth() >= endDate.getMonth()}>
+            <Image src={isStart ? (startDate.getMonth() >= endDate.getMonth() ? IconNextGray : IconNextBlack) : IconNextBlack} height={15} alt="Next" />
           </button>
         </li>
       </ul>

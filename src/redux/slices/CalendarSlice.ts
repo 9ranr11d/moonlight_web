@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer";
+
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { IIISchedule } from "@models/Schedule";
 import { IIScheduleCategory } from "@models/ScheduleCategory";

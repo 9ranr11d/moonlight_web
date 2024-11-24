@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer";
+
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { IIFavoriteLocation } from "@models/FavoriteLocation";
 

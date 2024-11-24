@@ -30,16 +30,9 @@ export interface IIISchedule extends IISchedule, Document {}
 
 /** 일정 모델 */
 const ScheduleSchema: mongoose.Schema<IIISchedule> = new Schema<IIISchedule>({
-  date: {
-    type: [{ type: Date }],
-    default: () => [new Date(), new Date()],
-  },
+  date: { type: [{ type: Date }], default: () => [new Date(), new Date()] },
   isSingleDate: { type: Boolean, default: true },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true },
   categories: [{ type: Schema.Types.ObjectId, ref: "ScheduleCategory" }],
   content: { type: String, required: true },

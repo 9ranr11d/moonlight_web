@@ -8,6 +8,13 @@ import Schedule, { IIISchedule } from "@models/Schedule";
 import User from "@models/User";
 import { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCategory";
 
+interface IParams {
+  year: string;
+  month: string;
+  id: string;
+  coupleCode: string;
+}
+
 /**
  * 해당 달 +-1달 일정 정보 가져오기
  * @param year 연도
@@ -15,13 +22,13 @@ import { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCate
  * @param id 사용자 Id
  * @param coupleCode 커플 코드
  */
-export async function GET(req: NextRequest, { params }: { params: { year: string; month: string; id: string; coupleCode: string } }) {
+export async function GET(req: NextRequest, { params }: { params: IParams }) {
   try {
     // DB 연결
     await dbConnect();
 
     // 연도, 달
-    const { year, month, id, coupleCode }: { year: string; month: string; id: string; coupleCode: string } = params;
+    const { year, month, id, coupleCode }: IParams = params;
 
     /** 연도를 숫자로 변환 */
     const _year = parseInt(year);

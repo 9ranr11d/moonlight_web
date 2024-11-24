@@ -20,11 +20,7 @@ export interface IIScheduleCategory extends IScheduleCategory, Document {
 export const ScheduleCategorySchema: mongoose.Schema<IIScheduleCategory> = new Schema<IIScheduleCategory>({
   title: { type: String, required: true },
   color: { type: String, required: true },
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   regDate: { type: Date, default: Date.now },
 });
 

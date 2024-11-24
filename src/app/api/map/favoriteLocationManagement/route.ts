@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import FavoriteLocation, { IFavoriteLocation, IIFavoriteLocation } from "@models/FavoriteLocation";
+import FavoriteLocation, { IIFavoriteLocation } from "@models/FavoriteLocation";
 
 /** 즐겨찾기한 장소 가져오기 */
 export async function GET() {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     /** 즐겨찾기 할 장소 정보 */
-    const data: IFavoriteLocation = await req.json();
+    const data: IIFavoriteLocation = await req.json();
 
     /** 추가할 FavoriteLocation 객체 */
     const newFavoriteLocation: IIFavoriteLocation = new FavoriteLocation({

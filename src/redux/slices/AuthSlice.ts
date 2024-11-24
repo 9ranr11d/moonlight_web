@@ -23,7 +23,6 @@ const initialState: IAuthState = {
   coupleCode: "",
   accessLevel: 0,
   accessToken: "",
-  regDate: "",
 };
 
 /** 사용자 인증 정보 */
@@ -58,6 +57,6 @@ export const Auth = createSlice({
   },
 });
 
-export const { signIn, signOut, refreshAccessToken } = Auth.actions; // reducers 함수
+export const { signIn, signOut, refreshAccessToken } = Auth.actions;
 
 export default Auth.reducer;

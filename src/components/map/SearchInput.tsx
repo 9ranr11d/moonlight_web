@@ -25,6 +25,11 @@ interface ISearchInputProps {
   selectedResult: (idx: number) => void;
   /** 즐겨찾기 여부 판별 함수 */
   checkIsFavoriteLocation: (location: IAddress | kakao.maps.services.PlacesSearchResultItem) => boolean;
+  /** '현 위치에서 재검색' 버튼 가시 유무 선택 */
+  setIsReSearchVisible: (visible: boolean) => void;
+
+  /** '현 위치에서 재검색' 버튼 가시 유무 */
+  isReSearchVisible: boolean;
 }
 
 /** 검색 결과 목록 Style */
@@ -36,7 +41,7 @@ interface IPanelStyle {
 }
 
 /** 검색창 */
-export default function SearchInput({ selectedResult, checkIsFavoriteLocation }: ISearchInputProps) {
+export default function SearchInput({ selectedResult, checkIsFavoriteLocation, isReSearchVisible = false, setIsReSearchVisible }: ISearchInputProps) {
   /** Dispatch */
   const dispatch = useDispatch();
 
@@ -47,8 +52,6 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
   const resultsRef = useRef<HTMLDivElement>(null);
   /** 검색 결과들 Ref */
   const resultRefs = useRef<HTMLLIElement[]>([]);
-  /** 패널 목록 조정 장치 Ref */
-  const panelControllerRef = useRef<HTMLDivElement>(null);
 
   // 검색 결과 목록 Style
   const [panelStyle, setPanelStyle] = useState<IPanelStyle>({
@@ -138,6 +141,8 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
 
   /** 주소 검색 */
   const searchAddress = (): void => {
+    setIsReSearchVisible(false);
+
     dispatch(setLastCenter(map.mapCenter));
 
     const geocoder: kakao.maps.services.Geocoder = new kakao.maps.services.Geocoder();
@@ -281,7 +286,7 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
 
                     {checkIsFavoriteLocation(address) && (
                       <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                        <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" />
                       </div>
                     )}
                   </button>
@@ -312,7 +317,7 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
 
                     {checkIsFavoriteLocation(place) && (
                       <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                        <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" />
                       </div>
                     )}
                   </button>
@@ -343,7 +348,7 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                       </ul>
 
                       <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                        <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" />
                       </div>
                     </button>
                   </li>
@@ -372,6 +377,12 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
         <Modal style={{ position: "absolute", top: "50%", left: "50%" }}>
           <h4>{modalMsg}</h4>
         </Modal>
+      )}
+
+      {isReSearchVisible && isSearchResultsAvailable && (
+        <button type="button" onClick={searchAddress} className={CSS.reSearchBtn}>
+          현 위치에서 재검색
+        </button>
       )}
     </>
   );

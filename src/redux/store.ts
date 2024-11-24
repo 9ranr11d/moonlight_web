@@ -4,6 +4,7 @@ import authReducer from "./slices/AuthSlice";
 import calendarReducer from "./slices/CalendarSlice";
 import backdropReducer from "./slices/BackdropSlice";
 import mapReducer from "./slices/mapSlice";
+import favoriteLocationReducer from "./slices/FavoriteLocationSlice";
 
 /** Redux Store */
 export const store = configureStore({
@@ -16,6 +17,8 @@ export const store = configureStore({
     backdropReducer,
     /** 지도 정보 */
     mapReducer,
+    /** 즐겨찾기 정보 */
+    favoriteLocationReducer,
   },
 });
 
