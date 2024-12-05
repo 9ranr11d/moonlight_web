@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { createActiveLocation } from "@redux/slices/FavoriteLocationSlice";
 
-import { IIFavoriteLocation } from "@models/FavoriteLocation";
 import { IIFavoriteLocationHistory } from "@models/FavoriteLocationHistory";
 
 import IconPlus from "@public/img/common/icon_plus_black.svg";

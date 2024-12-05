@@ -68,10 +68,11 @@ export default function EventModal({ closeModal, locationData }: IEventModalProp
 
   return (
     <Modal close={closeModal} style={{ padding: 10 }}>
-      <h6>
+      <h5 style={{ marginBottom: 10 }}>
         {locationData.placeName || locationData.addressName}&nbsp;
         <span style={{ color: "var(--placeholder-color)", fontSize: 16 }}>방문 일지</span>
-      </h6>
+      </h5>
+
       {renderContent()}
     </Modal>
   );

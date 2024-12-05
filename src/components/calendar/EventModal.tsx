@@ -984,6 +984,7 @@ export default function EventModal({ closeModal, findMultipleScheduleByDate, fin
 
                   <Image src={isEndMiniCalendarOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isEndMiniCalendarOpen ? "▲" : "▼"} />
                 </button>
+
                 {isEndMiniCalendarOpen && (
                   <MiniCalendarView
                     changeMonth={direction => changeMiniMonth(false, direction)}

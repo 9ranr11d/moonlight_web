@@ -305,6 +305,10 @@
   height: 30px;
 }
 
+.miniCalendar > .content > .days button {
+  padding: 0;
+}
+
 .miniCalendar > .content > .days button > span {
   top: 50%;
   left: 50%;
