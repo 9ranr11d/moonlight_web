@@ -1,35 +1,50 @@
-import mongoose, { Mongoose } from "mongoose";
+import mariadb from "mariadb";
 
-/** MongoDB URI */
-const MONGODB_URI: string = process.env.MONGODB_URI!;
-
-declare global {
-  var mongoose: {
-    promise: Promise<Mongoose> | null;
-    conn: Mongoose | null;
-  };
+/** 매개변수 Interface */
+interface QueryParams {
+  [key: string]: any;
 }
 
-let cached = global.mongoose;
+/** IP주소 */
+const DB_HOST: string = process.env.DB_HOST!;
+/** 사용자명 */
+const DB_USER: string = process.env.DB_USER!;
+/** 비밀번호 */
+const DB_PASSWORD: string = process.env.DB_PASSWORD!;
+/** 데이터베이스명 */
+const DB_NAME: string = process.env.DB_NAME!;
+/** 포트 번호 */
+const DB_PORT: number = Number(process.env.DB_PORT!);
 
-if (!cached) cached = global.mongoose = { conn: null, promise: null };
+// MariaDB 풀 생성
+const pool = mariadb.createPool({
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  port: DB_PORT,
+});
 
-/** MongoDB 연결 */
-export default async function dbConnect() {
-  if (cached.conn) return cached.conn;
+/**
+ * MariaDB에 SQL 쿼리를 실행하는 함수
+ * @param sql - 실행할 SQL 쿼리
+ * @param params - 쿼리 매개변수
+ * @returns 쿼리 실행 결과
+ */
+export const query = async (sql: string, params?: QueryParams): Promise<any> => {
+  let connection: mariadb.Connection | undefined;
 
-  if (!cached.promise) {
-    cached.promise = mongoose
-      .set({ debug: true, strictQuery: false })
-      .connect(`${MONGODB_URI}`)
-      .then(mongoose => {
-        console.log("MongoDB에 연결 성공했습니다.");
+  try {
+    connection = await pool.getConnection();
 
-        return mongoose;
-      });
+    const result = await connection.query(sql, params);
+
+    return result;
+  } catch (err) {
+    console.error("Database query 오류 :", err);
+
+    throw new Error("Database query 실패");
+  } finally {
+    if (connection) await connection.end(); // 연결 종료
   }
-
-  cached.conn = await cached.promise;
-
-  return cached.conn;
-}
+};

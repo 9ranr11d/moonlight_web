@@ -10,7 +10,7 @@ import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
 import Lottie from "lottie-react";
 
-import { IUser } from "@models/User";
+import { IUser } from "@interfaces/index";
 
 import { ERR_MSG } from "@constants/msg";
 

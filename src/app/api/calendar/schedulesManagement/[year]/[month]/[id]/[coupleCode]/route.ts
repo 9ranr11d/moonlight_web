@@ -5,7 +5,7 @@ import dbConnect from "@lib/dbConnect";
 import mongoose from "mongoose";
 
 import Schedule, { IIISchedule } from "@models/Schedule";
-import User from "@models/User";
+import User from "@interfaces/index";
 import { IIScheduleCategory, ScheduleCategorySchema } from "@models/ScheduleCategory";
 
 interface IParams {

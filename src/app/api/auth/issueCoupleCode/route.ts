@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User from "@models/User";
+import User from "@interfaces/index";
 
 /** 커플 코드 발급 */
 export async function POST(req: NextRequest) {

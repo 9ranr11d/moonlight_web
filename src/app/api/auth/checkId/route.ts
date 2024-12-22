@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 /** 해당 id를 가진 사용자가 존재하는 확인 */
 export async function POST(req: NextRequest) {

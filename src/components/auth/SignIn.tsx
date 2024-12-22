@@ -15,6 +15,8 @@ import { ERR_MSG } from "@constants/msg";
 import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
 import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
 
+import { signIn as socialSignIn } from "next-auth/react";
+
 /** SignIn 자식 */
 interface ISignInProps {
   /** 회원가입으로 전환 */
@@ -143,6 +145,20 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
           </button>
         </li>
       </ul>
+
+      <div>
+        <button type="button" onClick={() => socialSignIn("google")}>
+          구글 로그인
+        </button>
+
+        <button type="button" onClick={() => socialSignIn("naver")}>
+          네이버 로그인
+        </button>
+
+        <button type="button" onClick={() => socialSignIn("kakao")}>
+          카카오 로그인
+        </button>
+      </div>
     </div>
   );
 }

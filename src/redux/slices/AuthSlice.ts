@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IUser } from "@models/User";
+import { IUser } from "@interfaces/index";
 
 /** 초기값 인터페이스  */
 interface IAuthState extends IUser {
-  /** MongoDB Identification */
-  _id: string;
   /** Sign In 여부 */
   isAuth: boolean;
   /** Access Token */
@@ -14,10 +12,10 @@ interface IAuthState extends IUser {
 
 /** 초기값 */
 const initialState: IAuthState = {
-  _id: "",
   isAuth: false,
   identification: "",
   nickname: "",
+  phoneNumber: "",
   email: "",
   signUpMethod: "web",
   coupleCode: "",

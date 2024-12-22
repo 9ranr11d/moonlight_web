@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import { IIUser } from "@interfaces/index";
 
 /** 비밀번호 변경 */
 export async function PUT(req: NextRequest) {

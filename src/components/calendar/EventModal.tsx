@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import { setScheduleCategories } from "@redux/slices/CalendarSlice";
 
 import { IISchedule, ISchedule } from "@models/Schedule";
-import { IIUser } from "@models/User";
+import { IIUser } from "@interfaces/index";
 import { IIScheduleCategory, IScheduleCategory } from "@models/ScheduleCategory";
 
 import CSS from "./EventModal.module.css";

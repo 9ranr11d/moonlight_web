@@ -13,19 +13,19 @@ import IconClose from "@public/img/common/icon_close_black.svg";
 
 /** Modal 자식들 */
 interface IModalProps {
+  /** 닫기 */
+  close?: () => void;
+
   /** 적용 될 'className' */
   className?: string;
   /** 적용 될 'style' */
   style?: CSSProperties;
   /** 적용 될 'Component'들 */
   children: ReactNode;
-
-  /** 닫기 */
-  close?: () => void;
 }
 
 /** Modal */
-export default function Modal({ className = "", style = {}, close, ...props }: IModalProps) {
+export default function Modal({ className = "", style = {}, close, children }: IModalProps) {
   /** Dispatch */
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ export default function Modal({ className = "", style = {}, close, ...props }: I
         </button>
       )}
 
-      {props.children}
+      {children}
     </div>
   );
 }

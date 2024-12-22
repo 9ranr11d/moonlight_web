@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules } from "@redux/slices/CalendarSlice";
 import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
-import { IIUser } from "@models/User";
+import { IIUser } from "@interfaces/index";
 import { IIISchedule } from "@models/Schedule";
 
 import CSS from "./CalendarView.module.css";

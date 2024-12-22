@@ -49,10 +49,8 @@ export default function Header() {
     fetch("/api/auth/refreshAccessToken")
       .then(res => {
         if (res.ok) return res.json();
-
         // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동
         if (res.status === 400 || res.status === 404) router.push("/");
-
         return res.json().then(data => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장

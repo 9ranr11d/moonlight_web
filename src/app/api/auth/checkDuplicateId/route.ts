@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 /** Identification 중복 여부 확인 */
 export async function POST(req: NextRequest) {

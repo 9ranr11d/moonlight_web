@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 /** 해당 E-mail을 가진 사용자 Identification 가져오기 */
 export async function POST(req: NextRequest) {

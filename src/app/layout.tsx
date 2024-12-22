@@ -7,6 +7,7 @@ import Provider from "@redux/Provider";
 
 import Header from "@components/common/Header";
 import Footer from "@components/common/Footer";
+import SessionProviderWrapper from "@components/auth/SessionProviderWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +20,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <Provider>
-          <Header />
+        <SessionProviderWrapper>
+          <Provider>
+            <Header />
 
-          {children}
+            {children}
 
-          <Footer />
-        </Provider>
+            <Footer />
+          </Provider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

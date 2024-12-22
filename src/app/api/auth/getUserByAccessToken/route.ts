@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 import { verify } from "@utils/jwtUtils";
 

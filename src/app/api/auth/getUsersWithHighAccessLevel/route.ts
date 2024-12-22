@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 /** 심사 통과된 사용자 명단 가져오기 */
 export async function GET() {

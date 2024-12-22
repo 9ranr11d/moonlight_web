@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@models/User";
+import User, { IIUser } from "@interfaces/index";
 
 /** 회원가입 */
 export async function POST(req: NextRequest) {
