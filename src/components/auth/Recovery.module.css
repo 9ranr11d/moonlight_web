@@ -27,7 +27,7 @@
 
 .tapBox > button {
   flex: 1;
-  background: var(--disabled-color-i);
+  background: var(--gray-400);
 }
 
 .tapBox > button:hover {

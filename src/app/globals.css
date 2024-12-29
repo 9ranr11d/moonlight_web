@@ -1,16 +1,24 @@
 :root {
   --primary-color: #b67a80;
   --secondary-color: #7295a4;
+
   --click-color: #ae5861;
-  --background-color-i: linear-gradient(to bottom, #8b9da4 0%, #b7a0a1 80%, #b7a0a1 100%);
-  --background-color-ii: #1f1b29;
-  --background-color-iii: #00000099;
-  --background-color-iv: #f0f0f0cc;
   --font-color: #111;
-  --placeholder-color: #72787f;
-  --border-color: #d9d9d9;
-  --disabled-color-i: #c3c7cd;
-  --disabled-color-ii: #ddd;
+
+  --background-color: linear-gradient(to bottom, #8b9da4 0%, #b7a0a1 80%, #b7a0a1 100%);
+  --modal-background-color: #00000099;
+  --search-input-background-color: #f0f0f0cc;
+
+  --gray-50: #faf5f6;
+  --gray-100: #f2ecee;
+  --gray-200: #e4dcde;
+  --gray-300: #d2c8cb;
+  --gray-400: #b8aeb1;
+  --gray-500: #9d9497;
+  --gray-600: #7e7477;
+  --gray-700: #60585a;
+  --gray-800: #403c3d;
+  --gray-900: #2a2727;
 
   --bright-blue: #00bfff;
   --bright-red: #ff69b4;
@@ -35,7 +43,7 @@ body {
   font-size: 12px;
   font-weight: 400;
   color: var(--font-color);
-  background: var(--background-color-i);
+  background: var(--background-color);
 }
 
 main,
@@ -65,7 +73,7 @@ main {
 
 footer {
   padding: 20px;
-  background: var(--background-color-ii);
+  background: var(--gray-800);
   color: white;
 }
 
@@ -85,7 +93,7 @@ a {
 }
 
 a:hover {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 h1,
@@ -143,12 +151,12 @@ textarea {
   width: 100%;
   resize: none;
   padding: 10px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-radius: 2px;
 }
 
 textarea::placeholder {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 textarea:focus {
@@ -160,13 +168,13 @@ input[type="password"],
 input[type="number"] {
   width: 100%;
   padding: 10px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-radius: 2px;
 }
 
 input[type="text"]::placeholder,
 input[type="password"]::placeholder input[type="number"]::placeholder {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 input[type="text"]:focus,
@@ -210,7 +218,7 @@ ul::-webkit-scrollbar-track,
 textarea::-webkit-scrollbar-track {
   width: 10px;
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-radius: 5px;
 }
 
@@ -228,7 +236,7 @@ button:active {
 }
 
 button:disabled {
-  background: var(--disabled-color-i);
+  background: var(--gray-400);
 }
 
 @font-face {

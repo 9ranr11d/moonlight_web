@@ -5,6 +5,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { useDispatch } from "react-redux";
+
+import { signIn as socialSignIn } from "next-auth/react";
+
 import { AppDispatch } from "@redux/store";
 import { signIn } from "@redux/slices/AuthSlice";
 
@@ -14,8 +17,9 @@ import { ERR_MSG } from "@constants/msg";
 
 import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
 import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
-
-import { signIn as socialSignIn } from "next-auth/react";
+import IconGoogle from "@public/img/auth/icon_google.png";
+import IconNaver from "@public/img/auth/icon_naver.png";
+import IconKakao from "@public/img/auth/icon_kakao.png";
 
 /** SignIn 자식 */
 interface ISignInProps {
@@ -122,7 +126,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               <Image
                 src={isPasswordVisible ? (isPasswordVisibleHover ? IconEyeClose : IconEyeOpen) : isPasswordVisibleHover ? IconEyeOpen : IconEyeClose}
                 width={15}
-                alt={isPasswordVisible ? "ㅁ" : "ㅡ"}
+                alt={isPasswordVisible ? "ㅇ" : "ㅡ"}
               />
             </button>
           </li>
@@ -146,18 +150,28 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         </li>
       </ul>
 
-      <div>
-        <button type="button" onClick={() => socialSignIn("google")}>
-          구글 로그인
-        </button>
+      <div className={CSS.socialSignInBox}>
+        <div style={{ display: "flex", alignItems: "center", columnGap: 10 }}>
+          <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
 
-        <button type="button" onClick={() => socialSignIn("naver")}>
-          네이버 로그인
-        </button>
+          <span style={{ color: "var(--gray-500)" }}>SNS LOGIN</span>
 
-        <button type="button" onClick={() => socialSignIn("kakao")}>
-          카카오 로그인
-        </button>
+          <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
+        </div>
+
+        <div className={CSS.btnBox}>
+          <button type="button" onClick={() => socialSignIn("google")} style={{ background: "white" }}>
+            <Image src={IconGoogle} width={20} alt="구글" />
+          </button>
+
+          <button type="button" onClick={() => socialSignIn("naver")} style={{ background: "#03c75a" }}>
+            <Image src={IconNaver} width={18} alt="네이버" />
+          </button>
+
+          <button type="button" onClick={() => socialSignIn("kakao")} style={{ background: "#fee500" }}>
+            <Image src={IconKakao} width={20} alt="카카오" />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 .background {
   position: absolute;
   top: 0;
-  background-color: var(--background-color-iii);
+  background-color: var(--modal-background-color);
   width: 100%;
   height: 100vh;
   z-index: 1000;

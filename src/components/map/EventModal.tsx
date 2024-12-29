@@ -70,7 +70,7 @@ export default function EventModal({ closeModal, locationData }: IEventModalProp
     <Modal close={closeModal} style={{ padding: 10 }}>
       <h5 style={{ marginBottom: 10 }}>
         {locationData.placeName || locationData.addressName}&nbsp;
-        <span style={{ color: "var(--placeholder-color)", fontSize: 16 }}>방문 일지</span>
+        <span style={{ color: "var(--gray-600)", fontSize: 16 }}>방문 일지</span>
       </h5>
 
       {renderContent()}

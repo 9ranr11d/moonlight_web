@@ -106,7 +106,7 @@ export default function VisitHistoryEditor() {
    */
   const renderCalendarBtn = (date: Date, setDate: (date: Date) => void, isOpen: boolean, toggleIsOpen: () => void, isStart: boolean): React.JSX.Element => (
     <div style={{ position: "relative" }}>
-      <button type="button" onClick={toggleIsOpen} style={{ background: "white", alignItems: "center", border: "1px solid var(--border-color)", padding: 4 }}>
+      <button type="button" onClick={toggleIsOpen} style={{ background: "white", alignItems: "center", border: "1px solid var(--gray-300)", padding: 4 }}>
         <span style={{ color: "var(--font-color)", fontSize: 13, marginRight: 5 }}>{convertDateII(date, "-")}</span>
 
         <Image src={isOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isOpen ? "▲" : "▼"} />

@@ -102,7 +102,7 @@
 }
 
 .category {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
   font-size: 15px;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .currentLocationBtn:active {
-  background: var(--border-color);
+  background: var(--gray-300);
 }
 
 .searchedOverlay > button {

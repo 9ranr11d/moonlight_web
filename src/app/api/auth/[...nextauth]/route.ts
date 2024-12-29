@@ -4,6 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import NaverProvider from "next-auth/providers/naver";
 import KakaoProvider from "next-auth/providers/kakao";
 
+import { ERR_MSG } from "@constants/msg";
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -43,11 +45,28 @@ const handler = NextAuth({
   },
 });
 
-async function checkUserExists(email: string) {
+const checkUserExists = async (providerId: string) => {
+  fetch("/api/auth/checkProviderId", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ providerId: providerId }),
+  })
+    .then(res => {
+      if (res.ok) return res.json();
+
+      if (res.status === 404) alert("존재하지 않는 회원입니다.");
+      else alert(ERR_MSG);
+
+      return res.json().then(data => Promise.reject(data.msg));
+    })
+    .catch(err => {
+      console.error("/src/app/api/auth/[...nextauth] > checkUserExists()에서 오류가 발생했습니다. :", err);
+      return false;
+    });
   // 여기에 DB 조회 로직을 추가 (예시)
   // 예: Prisma, Mongoose 등을 사용해 확인
   return false; // 임시로 false 반환 (사용자 존재 안 함)
-}
+};
 
 async function createUser(data: { email: string; name: string; avatar: string }) {
   // 여기에 회원가입 로직을 추가

@@ -223,7 +223,7 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation, i
           boxShadow: "none",
         });
       }, 300);
-    } else setPanelStyle({ background: "var(--background-color-iv)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.2)" });
+    } else setPanelStyle({ background: "var(--search-input-background-color)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.2)" });
 
     return () => clearTimeout(timer);
   }, [isSearchPanelVisible]);
