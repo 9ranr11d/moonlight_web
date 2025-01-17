@@ -38,11 +38,15 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [password, setPassword] = useState<string>(""); // Password
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
-  const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
+  const [isPasswordVisibleHover, setIsPasswordVisibleHover] =
+    useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
 
   /** 로그인 */
   const processSignIn = (): void => {
-    const data: { identification: string; password: string } = { identification, password };
+    const data: { identification: string; password: string } = {
+      identification,
+      password,
+    };
 
     fetch("/api/auth/signIn", {
       method: "POST",
@@ -52,7 +56,8 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       .then(res => {
         if (res.ok) return res.json();
 
-        if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
+        if (res.status === 404 || res.status === 401)
+          alert("ID와 PW를 다시 확인해주세요.");
         else alert(ERR_MSG);
 
         return res.json().then(data => Promise.reject(data.msg));
@@ -61,11 +66,18 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         // 사용자 정보 AuthSlice(Redux)에 저장
         dispatch(signIn(data.user));
       })
-      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleIdentification = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setIdentification(e.target.value);
   };
 
@@ -75,7 +87,9 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   };
 
   /** Password에서 'Enter'를 누를 시 */
-  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handlePasswordKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") processSignIn();
   };
 
@@ -97,6 +111,14 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
     setIsPasswordVisibleHover(isHover);
   };
 
+  /**
+   * 소셜 로그인 클릭 시
+   * @param provider 소셜 로그인 제공자
+   */
+  const clickSocialSignIn = (provider: "google" | "naver" | "kakao") => {
+    socialSignIn(provider);
+  };
+
   return (
     <div className={CSS.signInBox}>
       <h3>로그인</h3>
@@ -104,7 +126,12 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       <div className={CSS.innerBox}>
         <ul>
           <li>
-            <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
+            <input
+              type="text"
+              value={identification}
+              onChange={handleIdentification}
+              placeholder="Identification"
+            />
           </li>
 
           <li style={{ position: "relative" }}>
@@ -124,7 +151,15 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               onMouseOut={() => hoverPasswordVisibility(false)}
             >
               <Image
-                src={isPasswordVisible ? (isPasswordVisibleHover ? IconEyeClose : IconEyeOpen) : isPasswordVisibleHover ? IconEyeOpen : IconEyeClose}
+                src={
+                  isPasswordVisible
+                    ? isPasswordVisibleHover
+                      ? IconEyeClose
+                      : IconEyeOpen
+                    : isPasswordVisibleHover
+                    ? IconEyeOpen
+                    : IconEyeClose
+                }
                 width={15}
                 alt={isPasswordVisible ? "ㅇ" : "ㅡ"}
               />
@@ -160,15 +195,27 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         </div>
 
         <div className={CSS.btnBox}>
-          <button type="button" onClick={() => socialSignIn("google")} style={{ background: "white" }}>
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("google")}
+            style={{ background: "white" }}
+          >
             <Image src={IconGoogle} width={20} alt="구글" />
           </button>
 
-          <button type="button" onClick={() => socialSignIn("naver")} style={{ background: "#03c75a" }}>
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("naver")}
+            style={{ background: "var(--naver-color)" }}
+          >
             <Image src={IconNaver} width={18} alt="네이버" />
           </button>
 
-          <button type="button" onClick={() => socialSignIn("kakao")} style={{ background: "#fee500" }}>
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("kakao")}
+            style={{ background: "var(--kakao-color)" }}
+          >
             <Image src={IconKakao} width={20} alt="카카오" />
           </button>
         </div>

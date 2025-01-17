@@ -4,6 +4,7 @@ import { signIn, signOut } from "@redux/slices/AuthSlice";
 import { ILatLng } from "@interfaces/index";
 
 import { ERR_MSG } from "@constants/msg";
+import { useSession } from "next-auth/react";
 
 /**
  * 시간 형식 설정
@@ -32,7 +33,12 @@ export const convertToMinutes = (time: number): string => {
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDateI = (year: number, month: number, day: number, splitter: string): string => {
+export const convertDateI = (
+  year: number,
+  month: number,
+  day: number,
+  splitter: string
+): string => {
   /** 형식 변경된 달 */
   const paddedMonth = String(month).padStart(2, "0");
   /** 형식 변경된 일 */
@@ -64,7 +70,10 @@ export const convertDateII = (date: Date, splitter: string): string => {
  * @param dispatch dispatch
  * @returns 로그아웃 여부
  */
-export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): boolean => {
+export const processSignOut = (
+  confirmDesc: string,
+  dispatch: AppDispatch
+): boolean => {
   /** 확인 메세지 */
   const confirmSignOut: boolean = window.confirm(confirmDesc);
 
@@ -86,7 +95,12 @@ export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): bool
 
       dispatch(signOut());
     })
-    .catch(err => console.error("/src/utils/index > processSignOut()에서 오류가 발생했습니다. :", err));
+    .catch(err =>
+      console.error(
+        "/src/utils/index > processSignOut()에서 오류가 발생했습니다. :",
+        err
+      )
+    );
 
   return true;
 };
@@ -128,7 +142,12 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
         })
       )
     )
-    .catch(err => console.error("/src/utils/index > getUser()에서 오류가 발생했습니다. :", err));
+    .catch(err =>
+      console.error(
+        "/src/utils/index > getUser()에서 오류가 발생했습니다. :",
+        err
+      )
+    );
 };
 
 /**
@@ -143,7 +162,10 @@ export const copyClipBoard = (text: string): void => {
         alert("클립보드에 복사되었습니다.");
       })
       .catch(err => {
-        console.error("/src/utils/index > copyClipBoard()에서 오류가 발생했습니다. :", err);
+        console.error(
+          "/src/utils/index > copyClipBoard()에서 오류가 발생했습니다. :",
+          err
+        );
 
         alert(ERR_MSG);
       });
@@ -158,7 +180,9 @@ export const calculateDistance = (coord1: ILatLng, coord2: ILatLng): number => {
   const Δφ: number = ((coord2.lat - coord1.lat) * Math.PI) / 180;
   const Δλ: number = ((coord2.lng - coord1.lng) * Math.PI) / 180;
 
-  const a: number = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const a: number =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
   const c: number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c; // 거리 (미터)

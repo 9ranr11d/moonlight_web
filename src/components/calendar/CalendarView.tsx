@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import { setSchedules } from "@redux/slices/CalendarSlice";
 import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
-import { IIUser } from "@interfaces/index";
+import { IIUser } from "@interfaces/auth/index";
 import { IIISchedule } from "@models/Schedule";
 
 import CSS from "./CalendarView.module.css";
@@ -91,24 +91,35 @@ export default function CalendarView() {
 
   const [users, setUsers] = useState<IIUser[]>([]); // 전체 사용자 목록
 
-  const [convertedSchedules, setConvertedSchedules] = useState<IConvertedSchedules[]>([]); // 일정 표시를 위해 바꾼 하루짜리 일정들의 정보
-  const [multipleSchedules, setMultipleSchedules] = useState<IConvertedSchedules[]>([]); // 일정 표시를 위해 바꾼 여러날짜리 일정들의 정보
+  const [convertedSchedules, setConvertedSchedules] = useState<
+    IConvertedSchedules[]
+  >([]); // 일정 표시를 위해 바꾼 하루짜리 일정들의 정보
+  const [multipleSchedules, setMultipleSchedules] = useState<
+    IConvertedSchedules[]
+  >([]); // 일정 표시를 위해 바꾼 여러날짜리 일정들의 정보
 
   /** 시작 연도 */
   const startYear = year - MaximumSelectableYear / 2;
   /** 사이드 메뉴의 연도 목록 */
-  const years: number[] = Array.from({ length: MaximumSelectableYear }, (_, idx) => startYear + idx);
+  const years: number[] = Array.from(
+    { length: MaximumSelectableYear },
+    (_, idx) => startYear + idx
+  );
 
   /** 현재 달의 1일의 요일 */
   const firstDayOfMonth: number = new Date(year, month, 1).getDay();
   /** 이전 달 날짜 수 */
-  const prevMonthDays: number = month - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[month - 1];
+  const prevMonthDays: number =
+    month - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[month - 1];
   /** 이전 달 마지막 주와 현재 달의 날짜를 합친 수 */
   const monthDaysWithPrevLastWeek: number = MONTH_DAYS[month] + firstDayOfMonth;
   /** 현재 달 마지막 주에 남은 날짜 수 */
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
-  const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
+  const totalDays: number =
+    fillRemainingDays === 0
+      ? monthDaysWithPrevLastWeek
+      : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
   /** 모든 사용자 목록 */
   const getUsers = (): void => {
@@ -121,12 +132,19 @@ export default function CalendarView() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(users => setUsers(users))
-      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 일정 가져오기 */
   const getSchedules = (): void => {
-    fetch(`/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`)
+    fetch(
+      `/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`
+    )
       .then(res => {
         if (res.ok) return res.json();
 
@@ -135,7 +153,12 @@ export default function CalendarView() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(_schedules => dispatch(setSchedules(_schedules)))
-      .catch(err => console.error("/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /**
@@ -162,7 +185,9 @@ export default function CalendarView() {
    * 달 텍스트 입력 필드에서 'Enter' 클릭 시
    * @param e 클릭한 키
    */
-  const handleInputMonthKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputMonthKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === "Enter") selectInputYearMonth();
   };
 
@@ -255,7 +280,11 @@ export default function CalendarView() {
    * @param _day 일
    * @returns 찾은 일정 목록
    */
-  const findMultipleScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
+  const findMultipleScheduleByDate = (
+    _year: number,
+    _month: number,
+    _day: number
+  ): IConvertedSchedules[] => {
     return multipleSchedules.filter(schedule => {
       /** 찾으려는 날짜 */
       const date: Date = new Date(_year, _month, _day);
@@ -268,10 +297,21 @@ export default function CalendarView() {
         endYear,
         endMonth,
         endDay,
-      }: { startYear: number; startMonth: number; startDay: number; endYear: number; endMonth: number; endDay: number } = schedule;
+      }: {
+        startYear: number;
+        startMonth: number;
+        startDay: number;
+        endYear: number;
+        endMonth: number;
+        endDay: number;
+      } = schedule;
 
       /** 시작 날짜 */
-      const convertedStartDate: Date = new Date(startYear, startMonth, startDay);
+      const convertedStartDate: Date = new Date(
+        startYear,
+        startMonth,
+        startDay
+      );
       /** 종료 날짜 */
       const convertedEndDate: Date = new Date(endYear, endMonth, endDay);
 
@@ -286,39 +326,51 @@ export default function CalendarView() {
    * @param _day 일
    * @returns 찾은 일정 목록
    */
-  const findScheduleByDate = (_year: number, _month: number, _day: number): IConvertedSchedules[] => {
+  const findScheduleByDate = (
+    _year: number,
+    _month: number,
+    _day: number
+  ): IConvertedSchedules[] => {
     return convertedSchedules.filter(
       schedule =>
         schedule.isSingleDate &&
-        ((schedule.startYear === _year && schedule.startMonth === _month && schedule.startDay === _day) ||
-          (schedule.endYear === _year && schedule.endMonth === _month && schedule.endDay === _day))
+        ((schedule.startYear === _year &&
+          schedule.startMonth === _month &&
+          schedule.startDay === _day) ||
+          (schedule.endYear === _year &&
+            schedule.endMonth === _month &&
+            schedule.endDay === _day))
     );
   };
 
   /** 일정 표시를 위한 일정들 정보 변환 */
   const convertSchedules = (): void => {
     /** 일정 표시를 위한 형식으로 변환하기 위한 임시 저장 */
-    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map(schedule => {
-      /** 시작 날짜 */
-      const startDate = new Date(schedule.date[0]);
-      /** 종료 날짜 */
-      const endDate = new Date(schedule.date[1]);
+    const tempSchedules: IConvertedSchedules[] = calendar.schedules.map(
+      schedule => {
+        /** 시작 날짜 */
+        const startDate = new Date(schedule.date[0]);
+        /** 종료 날짜 */
+        const endDate = new Date(schedule.date[1]);
 
-      return {
-        ...schedule,
-        startYear: year,
-        startMonth: startDate.getMonth(),
-        startDay: startDate.getDate(),
-        endYear: year,
-        endMonth: endDate.getMonth(),
-        endDay: endDate.getDate(),
-      } as IConvertedSchedules;
-    });
+        return {
+          ...schedule,
+          startYear: year,
+          startMonth: startDate.getMonth(),
+          startDay: startDate.getDate(),
+          endYear: year,
+          endMonth: endDate.getMonth(),
+          endDay: endDate.getDate(),
+        } as IConvertedSchedules;
+      }
+    );
 
     setConvertedSchedules(tempSchedules);
 
     /** 시작 날짜와 종료 날짜가 다른 일정 목록 */
-    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter(schedule => schedule.isSingleDate === false);
+    const tempMultipleSchedules: IConvertedSchedules[] = tempSchedules.filter(
+      schedule => schedule.isSingleDate === false
+    );
 
     setMultipleSchedules(tempMultipleSchedules);
   };
@@ -406,19 +458,34 @@ export default function CalendarView() {
    * @param _day 일
    * @returns 일정
    */
-  const renderMultipleSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
+  const renderMultipleSchedules = (
+    _year: number,
+    _month: number,
+    _day: number
+  ): JSX.Element | null => {
     /** 렌더링할 날짜 */
     const date: Date = new Date(_year, _month, _day);
 
     /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 다른 일정들 */
-    const matchingSchedule: IConvertedSchedules[] = findMultipleScheduleByDate(_year, _month, _day);
+    const matchingSchedule: IConvertedSchedules[] = findMultipleScheduleByDate(
+      _year,
+      _month,
+      _day
+    );
 
     return matchingSchedule.length > 0 ? (
       <>
         {matchingSchedule.map((schedule, idx) => (
-          <p key={idx} className={`${CSS.schedule} ${CSS.multipleSchedules}`} style={{ background: schedule.categories[0].color }}>
+          <p
+            key={idx}
+            className={`${CSS.schedule} ${CSS.multipleSchedules}`}
+            style={{ background: schedule.categories[0].color }}
+          >
             <span className={CSS.truncated}>
-              {date.getTime() === new Date(schedule.date[0]).getTime() || date.getTime() === new Date(schedule.date[1]).getTime() ? schedule.title : ""}
+              {date.getTime() === new Date(schedule.date[0]).getTime() ||
+              date.getTime() === new Date(schedule.date[1]).getTime()
+                ? schedule.title
+                : ""}
             </span>
           </p>
         ))}
@@ -433,9 +500,17 @@ export default function CalendarView() {
    * @param _day 일
    * @returns 일정
    */
-  const renderSchedules = (_year: number, _month: number, _day: number): JSX.Element | null => {
+  const renderSchedules = (
+    _year: number,
+    _month: number,
+    _day: number
+  ): JSX.Element | null => {
     /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 같은 일정들 */
-    const schedules: IConvertedSchedules[] = findScheduleByDate(_year, _month, _day);
+    const schedules: IConvertedSchedules[] = findScheduleByDate(
+      _year,
+      _month,
+      _day
+    );
 
     return schedules.length > 0 ? (
       <>
@@ -443,7 +518,10 @@ export default function CalendarView() {
           <p key={idx} className={CSS.schedule}>
             <span className={CSS.multiple}>
               {schedule.categories.slice(0, 2).map((category, _idx) => (
-                <span key={`${idx}-${_idx}`} style={{ background: category.color }}></span>
+                <span
+                  key={`${idx}-${_idx}`}
+                  style={{ background: category.color }}
+                ></span>
               ))}
               {schedule.categories.length > 2 && <span>...</span>}
             </span>
@@ -498,16 +576,35 @@ export default function CalendarView() {
 
   return (
     <div>
-      <div className={CSS.calendar} style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}>
-        <div className={CSS.subBox} style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}>
-          <button type="button" onClick={toggleSiderbar} className={CSS.moreBtn}>
-            <Image src={isSiderbarOpen ? IconNextWhite : IconPrevWhite} width={30} alt={isSiderbarOpen ? ">" : "<"} />
+      <div
+        className={CSS.calendar}
+        style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}
+      >
+        <div
+          className={CSS.subBox}
+          style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}
+        >
+          <button
+            type="button"
+            onClick={toggleSiderbar}
+            className={CSS.moreBtn}
+          >
+            <Image
+              src={isSiderbarOpen ? IconNextWhite : IconPrevWhite}
+              width={30}
+              alt={isSiderbarOpen ? ">" : "<"}
+            />
           </button>
 
           <div className={CSS.content} style={{ width: siderbarWidth }}>
             <ul className={CSS.header}>
               <li>
-                <button type="button" onClick={() => (isYear ? changeYear("prev") : changeMonth("prev"))}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    isYear ? changeYear("prev") : changeMonth("prev")
+                  }
+                >
                   <Image src={IconPrevWhite} width={24} alt="Prev" />
                 </button>
               </li>
@@ -515,13 +612,21 @@ export default function CalendarView() {
               <li>
                 <ul className={CSS.yearMonthToggleBtn}>
                   <li>
-                    <button type="button" onClick={() => toggleYearMonth("year")} disabled={isYear}>
+                    <button
+                      type="button"
+                      onClick={() => toggleYearMonth("year")}
+                      disabled={isYear}
+                    >
                       <h5>{year}</h5>
                     </button>
                   </li>
 
                   <li>
-                    <button type="button" onClick={() => toggleYearMonth("month")} disabled={!isYear}>
+                    <button
+                      type="button"
+                      onClick={() => toggleYearMonth("month")}
+                      disabled={!isYear}
+                    >
                       <h5>{month + 1}</h5>
                     </button>
                   </li>
@@ -529,17 +634,30 @@ export default function CalendarView() {
               </li>
 
               <li>
-                <button type="button" onClick={() => (isYear ? changeYear("next") : changeMonth("next"))}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    isYear ? changeYear("next") : changeMonth("next")
+                  }
+                >
                   <Image src={IconNextWhite} width={24} alt="Next" />
                 </button>
               </li>
             </ul>
 
-            <ul className={CSS.content} style={{ height: calendarHeight, paddingRight: isYear ? 5 : 0 }} ref={siderbarRef}>
+            <ul
+              className={CSS.content}
+              style={{ height: calendarHeight, paddingRight: isYear ? 5 : 0 }}
+              ref={siderbarRef}
+            >
               {!isYear
                 ? MONTH_NAMES.map((monthName, idx) => (
                     <li key={idx}>
-                      <button type="button" onClick={() => selectMonth(idx)} className={idx === month ? CSS.selected : undefined}>
+                      <button
+                        type="button"
+                        onClick={() => selectMonth(idx)}
+                        className={idx === month ? CSS.selected : undefined}
+                      >
                         <h6>{monthName}</h6>
                       </button>
                     </li>
@@ -548,7 +666,11 @@ export default function CalendarView() {
                     // <li key={idx} ref={(el) => (yearRefs.current[idx] = el!)}>
                     <li key={idx}>
                       {/* <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? CSS.selected : undefined}> */}
-                      <button type="button" onClick={() => selectYear(_year)} className={year === _year ? CSS.selected : undefined}>
+                      <button
+                        type="button"
+                        onClick={() => selectYear(_year)}
+                        className={year === _year ? CSS.selected : undefined}
+                      >
                         <h6>{_year}</h6>
                       </button>
                     </li>
@@ -558,15 +680,29 @@ export default function CalendarView() {
         </div>
 
         <div className={CSS.mainBox}>
-          <ul className={CSS.header} style={isInputYearMonth ? { columnGap: 20 } : undefined}>
+          <ul
+            className={CSS.header}
+            style={isInputYearMonth ? { columnGap: 20 } : undefined}
+          >
             {isInputYearMonth ? (
               <>
                 <li className={CSS.inputYear}>
-                  <input type="number" value={inputYear} onChange={handleInputYear} placeholder="연도" />
+                  <input
+                    type="number"
+                    value={inputYear}
+                    onChange={handleInputYear}
+                    placeholder="연도"
+                  />
                 </li>
 
                 <li className={CSS.inputMonth}>
-                  <input type="number" value={inputMonth} onChange={handleInputMonth} onKeyDown={handleInputMonthKeyDown} placeholder="월" />
+                  <input
+                    type="number"
+                    value={inputMonth}
+                    onChange={handleInputMonth}
+                    onKeyDown={handleInputMonthKeyDown}
+                    placeholder="월"
+                  />
                 </li>
 
                 <li>
@@ -618,7 +754,8 @@ export default function CalendarView() {
                 /** 이전 달의 날짜인지 */
                 const isPrevMonth: boolean = idx < firstDayOfMonth;
                 /** 다음 달의 날짜인지 */
-                const isNextMonth: boolean = idx + 1 > monthDaysWithPrevLastWeek;
+                const isNextMonth: boolean =
+                  idx + 1 > monthDaysWithPrevLastWeek;
 
                 /** 표기할 날짜 */
                 const day: number = isPrevMonth
@@ -628,18 +765,28 @@ export default function CalendarView() {
                   : idx + 1 - firstDayOfMonth;
 
                 /** 표기할 날짜의 달 */
-                const _month: number = isPrevMonth ? month - 1 : isNextMonth ? month + 1 : month;
+                const _month: number = isPrevMonth
+                  ? month - 1
+                  : isNextMonth
+                  ? month + 1
+                  : month;
 
                 return (
                   <li key={idx}>
-                    <button type="button" onClick={() => selectDay(year, _month, day)} className={CSS.content}>
+                    <button
+                      type="button"
+                      onClick={() => selectDay(year, _month, day)}
+                      className={CSS.content}
+                    >
                       <span
                         className={`${
                           isPrevMonth
                             ? CSS.subDate
                             : isNextMonth
                             ? CSS.subDate
-                            : year === currentYear && month === currentMonth && day === currentDay
+                            : year === currentYear &&
+                              month === currentMonth &&
+                              day === currentDay
                             ? CSS.today
                             : undefined
                         } ${CSS.day}`}
@@ -647,7 +794,8 @@ export default function CalendarView() {
                         {day}
                       </span>
 
-                      {(multipleSchedules.length > 0 || convertedSchedules.length > 0) && (
+                      {(multipleSchedules.length > 0 ||
+                        convertedSchedules.length > 0) && (
                         <span className={CSS.scheduleCovers}>
                           {renderMultipleSchedules(year, _month, day)}
                           {renderSchedules(year, _month, day)}
@@ -663,8 +811,12 @@ export default function CalendarView() {
           {isModalVisible && (
             <EventModal
               closeModal={closeModal}
-              findMultipleScheduleByDate={(_year, _month, _day) => findMultipleScheduleByDate(_year, _month, _day)}
-              findScheduleByDate={(_year, _month, _day) => findScheduleByDate(_year, _month, _day)}
+              findMultipleScheduleByDate={(_year, _month, _day) =>
+                findMultipleScheduleByDate(_year, _month, _day)
+              }
+              findScheduleByDate={(_year, _month, _day) =>
+                findScheduleByDate(_year, _month, _day)
+              }
               users={users}
               getSchedules={getSchedules}
               lastSelectedDate={lastSelectedDate}

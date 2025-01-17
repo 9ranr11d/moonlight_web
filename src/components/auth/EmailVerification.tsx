@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import Lottie from "lottie-react";
+import Lottie from "react-lottie-player";
 
 import CSS from "./Recovery.module.css";
 
@@ -58,7 +58,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-        .then(res => {
+        .then((res) => {
           if (res.ok) return res.json();
 
           if (res.status === 404) {
@@ -67,14 +67,14 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
             setIsVerifyingEmail(false);
           }
 
-          return res.json().then(data => Promise.reject(data.msg));
+          return res.json().then((data) => Promise.reject(data.msg));
         })
-        .then(data => {
+        .then((data) => {
           console.log(data.msg);
 
           sendEmail();
         })
-        .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :", err));
+        .catch((err) => console.error("/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :", err));
     } else sendEmail();
   };
 
@@ -87,20 +87,20 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.json();
 
         alert(ERR_MSG);
 
-        return res.json().then(data => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then(data => {
+      .then((data) => {
         setVerificationCode(data.verificationCode);
         setIsVerifyingEmail(false);
         setIsEmailSent(true);
         setDeadline(maxDeadline);
       })
-      .catch(err => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
+      .catch((err) => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
   };
 
   /** E-mail Input */
@@ -146,7 +146,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
   useEffect(() => {
     let timerId: any;
 
-    deadline > 0 ? (timerId = setTimeout(() => setDeadline(prev => prev - 1), 1000)) : clearTimeout(timerId);
+    deadline > 0 ? (timerId = setTimeout(() => setDeadline((prev) => prev - 1), 1000)) : clearTimeout(timerId);
 
     return () => {
       clearTimeout(timerId);
@@ -189,10 +189,10 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
               <button type="button" onClick={verifyMatch} style={{ position: "relative" }}>
                 {isVerifyingEmail ? (
                   <>
-                    <Lottie
+                    {/* <Lottie
                       animationData={LottieLoading}
                       style={{ width: 24, height: 24, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-                    />
+                    /> */}
                     &nbsp;
                   </>
                 ) : (

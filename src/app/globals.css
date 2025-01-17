@@ -5,7 +5,12 @@
   --click-color: #ae5861;
   --font-color: #111;
 
-  --background-color: linear-gradient(to bottom, #8b9da4 0%, #b7a0a1 80%, #b7a0a1 100%);
+  --background-color: linear-gradient(
+    to bottom,
+    #8b9da4 0%,
+    #b7a0a1 80%,
+    #b7a0a1 100%
+  );
   --modal-background-color: #00000099;
   --search-input-background-color: #f0f0f0cc;
 
@@ -23,6 +28,9 @@
   --bright-blue: #00bfff;
   --bright-red: #ff69b4;
   --bright-green: #7fff00;
+
+  --naver-color: #03c75a;
+  --kakao-color: #fee500;
 }
 
 * {

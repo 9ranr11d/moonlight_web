@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
 
-import Lottie from "lottie-react";
+import Lottie from "react-lottie-player";
 
-import { IUser } from "@interfaces/index";
+import { IUser } from "@interfaces/auth/index";
 
 import { ERR_MSG } from "@constants/msg";
 
@@ -56,7 +56,9 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 사용자 정보 수정 Modal 가시 여부
 
-  const [disabledBtn, setDisabledBtn] = useState<{ [key in keyof IUser]?: boolean }>({}); // 비활성화 할 버튼들
+  const [disabledBtn, setDisabledBtn] = useState<{
+    [key in keyof IUser]?: boolean;
+  }>({}); // 비활성화 할 버튼들
 
   const [renderModalType, setRenderModalType] = useState<string>(""); // 사용자 정보 수정 모달에 렌더할 컴포넌트
 
@@ -65,7 +67,10 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * @param userInfo 수정할 정보
    */
   const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
-    const data: { _id: string; email?: string; nickname?: string } = { _id: user._id, ...userInfo };
+    const data: { _id: string; email?: string; nickname?: string } = {
+      _id: user._id,
+      ...userInfo,
+    };
 
     fetch("/api/auth/changeUserInfo", {
       method: "PUT",
@@ -84,7 +89,12 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /**
@@ -92,7 +102,10 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * @param e event
    * @param key 사용자 정보 속성
    */
-  const handleField = (e: React.ChangeEvent<HTMLInputElement>, key: keyof IUser): void => {
+  const handleField = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: keyof IUser
+  ): void => {
     const { value } = e.target;
 
     setUserData(prev => ({ ...prev, [key]: value }));
@@ -188,9 +201,17 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
             </div>
           ) : (
             <div className={CSS.content}>
-              <input type="text" value={userData[key]?.toString() || ""} onChange={e => handleField(e, key)} />
+              <input
+                type="text"
+                value={userData[key]?.toString() || ""}
+                onChange={e => handleField(e, key)}
+              />
 
-              <button type="button" onClick={() => confirmUpdate(field)} disabled={disabledBtn[key]}>
+              <button
+                type="button"
+                onClick={() => confirmUpdate(field)}
+                disabled={disabledBtn[key]}
+              >
                 변경하기
               </button>
             </div>
@@ -208,10 +229,20 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
     switch (renderModalType) {
       // E-mail 수정
       case "email":
-        return <EmailUpdateForm verifyEmailSuccess={email => verifyEmailSuccess(email)} />;
+        return (
+          <EmailUpdateForm
+            verifyEmailSuccess={email => verifyEmailSuccess(email)}
+          />
+        );
       // 비밀번호 변경
       case "password":
-        return <Password back={() => alert("취소되었습니다")} identification={user.identification} inputEmail={user.email} />;
+        return (
+          <Password
+            back={() => alert("취소되었습니다")}
+            identification={user.identification}
+            inputEmail={user.email}
+          />
+        );
       // Error Message
       default:
         return <p>{ERR_MSG}</p>;
@@ -254,7 +285,11 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
         <div className={CSS.container}>
           <h3 className={CSS.title}>사용자 정보 수정</h3>
 
-          {user.isAuth && <div className={`${CSS.desc} ${CSS.profileInfo}`}>{renderFields()}</div>}
+          {user.isAuth && (
+            <div className={`${CSS.desc} ${CSS.profileInfo}`}>
+              {renderFields()}
+            </div>
+          )}
 
           {isModalVisible && (
             <Modal close={closeModal}>
@@ -263,8 +298,15 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
           )}
         </div>
       ) : (
-        <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Lottie animationData={LottieLoading} style={{ width: 30, height: 30 }} />
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {/* <Lottie animationData={LottieLoading} style={{ width: 30, height: 30 }} /> */}
         </div>
       )}
     </>

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@interfaces/index";
+import User, { IIUser } from "@interfaces/auth/index";
 
 import { refresh, sign } from "@utils/jwtUtils";
 
@@ -15,19 +15,33 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, PassWord
-    const { identification, password }: { identification: string; password: string } = await req.json();
+    const {
+      identification,
+      password,
+    }: { identification: string; password: string } = await req.json();
 
     /** Identification와 일차하는 사용자 정보 */
     const user: IIUser | null = await User.findOne({ identification });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
-    if (!user) return NextResponse.json({ msg: "사용자를 찾지 못했습니다." }, { status: 404 });
+    if (!user)
+      return NextResponse.json(
+        { msg: "사용자를 찾지 못했습니다." },
+        { status: 404 }
+      );
 
     /** 해싱한 Password 찾은 사용자의 Password 일치 여부 */
-    const passwordMatch: boolean = await bcrypt.compare(password, user.password);
+    const passwordMatch: boolean = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     // Password 사용자의 Password가 일치하지 않을 시 404 Error 반환
-    if (!passwordMatch) return NextResponse.json({ msg: "비밀번호가 일치하지 않습니다." }, { status: 401 });
+    if (!passwordMatch)
+      return NextResponse.json(
+        { msg: "비밀번호가 일치하지 않습니다." },
+        { status: 401 }
+      );
 
     /** 사용자 Identification로 발급받은 Access Token */
     const accessToken: string = sign(user.identification);
@@ -51,11 +65,16 @@ export async function POST(req: NextRequest) {
       },
       {
         status: 200,
-        headers: { "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; path=/; Max-Age=${maxAge}; Secure; SameSite=Strict;` },
+        headers: {
+          "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; path=/; Max-Age=${maxAge}; Secure; SameSite=Strict;`,
+        },
       }
     );
   } catch (err) {
-    console.error("/src/app/api/auth/signIn > POST()에서 오류가 발생했습니다. :", err);
+    console.error(
+      "/src/app/api/auth/signIn > POST()에서 오류가 발생했습니다. :",
+      err
+    );
 
     return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }

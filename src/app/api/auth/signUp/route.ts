@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import dbConnect from "@lib/dbConnect";
 
-import User, { IIUser } from "@interfaces/index";
+import User, { IIUser } from "@interfaces/auth/index";
 
 /** 회원가입 */
 export async function POST(req: NextRequest) {
@@ -13,7 +13,17 @@ export async function POST(req: NextRequest) {
     await dbConnect();
 
     // Identification, 별명, Password
-    const { identification, nickname, password, email }: { identification: string; nickname: string; password: string; email: string } = await req.json();
+    const {
+      identification,
+      nickname,
+      password,
+      email,
+    }: {
+      identification: string;
+      nickname: string;
+      password: string;
+      email: string;
+    } = await req.json();
 
     /** 해싱된 Password */
     const hashedPw: string = await bcrypt.hash(password, 10);
@@ -34,7 +44,10 @@ export async function POST(req: NextRequest) {
     // 회원가입 성공 메세지 반환
     return NextResponse.json({ msg: "회원가입 되었습니다.." }, { status: 200 });
   } catch (err) {
-    console.error("/src/app/api/auth/signUp > POST()에서 오류가 발생했습니다. :", err);
+    console.error(
+      "/src/app/api/auth/signUp > POST()에서 오류가 발생했습니다. :",
+      err
+    );
 
     return NextResponse.json({ msg: "서버 오류입니다." }, { status: 500 });
   }

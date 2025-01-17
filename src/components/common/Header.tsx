@@ -17,13 +17,14 @@ import { MAIN_MENUS } from "@constants/menu";
 
 import { getUser } from "@utils/index";
 
-import ProfileModal from "../profile/ProfileModal";
+import ProfileModal from "@components/profile/ProfileModal";
+
+import Backdrop from "@components/common/Backdrop";
 
 import IconLogoSquare from "@public/img/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/img/common/icon_logo_horizontal.svg";
 import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
 import IconClose from "@public/img/common/icon_greater_than_black.svg";
-import Backdrop from "./Backdrop";
 
 /** Header */
 export default function Header() {
@@ -54,8 +55,15 @@ export default function Header() {
         return res.json().then(data => Promise.reject(data.msg));
       })
       // Refresh Token으로 Access Token 재발급 후, AuthSlice(Redux)에 저장
-      .then(data => dispatch(refreshAccessToken({ accessToken: data.accessToken })))
-      .catch(err => console.error("/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :", err));
+      .then(data =>
+        dispatch(refreshAccessToken({ accessToken: data.accessToken }))
+      )
+      .catch(err =>
+        console.error(
+          "/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 사용자 Panel Toggle */
@@ -87,12 +95,13 @@ export default function Header() {
   useEffect(() => {
     // 이미 로그인이 된 상태면 패스
     if (user.isAuth) return;
-    else setIsHidden(false);
+
+    setIsHidden(false);
 
     // AccessToken이 있는지, 없는지
     if (user.accessToken.length !== 0) getUser(user.accessToken, dispatch);
     else getRefreshAccessToken();
-  }, [user]);
+  }, [user.accessToken, user.isAuth]);
 
   // 50분마다 Access Token 자동 재발급
   useEffect(() => {
@@ -121,8 +130,21 @@ export default function Header() {
 
   return (
     <header style={user.isAuth ? { zIndex: 999 } : undefined}>
-      <nav style={user.isAuth && user.accessLevel >= 1 ? undefined : { height: 0, padding: 0 }}>
-        <div className={CSS.afterSignInBox} style={user.isAuth && user.accessLevel >= 1 ? { bottom: 0 } : { bottom: 50, opacity: 0 }}>
+      <nav
+        style={
+          user.isAuth && user.accessLevel >= 0
+            ? undefined
+            : { height: 0, padding: 0 }
+        }
+      >
+        <div
+          className={CSS.afterSignInBox}
+          style={
+            user.isAuth && user.accessLevel >= 0
+              ? { bottom: 0 }
+              : { bottom: 50, opacity: 0 }
+          }
+        >
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
               <Image src={IconLogoHorizontal} width={150} alt="Logo" />
@@ -141,11 +163,17 @@ export default function Header() {
                   {user.nickname}
                 </button>
 
-                {isUserPanelOpen && <ProfileModal closeModal={closeUserPanel} />}
+                {isUserPanelOpen && (
+                  <ProfileModal closeModal={closeUserPanel} />
+                )}
               </li>
             </ul>
 
-            <button type="button" onClick={toggleSideMenu} className={CSS.mobile}>
+            <button
+              type="button"
+              onClick={toggleSideMenu}
+              className={CSS.mobile}
+            >
               <Image src={IconHamburger} width={24} alt="=" />
             </button>
           </div>
@@ -156,21 +184,24 @@ export default function Header() {
           style={
             isHidden
               ? { display: "none" } // 애니메이션 후에 display: none 설정
-              : user.isAuth && user.accessLevel >= 1
+              : user.isAuth && user.accessLevel >= 0
               ? { top: -30, opacity: 0 } // top과 opacity 애니메이션
               : { top: 30 }
           }
           onTransitionEnd={hiddenBeforeLogo}
         >
           <Link prefetch={true} href={"/"}>
-            <Image src={IconLogoSquare} width={100} priority alt="Logo" />
+            <Image src={IconLogoSquare} width={100} alt="Logo" />
           </Link>
         </div>
       </nav>
 
       <Backdrop />
 
-      <div className={CSS.sideMenu} style={{ right: isSideMenuOpen ? 0 : "-100%" }}>
+      <div
+        className={CSS.sideMenu}
+        style={{ right: isSideMenuOpen ? 0 : "-100%" }}
+      >
         <div className={CSS.sideMenuHeader}>
           <button type="button" onClick={toggleSideMenu}>
             <Image src={IconClose} alt="X" width={24} />

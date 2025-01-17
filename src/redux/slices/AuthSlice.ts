@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IUser } from "@interfaces/index";
+import { IUser } from "@interfaces/auth/index";
 
 /** 초기값 인터페이스  */
 interface IAuthState extends IUser {
@@ -14,12 +14,17 @@ interface IAuthState extends IUser {
 const initialState: IAuthState = {
   isAuth: false,
   identification: "",
-  nickname: "",
-  phoneNumber: "",
+  profileImgUrl: null,
+  nickname: null,
+  phoneNumber: null,
   email: "",
-  signUpMethod: "web",
-  coupleCode: "",
+  platform: "web",
   accessLevel: 0,
+  provider: "local",
+  accountStatus: "active",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  coupleCode: "",
   accessToken: "",
 };
 
@@ -37,6 +42,10 @@ export const Auth = createSlice({
       Object.assign(state, action.payload); // 기존 상태에 action.payload 병합
       state.isAuth = true;
     },
+    socialSignIn: (state, actions: PayloadAction<IUser>) => {
+      Object.assign(state, actions.payload);
+      state.isAuth = true;
+    },
     /**
      * 로그아웃
      * @param state 기존 정보
@@ -49,12 +58,16 @@ export const Auth = createSlice({
      * @param State 기존 정보
      * @param action 받아온 값
      */
-    refreshAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
+    refreshAccessToken: (
+      state,
+      action: PayloadAction<{ accessToken: string }>
+    ) => {
       state.accessToken = action.payload.accessToken;
     },
   },
 });
 
-export const { signIn, signOut, refreshAccessToken } = Auth.actions;
+export const { signIn, socialSignIn, signOut, refreshAccessToken } =
+  Auth.actions;
 
 export default Auth.reducer;

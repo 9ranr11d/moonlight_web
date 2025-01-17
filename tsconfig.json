@@ -22,16 +22,22 @@
     "paths": {
       "@lib/*": ["src/lib/*"],
       "@models/*": ["src/models/*"],
+      "@redux/*": ["src/redux/*"],
+      "@actions/*": ["src/actions/*"],
+      "@constants/*": ["src/constants/*"],
       "@pages/*": ["src/app/(pages)/*"],
       "@components/*": ["src/components/*"],
       "@public/*": ["public/*"],
-      "@redux/*": ["src/redux/*"],
-      "@constants/*": ["src/constants/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
       "@interfaces/*": ["src/interfaces/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "types/next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

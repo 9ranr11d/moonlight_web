@@ -9,7 +9,7 @@ import { RootState } from "@redux/store";
 import { setSelectedLocationIdx, setMapCenter, IAddress, setFavoriteLocations, setLastCenter } from "@redux/slices/mapSlice";
 import { showBackdrop } from "@redux/slices/BackdropSlice";
 
-import Lottie from "lottie-react";
+import Lottie from "react-lottie-player";
 
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 
@@ -109,15 +109,15 @@ export default function KakaoMap() {
    */
   const getFavoriteLocations = (resetSelection: boolean = false): void => {
     fetch("/api/map/favoriteLocationManagement")
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.json();
 
         alert(ERR_MSG);
 
-        return res.json().then(data => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then(locations => dispatch(setFavoriteLocations({ locations, resetSelection })))
-      .catch(err => console.error("/src/components/map/KakaoMap > KakaoMap() > getFavoriteLocations()애서 오류가 발생했습니다. :", err));
+      .then((locations) => dispatch(setFavoriteLocations({ locations, resetSelection })))
+      .catch((err) => console.error("/src/components/map/KakaoMap > KakaoMap() > getFavoriteLocations()애서 오류가 발생했습니다. :", err));
   };
 
   /**
@@ -140,19 +140,19 @@ export default function KakaoMap() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.json();
 
         alert(ERR_MSG);
 
-        return res.json().then(data => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then(data => {
+      .then((data) => {
         console.log(data.msg);
 
         getFavoriteLocations();
       })
-      .catch(err => console.error("/src/components/map/KakaoMap > KakaoMap()에서 오류가 발생했습니다. :", err));
+      .catch((err) => console.error("/src/components/map/KakaoMap > KakaoMap()에서 오류가 발생했습니다. :", err));
   };
 
   /**
@@ -170,17 +170,17 @@ export default function KakaoMap() {
     const url = `/api/map/favoriteLocationManagement?${queryParam}`;
 
     fetch(url, { method: "DELETE" })
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.json();
 
-        return res.json().then(data => Promise.reject(data.msg));
+        return res.json().then((data) => Promise.reject(data.msg));
       })
-      .then(data => {
+      .then((data) => {
         console.log(data.msg);
 
         getFavoriteLocations(true);
       })
-      .catch(err => console.error("/src/components/map/KakaoMap > KakaoMap() > removeFavoriteLocation :", err));
+      .catch((err) => console.error("/src/components/map/KakaoMap > KakaoMap() > removeFavoriteLocation :", err));
   };
 
   /**
@@ -189,7 +189,7 @@ export default function KakaoMap() {
    * @returns 일치(true), 불일치(false)
    */
   const checkIsFavoriteLocation = (location: IAddress | kakao.maps.services.PlacesSearchResultItem): boolean => {
-    return map.favoriteLocations.some(favorite => {
+    return map.favoriteLocations.some((favorite) => {
       if ("id" in location && favorite.kakaoMapId) return favorite.kakaoMapId === location.id;
 
       return favorite.addressName === location.address_name;
@@ -198,12 +198,12 @@ export default function KakaoMap() {
 
   /** 현 위치 Overlay Toggle */
   const toggleCurrentOverlay = (): void => {
-    setIsCurrentOverlayVisible(prev => !prev);
+    setIsCurrentOverlayVisible((prev) => !prev);
   };
 
   /** 선택한 검색 Marker Toggle */
   const toggleSelectedOverlay = (): void => {
-    setIsSelectedOverlayVisible(prev => !prev);
+    setIsSelectedOverlayVisible((prev) => !prev);
   };
 
   /** '현 위치로' 클릭 시 */
@@ -447,7 +447,7 @@ export default function KakaoMap() {
             selectedResult={selectedLocation}
             checkIsFavoriteLocation={checkIsFavoriteLocation}
             isReSearchVisible={isReSearchVisible}
-            setIsReSearchVisible={visible => setIsReSearchVisible(visible)}
+            setIsReSearchVisible={(visible) => setIsReSearchVisible(visible)}
           />
 
           <button type="button" onClick={clickCurrentLocation} className={CSS.currentLocationBtn}>
@@ -458,7 +458,7 @@ export default function KakaoMap() {
         </>
       ) : (
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 1 }}>
-          <Lottie animationData={LottieLoading} style={{ width: 50, height: 50 }} />
+          {/* <Lottie animationData={LottieLoading} style={{ width: 50, height: 50 }} /> */}
         </div>
       )}
     </div>
