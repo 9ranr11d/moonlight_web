@@ -1,73 +1,8 @@
-.header {
+.wrapper {
   display: grid;
-  grid-template-columns: 24px 1fr 24px;
-  column-gap: 10px;
+  grid-template-columns: 70px 1fr;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.header > button {
-  border: none;
-  background: none;
-  padding: 0;
-}
-
-.header > h3 {
-  flex: 1;
-}
-
-.signUpBox > .content {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-}
-
-.signUpBox > .content input {
-  font-size: 17px;
-}
-
-.signUpBox > .content > li > ul {
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-}
-
-.signUpBox > .content > li > ul > li:first-child > h6 {
-  width: 65px;
-}
-
-.signUpBox > .content > li > ul > li:last-child {
-  position: relative;
-  width: 100%;
-}
-
-.signUpBox > .content > li > ul > li > span,
-.signUpBox > .content > li > ul > li > ul > li > span {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.signUpBox > .content > li > ul > li > ul > li {
-  position: relative;
-}
-
-.identificationLine > ul {
-  display: flex;
-  align-items: center;
-  column-gap: 10px;
-}
-
-.identificationLine > ul > li:first-child {
-  flex: 1;
-}
-
-.identificationLine > ul button {
-  width: 100%;
+  column-gap: 20px;
 }
 
 .emailLine button {
@@ -115,16 +50,20 @@
   color: white;
 }
 
-.okBtnBox {
-  margin-top: 10px;
-}
-
 @media (max-width: 768px) {
-  .signUpBox > .content > li > ul {
+  .wrapper {
+    display: flex;
     flex-direction: column;
+    row-gap: 10px;
   }
 
-  .signUpBox > .content > li > ul > li:first-child > h6 {
+  .identification {
+    width: 100%;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .okBtnBox > button {
     width: 100%;
   }
 

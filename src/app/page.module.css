@@ -16,7 +16,7 @@
 @media (max-width: 768px) {
   .authBox > div {
     max-width: initial;
-    width: 90%;
+    width: 100%;
     padding: 20px 10px 20px;
   }
 }

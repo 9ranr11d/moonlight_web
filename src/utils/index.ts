@@ -1,10 +1,9 @@
 import { AppDispatch } from "@redux/store";
-import { signIn, signOut } from "@redux/slices/AuthSlice";
+import { signIn } from "@redux/slices/authSlice";
 
 import { ILatLng } from "@interfaces/index";
 
 import { ERR_MSG } from "@constants/msg";
-import { useSession } from "next-auth/react";
 
 /**
  * 시간 형식 설정
@@ -50,7 +49,7 @@ export const convertDateI = (
 /**
  * 날짜 형식 설정
  * @param date 날짜
- * @param splitter 날짜 사이 나눌 기호
+ * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
 export const convertDateII = (date: Date, splitter: string): string => {
@@ -62,47 +61,6 @@ export const convertDateII = (date: Date, splitter: string): string => {
   const day = date.getDate();
 
   return convertDateI(year, month, day, splitter);
-};
-
-/**
- * 로그아웃
- * @param confirmDesc 띄울 확인 메세지
- * @param dispatch dispatch
- * @returns 로그아웃 여부
- */
-export const processSignOut = (
-  confirmDesc: string,
-  dispatch: AppDispatch
-): boolean => {
-  /** 확인 메세지 */
-  const confirmSignOut: boolean = window.confirm(confirmDesc);
-
-  // 사용자가 취소 누를 시
-  if (!confirmSignOut) return false;
-
-  fetch("/api/auth/signOut", { method: "POST" })
-    .then(res => {
-      if (res.ok) return res.json();
-
-      alert(ERR_MSG);
-
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data => {
-      console.log(data.msg);
-
-      alert("로그아웃 됐습니다.");
-
-      dispatch(signOut());
-    })
-    .catch(err =>
-      console.error(
-        "/src/utils/index > processSignOut()에서 오류가 발생했습니다. :",
-        err
-      )
-    );
-
-  return true;
 };
 
 /**

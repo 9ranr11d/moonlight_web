@@ -5,11 +5,14 @@ import React from "react";
 import Link from "next/link";
 
 import { useDispatch, useSelector } from "react-redux";
+
+import { signOut as socialSignOut } from "next-auth/react";
+
 import { RootState } from "@redux/store";
 
-import CSS from "./ProfileModal.module.css";
+import { signOutAction } from "@actions/authAction";
 
-import { processSignOut } from "@utils/index";
+import CSS from "./ProfileModal.module.css";
 
 /** 사용자 정보 수정 모달 자식들 */
 interface IProfileModal {
@@ -27,7 +30,14 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
 
   /** '로그아웃' 클릭 시 */
   const clickSignOut = () => {
-    if (processSignOut("로그아웃 하시겠습니까?", dispatch)) closeModal();
+    if (user.provider === "local") {
+      const isSignedOut = signOutAction("로그아웃 하시겠습니까?", dispatch);
+
+      if (isSignedOut) closeModal();
+    } else {
+      socialSignOut();
+      closeModal();
+    }
   };
 
   return (

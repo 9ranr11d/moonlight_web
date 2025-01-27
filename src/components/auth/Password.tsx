@@ -21,21 +21,29 @@ interface IPasswordProps {
 }
 
 /** Password 찾기 */
-export default function Password({ back, identification, inputEmail }: IPasswordProps) {
+export default function Password({
+  back,
+  identification,
+  inputEmail,
+}: IPasswordProps) {
   const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
   const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // Identification 인증 여부
   const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
   const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
 
-  const [_identification, set_identification] = useState<string>(identification || ""); // 인증할 Identification
+  const [_identification, set_identification] = useState<string>(
+    identification || ""
+  ); // 인증할 Identification
   const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
   const [password, setPassword] = useState<string>(""); // 새로 만들 Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
 
   /** Identification 인증 */
   const checkIdentification = (): void => {
-    const data: { identification: string } = { identification: _identification };
+    const data: { identification: string } = {
+      identification: _identification,
+    };
 
     fetch("/api/auth/checkId", {
       method: "POST",
@@ -55,12 +63,20 @@ export default function Password({ back, identification, inputEmail }: IPassword
         setUserEmail(data.email);
         setIsAuth(true);
       })
-      .catch(err => console.error("/src/components/auth/Recovery > Password() > checkIdentification()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/Recovery > Password() > checkIdentification()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 비밀번호 변경 */
   const changePassword = (): void => {
-    const data: { identification: string; password: string } = { identification: _identification, password };
+    const data: { identification: string; password: string } = {
+      identification: _identification,
+      password,
+    };
 
     fetch("/api/auth/changePw", {
       method: "PUT",
@@ -82,16 +98,25 @@ export default function Password({ back, identification, inputEmail }: IPassword
 
         back();
       })
-      .catch(err => console.error("/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleIdentification = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     set_identification(e.target.value);
   };
 
   /** Identification Input에서 'Enter'를 누를 시 */
-  const handleIdentificationKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleIdentificationKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") checkIdentification();
   };
 
@@ -106,7 +131,9 @@ export default function Password({ back, identification, inputEmail }: IPassword
   };
 
   /** Password 확인 Input에서 'Enter'를 누를 시 */
-  const handleConfirmPwKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleConfirmPwKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") changePassword();
   };
 
@@ -121,12 +148,14 @@ export default function Password({ back, identification, inputEmail }: IPassword
 
   // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
   useEffect(() => {
-    if (isEmailMatching && passwordInputRef.current) passwordInputRef.current.focus();
+    if (isEmailMatching && passwordInputRef.current)
+      passwordInputRef.current.focus();
   }, [isEmailMatching]);
 
   // Password랑 Password 확인 일치 여부 판단
   useEffect(() => {
-    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
+    if (password.length > 0 && password === confirmPassword)
+      setIsPwMatching(true);
     else setIsPwMatching(false);
   }, [password, confirmPassword]);
 
@@ -134,7 +163,9 @@ export default function Password({ back, identification, inputEmail }: IPassword
     <>
       {!isAuth ? (
         <>
-          <h5 className={CSS.nonMobile}>비밀번호를 찾고자하는 아이디를 입력해주세요.</h5>
+          <h5 className={CSS.nonMobile}>
+            비밀번호를 찾고자하는 아이디를 입력해주세요.
+          </h5>
           <h5 className={CSS.mobile}>
             비밀번호를 찾고자하는
             <br />
@@ -187,7 +218,13 @@ export default function Password({ back, identification, inputEmail }: IPassword
                 </li>
 
                 <li>
-                  <input type="password" value={password} onChange={handlePassword} ref={passwordInputRef} placeholder="Password" />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={handlePassword}
+                    ref={passwordInputRef}
+                    placeholder="Password"
+                  />
                 </li>
               </ul>
             </li>
@@ -199,11 +236,17 @@ export default function Password({ back, identification, inputEmail }: IPassword
                 </li>
 
                 <li>
-                  <input type="password" value={confirmPassword} onChange={handleConfirmPw} onKeyDown={handleConfirmPwKeyDown} placeholder="Confirm Password" />
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={handleConfirmPw}
+                    onKeyDown={handleConfirmPwKeyDown}
+                    placeholder="Confirm Password"
+                  />
 
                   {isPasswordMatching && (
                     <span>
-                      <Image src={IconCheck} width={20} height={20} alt="√" />
+                      {/* <Image src={IconCheck} width={20} height={20} alt="√" /> */}
                     </span>
                   )}
                 </li>
@@ -211,7 +254,11 @@ export default function Password({ back, identification, inputEmail }: IPassword
             </li>
 
             <li>
-              <button type="button" onClick={changePassword} disabled={!isPasswordMatching}>
+              <button
+                type="button"
+                onClick={changePassword}
+                disabled={!isPasswordMatching}
+              >
                 확인
               </button>
             </li>

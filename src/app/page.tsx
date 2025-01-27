@@ -12,7 +12,7 @@ import CSS from "./page.module.css";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { socialSignInAction } from "@actions/authActions";
+import { socialSignInAction } from "@actions/authAction";
 
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/SignUp";
@@ -65,7 +65,7 @@ export default function Home() {
 
   // 로그인 정보가 있을 시 '메인 홈'으로
   useEffect(() => {
-    if (user.isAuth) router.push("/home");
+    // if (user.isAuth) router.push("/home");
   }, [user.isAuth, router]);
 
   return (

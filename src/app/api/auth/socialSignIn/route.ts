@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     /** identification */
     const id: string | null = req.nextUrl.searchParams.get("id");
 
-    /** 쿼리문 */
+    /** SQL 쿼리문 */
     const sql = `
       SELECT
         u.identification, 
@@ -27,10 +27,12 @@ export async function GET(req: NextRequest) {
         users u
       LEFT JOIN 
         couple_code_users cu
-        ON u.identification = cu.user_id
+        ON
+          u.identification = cu.user_id
       LEFT JOIN 
         couple_codes c
-        ON cu.couple_code = c.couple_code
+        ON
+          cu.couple_code = c.couple_code
       WHERE
         identification = ?
     `;

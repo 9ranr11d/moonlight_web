@@ -4,6 +4,7 @@
 
   --click-color: #ae5861;
   --font-color: #111;
+  --err-color: #e63946;
 
   --background-color: linear-gradient(
     to bottom,
@@ -14,16 +15,16 @@
   --modal-background-color: #00000099;
   --search-input-background-color: #f0f0f0cc;
 
-  --gray-50: #faf5f6;
-  --gray-100: #f2ecee;
-  --gray-200: #e4dcde;
-  --gray-300: #d2c8cb;
-  --gray-400: #b8aeb1;
-  --gray-500: #9d9497;
-  --gray-600: #7e7477;
-  --gray-700: #60585a;
-  --gray-800: #403c3d;
-  --gray-900: #2a2727;
+  --gray-50: #f9f9f9;
+  --gray-100: #f2f2f2;
+  --gray-200: #e5e5e5;
+  --gray-300: #cccccc;
+  --gray-400: #b3b3b3;
+  --gray-500: #999999;
+  --gray-600: #808080;
+  --gray-700: #666666;
+  --gray-800: #4d4d4d;
+  --gray-900: #333333;
 
   --bright-blue: #00bfff;
   --bright-red: #ff69b4;
@@ -175,7 +176,7 @@ input[type="text"],
 input[type="password"],
 input[type="number"] {
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border: 1px solid var(--gray-300);
   border-radius: 2px;
 }
@@ -211,19 +212,16 @@ input[type="color"]::-webkit-color-swatch {
   box-shadow: none;
 }
 
-ul::-webkit-scrollbar,
-textarea::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
 }
 
-ul::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb {
-  background: var(--secondary-color);
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
   border-radius: 4px;
 }
 
-ul::-webkit-scrollbar-track,
-textarea::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   width: 10px;
   background: white;
   border: 1px solid var(--gray-300);
@@ -245,6 +243,12 @@ button:active {
 
 button:disabled {
   background: var(--gray-400);
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 110px 10px;
+  }
 }
 
 @font-face {

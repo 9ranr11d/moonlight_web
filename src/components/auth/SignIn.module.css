@@ -2,9 +2,24 @@
   margin-bottom: 20px;
 }
 
-.signInBox > ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.signInBox > .subBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signInBox > .subBox > ul {
+  display: flex;
+  column-gap: 10px;
+}
+
+.signInBox > .subBox > ul a {
+  color: var(--gray-800);
+  font-size: 13px;
+}
+
+.signInBox > .subBox > ul a:hover {
+  color: var(--gray-600);
 }
 
 .signInBox > ul > li > button {

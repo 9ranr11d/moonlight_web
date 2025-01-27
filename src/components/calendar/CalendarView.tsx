@@ -6,8 +6,8 @@ import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { setSchedules } from "@redux/slices/CalendarSlice";
-import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
+import { setSchedules } from "@redux/slices/calendarSlice";
+import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
 
 import { IIUser } from "@interfaces/auth/index";
 import { IIISchedule } from "@models/Schedule";
@@ -589,11 +589,11 @@ export default function CalendarView() {
             onClick={toggleSiderbar}
             className={CSS.moreBtn}
           >
-            <Image
+            {/* <Image
               src={isSiderbarOpen ? IconNextWhite : IconPrevWhite}
               width={30}
               alt={isSiderbarOpen ? ">" : "<"}
-            />
+            /> */}
           </button>
 
           <div className={CSS.content} style={{ width: siderbarWidth }}>
@@ -605,7 +605,7 @@ export default function CalendarView() {
                     isYear ? changeYear("prev") : changeMonth("prev")
                   }
                 >
-                  <Image src={IconPrevWhite} width={24} alt="Prev" />
+                  {/* <Image src={IconPrevWhite} width={24} alt="Prev" /> */}
                 </button>
               </li>
 
@@ -640,7 +640,7 @@ export default function CalendarView() {
                     isYear ? changeYear("next") : changeMonth("next")
                   }
                 >
-                  <Image src={IconNextWhite} width={24} alt="Next" />
+                  {/* <Image src={IconNextWhite} width={24} alt="Next" /> */}
                 </button>
               </li>
             </ul>
@@ -707,13 +707,13 @@ export default function CalendarView() {
 
                 <li>
                   <button type="button" onClick={selectInputYearMonth}>
-                    <Image src={IconCheck} width={24} alt="√" />
+                    {/* <Image src={IconCheck} width={24} alt="√" /> */}
                   </button>
                 </li>
 
                 <li>
                   <button type="button" onClick={toggleInputYearMonth}>
-                    <Image src={IconClose} width={24} alt="X" />
+                    {/* <Image src={IconClose} width={24} alt="X" /> */}
                   </button>
                 </li>
               </>
@@ -721,7 +721,7 @@ export default function CalendarView() {
               <>
                 <li>
                   <button type="button" onClick={() => changeMonth("prev")}>
-                    <Image src={IconPrevBlack} width={24} alt="Prev" />
+                    {/* <Image src={IconPrevBlack} width={24} alt="Prev" /> */}
                   </button>
                 </li>
 
@@ -733,7 +733,7 @@ export default function CalendarView() {
 
                 <li>
                   <button type="button" onClick={() => changeMonth("next")}>
-                    <Image src={IconNextBlack} width={24} alt="Next" />
+                    {/* <Image src={IconNextBlack} width={24} alt="Next" /> */}
                   </button>
                 </li>
               </>

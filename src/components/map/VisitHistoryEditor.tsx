@@ -31,15 +31,23 @@ export default function VisitHistoryEditor() {
   const today: Date = new Date();
 
   /** 속성 입력 필드 제목들 */
-  const labels: ILabels = { visitedAt: "방문 날짜", rating: "평점", comment: "평가", isPrviate: "나만 보기" };
+  const labels: ILabels = {
+    visitedAt: "방문 날짜",
+    rating: "평점",
+    comment: "평가",
+    isPrviate: "나만 보기",
+  };
 
   /** Dispatch */
   const dispatch = useDispatch();
 
   /** 즐겨찾기 정보 Reducer */
-  const favoriteLocation = useSelector((state: RootState) => state.favoriteLocationReducer);
+  const favoriteLocation = useSelector(
+    (state: RootState) => state.favoriteLocationReducer
+  );
 
-  const [isStartCalendarOpen, setIsStartCalendarOpen] = useState<boolean>(false); // 방문 시작 날짜 캘린더 가시 여부
+  const [isStartCalendarOpen, setIsStartCalendarOpen] =
+    useState<boolean>(false); // 방문 시작 날짜 캘린더 가시 여부
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState<boolean>(false); // 방문 종료 날짜 캘린더 가시 여부
 
   const [startDate, setStartDate] = useState<Date>(today);
@@ -104,12 +112,31 @@ export default function VisitHistoryEditor() {
    * @param toggleIsOpen 가시 여부 결정
    * @returns 버튼
    */
-  const renderCalendarBtn = (date: Date, setDate: (date: Date) => void, isOpen: boolean, toggleIsOpen: () => void, isStart: boolean): React.JSX.Element => (
+  const renderCalendarBtn = (
+    date: Date,
+    setDate: (date: Date) => void,
+    isOpen: boolean,
+    toggleIsOpen: () => void,
+    isStart: boolean
+  ): React.JSX.Element => (
     <div style={{ position: "relative" }}>
-      <button type="button" onClick={toggleIsOpen} style={{ background: "white", alignItems: "center", border: "1px solid var(--gray-300)", padding: 4 }}>
-        <span style={{ color: "var(--font-color)", fontSize: 13, marginRight: 5 }}>{convertDateII(date, "-")}</span>
+      <button
+        type="button"
+        onClick={toggleIsOpen}
+        style={{
+          background: "white",
+          alignItems: "center",
+          border: "1px solid var(--gray-300)",
+          padding: 4,
+        }}
+      >
+        <span
+          style={{ color: "var(--font-color)", fontSize: 13, marginRight: 5 }}
+        >
+          {convertDateII(date, "-")}
+        </span>
 
-        <Image src={isOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isOpen ? "▲" : "▼"} />
+        {/* <Image src={isOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isOpen ? "▲" : "▼"} /> */}
       </button>
 
       {isOpen && (
@@ -126,11 +153,27 @@ export default function VisitHistoryEditor() {
   );
 
   /** 렌더할 Input 컴포넌트 */
-  const inputRenderers: Record<string, (value: TypeInputValue) => React.JSX.Element | null> = {
+  const inputRenderers: Record<
+    string,
+    (value: TypeInputValue) => React.JSX.Element | null
+  > = {
     visitedAt: value => (
       <div style={{ display: "flex", columnGap: 5, alignItems: "center" }}>
-        {renderCalendarBtn(startDate, date => setStartDate(date), isStartCalendarOpen, toggleStartCalendarOpen, true)}-
-        {renderCalendarBtn(endDate, date => setEndDate(date), isEndCalendarOpen, toggleEndCalendarOpen, false)}
+        {renderCalendarBtn(
+          startDate,
+          date => setStartDate(date),
+          isStartCalendarOpen,
+          toggleStartCalendarOpen,
+          true
+        )}
+        -
+        {renderCalendarBtn(
+          endDate,
+          date => setEndDate(date),
+          isEndCalendarOpen,
+          toggleEndCalendarOpen,
+          false
+        )}
       </div>
     ),
     rating: value => <StarRating />,
@@ -142,7 +185,10 @@ export default function VisitHistoryEditor() {
    * @param value 속성 값
    * @returns Input
    */
-  const renderInputs = (key: string, value: TypeInputValue): React.JSX.Element | null => {
+  const renderInputs = (
+    key: string,
+    value: TypeInputValue
+  ): React.JSX.Element | null => {
     const renderer = inputRenderers[key];
 
     return renderer ? renderer(value) : null;
@@ -151,20 +197,29 @@ export default function VisitHistoryEditor() {
   return (
     <div>
       <ul>
-        {Object.entries(favoriteLocation.activeLocation).map(([key, value], idx) => {
-          const isKeyInLabels: boolean = key in labels;
+        {Object.entries(favoriteLocation.activeLocation).map(
+          ([key, value], idx) => {
+            const isKeyInLabels: boolean = key in labels;
 
-          if (!isKeyInLabels) return null;
+            if (!isKeyInLabels) return null;
 
-          return (
-            <li key={idx}>
-              <ul style={{ display: "flex", columnGap: 10, justifyContent: "center", alignItems: "center" }}>
-                <li>{`${labels[key as keyof ILabels]} :`}</li>
-                <li>{renderInputs(key, value)}</li>
-              </ul>
-            </li>
-          );
-        })}
+            return (
+              <li key={idx}>
+                <ul
+                  style={{
+                    display: "flex",
+                    columnGap: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <li>{`${labels[key as keyof ILabels]} :`}</li>
+                  <li>{renderInputs(key, value)}</li>
+                </ul>
+              </li>
+            );
+          }
+        )}
       </ul>
     </div>
   );

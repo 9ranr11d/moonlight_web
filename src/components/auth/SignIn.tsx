@@ -9,17 +9,17 @@ import { useDispatch } from "react-redux";
 import { signIn as socialSignIn } from "next-auth/react";
 
 import { AppDispatch } from "@redux/store";
-import { signIn } from "@redux/slices/AuthSlice";
+import { signIn } from "@redux/slices/authSlice";
 
 import CSS from "./SignIn.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
-import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
-import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
-import IconGoogle from "@public/img/auth/icon_google.png";
-import IconNaver from "@public/img/auth/icon_naver.png";
-import IconKakao from "@public/img/auth/icon_kakao.png";
+import IconEyeClose from "@public/svgs/common/icon_eye_close.svg";
+import IconEyeOpen from "@public/svgs/common/icon_eye_open.svg";
+import IconGoogle from "@public/imgs/auth/icon_google.png";
+import IconNaver from "@public/imgs/auth/icon_naver.png";
+import IconKakao from "@public/imgs/auth/icon_kakao.png";
 
 /** SignIn 자식 */
 interface ISignInProps {
@@ -150,19 +150,25 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               onMouseOver={() => hoverPasswordVisibility(true)}
               onMouseOut={() => hoverPasswordVisibility(false)}
             >
-              <Image
-                src={
-                  isPasswordVisible
-                    ? isPasswordVisibleHover
-                      ? IconEyeClose
-                      : IconEyeOpen
-                    : isPasswordVisibleHover
-                    ? IconEyeOpen
-                    : IconEyeClose
-                }
-                width={15}
-                alt={isPasswordVisible ? "ㅇ" : "ㅡ"}
-              />
+              {isPasswordVisible ? (
+                isPasswordVisibleHover ? (
+                  <IconEyeClose
+                    width={15}
+                    height={15}
+                    fill={"var(--gray-500)"}
+                  />
+                ) : (
+                  <IconEyeOpen
+                    width={15}
+                    height={15}
+                    fill={"var(--gray-500)"}
+                  />
+                )
+              ) : isPasswordVisibleHover ? (
+                <IconEyeOpen width={15} height={15} fill={"var(--gray-500)"} />
+              ) : (
+                <IconEyeClose width={15} height={15} fill={"var(--gray-500)"} />
+              )}
             </button>
           </li>
         </ul>
@@ -172,18 +178,23 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         </button>
       </div>
 
-      <ul>
-        <li>
-          <button type="button" onClick={handleRecovery}>
-            ID/PW 찾기
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={signUp}>
-            회원가입
-          </button>
-        </li>
-      </ul>
+      <div className={CSS.subBox}>
+        <ul>
+          <li>
+            <a href="#" onClick={handleRecovery}>
+              ID / PW 찾기
+            </a>
+          </li>
+
+          <li style={{ color: "var(--gray-800)" }}>|</li>
+
+          <li>
+            <a href="#" onClick={signUp}>
+              회원가입
+            </a>
+          </li>
+        </ul>
+      </div>
 
       <div className={CSS.socialSignInBox}>
         <div style={{ display: "flex", alignItems: "center", columnGap: 10 }}>

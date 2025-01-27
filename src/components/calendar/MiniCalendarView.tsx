@@ -37,7 +37,14 @@ interface IMiniCalendarProps {
 }
 
 /** 미니 캘린더 */
-export default function MiniCalendarView({ changeMonth, selectDay, isStart, currentDate, startDate, endDate }: IMiniCalendarProps) {
+export default function MiniCalendarView({
+  changeMonth,
+  selectDay,
+  isStart,
+  currentDate,
+  startDate,
+  endDate,
+}: IMiniCalendarProps) {
   /** 현재 연도 */
   const currentYear: number = currentDate.getFullYear();
   /** 현재 달 */
@@ -63,20 +70,29 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
   /** 현재 달의 1일의 요일 */
   const firstDayOfMonth: number = new Date(miniYear, miniMonth, 1).getDay();
   /** 이전 달 날짜 수 */
-  const prevMonthDays: number = endMonth - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[endMonth - 1];
+  const prevMonthDays: number =
+    endMonth - 1 < 0 ? MONTH_DAYS[11] : MONTH_DAYS[endMonth - 1];
   /** 이전 달 마지막 주와 현재 달의 날짜를 합친 수 */
-  const monthDaysWithPrevLastWeek: number = MONTH_DAYS[endMonth] + firstDayOfMonth;
+  const monthDaysWithPrevLastWeek: number =
+    MONTH_DAYS[endMonth] + firstDayOfMonth;
   /** 현재 달 마지막 주에 남은 날짜 수 */
   const fillRemainingDays: number = monthDaysWithPrevLastWeek % 7;
   /** 이전 달, 현재 달, 다음 달 날짜 총합 */
-  const totalDays: number = fillRemainingDays === 0 ? monthDaysWithPrevLastWeek : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
+  const totalDays: number =
+    fillRemainingDays === 0
+      ? monthDaysWithPrevLastWeek
+      : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
   return (
     <div className={CSS.miniCalendar}>
       <ul className={CSS.header}>
         <li>
-          <button type="button" onClick={() => changeMonth("prev")} disabled={!isStart && endDate.getMonth() <= startDate.getMonth()}>
-            <Image src={!isStart ? (endDate.getMonth() <= startDate.getMonth() ? IconPrevGray : IconPrevBlack) : IconPrevBlack} height={15} alt="Prev" />
+          <button
+            type="button"
+            onClick={() => changeMonth("prev")}
+            disabled={!isStart && endDate.getMonth() <= startDate.getMonth()}
+          >
+            {/* <Image src={!isStart ? (endDate.getMonth() <= startDate.getMonth() ? IconPrevGray : IconPrevBlack) : IconPrevBlack} height={15} alt="Prev" /> */}
           </button>
         </li>
 
@@ -85,8 +101,12 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
         </li>
 
         <li>
-          <button type="button" onClick={() => changeMonth("next")} disabled={isStart && startDate.getMonth() >= endDate.getMonth()}>
-            <Image src={isStart ? (startDate.getMonth() >= endDate.getMonth() ? IconNextGray : IconNextBlack) : IconNextBlack} height={15} alt="Next" />
+          <button
+            type="button"
+            onClick={() => changeMonth("next")}
+            disabled={isStart && startDate.getMonth() >= endDate.getMonth()}
+          >
+            {/* <Image src={isStart ? (startDate.getMonth() >= endDate.getMonth() ? IconNextGray : IconNextBlack) : IconNextBlack} height={15} alt="Next" /> */}
           </button>
         </li>
       </ul>
@@ -115,20 +135,30 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
               : idx + 1 - firstDayOfMonth;
 
             /** 표기할 날짜의 달 */
-            const _month: number = isPrevMonth ? miniMonth - 1 : isNextMonth ? miniMonth + 1 : miniMonth;
+            const _month: number = isPrevMonth
+              ? miniMonth - 1
+              : isNextMonth
+              ? miniMonth + 1
+              : miniMonth;
 
             /** 표기할 날짜 */
             const thisDate: Date = new Date(miniYear, _month, day);
 
             /** 비활성화 할 날짜 */
-            const isDisabledDate: boolean = isStart ? thisDate > endDate : thisDate < startDate;
+            const isDisabledDate: boolean = isStart
+              ? thisDate > endDate
+              : thisDate < startDate;
 
             return (
               <li key={idx}>
                 <button
                   type="button"
                   onClick={() => selectDay(thisDate)}
-                  className={isDisabledDate ? `${CSS.content} ${CSS.disabled}` : CSS.content}
+                  className={
+                    isDisabledDate
+                      ? `${CSS.content} ${CSS.disabled}`
+                      : CSS.content
+                  }
                   disabled={isDisabledDate}
                 >
                   <span
@@ -139,7 +169,9 @@ export default function MiniCalendarView({ changeMonth, selectDay, isStart, curr
                         ? CSS.subDate
                         : isNextMonth
                         ? CSS.subDate
-                        : miniYear === currentYear && miniMonth === currentMonth && day === currentDay
+                        : miniYear === currentYear &&
+                          miniMonth === currentMonth &&
+                          day === currentDay
                         ? CSS.today
                         : undefined
                     }

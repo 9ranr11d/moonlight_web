@@ -42,3 +42,19 @@ export interface IIUser extends IUser {
   /** Refresh Token */
   refreshToken: string;
 }
+
+/** 약관 인터페이스 */
+export interface ITerm {
+  type: string;
+  version: number;
+  isRequired: boolean;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** identification 중복 검사 관련 정보 인터페이스 */
+export interface IDuplicate {
+  isDuplicate: boolean;
+  msg: string;
+}

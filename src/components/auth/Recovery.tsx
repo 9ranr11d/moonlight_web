@@ -41,23 +41,33 @@ export default function Recovery({ back }: IRecoveryProps) {
       <div className={CSS.recoveryBox}>
         <div className={CSS.header}>
           <button type="button" onClick={goBack}>
-            <Image src={IconBack} width={24} height={24} alt="◀" />
+            {/* <Image src={IconBack} width={24} height={24} alt="◀" /> */}
           </button>
 
           <h3>ID / PW 찾기</h3>
         </div>
 
         <div className={CSS.tapBox}>
-          <button type="button" onClick={identificationRecovery} disabled={isIdRecovery}>
+          <button
+            type="button"
+            onClick={identificationRecovery}
+            disabled={isIdRecovery}
+          >
             Identification
           </button>
 
-          <button type="button" onClick={passwordRecovery} disabled={!isIdRecovery}>
+          <button
+            type="button"
+            onClick={passwordRecovery}
+            disabled={!isIdRecovery}
+          >
             Password
           </button>
         </div>
 
-        <div className={CSS.content}>{isIdRecovery ? <Identification /> : <Password back={goBack} />}</div>
+        <div className={CSS.content} style={{ paddingBottom: 20 }}>
+          {isIdRecovery ? <Identification /> : <Password back={goBack} />}
+        </div>
       </div>
     </>
   );

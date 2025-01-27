@@ -5,7 +5,7 @@ import React, { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 
 import { useDispatch } from "react-redux";
-import { hideBackdrop } from "@redux/slices/BackdropSlice";
+import { hideBackdrop } from "@redux/slices/backdropSlice";
 
 import CSS from "./Modal.module.css";
 
@@ -25,7 +25,12 @@ interface IModalProps {
 }
 
 /** Modal */
-export default function Modal({ className = "", style = {}, close, children }: IModalProps) {
+export default function Modal({
+  className = "",
+  style = {},
+  close,
+  children,
+}: IModalProps) {
   /** Dispatch */
   const dispatch = useDispatch();
 
@@ -41,8 +46,18 @@ export default function Modal({ className = "", style = {}, close, children }: I
   return (
     <div className={`${CSS.modal} ${className}`} style={style}>
       {close && (
-        <button type="button" onClick={clickClose} style={{ position: "absolute", top: 10, right: 10, background: "none", padding: 0 }}>
-          <Image src={IconClose} width={20} height={20} alt="X" />
+        <button
+          type="button"
+          onClick={clickClose}
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            background: "none",
+            padding: 0,
+          }}
+        >
+          {/* <Image src={IconClose} width={20} height={20} alt="X" /> */}
         </button>
       )}
 

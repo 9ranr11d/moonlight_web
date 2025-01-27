@@ -4,7 +4,7 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { hideBackdrop } from "@redux/slices/BackdropSlice";
+import { hideBackdrop } from "@redux/slices/backdropSlice";
 
 import CSS from "./Backdrop.module.css";
 

@@ -11,6 +11,10 @@ import { ERR_MSG } from "@constants/msg";
 import IconBack from "@public/img/common/icon_less_than_black.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 import IconTriangle from "@public/img/common/icon_down_triangle_black.svg";
+import IdentificationInput from "./IdentificationInput";
+import TitleHeader from "@components/common/TitleHeader";
+import PasswordInput from "./PasswordInput";
+import TermsViewer from "./TermsViewer";
 
 /** SignUp 자식 */
 interface ISignUpProps {
@@ -20,106 +24,94 @@ interface ISignUpProps {
   back: () => void;
 }
 
+function AgreementStep() {
+  return (
+    <>
+      <TermsViewer />
+    </>
+  );
+}
+
+function AccountStep() {
+  return (
+    <>
+      <IdentificationInput />
+      <PasswordInput />
+    </>
+  );
+}
+
 /** 회원가입 */
 export default function SignUp({ completed, back }: ISignUpProps) {
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"]; // E-mail 자동완성 목록
 
-  const [identification, setIdentification] = useState<string>(""); // Identification
   const [nickname, setNickName] = useState<string>(""); // 별명
-  const [password, setPassword] = useState<string>(""); // Password
-  const [confirmPassword, setConfirmPassword] = useState<string>(""); // Password 재확인
+
   const [firstEmail, setFirstEmail] = useState<string>(""); // E-mail Identification 부분
   const [lastEmail, setLastEmail] = useState<string>(""); // E-mail Domain 부분
 
   const [lastEmailIdx, setLastEmailIdx] = useState<number>(0); // E-mail List에서 선택한 순번
+  const [step, setStep] = useState<number>(0);
 
   const [isEmailListOpen, setIsEmailListOpen] = useState<boolean>(false); // E-mail 리스트 드롭다운 메뉴 열기 여부
-  const [isDuplicateId, setIsDuplicateId] = useState<boolean>(true); // Id가 중복인지
-  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // Password와 ConfirmPw가 일치하는 지
 
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
-  const isEmpty: boolean = isDuplicateId || !nickname || !isPasswordMatching || !firstEmail || !lastEmail;
-
-  /** Identification 중복 확인 */
-  const checkDuplicate = (): void => {
-    const data: { identification: string } = { identification };
-
-    fetch("/api/auth/checkDuplicateId", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok || res.status === 409) {
-          const is409 = res.status === 409;
-          setIsDuplicateId(is409);
-
-          alert(is409 ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디 입니다.");
-
-          return res.json();
-        }
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => console.log(data.msg))
-      .catch(err => console.error("/src/components/auth/SignUp > checkDuplicate()에서 오류가 발생했습니다. :", err));
-  };
+  // const isEmpty: boolean =
+  //   isDuplicateId ||
+  //   !nickname ||
+  //   !isPasswordMatching ||
+  //   !firstEmail ||
+  //   !lastEmail;
 
   /** 회원가입 */
-  const processSignUp = (): void => {
-    // Password Password 재확인이 일치하지 않을 때
-    if (password !== confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
+  // const processSignUp = (): void => {
+  //   // Password Password 재확인이 일치하지 않을 때
+  //   if (password !== confirmPassword) {
+  //     alert("비밀번호가 일치하지 않습니다.");
+  //     return;
+  //   }
 
-    /** 회원가입에 필요한 사용자 정보 */
-    const data: { identification: string; nickname: string; password: string; email: string } = {
-      identification,
-      nickname,
-      password,
-      email: `${firstEmail}@${lastEmail}`,
-    };
+  //   /** 회원가입에 필요한 사용자 정보 */
+  //   const data: {
+  //     identification: string;
+  //     nickname: string;
+  //     password: string;
+  //     email: string;
+  //   } = {
+  //     identification,
+  //     nickname,
+  //     password,
+  //     email: `${firstEmail}@${lastEmail}`,
+  //   };
 
-    fetch("/api/auth/signUp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+  //   fetch("/api/auth/signUp", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then(res => {
+  //       if (res.ok) return res.json();
 
-        alert(ERR_MSG);
+  //       alert(ERR_MSG);
 
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
+  //       return res.json().then(data => Promise.reject(data.msg));
+  //     })
+  //     .then(data => {
+  //       console.log(data.msg);
 
-        completed();
-      })
-      .catch(err => console.error("/src/components/auth/SignUp > processSignUp()에서 오류가 발생했습니다. :", err));
-  };
-
-  /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setIdentification(e.target.value);
-    setIsDuplicateId(true);
-  };
+  //       completed();
+  //     })
+  //     .catch(err =>
+  //       console.error(
+  //         "/src/components/auth/SignUp > processSignUp()에서 오류가 발생했습니다. :",
+  //         err
+  //       )
+  //     );
+  // };
 
   /** 별명 Input */
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNickName(e.target.value);
-  };
-
-  /** Password Input */
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
-  };
-
-  /** Password 확인 Input */
-  const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setConfirmPassword(e.target.value);
   };
 
   /** E-mail Identification 부분 Input */
@@ -158,49 +150,24 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     if (lastEmailIdx !== 0) setLastEmail(emailList[lastEmailIdx]);
   }, [lastEmailIdx]);
 
-  // Password랑 Password 확인 일치여부 확인
-  useEffect(() => {
-    if (password.length > 0 && password === confirmPassword) setIsPwMatching(true);
-    else setIsPwMatching(false);
-  }, [password, confirmPassword]);
-
   return (
-    <div className={CSS.signUpBox}>
-      <div className={CSS.header}>
-        <button type="button" onClick={goBack}>
-          <Image src={IconBack} width={24} height={24} alt="◀" />
-        </button>
+    <div className={CSS.signUpBox} style={{ width: "60%" }}>
+      <TitleHeader back={back} />
 
-        <h3>회원가입</h3>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 10,
+          marginBottom: 30,
+        }}
+      >
+        <AgreementStep />
       </div>
 
-      <ul className={CSS.content}>
+      {/* <ul className={CSS.content}>
         <li>
-          <ul>
-            <li>
-              <h6>아이디</h6>
-            </li>
 
-            <li className={CSS.identificationLine}>
-              <ul>
-                <li>
-                  <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
-
-                  {!isDuplicateId && (
-                    <span>
-                      <Image src={IconCheck} width={20} height={20} alt="√" />
-                    </span>
-                  )}
-                </li>
-
-                <li>
-                  <button type="button" onClick={checkDuplicate} disabled={identification.length <= 5}>
-                    중복검사
-                  </button>
-                </li>
-              </ul>
-            </li>
-          </ul>
         </li>
 
         <li>
@@ -218,11 +185,11 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         <li>
           <ul>
             <li>
-              <h6>비밀번호</h6>
+              
             </li>
 
             <li>
-              <input type="password" value={password} onChange={handlePassword} placeholder="Password" />
+              
             </li>
           </ul>
         </li>
@@ -230,17 +197,11 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         <li>
           <ul>
             <li>
-              <h6>비밀번호 재확인</h6>
+              
             </li>
 
             <li>
-              <input type="password" value={confirmPassword} onChange={handleConfirmPw} placeholder="Confirm Password" />
-
-              {isPasswordMatching && (
-                <span>
-                  <Image src={IconCheck} width={20} height={20} alt="√" />
-                </span>
-              )}
+              
             </li>
           </ul>
         </li>
@@ -291,12 +252,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
             </li>
           </ul>
         </li>
-      </ul>
+      </ul> */}
 
       <div className={CSS.okBtnBox}>
-        <button type="button" onClick={processSignUp} disabled={isEmpty}>
-          확인
-        </button>
+        <button type="button">확인</button>
       </div>
     </div>
   );

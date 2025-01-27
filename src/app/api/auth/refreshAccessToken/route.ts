@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { query } from "@lib/dbConnect";
 
-import User, { IIUser } from "@interfaces/auth/index";
-
 import { refreshVerify, sign } from "@utils/jwtUtils";
 
 /** Refresh Token으로 Access Token 재발급 */
@@ -29,7 +27,7 @@ export async function GET(req: NextRequest) {
 
     // 유효할 시, Cookie의 Refresh Token과 동일한 refresh Token을 가진 사용자 정보
     /** 쿼리문 */
-    const sql = `SELECT * FROM users WHERE refreshToken = ?`;
+    const sql = "SELECT * FROM users WHERE refreshToken = ?";
     /** 매개변수 */
     const params = [refreshToken];
     /** 결과값 */

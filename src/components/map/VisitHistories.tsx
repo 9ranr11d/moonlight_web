@@ -5,7 +5,7 @@ import React from "react";
 import Image from "next/image";
 
 import { useDispatch } from "react-redux";
-import { createActiveLocation } from "@redux/slices/FavoriteLocationSlice";
+import { createActiveLocation } from "@redux/slices/favoriteLocationSlice";
 
 import { IIFavoriteLocationHistory } from "@models/FavoriteLocationHistory";
 
@@ -41,8 +41,12 @@ export default function VisitHistories({ histories }: IVisitHistories) {
       )}
 
       <div style={{ marginTop: 20 }}>
-        <button type="button" onClick={createHistory} style={{ background: "none", padding: 0 }}>
-          <Image src={IconPlus} width={24} alt="+" />
+        <button
+          type="button"
+          onClick={createHistory}
+          style={{ background: "none", padding: 0 }}
+        >
+          {/* <Image src={IconPlus} width={24} alt="+" /> */}
         </button>
       </div>
     </div>

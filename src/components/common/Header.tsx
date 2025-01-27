@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
-import Image from "next/image";
+
 import { usePathname, useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { refreshAccessToken } from "@redux/slices/AuthSlice";
-import { hideBackdrop, showBackdrop } from "@redux/slices/BackdropSlice";
+import { refreshAccessToken } from "@redux/slices/authSlice";
+import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
 
 import CSS from "./Header.module.css";
 
@@ -21,7 +21,7 @@ import ProfileModal from "@components/profile/ProfileModal";
 
 import Backdrop from "@components/common/Backdrop";
 
-import IconLogoSquare from "@public/img/common/icon_logo_square.svg";
+import IconLogoSquare from "@public/svgs/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/img/common/icon_logo_horizontal.svg";
 import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
 import IconClose from "@public/img/common/icon_greater_than_black.svg";
@@ -147,7 +147,7 @@ export default function Header() {
         >
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
-              <Image src={IconLogoHorizontal} width={150} alt="Logo" />
+              <IconLogoHorizontal width={150} height={34} />
             </Link>
           </div>
 
@@ -174,7 +174,7 @@ export default function Header() {
               onClick={toggleSideMenu}
               className={CSS.mobile}
             >
-              <Image src={IconHamburger} width={24} alt="=" />
+              <IconHamburger width={24} height={24} />
             </button>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function Header() {
           onTransitionEnd={hiddenBeforeLogo}
         >
           <Link prefetch={true} href={"/"}>
-            <Image src={IconLogoSquare} width={100} alt="Logo" />
+            <IconLogoSquare width={100} height={100} />
           </Link>
         </div>
       </nav>
@@ -204,7 +204,7 @@ export default function Header() {
       >
         <div className={CSS.sideMenuHeader}>
           <button type="button" onClick={toggleSideMenu}>
-            <Image src={IconClose} alt="X" width={24} />
+            <IconClose alt="X" width={24} height={24} />
           </button>
 
           <Link href={"/profile"}>

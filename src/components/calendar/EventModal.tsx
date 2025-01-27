@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
-import { setScheduleCategories } from "@redux/slices/CalendarSlice";
+import { setScheduleCategories } from "@redux/slices/calendarSlice";
 
 import { IISchedule, ISchedule } from "@models/Schedule";
 import { IIUser } from "@interfaces/auth/index";
@@ -904,11 +904,11 @@ export default function EventModal({
               <span>{users.find(_user => _user._id === value)?.nickname}</span>
 
               {user.accessLevel >= 3 && (
-                <Image
-                  src={isUserListOpen ? IconUpTriangle : IconDownTriangle}
-                  width={9}
-                  alt={isUserListOpen ? "▲" : "▼"}
-                />
+                // <Image
+                //   src={isUserListOpen ? IconUpTriangle : IconDownTriangle}
+                //   width={9}
+                //   alt={isUserListOpen ? "▲" : "▼"}
+                // />
               )}
             </button>
 
@@ -966,11 +966,11 @@ export default function EventModal({
                   : "선택된 카테고리가 없습니다."}
               </span>
 
-              <Image
+              {/* <Image
                 src={isCategoryListOpen ? IconUpTriangle : IconDownTriangle}
                 width={9}
                 alt={isCategoryListOpen ? "▲" : "▼"}
-              />
+              /> */}
             </button>
 
             {isCategoryListOpen && (
@@ -1009,14 +1009,14 @@ export default function EventModal({
                           type="button"
                           onClick={() => updateCategory(category)}
                         >
-                          <Image src={IconCheck} width={16} alt="√" />
+                          {/* <Image src={IconCheck} width={16} alt="√" /> */}
                         </button>
 
                         <button
                           type="button"
                           onClick={() => toggleEditCategory(category)}
                         >
-                          <Image src={IconClose} width={16} alt="X" />
+                          {/* <Image src={IconClose} width={16} alt="X" /> */}
                         </button>
                       </li>
                     ) : (
@@ -1043,7 +1043,7 @@ export default function EventModal({
                     />
 
                     <button type="button" onClick={createCategory}>
-                      <Image src={IconPlusPrimary} width={12} alt="+" />
+                      {/* <Image src={IconPlusPrimary} width={12} alt="+" /> */}
                     </button>
                   </li>
                 )}
@@ -1054,11 +1054,11 @@ export default function EventModal({
                     onClick={toggleCreateCategory}
                     style={{ borderRadius: 0 }}
                   >
-                    <Image
+                    {/* <Image
                       src={!isCreateCategory ? IconExpand : IconCollapse}
                       width={12}
                       alt={!isCreateCategory ? "▼" : "▲"}
-                    />
+                    /> */}
                   </button>
                 </li>
               </ul>
@@ -1142,7 +1142,7 @@ export default function EventModal({
           onMouseOver={() => hoverEditCategory(true, idx)}
           onMouseOut={() => hoverEditCategory(false, idx)}
         >
-          <Image
+          {/* <Image
             src={
               isSelected
                 ? selectedEditCategoryIcon(idx)
@@ -1150,7 +1150,7 @@ export default function EventModal({
             }
             width={16}
             alt="Edit"
-          />
+          /> */}
         </button>
 
         <button
@@ -1159,7 +1159,7 @@ export default function EventModal({
           onMouseOver={() => hoverDeleteCategory(true, idx)}
           onMouseOut={() => hoverDeleteCategory(false, idx)}
         >
-          <Image
+          {/* <Image
             src={
               isSelected
                 ? selectedDeleteCategoryIcon(idx)
@@ -1167,7 +1167,7 @@ export default function EventModal({
             }
             width={16}
             alt="Delete"
-          />
+          /> */}
         </button>
       </li>
     );
@@ -1227,7 +1227,7 @@ export default function EventModal({
       <div className={CSS.header}>
         {isEditSchedule && (
           <button type="button" onClick={toggleCreateSchedule}>
-            <Image src={IconPrevBlack} width={20} alt="<" />
+            {/* <Image src={IconPrevBlack} width={20} alt="<" /> */}
           </button>
         )}
 
@@ -1251,13 +1251,13 @@ export default function EventModal({
               >
                 <span>{convertDateII(editScheduleStateStartDate, "-")}</span>
 
-                <Image
+                {/* <Image
                   src={
                     isStartMiniCalendarOpen ? IconUpTriangle : IconDownTriangle
                   }
                   width={13}
                   alt={isStartMiniCalendarOpen ? "▲" : "▼"}
-                />
+                /> */}
               </button>
 
               {isStartMiniCalendarOpen && (
@@ -1291,13 +1291,13 @@ export default function EventModal({
                 >
                   <span>{convertDateII(editScheduleStateEndDate, "-")}</span>
 
-                  <Image
+                  {/* <Image
                     src={
                       isEndMiniCalendarOpen ? IconUpTriangle : IconDownTriangle
                     }
                     width={9}
                     alt={isEndMiniCalendarOpen ? "▲" : "▼"}
-                  />
+                  /> */}
                 </button>
 
                 {isEndMiniCalendarOpen && (
@@ -1356,7 +1356,7 @@ export default function EventModal({
                 onMouseOver={() => hoverEditSchedule(true)}
                 onMouseOut={() => hoverEditSchedule(false)}
               >
-                <Image
+                {/* <Image
                   src={
                     isCreateSchedule
                       ? IconPlusPrimary
@@ -1366,7 +1366,7 @@ export default function EventModal({
                   }
                   width={24}
                   alt={isCreateSchedule ? "+" : "Update"}
-                />
+                /> */}
               </button>
 
               {!isCreateSchedule && (
@@ -1376,7 +1376,7 @@ export default function EventModal({
                   onMouseOver={() => hoverDeleteSchedule(true)}
                   onMouseOut={() => hoverDeleteSchedule(false)}
                 >
-                  <Image
+                  {/* <Image
                     src={
                       isDeleteScheduleHover
                         ? IconDeleteOpenPrimary
@@ -1384,7 +1384,7 @@ export default function EventModal({
                     }
                     width={24}
                     alt="Delete"
-                  />
+                  /> */}
                 </button>
               )}
             </div>
@@ -1394,7 +1394,7 @@ export default function EventModal({
 
       {!isEditSchedule && (
         <button type="button" onClick={toggleCreateSchedule}>
-          <Image src={IconPlusBlack} width={24} alt="+" />
+          {/* <Image src={IconPlusBlack} width={24} alt="+" /> */}
         </button>
       )}
     </Modal>

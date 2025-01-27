@@ -42,6 +42,11 @@ export const Auth = createSlice({
       Object.assign(state, action.payload); // 기존 상태에 action.payload 병합
       state.isAuth = true;
     },
+    /**
+     * 소셜 로그인
+     * @param state 기존 정보
+     * @param actions 받아온 값
+     */
     socialSignIn: (state, actions: PayloadAction<IUser>) => {
       Object.assign(state, actions.payload);
       state.isAuth = true;
