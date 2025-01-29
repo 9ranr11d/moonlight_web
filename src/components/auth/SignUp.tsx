@@ -46,6 +46,22 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   const [isEmailListOpen, setIsEmailListOpen] = useState<boolean>(false); // E-mail 리스트 드롭다운 메뉴 열기 여부
   const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부
 
+  /** 단계별 Component */
+  const RenderStep = (): React.JSX.Element => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <IdentificationInput />
+            <PasswordInput />
+          </>
+        );
+      case 0:
+      default:
+        return <TermsViewer />;
+    }
+  };
+
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
   // const isEmpty: boolean =
   //   isDuplicateId ||
@@ -100,26 +116,6 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   //     );
   // };
 
-  /** 단계별 Component */
-  const RenderStep = (): React.JSX.Element => {
-    switch (step) {
-      case 1:
-        return (
-          <>
-            <IdentificationInput />
-            <PasswordInput />
-          </>
-        );
-      case 0:
-      default:
-        return <TermsViewer />;
-    }
-  };
-
-  const clickConfirmBtn = (): void => {
-    setStep(prev => ++prev);
-  };
-
   /** 별명 Input */
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNickName(e.target.value);
@@ -133,6 +129,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   /** E-mail Domain 부분 Input */
   const handleLastEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLastEmail(e.target.value);
+  };
+
+  const clickConfirmBtn = (): void => {
+    setStep(prev => ++prev);
   };
 
   /** 뒤로가기 */
@@ -179,7 +179,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
         break;
     }
-  }, [terms.latestTerms, terms.agreedTerms, step, setIsConfirmActive]);
+  }, [terms.agreedTerms]);
 
   return (
     <div className={CSS.signUpBox} style={{ width: "100%" }}>
@@ -189,7 +189,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
         style={{
           display: "flex",
           flexDirection: "column",
-          rowGap: 20,
+          rowGap: 10,
           marginBottom: 30,
         }}
       >
@@ -291,7 +291,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
           onClick={clickConfirmBtn}
           disabled={!isConfirmActive}
         >
-          다음
+          확인
         </button>
       </div>
     </div>

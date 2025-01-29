@@ -1,4 +1,4 @@
-import { AppDispatch } from "@redux/store";
+import { AppDispatch, RootState } from "@redux/store";
 
 import {
   resetAuth,
@@ -50,22 +50,26 @@ export const socialSignInAction =
   };
 
 /** 최신 약관 가져오기 */
-export const getLatestTermsAction = () => async (dispatch: AppDispatch) => {
-  fetch("/api/auth/getLatestTerms")
-    .then(res => {
-      console.log("123");
-      if (res.ok) return res.json();
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data => dispatch(setLatestTerms(data.terms)))
-    .catch(err => {
-      console.error(
-        "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
-        err
-      );
-      dispatch(setTermsErr(err));
-    });
-};
+export const getLatestTermsAction =
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { isLoaded } = getState().termsReducer;
+
+    if (!isLoaded) return;
+
+    fetch("/api/auth/getLatestTerms")
+      .then(res => {
+        if (res.ok) return res.json();
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => dispatch(setLatestTerms(data.terms)))
+      .catch(err => {
+        console.error(
+          "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
+          err
+        );
+        dispatch(setTermsErr(err));
+      });
+  };
 
 /**
  * 약관 동의/비동의

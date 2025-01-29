@@ -89,14 +89,13 @@ function TermInput({ term, isAgreed }: ITermInput) {
         <div
           style={{
             background: "var(--gray-100)",
-            // borderRadius: "0 0 8px 8px",
             padding: 10,
           }}
         >
           <p
             style={{
               width: "100%",
-              height: 150,
+              maxHeight: 150,
               overflowY: "scroll",
             }}
           >
