@@ -2,10 +2,15 @@
 
 import { SessionProvider } from "next-auth/react";
 
+/** nextauth Session Provider Interface */
 interface SessionProviderWrapperProps {
+  /** 내용물 */
   children: React.ReactNode;
 }
 
-export default function SessionProviderWrapper({ children }: SessionProviderWrapperProps) {
+/** nextauth Session Provider */
+export default function SessionProviderWrapper({
+  children,
+}: SessionProviderWrapperProps) {
   return <SessionProvider>{children}</SessionProvider>;
 }

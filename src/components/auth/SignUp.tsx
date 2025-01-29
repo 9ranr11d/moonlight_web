@@ -2,9 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 
+import { useSelector } from "react-redux";
+
 import Image from "next/image";
 
 import CSS from "./SignUp.module.css";
+
+import { RootState } from "@redux/store";
 
 import { ERR_MSG } from "@constants/msg";
 
@@ -24,25 +28,11 @@ interface ISignUpProps {
   back: () => void;
 }
 
-function AgreementStep() {
-  return (
-    <>
-      <TermsViewer />
-    </>
-  );
-}
-
-function AccountStep() {
-  return (
-    <>
-      <IdentificationInput />
-      <PasswordInput />
-    </>
-  );
-}
-
 /** 회원가입 */
 export default function SignUp({ completed, back }: ISignUpProps) {
+  /** 약관 관련 정보 */
+  const terms = useSelector((state: RootState) => state.termsReducer);
+
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"]; // E-mail 자동완성 목록
 
   const [nickname, setNickName] = useState<string>(""); // 별명
@@ -54,6 +44,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   const [step, setStep] = useState<number>(0);
 
   const [isEmailListOpen, setIsEmailListOpen] = useState<boolean>(false); // E-mail 리스트 드롭다운 메뉴 열기 여부
+  const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부
 
   /** Identification, 별명, E-mail 입력 여부랑 Password랑 Password 확인 일치여부  */
   // const isEmpty: boolean =
@@ -109,6 +100,26 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   //     );
   // };
 
+  /** 단계별 Component */
+  const RenderStep = (): React.JSX.Element => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <IdentificationInput />
+            <PasswordInput />
+          </>
+        );
+      case 0:
+      default:
+        return <TermsViewer />;
+    }
+  };
+
+  const clickConfirmBtn = (): void => {
+    setStep(prev => ++prev);
+  };
+
   /** 별명 Input */
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNickName(e.target.value);
@@ -150,19 +161,39 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     if (lastEmailIdx !== 0) setLastEmail(emailList[lastEmailIdx]);
   }, [lastEmailIdx]);
 
+  useEffect(() => {
+    switch (step) {
+      case 0:
+      default:
+        /** 필수 동의 약관들 */
+        const requiredTerms = terms.latestTerms.filter(term => term.isRequired);
+
+        /* 모든 필수 약관을 동의 했는 지 여부 */
+        const allRequiredAgreed = requiredTerms.every(requiredTerm =>
+          terms.agreedTerms.some(
+            agreedTerm => agreedTerm.type === requiredTerm.type
+          )
+        );
+
+        setIsConfirmActive(allRequiredAgreed);
+
+        break;
+    }
+  }, [terms.latestTerms, terms.agreedTerms, step, setIsConfirmActive]);
+
   return (
-    <div className={CSS.signUpBox} style={{ width: "60%" }}>
+    <div className={CSS.signUpBox} style={{ width: "100%" }}>
       <TitleHeader back={back} />
 
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          rowGap: 10,
+          rowGap: 20,
           marginBottom: 30,
         }}
       >
-        <AgreementStep />
+        <RenderStep />
       </div>
 
       {/* <ul className={CSS.content}>
@@ -255,7 +286,13 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       </ul> */}
 
       <div className={CSS.okBtnBox}>
-        <button type="button">확인</button>
+        <button
+          type="button"
+          onClick={clickConfirmBtn}
+          disabled={!isConfirmActive}
+        >
+          다음
+        </button>
       </div>
     </div>
   );

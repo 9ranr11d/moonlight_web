@@ -1,8 +1,7 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: 70px 1fr;
-  align-items: center;
-  column-gap: 20px;
+.wrapper > h6 {
+  text-align: left;
+  /* padding-left: 10px; */
+  margin-bottom: 3px;
 }
 
 .emailLine button {
@@ -51,16 +50,14 @@
 }
 
 @media (max-width: 768px) {
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-  }
-
   .identification {
     width: 100%;
     flex-direction: column;
     row-gap: 10px;
+  }
+
+  .identification > div {
+    margin-bottom: 10px;
   }
 
   .okBtnBox > button {

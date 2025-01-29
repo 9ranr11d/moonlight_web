@@ -8,7 +8,7 @@ import { ILatLng } from "@interfaces/index";
 
 import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
 
-/** 주소 인터페이스 */
+/** 주소 Interface */
 export interface IAddress {
   /** 주소 명 */
   address_name: string;
@@ -24,7 +24,7 @@ export interface IAddress {
   road_address: kakao.maps.services.RoadAaddress;
 }
 
-/** 초기값 인터페이스  */
+/** 초기값 Interface  */
 interface IMapState {
   /** 검색한 주소 목록 */
   searchedAddress: IAddress[];
@@ -70,7 +70,10 @@ export const Map = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSearchedPlaces: (state, action: PayloadAction<kakao.maps.services.PlacesSearchResult>) => {
+    setSearchedPlaces: (
+      state,
+      action: PayloadAction<kakao.maps.services.PlacesSearchResult>
+    ) => {
       state.searchedAddress = [];
       state.searchedPlaces = action.payload;
       state.selectedLocationIdx = -1;
@@ -80,7 +83,13 @@ export const Map = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setFavoriteLocations: (state, action: PayloadAction<{ locations: WritableDraft<IIFavoriteLocation>[]; resetSelection: boolean }>) => {
+    setFavoriteLocations: (
+      state,
+      action: PayloadAction<{
+        locations: WritableDraft<IIFavoriteLocation>[];
+        resetSelection: boolean;
+      }>
+    ) => {
       state.favoriteLocations = action.payload.locations;
 
       if (action.payload.resetSelection) state.selectedLocationIdx = -1;
@@ -121,7 +130,14 @@ export const Map = createSlice({
   },
 });
 
-export const { setSearchedAddress, setSearchedPlaces, setFavoriteLocations, setMapCenter, setLastCenter, resetSearchPlaces, setSelectedLocationIdx } =
-  Map.actions;
+export const {
+  setSearchedAddress,
+  setSearchedPlaces,
+  setFavoriteLocations,
+  setMapCenter,
+  setLastCenter,
+  resetSearchPlaces,
+  setSelectedLocationIdx,
+} = Map.actions;
 
 export default Map.reducer;

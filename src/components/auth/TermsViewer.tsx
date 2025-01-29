@@ -20,7 +20,9 @@ import ExpandCollapseBtn from "@components/common/ExpandCollapseBtn";
 
 /** 약관 체크 박스 인터페이스 */
 interface ITermInput {
+  /** 약관 */
   term: ITerm;
+  /** 동의 여부 */
   isAgreed: boolean;
 }
 
@@ -111,7 +113,7 @@ export default function TermsViewer() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  /** termsSlice */
+  /** 약관 정보 */
   const terms = useSelector((state: RootState) => state.termsReducer);
 
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false); // 전체 동의 여부
@@ -132,23 +134,12 @@ export default function TermsViewer() {
 
   // termsSlice의 동의된 약관 목록 변경 시
   useEffect(() => {
-    /** type 기준으로 정렬된 latestTerms */
-    const sortedLatestTerms = [...terms.latestTerms].sort((a, b) =>
-      a.type.localeCompare(b.type)
-    );
-    /** type 기준으로 정렬된 agreedTerms */
-    const sortedAgreedTerms = [...terms.agreedTerms].sort((a, b) =>
-      a.type.localeCompare(b.type)
+    /** 약관 전체동의 여부 */
+    const areAllTermsAgreed = terms.latestTerms.every(latestTerm =>
+      terms.agreedTerms.some(agreedTerm => agreedTerm.type === latestTerm.type)
     );
 
-    // 약관 목록이 없거나, 동의된 약관 목록이 없을 시
-    if (terms.latestTerms.length === 0 || terms.agreedTerms.length === 0)
-      return;
-
-    // 정렬된 배열을 비교
-    if (JSON.stringify(sortedLatestTerms) === JSON.stringify(sortedAgreedTerms))
-      setIsCheckedAll(true);
-    else setIsCheckedAll(false);
+    setIsCheckedAll(areAllTermsAgreed);
   }, [terms.agreedTerms]);
 
   return (

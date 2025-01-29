@@ -11,7 +11,7 @@ export default function PasswordInput() {
   const [password, setPassword] = useState<string>(""); // Password
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // Password 재확인
 
-  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // Password와 ConfirmPw가 일치하는 지
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false); // 비밀번호 유효성 검사 결과
 
   /** Password Input */
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,11 +23,24 @@ export default function PasswordInput() {
     setConfirmPassword(e.target.value);
   };
 
-  // Password랑 Password 확인 일치여부 확인
+  /** 비밀번호 유효성 검사 */
+  const validatePassword = (): boolean => {
+    // 특수문자, 소문자, 대문자 확인하는 정규식
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+
+    // 두 가지 이상 조합 여부 확인
+    const isValid =
+      [hasSpecialChar, hasLowercase, hasUppercase].filter(Boolean).length >= 2;
+
+    // 비밀번호와 확인 비밀번호 일치 여부 확인
+    return isValid && password === confirmPassword;
+  };
+
+  // 비밀번호와 비밀번호 재확인 값 변화 시
   useEffect(() => {
-    if (password.length > 0 && password === confirmPassword)
-      setIsPwMatching(true);
-    else setIsPwMatching(false);
+    setIsPasswordValid(validatePassword());
   }, [password, confirmPassword]);
 
   return (
@@ -44,7 +57,7 @@ export default function PasswordInput() {
       </div>
 
       <div className={CSS.wrapper}>
-        <h6>재확인</h6>
+        <h6>비밀번호 재확인</h6>
 
         <div style={{ position: "relative", width: "100%" }}>
           <input
@@ -54,7 +67,7 @@ export default function PasswordInput() {
             placeholder="비밀번호를 한번 더 입력해 주세요."
           />
 
-          {isPasswordMatching && (
+          {isPasswordValid && (
             <span
               style={{
                 position: "absolute",

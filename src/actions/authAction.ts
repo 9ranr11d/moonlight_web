@@ -1,5 +1,11 @@
 import { AppDispatch } from "@redux/store";
-import { signOut, socialSignIn } from "@redux/slices/authSlice";
+
+import {
+  resetAuth,
+  setIdentification,
+  signOut,
+  socialSignIn,
+} from "@redux/slices/authSlice";
 import {
   agreeToAllTerms,
   setLatestTerms,
@@ -12,6 +18,9 @@ import { IDuplicate, ITerm } from "@interfaces/auth";
 
 import { ERR_MSG } from "@constants/msg";
 
+export const resetAuthAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetAuth());
+};
 /**
  * 소셜 로그인 정보 저장
  * @param formData 소셜 로그인 정보
@@ -40,53 +49,12 @@ export const socialSignInAction =
     }
   };
 
-/**
- * local 로그아웃
- * @param confirmDesc 띄울 확인 메세지
- * @param dispatch dispatch
- * @returns 로그아웃 여부
- */
-export const signOutAction = (
-  confirmDesc: string,
-  dispatch: AppDispatch
-): boolean => {
-  /** 확인 메세지 */
-  const confirmSignOut: boolean = window.confirm(confirmDesc);
-
-  // 사용자가 취소 누를 시
-  if (!confirmSignOut) return false;
-
-  fetch("/api/auth/signOut", { method: "POST" })
-    .then(res => {
-      if (res.ok) return res.json();
-
-      alert(ERR_MSG);
-
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data => {
-      console.log(data.msg);
-
-      alert("로그아웃 됐습니다.");
-
-      dispatch(signOut());
-    })
-    .catch(err =>
-      console.error(
-        "/src/actions/authAction > signOutAction()에서 오류가 발생했습니다. :",
-        err
-      )
-    );
-
-  return true;
-};
-
 /** 최신 약관 가져오기 */
 export const getLatestTermsAction = () => async (dispatch: AppDispatch) => {
   fetch("/api/auth/getLatestTerms")
     .then(res => {
+      console.log("123");
       if (res.ok) return res.json();
-
       return res.json().then(data => Promise.reject(data.msg));
     })
     .then(data => dispatch(setLatestTerms(data.terms)))
@@ -95,7 +63,6 @@ export const getLatestTermsAction = () => async (dispatch: AppDispatch) => {
         "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
         err
       );
-
       dispatch(setTermsErr(err));
     });
 };
@@ -159,6 +126,13 @@ export const resetIdCheckAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetIdCheck());
 };
 
+/** identification 저장 */
+export const setIdentificationAction =
+  (identification: string) => async (dispatch: AppDispatch) => {
+    console.log("setIdentificationAction :", identification);
+    dispatch(setIdentification(identification));
+  };
+
 /**
  * identification 중복 여부 저장
  * @param isDuplicate 중복 여부
@@ -167,3 +141,44 @@ export const setIsDuplicateAction =
   (formData: IDuplicate) => async (dispatch: AppDispatch) => {
     dispatch(setIsDuplicate(formData));
   };
+
+/**
+ * local 로그아웃
+ * @param confirmDesc 띄울 확인 메세지
+ * @param dispatch dispatch
+ * @returns 로그아웃 여부
+ */
+export const signOutAction = (
+  confirmDesc: string,
+  dispatch: AppDispatch
+): boolean => {
+  /** 확인 메세지 */
+  const confirmSignOut: boolean = window.confirm(confirmDesc);
+
+  // 사용자가 취소 누를 시
+  if (!confirmSignOut) return false;
+
+  fetch("/api/auth/signOut", { method: "POST" })
+    .then(res => {
+      if (res.ok) return res.json();
+
+      alert(ERR_MSG);
+
+      return res.json().then(data => Promise.reject(data.msg));
+    })
+    .then(data => {
+      console.log(data.msg);
+
+      alert("로그아웃 됐습니다.");
+
+      dispatch(signOut());
+    })
+    .catch(err =>
+      console.error(
+        "/src/actions/authAction > signOutAction()에서 오류가 발생했습니다. :",
+        err
+      )
+    );
+
+  return true;
+};

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-/** Modal 배경화면 인터페이스 */
+/** Modal 배경화면 Interface */
 interface IBackdropState {
   isVisible: boolean;
 }

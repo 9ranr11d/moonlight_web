@@ -12,7 +12,7 @@ import CSS from "./page.module.css";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { socialSignInAction } from "@actions/authAction";
+import { resetAuthAction, socialSignInAction } from "@actions/authAction";
 
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/SignUp";
@@ -34,6 +34,7 @@ export default function Home() {
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
+    // dispatch(resetAuthAction());
     setIsSignUp(true);
   };
 

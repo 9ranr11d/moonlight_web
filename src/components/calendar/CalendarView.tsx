@@ -26,7 +26,7 @@ import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconClose from "@public/img/common/icon_close_primary.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 
-/** 일정 표시를 위한 시작 날짜, 종료 날짜를 변환한 일정 인터페이스 */
+/** 일정 표시를 위한 시작 날짜, 종료 날짜를 변환한 일정 Interface */
 export interface IConvertedSchedules extends IIISchedule {
   /** 시작 연도 */
   startYear: number;

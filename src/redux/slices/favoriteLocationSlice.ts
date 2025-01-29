@@ -2,10 +2,15 @@ import { WritableDraft } from "immer";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IFavoriteLocationHistory, IIFavoriteLocationHistory } from "@models/FavoriteLocationHistory";
+import {
+  IFavoriteLocationHistory,
+  IIFavoriteLocationHistory,
+} from "@models/FavoriteLocationHistory";
 
 /** 즐겨찾기 방문 일지 타입 */
-type TypeFavoriteLocationHistory = WritableDraft<IFavoriteLocationHistory | IIFavoriteLocationHistory>;
+type TypeFavoriteLocationHistory = WritableDraft<
+  IFavoriteLocationHistory | IIFavoriteLocationHistory
+>;
 
 /** 작업 상태 타입 */
 type OperationMode = "create" | "edit" | "none";
@@ -20,7 +25,7 @@ const initialActiveLocation: WritableDraft<IFavoriteLocationHistory> = {
   createdBy: "",
 };
 
-/** 초기값 인터페이스 */
+/** 초기값 Interface */
 interface IFavoriteLocationState {
   operationMode: OperationMode;
   activeLocation: TypeFavoriteLocationHistory;
@@ -50,13 +55,17 @@ export const FavoriteLocation = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setActiveLocation: (state, action: PayloadAction<TypeFavoriteLocationHistory>) => {
+    setActiveLocation: (
+      state,
+      action: PayloadAction<TypeFavoriteLocationHistory>
+    ) => {
       state.operationMode = "edit";
       state.activeLocation = action.payload;
     },
   },
 });
 
-export const { createActiveLocation, setActiveLocation } = FavoriteLocation.actions;
+export const { createActiveLocation, setActiveLocation } =
+  FavoriteLocation.actions;
 
 export default FavoriteLocation.reducer;

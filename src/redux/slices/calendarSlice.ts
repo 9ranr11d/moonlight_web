@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIISchedule } from "@models/Schedule";
 import { IIScheduleCategory } from "@models/ScheduleCategory";
 
-/** 초가값 인터페이스 */
+/** 초가값 Interface */
 interface IScheduleCategoriesState {
   /** 일정 */
   schedules: WritableDraft<IIISchedule>[];
@@ -29,7 +29,10 @@ export const Calendar = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setSchedules: (state, action: PayloadAction<WritableDraft<IIISchedule>[]>) => {
+    setSchedules: (
+      state,
+      action: PayloadAction<WritableDraft<IIISchedule>[]>
+    ) => {
       state.schedules = action.payload;
     },
     /**
@@ -37,7 +40,10 @@ export const Calendar = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setScheduleCategories: (state, action: PayloadAction<WritableDraft<IIScheduleCategory>[]>) => {
+    setScheduleCategories: (
+      state,
+      action: PayloadAction<WritableDraft<IIScheduleCategory>[]>
+    ) => {
       state.categories = action.payload;
     },
   },

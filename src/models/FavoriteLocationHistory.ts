@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-/** 1차 지도 즐겨찾기 방문 기록 인터페이스 */
+/** 1차 지도 즐겨찾기 방문 기록 Interface */
 export interface IFavoriteLocationHistory {
   /** 장소 정보 */
   location: Schema.Types.ObjectId | string;
@@ -19,22 +19,33 @@ export interface IFavoriteLocationHistory {
   /** 수정일 */
   updatedAt?: Date;
 }
-/** 2차 지도 즐겨찾기 방문 기록인터페이스 */
-export interface IIFavoriteLocationHistory extends IFavoriteLocationHistory, Document {}
+/** 2차 지도 즐겨찾기 방문 기록Interface */
+export interface IIFavoriteLocationHistory
+  extends IFavoriteLocationHistory,
+    Document {}
 
 /** 지도 즐겨찾기 방문 기록 모델 */
-const FavoriteLocationHistorySchema: mongoose.Schema<IIFavoriteLocationHistory> = new Schema<IIFavoriteLocationHistory>(
-  {
-    location: { type: Schema.Types.ObjectId, ref: "FavoriteLocation", required: true },
-    visitedAt: { type: Date, default: Date.now },
-    rating: { type: Number, min: 0, max: 5, required: true },
-    comment: { type: String, maxlength: 500 },
-    isPrivate: { type: Boolean, default: false },
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
+const FavoriteLocationHistorySchema: mongoose.Schema<IIFavoriteLocationHistory> =
+  new Schema<IIFavoriteLocationHistory>(
+    {
+      location: {
+        type: Schema.Types.ObjectId,
+        ref: "FavoriteLocation",
+        required: true,
+      },
+      visitedAt: { type: Date, default: Date.now },
+      rating: { type: Number, min: 0, max: 5, required: true },
+      comment: { type: String, maxlength: 500 },
+      isPrivate: { type: Boolean, default: false },
+      createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    },
+    {
+      timestamps: true,
+    }
+  );
 
-export default mongoose.models.FavoriteLocationHistory || mongoose.model<IIFavoriteLocationHistory>("FavoriteLocationHistory", FavoriteLocationHistorySchema);
+export default mongoose.models.FavoriteLocationHistory ||
+  mongoose.model<IIFavoriteLocationHistory>(
+    "FavoriteLocationHistory",
+    FavoriteLocationHistorySchema
+  );

@@ -5,7 +5,7 @@ import React from "react";
 import IconUncheckBox from "@public/svgs/common/icon_uncheck_box.svg";
 import IconCheckBox from "@public/svgs/common/icon_check_box.svg";
 
-/** 체크박스 인터페이스 */
+/** 체크박스 Interface */
 interface ICheckBox {
   /** 클릭 시 */
   onClick: () => void;

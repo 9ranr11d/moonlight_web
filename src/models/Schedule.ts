@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import { IIUser } from "./User";
 import { IIScheduleCategory } from "./ScheduleCategory";
 
-/** 1차 일정 인터페이스 */
+/** 1차 일정 Interface */
 export interface ISchedule {
   /** 사용자 정보 */
   user: Schema.Types.ObjectId | string | IIUser;
@@ -13,7 +13,7 @@ export interface ISchedule {
   content: string;
 }
 
-/** 2차 일정 인터페이스 */
+/** 2차 일정 Interface */
 export interface IISchedule extends ISchedule {
   /** 일정 날짜 ['시작 날짜', '종료 날짜'] */
   date: Date[];
@@ -25,7 +25,7 @@ export interface IISchedule extends ISchedule {
   isRepeating: boolean;
 }
 
-/** MongoDB용 일정 인터페이스 */
+/** MongoDB용 일정 Interface */
 export interface IIISchedule extends IISchedule, Document {}
 
 /** 일정 모델 */
@@ -40,4 +40,5 @@ const ScheduleSchema: mongoose.Schema<IIISchedule> = new Schema<IIISchedule>({
 });
 
 // 정의된 'Schedule'모델이 없으면 새로운 'Schedule'모델 생성
-export default mongoose.models.Schedule || mongoose.model<IIISchedule>("Schedule", ScheduleSchema);
+export default mongoose.models.Schedule ||
+  mongoose.model<IIISchedule>("Schedule", ScheduleSchema);

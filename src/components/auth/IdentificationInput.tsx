@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,7 +8,11 @@ import CSS from "./SignUp.module.css";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { checkDuplicateAction, resetIdCheckAction } from "@actions/authAction";
+import {
+  checkDuplicateAction,
+  resetIdCheckAction,
+  setIdentificationAction,
+} from "@actions/authAction";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
 
@@ -27,6 +31,7 @@ export default function IdentificationInput() {
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     dispatch(resetIdCheckAction());
+    dispatch(setIdentificationAction(""));
 
     setIdentification(e.target.value);
   };
@@ -38,6 +43,11 @@ export default function IdentificationInput() {
     dispatch(checkDuplicateAction(data));
   };
 
+  // 중복 검사 여부에 따라
+  useEffect(() => {
+    if (idCheck.isChecking) dispatch(setIdentificationAction(identification));
+  }, [idCheck.isChecking]);
+
   return (
     <div className={CSS.wrapper}>
       <h6>아이디</h6>
@@ -46,7 +56,7 @@ export default function IdentificationInput() {
         className={CSS.identification}
         style={{ display: "flex", columnGap: 10 }}
       >
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", flex: 1 }}>
           <input
             type="text"
             value={identification}

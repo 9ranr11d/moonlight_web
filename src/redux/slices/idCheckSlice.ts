@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { IDuplicate } from "@interfaces/auth";
 
-/** 초기값 인터페이스 */
+/** 초기값 Interface */
 interface IIdCheckState {
   isChecking: boolean;
   isDuplicate: boolean;

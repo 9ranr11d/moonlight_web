@@ -14,7 +14,7 @@ import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
 import MiniCalendarView from "@components/calendar/MiniCalendarView";
 import StarRating from "@components/common/StarRating";
 
-/** 속성 입력 필드 제목 인터페이스 */
+/** 속성 입력 필드 제목 Interface */
 interface ILabels {
   visitedAt: string;
   rating: string;

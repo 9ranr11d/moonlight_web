@@ -5,7 +5,7 @@ import React from "react";
 import IconExpand from "@public/svgs/common/icon_expand.svg";
 import IconCollapse from "@public/svgs/common/icon_collapse.svg";
 
-/** 더보기 버튼 인터페이스 */
+/** 더보기 버튼 Interface */
 interface IExpandCollapseBtn {
   /** 클릭 시 */
   onClick: () => void;

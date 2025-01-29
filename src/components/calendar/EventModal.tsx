@@ -80,7 +80,7 @@ interface IEventModalProps {
   users: IIUser[];
 }
 
-/** 일정 수정 Input 제목 인터페이스 */
+/** 일정 수정 Input 제목 Interface */
 interface IEditScheduleLabels extends ISchedule {
   /** 카테고리 Input 제목 */
   categories: string;

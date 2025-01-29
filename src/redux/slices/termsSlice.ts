@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { ITerm } from "@interfaces/auth";
 
-/** 초기값 인터페이스 */
+/** 초기값 Interface */
 interface ITermsState {
   latestTerms: ITerm[];
   agreedTerms: ITerm[];

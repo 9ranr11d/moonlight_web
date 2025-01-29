@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { IUser } from "@interfaces/auth/index";
 
-/** 초기값 인터페이스  */
+/** 초기값 Interface  */
 interface IAuthState extends IUser {
   /** Sign In 여부 */
   isAuth: boolean;
@@ -33,6 +33,15 @@ export const Auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    /** 초기화 */
+    resetAuth: state => {
+      Object.assign(state, initialState);
+    },
+    /** identification 저장 */
+    setIdentification: (state, action: PayloadAction<string>) => {
+      console.log("setIdentification :", action.payload);
+      state.identification = action.payload;
+    },
     /**
      * 로그인
      * @param state 기존 정보
@@ -72,7 +81,13 @@ export const Auth = createSlice({
   },
 });
 
-export const { signIn, socialSignIn, signOut, refreshAccessToken } =
-  Auth.actions;
+export const {
+  resetAuth,
+  setIdentification,
+  signIn,
+  socialSignIn,
+  signOut,
+  refreshAccessToken,
+} = Auth.actions;
 
 export default Auth.reducer;

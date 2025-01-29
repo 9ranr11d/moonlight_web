@@ -43,7 +43,7 @@ export interface IIUser extends IUser {
   refreshToken: string;
 }
 
-/** 약관 인터페이스 */
+/** 약관 Interface */
 export interface ITerm {
   type: string;
   version: number;
@@ -53,7 +53,7 @@ export interface ITerm {
   updatedAt: string;
 }
 
-/** identification 중복 검사 관련 정보 인터페이스 */
+/** identification 중복 검사 관련 정보 Interface */
 export interface IDuplicate {
   isDuplicate: boolean;
   msg: string;
