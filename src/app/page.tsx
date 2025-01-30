@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { resetAuthAction, socialSignInAction } from "@actions/authAction";
+import { resetSignUpAction, socialSignInAction } from "@actions/authAction";
 
 import CSS from "./page.module.css";
 
@@ -34,7 +34,7 @@ export default function Home() {
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
-    dispatch(resetAuthAction());
+    dispatch(resetSignUpAction());
     setIsSignUp(true);
   };
 

@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import { resetAuth, signOut, socialSignIn } from "@redux/slices/authSlice";
 import {
   agreeToAllTerms,
-  setLatestTerms,
+  setLatestTerm,
   setTermAgreement,
   setTermsErr,
   setIsDuplicate,
@@ -11,6 +11,9 @@ import {
   incrementStep,
   resetIdentification,
   decrementStep,
+  resetSignUp,
+  resetPassword,
+  resetTerm,
 } from "@redux/slices/signUpSlice";
 
 import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
@@ -20,6 +23,11 @@ import { ERR_MSG } from "@constants/msg";
 /** authSlice 초기화 */
 export const resetAuthAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetAuth());
+};
+
+/** signUpSlice 초기화 */
+export const resetSignUpAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetSignUp());
 };
 /**
  * 소셜 로그인 정보 저장
@@ -59,6 +67,11 @@ export const decrementStepAcion = () => async (dispatch: AppDispatch) => {
   dispatch(decrementStep());
 };
 
+/** 약관 정보 초기화 */
+export const resetTermAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetTerm());
+};
+
 /** 최신 약관 가져오기 */
 export const getLatestTermsAction =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -71,7 +84,7 @@ export const getLatestTermsAction =
         if (res.ok) return res.json();
         return res.json().then(data => Promise.reject(data.msg));
       })
-      .then(data => dispatch(setLatestTerms(data.terms)))
+      .then(data => dispatch(setLatestTerm(data.terms)))
       .catch(err => {
         console.error(
           "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
@@ -95,7 +108,7 @@ export const agreeToAllTermsAction = () => async (dispatch: AppDispatch) => {
   dispatch(agreeToAllTerms());
 };
 
-/** identification 중복 검사 관련 정보 초기화 */
+/** identification 정보 초기화 */
 export const resetIdentificationAction =
   () => async (dispatch: AppDispatch) => {
     dispatch(resetIdentification());
@@ -156,6 +169,11 @@ export const setIsDuplicateAction =
   (formData: IDuplicate) => async (dispatch: AppDispatch) => {
     dispatch(setIsDuplicate(formData));
   };
+
+/** password 정보 초기화 */
+export const resetPasswordAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetPassword());
+};
 
 /** password 유효성 관련 정보 저장 */
 export const setIsPasswordValidAction =

@@ -48,6 +48,10 @@
   color: white;
 }
 
+.okBtnBox {
+  margin-top: 20px;
+}
+
 @media (max-width: 768px) {
   .identification {
     width: 100%;

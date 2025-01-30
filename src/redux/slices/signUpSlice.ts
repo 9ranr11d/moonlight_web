@@ -65,12 +65,16 @@ export const SignUp = createSlice({
         state.step -= 1;
       }
     },
+    /** 약관 정보 초기화 */
+    resetTerm: state => {
+      Object.assign(state.term, initialState.term);
+    },
     /**
      * 약관 정보 저장
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setLatestTerms: (state, action: PayloadAction<ITerm[]>) => {
+    setLatestTerm: (state, action: PayloadAction<ITerm[]>) => {
       state.term.latestTerms = action.payload;
       state.term.agreedTerms = [];
       state.term.msg = null;
@@ -116,6 +120,10 @@ export const SignUp = createSlice({
       state.identification.isDuplicate = action.payload.isDuplicate;
       state.identification.msg = action.payload.msg;
     },
+    /** password 정보 초기화 */
+    resetPassword: state => {
+      Object.assign(state.password, initialState.password);
+    },
     /**
      * 비밀번호 유효성 관련 정보 저장
      * @param state 기존 정보
@@ -132,12 +140,14 @@ export const {
   resetSignUp,
   incrementStep,
   decrementStep,
-  setLatestTerms,
+  resetTerm,
+  setLatestTerm,
   setTermsErr,
   setTermAgreement,
   agreeToAllTerms,
   resetIdentification,
   setIsDuplicate,
+  resetPassword,
   setIsPasswordValid,
 } = SignUp.actions;
 

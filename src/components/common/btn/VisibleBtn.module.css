@@ -2,10 +2,6 @@
   border: none;
   background: none;
   padding: 0;
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
   display: flex;
   justify-content: center;
   align-items: center;

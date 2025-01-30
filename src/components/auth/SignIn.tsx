@@ -100,8 +100,8 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   };
 
   /** 비밀번호 표시 Toggle */
-  const togglePasswordVisibility = (isVisible: boolean): void => {
-    setIsPasswordVisible(isVisible);
+  const togglePasswordVisibility = (): void => {
+    setIsPasswordVisible(prev => !prev);
   };
 
   /**
@@ -144,7 +144,16 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               placeholder="Password"
             />
 
-            <VisibleBtn onVisible={togglePasswordVisibility} />
+            <VisibleBtn
+              onClick={togglePasswordVisibility}
+              isVisible={isPasswordVisible}
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: 10,
+                transform: "translateY(-50%)",
+              }}
+            />
           </li>
         </ul>
 

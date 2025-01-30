@@ -5,6 +5,22 @@ import { ILatLng } from "@interfaces/index";
 
 import { ERR_MSG } from "@constants/msg";
 
+/** 비밀번호 유효성 검사 함수 */
+export const validatePassword = (password: string): boolean => {
+  const isSpecialCharIncluded = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isLowercaseIncluded = /[a-z]/.test(password);
+  const isUppercaseIncluded = /[A-Z]/.test(password);
+  const isMinLengthValid = password.length >= 8;
+
+  // 최소 8자 + (대문자, 소문자, 특수문자 중 2가지 이상 포함)
+  return (
+    isMinLengthValid &&
+    [isSpecialCharIncluded, isLowercaseIncluded, isUppercaseIncluded].filter(
+      Boolean
+    ).length >= 2
+  );
+};
+
 /**
  * 시간 형식 설정
  * @param time 시간

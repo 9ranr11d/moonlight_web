@@ -10,6 +10,8 @@ import {
   agreeToAllTermsAction,
   getLatestTermsAction,
   incrementStepAction,
+  resetIdentificationAction,
+  resetPasswordAction,
 } from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
@@ -53,7 +55,7 @@ export default function TermsForm() {
     );
   };
 
-  /** 전체 동의 여부 toggle */
+  /** 전체 동의 여부 Toggle */
   const toggleAllChecked = () => {
     // 전체 동의 시
     if (!isCheckedAll) dispatch(agreeToAllTermsAction());
@@ -63,6 +65,9 @@ export default function TermsForm() {
 
   /** 다음 버튼 클릭 시 */
   const clickConfirmBtn = (): void => {
+    dispatch(resetIdentificationAction());
+    dispatch(resetPasswordAction());
+
     dispatch(incrementStepAction());
   };
 

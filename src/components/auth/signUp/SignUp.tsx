@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
 
+import { decrementStepAcion, resetTermAction } from "@actions/authAction";
+
 import CSS from "./SignUp.module.css";
 
 import TitleHeader from "@components/common/TitleHeader";
 import TermsForm from "@components/auth/signUp/TermsForm";
 import AccountForm from "@components/auth/signUp/AccountForm";
-import { decrementStepAcion } from "@actions/authAction";
 
 /** SignUp 자식 */
 interface ISignUpProps {
@@ -40,18 +41,23 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     }
   };
 
-  const clickBack = () => {
+  /** 뒤로 가기 클릭 시 */
+  const clickBack = (): void => {
+    // 회원가입 첫 단계 시
+    if (step === 0) {
+      back();
+      return;
+    }
+
+    // 그 왜
     switch (step) {
       case 1:
-        dispatch(decrementStepAcion());
-
-        break;
-      case 0:
-      default:
-        back();
+        dispatch(resetTermAction());
 
         break;
     }
+
+    dispatch(decrementStepAcion());
   };
 
   return (
@@ -63,7 +69,6 @@ export default function SignUp({ completed, back }: ISignUpProps) {
           display: "flex",
           flexDirection: "column",
           rowGap: 15,
-          marginBottom: 30,
         }}
       >
         <Step />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import CSS from "./VisibleBtn.module.css";
 
@@ -9,13 +9,16 @@ import IconEyeOpen from "@public/svgs/common/icon_eye_open.svg";
 
 /** 가시 여부 버튼 Interface */
 interface IVisibleBtn {
-  /** 현재 가시 여부 */
-  onVisible?: (isVisible: boolean) => void;
+  /** 클릭 시 */
+  onClick: () => void;
+
+  /** 가시 여부 */
+  isVisible: boolean;
+  style?: React.CSSProperties;
 }
 
 /** 가시 여부 버튼 */
-export default function VisibleBtn({ onVisible }: IVisibleBtn) {
-  const [isVisible, setIsVisible] = useState<boolean>(false); // 가시 여부
+export default function VisibleBtn({ onClick, isVisible, style }: IVisibleBtn) {
   const [isVisibleHover, setIsVisibleHover] = useState<boolean>(false); // 가시 여부 버튼 Hover 여부
 
   /**
@@ -26,22 +29,14 @@ export default function VisibleBtn({ onVisible }: IVisibleBtn) {
     setIsVisibleHover(isHover);
   };
 
-  /** 가시 여부 Toggle */
-  const toggleVisibility = (): void => {
-    setIsVisible(prev => !prev);
-  };
-
-  useEffect(() => {
-    if (onVisible) onVisible(isVisible);
-  }, [isVisible]);
-
   return (
     <button
       type="button"
       className={CSS.visibleBtn}
-      onClick={toggleVisibility}
-      onMouseOver={() => hoverVisibility(true)}
-      onMouseOut={() => hoverVisibility(false)}
+      style={style && style}
+      onClick={onClick}
+      onMouseOver={e => hoverVisibility(true)}
+      onMouseOut={e => hoverVisibility(false)}
     >
       {isVisible ? (
         isVisibleHover ? (

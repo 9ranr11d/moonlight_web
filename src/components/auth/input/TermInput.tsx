@@ -29,7 +29,7 @@ export default function TermInput({ term, isAgreed }: ITermInput) {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 동의 여부
   const [isContentVisible, setIsContentVisible] = useState<boolean>(false); // 약관 내용 가시 여부
 
-  /** 동의 여부 toggle */
+  /** 동의 여부 Toggle */
   const toggleCheck = () => {
     // 동의 여부를 termsSlice에 저장
     dispatch(setTermAgreementAction(term));
@@ -37,7 +37,7 @@ export default function TermInput({ term, isAgreed }: ITermInput) {
     setIsChecked(prev => !prev);
   };
 
-  /** 약관 내용 가시 여부 toggle */
+  /** 약관 내용 가시 여부 Toggle */
   const toggleContentVisible = (): void => {
     setIsContentVisible(prev => !prev);
   };
