@@ -57,11 +57,11 @@ export default function KakaoMap() {
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const map = useSelector((state: RootState) => state.mapReducer);
+  const map = useSelector((state: RootState) => state.mapSlice);
   /** 사용자 Reducer */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
   /** Background Reducer */
-  const backdrop = useSelector((state: RootState) => state.backdropReducer);
+  const backdrop = useSelector((state: RootState) => state.backdropSlice);
 
   /** 검색 결과 Marker들 */
   const searchedMarkers: (

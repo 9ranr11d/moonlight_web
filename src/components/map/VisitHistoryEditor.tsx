@@ -43,7 +43,7 @@ export default function VisitHistoryEditor() {
 
   /** 즐겨찾기 정보 Reducer */
   const favoriteLocation = useSelector(
-    (state: RootState) => state.favoriteLocationReducer
+    (state: RootState) => state.favoriteLocationSlice
   );
 
   const [isStartCalendarOpen, setIsStartCalendarOpen] =

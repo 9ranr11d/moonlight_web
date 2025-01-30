@@ -26,7 +26,7 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
   const dispatch = useDispatch();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   /** '로그아웃' 클릭 시 */
   const clickSignOut = () => {

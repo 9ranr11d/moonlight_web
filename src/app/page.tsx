@@ -8,14 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useSession } from "next-auth/react";
 
-import CSS from "./page.module.css";
-
 import { AppDispatch, RootState } from "@redux/store";
 
 import { resetAuthAction, socialSignInAction } from "@actions/authAction";
 
+import CSS from "./page.module.css";
+
 import SignIn from "@components/auth/SignIn";
-import SignUp from "@components/auth/SignUp";
+import SignUp from "@components/auth/signUp/SignUp";
 import Recovery from "@components/auth/Recovery";
 
 /** 시작 페이지 */
@@ -25,7 +25,7 @@ export default function Home() {
 
   const dispatch = useDispatch<AppDispatch>();
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   const { data: session } = useSession(); // nextauth의 로그인 정보
 
@@ -34,7 +34,7 @@ export default function Home() {
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
-    // dispatch(resetAuthAction());
+    dispatch(resetAuthAction());
     setIsSignUp(true);
   };
 

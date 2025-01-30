@@ -50,7 +50,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   const dispatch = useDispatch();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   const [userData, setUserData] = useState<IUser>(user || {}); // 현재 사용자 정보
 

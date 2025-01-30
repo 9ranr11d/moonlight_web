@@ -20,6 +20,7 @@ import IconEyeOpen from "@public/svgs/common/icon_eye_open.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
+import VisibleBtn from "@components/common/btn/VisibleBtn";
 
 /** SignIn 자식 */
 interface ISignInProps {
@@ -99,8 +100,8 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   };
 
   /** 비밀번호 표시 Toggle */
-  const togglePasswordVisibility = (): void => {
-    setIsPasswordVisible(prev => !prev);
+  const togglePasswordVisibility = (isVisible: boolean): void => {
+    setIsPasswordVisible(isVisible);
   };
 
   /**
@@ -143,33 +144,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               placeholder="Password"
             />
 
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className={CSS.passwordVisibleBtn}
-              onMouseOver={() => hoverPasswordVisibility(true)}
-              onMouseOut={() => hoverPasswordVisibility(false)}
-            >
-              {isPasswordVisible ? (
-                isPasswordVisibleHover ? (
-                  <IconEyeClose
-                    width={15}
-                    height={15}
-                    fill={"var(--gray-500)"}
-                  />
-                ) : (
-                  <IconEyeOpen
-                    width={15}
-                    height={15}
-                    fill={"var(--gray-500)"}
-                  />
-                )
-              ) : isPasswordVisibleHover ? (
-                <IconEyeOpen width={15} height={15} fill={"var(--gray-500)"} />
-              ) : (
-                <IconEyeClose width={15} height={15} fill={"var(--gray-500)"} />
-              )}
-            </button>
+            <VisibleBtn onVisible={togglePasswordVisibility} />
           </li>
         </ul>
 

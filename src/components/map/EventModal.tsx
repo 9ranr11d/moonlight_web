@@ -25,11 +25,16 @@ interface IEventModalProps {
 }
 
 /** 즐겨찾기 방문 일지 모달 */
-export default function EventModal({ closeModal, locationData }: IEventModalProps) {
+export default function EventModal({
+  closeModal,
+  locationData,
+}: IEventModalProps) {
   console.log("선택한 즐겨찾기 장소 정보 :", locationData);
 
   /** 즐겨찾기 Reducer */
-  const favoriteLocation = useSelector((state: RootState) => state.favoriteLocationReducer);
+  const favoriteLocation = useSelector(
+    (state: RootState) => state.favoriteLocationSlice
+  );
 
   const [histories, setHistories] = useState<IIFavoriteLocationHistory[]>([]); // 방문 일지들
 
@@ -47,7 +52,12 @@ export default function EventModal({ closeModal, locationData }: IEventModalProp
         return res.json().then(data => Promise.reject(data.msg));
       })
       .then(data => setHistories(data))
-      .catch(err => console.error("/src/components/map/EventModal > getLocationDetails() :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/map/EventModal > getLocationDetails() :",
+          err
+        )
+      );
   };
 
   const renderContent = (): React.JSX.Element => {
@@ -70,7 +80,9 @@ export default function EventModal({ closeModal, locationData }: IEventModalProp
     <Modal close={closeModal} style={{ padding: 10 }}>
       <h5 style={{ marginBottom: 10 }}>
         {locationData.placeName || locationData.addressName}&nbsp;
-        <span style={{ color: "var(--gray-600)", fontSize: 16 }}>방문 일지</span>
+        <span style={{ color: "var(--gray-600)", fontSize: 16 }}>
+          방문 일지
+        </span>
       </h5>
 
       {renderContent()}

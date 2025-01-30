@@ -17,9 +17,11 @@ interface IEmailUpdateFormProps {
 }
 
 /** E-mail 수정 Form */
-export default function EmailUpdateForm({ verifyEmailSuccess }: IEmailUpdateFormProps) {
+export default function EmailUpdateForm({
+  verifyEmailSuccess,
+}: IEmailUpdateFormProps) {
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   const [step, setStep] = useState<number>(0); // 단계
 

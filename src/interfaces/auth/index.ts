@@ -1,4 +1,4 @@
-/** 공개 사용자 정보 */
+/** 공개 사용자 정보 Interface */
 export interface IUser {
   /** Identification */
   identification: string;
@@ -35,7 +35,7 @@ export interface IUser {
   coupleCode?: string;
 }
 
-/** 비공개 사용자 정보 */
+/** 비공개 사용자 정보 Interface */
 export interface IIUser extends IUser {
   /** Password */
   password: string;
@@ -55,6 +55,13 @@ export interface ITerm {
 
 /** identification 중복 검사 관련 정보 Interface */
 export interface IDuplicate {
+  identification: string;
   isDuplicate: boolean;
-  msg: string;
+  msg: string | null;
+}
+
+/** password 관련 정보 Interface */
+export interface IPasswordState {
+  password: string;
+  isValid: boolean;
 }

@@ -47,11 +47,11 @@ export default function CalendarView() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 일정 */
-  const calendar = useSelector((state: RootState) => state.calendarReducer);
+  const calendar = useSelector((state: RootState) => state.calendarSlice);
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
   /** Backdrop */
-  const backdrop = useSelector((state: RootState) => state.backdropReducer);
+  const backdrop = useSelector((state: RootState) => state.backdropSlice);
 
   /** 오늘 날짜 */
   const today: Date = new Date();

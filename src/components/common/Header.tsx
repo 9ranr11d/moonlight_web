@@ -37,9 +37,9 @@ export default function Header() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
   /** Backdrop */
-  const backdrop = useSelector((state: RootState) => state.backdropReducer);
+  const backdrop = useSelector((state: RootState) => state.backdropSlice);
 
   const [isHidden, setIsHidden] = useState<boolean>(false); // 로그인 전 로고 불가시 여부
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부

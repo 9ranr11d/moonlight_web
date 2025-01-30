@@ -132,9 +132,9 @@ export default function EventModal({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 현재 사용자 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
   /** 일정 */
-  const calendar = useSelector((state: RootState) => state.calendarReducer);
+  const calendar = useSelector((state: RootState) => state.calendarSlice);
 
   /** 새 카테고리 기본 값 */
   const newCategoryInitialState: IScheduleCategory = {

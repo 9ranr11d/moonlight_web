@@ -17,10 +17,10 @@ export default function ThisWeek() {
   const dispatch = useDispatch();
 
   /** 캘린더 정보들 */
-  const calendar = useSelector((state: RootState) => state.calendarReducer);
+  const calendar = useSelector((state: RootState) => state.calendarSlice);
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   /** 오늘 날짜 */
   const today: Date = new Date();

@@ -59,7 +59,7 @@ export default function SearchInput({
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const map = useSelector((state: RootState) => state.mapReducer);
+  const map = useSelector((state: RootState) => state.mapSlice);
 
   /** 검색 결과들의 Box Ref */
   const resultsRef = useRef<HTMLDivElement>(null);

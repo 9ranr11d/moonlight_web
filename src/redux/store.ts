@@ -1,30 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import authReducer from "./slices/authSlice";
-import termsReducer from "./slices/termsSlice";
-import idCheckReducer from "./slices/idCheckSlice";
-import calendarReducer from "./slices/calendarSlice";
-import backdropReducer from "./slices/backdropSlice";
-import mapReducer from "./slices/mapSlice";
-import favoriteLocationReducer from "./slices/favoriteLocationSlice";
+import authSlice from "./slices/authSlice";
+import signUpSlice from "./slices/signUpSlice";
+import calendarSlice from "./slices/calendarSlice";
+import backdropSlice from "./slices/backdropSlice";
+import mapSlice from "./slices/mapSlice";
+import favoriteLocationSlice from "./slices/favoriteLocationSlice";
 
 /** Redux Store */
 export const store = configureStore({
   reducer: {
     /** 인증 정보 */
-    authReducer,
-    /** 약관 정보 */
-    termsReducer,
-    /** identification 중복 검사 정보 */
-    idCheckReducer,
+    authSlice,
+    /** 회원가입 정보 */
+    signUpSlice,
     /** 캘린더 정보 */
-    calendarReducer,
+    calendarSlice,
     /** Modal 배경화면 정보 */
-    backdropReducer,
+    backdropSlice,
     /** 지도 정보 */
-    mapReducer,
+    mapSlice,
     /** 즐겨찾기 정보 */
-    favoriteLocationReducer,
+    favoriteLocationSlice,
   },
 });
 

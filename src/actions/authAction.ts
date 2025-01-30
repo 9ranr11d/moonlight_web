@@ -1,23 +1,23 @@
 import { AppDispatch, RootState } from "@redux/store";
 
-import {
-  resetAuth,
-  setIdentification,
-  signOut,
-  socialSignIn,
-} from "@redux/slices/authSlice";
+import { resetAuth, signOut, socialSignIn } from "@redux/slices/authSlice";
 import {
   agreeToAllTerms,
   setLatestTerms,
   setTermAgreement,
   setTermsErr,
-} from "@redux/slices/termsSlice";
-import { resetIdCheck, setIsDuplicate } from "@redux/slices/idCheckSlice";
+  setIsDuplicate,
+  setIsPasswordValid,
+  incrementStep,
+  resetIdentification,
+  decrementStep,
+} from "@redux/slices/signUpSlice";
 
-import { IDuplicate, ITerm } from "@interfaces/auth";
+import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
 
 import { ERR_MSG } from "@constants/msg";
 
+/** authSlice 초기화 */
 export const resetAuthAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetAuth());
 };
@@ -49,10 +49,20 @@ export const socialSignInAction =
     }
   };
 
+/** step 증가 */
+export const incrementStepAction = () => async (dispatch: AppDispatch) => {
+  dispatch(incrementStep());
+};
+
+/** step 감소 */
+export const decrementStepAcion = () => async (dispatch: AppDispatch) => {
+  dispatch(decrementStep());
+};
+
 /** 최신 약관 가져오기 */
 export const getLatestTermsAction =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { isLoaded } = getState().termsReducer;
+    const { isLoaded } = getState().signUpSlice.term;
 
     if (!isLoaded) return;
 
@@ -85,6 +95,12 @@ export const agreeToAllTermsAction = () => async (dispatch: AppDispatch) => {
   dispatch(agreeToAllTerms());
 };
 
+/** identification 중복 검사 관련 정보 초기화 */
+export const resetIdentificationAction =
+  () => async (dispatch: AppDispatch) => {
+    dispatch(resetIdentification());
+  };
+
 /**
  * identification 중복 검사
  * @param formData identification
@@ -102,6 +118,7 @@ export const checkDuplicateAction =
 
           dispatch(
             setIsDuplicateAction({
+              identification: is409 ? "" : formData.identification,
               isDuplicate: is409,
               msg: is409
                 ? "이미 사용 중인 아이디입니다."
@@ -121,20 +138,14 @@ export const checkDuplicateAction =
           err
         );
 
-        dispatch(setIsDuplicateAction({ isDuplicate: true, msg: err }));
+        dispatch(
+          setIsDuplicateAction({
+            identification: "",
+            isDuplicate: true,
+            msg: err,
+          })
+        );
       });
-  };
-
-/** identification 중복 검사 관련 정보 초기화 */
-export const resetIdCheckAction = () => async (dispatch: AppDispatch) => {
-  dispatch(resetIdCheck());
-};
-
-/** identification 저장 */
-export const setIdentificationAction =
-  (identification: string) => async (dispatch: AppDispatch) => {
-    console.log("setIdentificationAction :", identification);
-    dispatch(setIdentification(identification));
   };
 
 /**
@@ -144,6 +155,12 @@ export const setIdentificationAction =
 export const setIsDuplicateAction =
   (formData: IDuplicate) => async (dispatch: AppDispatch) => {
     dispatch(setIsDuplicate(formData));
+  };
+
+/** password 유효성 관련 정보 저장 */
+export const setIsPasswordValidAction =
+  (formData: IPasswordState) => async (dispatch: AppDispatch) => {
+    dispatch(setIsPasswordValid(formData));
   };
 
 /**

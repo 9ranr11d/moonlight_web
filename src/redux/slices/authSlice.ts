@@ -37,11 +37,6 @@ export const Auth = createSlice({
     resetAuth: state => {
       Object.assign(state, initialState);
     },
-    /** identification 저장 */
-    setIdentification: (state, action: PayloadAction<string>) => {
-      console.log("setIdentification :", action.payload);
-      state.identification = action.payload;
-    },
     /**
      * 로그인
      * @param state 기존 정보
@@ -81,13 +76,7 @@ export const Auth = createSlice({
   },
 });
 
-export const {
-  resetAuth,
-  setIdentification,
-  signIn,
-  socialSignIn,
-  signOut,
-  refreshAccessToken,
-} = Auth.actions;
+export const { resetAuth, signIn, socialSignIn, signOut, refreshAccessToken } =
+  Auth.actions;
 
 export default Auth.reducer;

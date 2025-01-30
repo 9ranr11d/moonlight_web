@@ -17,7 +17,7 @@ export default function CoupleCodeManager() {
   const dispatch = useDispatch();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
   const [isCodeInputVisible, setIsCodeInputVisible] = useState<boolean>(false); // 커플 코드 텍스트 입력 필드 가시 여부
 
@@ -25,7 +25,10 @@ export default function CoupleCodeManager() {
 
   /** 커플 코드 유효성 검사 */
   const registerCoupleCode = (): void => {
-    const data: { id: string; coupleCode: string } = { id: user._id, coupleCode };
+    const data: { id: string; coupleCode: string } = {
+      id: user._id,
+      coupleCode,
+    };
 
     fetch("/api/auth/registerCoupleCode", {
       method: "POST",
@@ -48,14 +51,21 @@ export default function CoupleCodeManager() {
 
         toggleShowCodeInput();
       })
-      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 커플 코드 발급 */
   const issueCoupleCode = (): void => {
     // 발급 전 경고 문구
     if (user.coupleCode) {
-      const confirmIssueCoupleCode: boolean = window.confirm("재발급 하시면 기존 '커플 코드'는 사라집니다. 그래도 진행하시겠습니까?");
+      const confirmIssueCoupleCode: boolean = window.confirm(
+        "재발급 하시면 기존 '커플 코드'는 사라집니다. 그래도 진행하시겠습니까?"
+      );
 
       if (!confirmIssueCoupleCode) {
         alert("취소되었습니다.");
@@ -63,7 +73,10 @@ export default function CoupleCodeManager() {
       }
     }
 
-    const data: { _id: string; id: string } = { _id: user._id, id: user.identification };
+    const data: { _id: string; id: string } = {
+      _id: user._id,
+      id: user.identification,
+    };
 
     fetch("/api/auth/issueCoupleCode", {
       method: "POST",
@@ -84,19 +97,29 @@ export default function CoupleCodeManager() {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 커플 코드 삭제 */
   const deleteCoupleCode = (): void => {
-    const confirmDeleteCoupleCode: boolean = window.confirm("'커플 코드'를 삭제하시면 복구가 불가능합니다. 그래도 삭제 하시겠습니까?");
+    const confirmDeleteCoupleCode: boolean = window.confirm(
+      "'커플 코드'를 삭제하시면 복구가 불가능합니다. 그래도 삭제 하시겠습니까?"
+    );
 
     if (!confirmDeleteCoupleCode) {
       alert("취소되었습니다.");
       return;
     }
 
-    fetch(`/api/auth/issueCoupleCode?id=${user._id}&coupleCode=${user.coupleCode}`, { method: "DELETE" })
+    fetch(
+      `/api/auth/issueCoupleCode?id=${user._id}&coupleCode=${user.coupleCode}`,
+      { method: "DELETE" }
+    )
       .then(res => {
         if (res.ok) return res.json();
 
@@ -107,7 +130,12 @@ export default function CoupleCodeManager() {
 
         getUser(user.accessToken, dispatch);
       })
-      .catch(err => console.error("/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** 커플 코드 입력 */
@@ -116,7 +144,9 @@ export default function CoupleCodeManager() {
   };
 
   /** 커플 코드 텍스트 입력 필드에서 키 누를 시 호출 */
-  const handleCoupleCodeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleCoupleCodeKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") registerCoupleCode();
   };
 
@@ -142,13 +172,18 @@ export default function CoupleCodeManager() {
             <h5>발급된 커플 코드가 있습니다.</h5>
 
             <p>
-              &#8251; 발급 된 <span>&apos;커플 코드&apos;</span>를 연인에게 공유하세요.
+              &#8251; 발급 된 <span>&apos;커플 코드&apos;</span>를 연인에게
+              공유하세요.
             </p>
 
             <div style={{ marginTop: 20 }}>
               <h6>커플 코드 :</h6>
 
-              <button type="button" className={CSS.code} onClick={clickCoupleCode}>
+              <button
+                type="button"
+                className={CSS.code}
+                onClick={clickCoupleCode}
+              >
                 <h3>{user.coupleCode}</h3>
               </button>
             </div>
@@ -169,10 +204,13 @@ export default function CoupleCodeManager() {
             ) : (
               <>
                 <p>
-                  &#8251; 공유 받은 <span>&apos;커플 코드&apos;</span>가 없을 시 아래 <span>&apos;커플 코드 발급&apos;</span> 버튼으로 커플 코드를 발급해주세요.
+                  &#8251; 공유 받은 <span>&apos;커플 코드&apos;</span>가 없을 시
+                  아래 <span>&apos;커플 코드 발급&apos;</span> 버튼으로 커플
+                  코드를 발급해주세요.
                 </p>
                 <p>
-                  &nbsp;&nbsp;&nbsp;(동일한 <span>&apos;커플 코드&apos;</span>를 등록한 사용자끼리 정보를 공유할 수 있습니다.)
+                  &nbsp;&nbsp;&nbsp;(동일한 <span>&apos;커플 코드&apos;</span>를
+                  등록한 사용자끼리 정보를 공유할 수 있습니다.)
                 </p>
               </>
             )}

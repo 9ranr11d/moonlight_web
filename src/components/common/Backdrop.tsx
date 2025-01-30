@@ -14,7 +14,7 @@ export default function Backdrop() {
   const dispatch = useDispatch();
 
   /** 배경 화면 Reducer */
-  const backdrop = useSelector((state: RootState) => state.backdropReducer);
+  const backdrop = useSelector((state: RootState) => state.backdropSlice);
 
   /** 배경 화면 클릭 시 */
   const closeBackdrop = (): void => {
