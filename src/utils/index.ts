@@ -5,11 +5,19 @@ import { ILatLng } from "@interfaces/index";
 
 import { ERR_MSG } from "@constants/msg";
 
-/** 비밀번호 유효성 검사 함수 */
+/**
+ * 비밀번호 유효성 검사 함수
+ * @param password 검사할 비밀번호
+ * @returns 충족 여부
+ */
 export const validatePassword = (password: string): boolean => {
+  /** 특수 문자 포함 여부 */
   const isSpecialCharIncluded = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  /** 소문자 포함 여부 */
   const isLowercaseIncluded = /[a-z]/.test(password);
+  /** 대문자 포함 여부 */
   const isUppercaseIncluded = /[A-Z]/.test(password);
+  /** 최소 길이 충족 여부 */
   const isMinLengthValid = password.length >= 8;
 
   // 최소 8자 + (대문자, 소문자, 특수문자 중 2가지 이상 포함)
@@ -22,11 +30,23 @@ export const validatePassword = (password: string): boolean => {
 };
 
 /**
+ * E-mail 유효성 검사 함수
+ * @param email E-mail
+ * @returns 유효성 여부
+ */
+export const validateEmail = (email: string): boolean => {
+  /** E-mail 유효성 정규식 */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return emailRegex.test(email);
+};
+
+/**
  * 시간 형식 설정
  * @param time 시간
  * @returns mm:ss
  */
-export const convertToMinutes = (time: number): string => {
+export const formatTime = (time: number): string => {
   /** 분 */
   const minute = Math.floor(time / 60);
   /** 초 */
@@ -48,7 +68,7 @@ export const convertToMinutes = (time: number): string => {
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDateI = (
+export const formatDateI = (
   year: number,
   month: number,
   day: number,
@@ -68,7 +88,7 @@ export const convertDateI = (
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDateII = (date: Date, splitter: string): string => {
+export const formatDateII = (date: Date, splitter: string): string => {
   /** 연도 */
   const year = date.getFullYear();
   /** 달 */
@@ -76,7 +96,7 @@ export const convertDateII = (date: Date, splitter: string): string => {
   /** 일 */
   const day = date.getDate();
 
-  return convertDateI(year, month, day, splitter);
+  return formatDateI(year, month, day, splitter);
 };
 
 /**

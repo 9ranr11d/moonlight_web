@@ -7,7 +7,7 @@ import Lottie from "react-lottie-player";
 import CSS from "./Recovery.module.css";
 
 import { ERR_MSG } from "@constants/msg";
-import { convertToMinutes } from "@utils/index";
+import { formatTime } from "@utils/index";
 
 import LottieLoading from "@public/json/loading_round_white.json";
 
@@ -27,7 +27,13 @@ interface IEmailVerificationProps {
 }
 
 /** E-mail 인증 */
-export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnabled, inputEmail, verified }: IEmailVerificationProps) {
+export default function EmailVerification({
+  title,
+  isAutoFocus,
+  isEmailCheckEnabled,
+  inputEmail,
+  verified,
+}: IEmailVerificationProps) {
   /** 인증 코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
@@ -58,7 +64,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-        .then((res) => {
+        .then(res => {
           if (res.ok) return res.json();
 
           if (res.status === 404) {
@@ -67,14 +73,19 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
             setIsVerifyingEmail(false);
           }
 
-          return res.json().then((data) => Promise.reject(data.msg));
+          return res.json().then(data => Promise.reject(data.msg));
         })
-        .then((data) => {
+        .then(data => {
           console.log(data.msg);
 
           sendEmail();
         })
-        .catch((err) => console.error("/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :", err));
+        .catch(err =>
+          console.error(
+            "/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :",
+            err
+          )
+        );
     } else sendEmail();
   };
 
@@ -87,20 +98,25 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) return res.json();
 
         alert(ERR_MSG);
 
-        return res.json().then((data) => Promise.reject(data.msg));
+        return res.json().then(data => Promise.reject(data.msg));
       })
-      .then((data) => {
+      .then(data => {
         setVerificationCode(data.verificationCode);
         setIsVerifyingEmail(false);
         setIsEmailSent(true);
         setDeadline(maxDeadline);
       })
-      .catch((err) => console.error("/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   /** E-mail Input */
@@ -112,17 +128,23 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
   };
 
   /** Email에서 'Enter'를 누를 시 */
-  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleEmailKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") verifyMatch();
   };
 
   /** 인증 코드 Input */
-  const handleVerificationInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleVerificationInput = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setVerificationInput(e.target.value);
   };
 
   /** 인증 코드 Input에서 'Enter'를 누를 시 */
-  const handleVerificationInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleVerificationInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") checkVerificationCode();
   };
 
@@ -146,7 +168,9 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
   useEffect(() => {
     let timerId: any;
 
-    deadline > 0 ? (timerId = setTimeout(() => setDeadline((prev) => prev - 1), 1000)) : clearTimeout(timerId);
+    deadline > 0
+      ? (timerId = setTimeout(() => setDeadline(prev => prev - 1), 1000))
+      : clearTimeout(timerId);
 
     return () => {
       clearTimeout(timerId);
@@ -155,7 +179,8 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
 
   // 인증 E-mail 전송 시 인증 코드 텍스트 입력 필드로 포커스
   useEffect(() => {
-    if (isEmailSent && verificationCodeInputRef.current) verificationCodeInputRef.current.focus();
+    if (isEmailSent && verificationCodeInputRef.current)
+      verificationCodeInputRef.current.focus();
   }, [isEmailSent]);
 
   useEffect(() => {
@@ -170,7 +195,7 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
         <li>
           <ul>
             <li>
-              <h6>이메일</h6>
+              <h6>E-mail</h6>
             </li>
 
             <li>
@@ -186,7 +211,11 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
             </li>
 
             <li style={{ display: "flex", justifyContent: "center" }}>
-              <button type="button" onClick={verifyMatch} style={{ position: "relative" }}>
+              <button
+                type="button"
+                onClick={verifyMatch}
+                style={{ position: "relative" }}
+              >
                 {isVerifyingEmail ? (
                   <>
                     {/* <Lottie
@@ -220,11 +249,15 @@ export default function EmailVerification({ title, isAutoFocus, isEmailCheckEnab
                   placeholder="Verification Code"
                 />
 
-                <span>{convertToMinutes(deadline)}</span>
+                <span>{formatTime(deadline)}</span>
               </li>
 
               <li>
-                <button type="button" onClick={checkVerificationCode} disabled={deadline === 0}>
+                <button
+                  type="button"
+                  onClick={checkVerificationCode}
+                  disabled={deadline === 0}
+                >
                   확인
                 </button>
               </li>

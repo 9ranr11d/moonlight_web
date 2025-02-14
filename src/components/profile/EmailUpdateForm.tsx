@@ -25,7 +25,7 @@ export default function EmailUpdateForm({
 
   const [step, setStep] = useState<number>(0); // 단계
 
-  /** 이메일 인증 완료 */
+  /** E-mail 인증 완료 */
   const proceedWithVerifiedEmail = (): void => {
     setStep(1);
   };
@@ -37,7 +37,7 @@ export default function EmailUpdateForm({
         return (
           <EmailVerification
             key="step1"
-            title="새로운 이메일을 입력해주세요."
+            title="새로운 E-mail을 입력해주세요."
             verified={email => verifyEmailSuccess(email)}
             isAutoFocus={true}
             isEmailCheckEnabled={false}
@@ -48,7 +48,7 @@ export default function EmailUpdateForm({
         return (
           <EmailVerification
             key="step0"
-            title="이메일로 본인 인증"
+            title="E-mail로 본인 인증"
             verified={proceedWithVerifiedEmail}
             isAutoFocus={true}
             isEmailCheckEnabled={true}

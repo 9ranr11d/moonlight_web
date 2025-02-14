@@ -6,24 +6,16 @@ import Modal from "@components/common/Modal";
 
 import { ERR_MSG } from "@constants/msg";
 
-import IconNoEntry from "@public/svgs/common/icon_no_entry.svg";
+import ErrorBlock from "@components/common/ErrorBlock";
 
-/** 에러 페이지 */
+/** 오류 페이지 */
 export default function Error() {
   return (
     <main>
       <Modal>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: 30,
-          }}
-        >
-          <IconNoEntry width={200} height={200} fill={"var(--err-color)"} />
-        </div>
-
-        <h3>{ERR_MSG}</h3>
+        <ErrorBlock
+          content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
+        />
       </Modal>
     </main>
   );

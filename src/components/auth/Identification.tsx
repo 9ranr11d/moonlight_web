@@ -36,13 +36,23 @@ export default function Identification() {
         setIdentification(data.identification);
         setIsVerified(true);
       })
-      .catch(err => console.error("/src/components/auth/Recovery > Identification() > getUserIdentification()에서 오류가 발생했습니다. :", err));
+      .catch(err =>
+        console.error(
+          "/src/components/auth/Recovery > Identification() > getUserIdentification()에서 오류가 발생했습니다. :",
+          err
+        )
+      );
   };
 
   return (
     <>
       {!isVerified ? (
-        <EmailVerification title="이메일로 본인 인증" verified={email => getUserIdentification(email)} isAutoFocus={false} isEmailCheckEnabled={true} />
+        <EmailVerification
+          title="E-mail로 본인 인증"
+          verified={email => getUserIdentification(email)}
+          isAutoFocus={false}
+          isEmailCheckEnabled={true}
+        />
       ) : (
         <div>
           <h4>찾으시는 아이디는</h4>

@@ -14,6 +14,10 @@ import {
   resetSignUp,
   resetPassword,
   resetTerm,
+  setEmailVerified,
+  resetVerification,
+  setVerificationErr,
+  verify,
 } from "@redux/slices/signUpSlice";
 
 import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
@@ -31,7 +35,7 @@ export const resetSignUpAction = () => async (dispatch: AppDispatch) => {
 };
 /**
  * 소셜 로그인 정보 저장
- * @param formData 소셜 로그인 정보
+ * @param id 소셜 identification
  */
 export const socialSignInAction =
   (id: string) => async (dispatch: AppDispatch) => {
@@ -163,7 +167,7 @@ export const checkDuplicateAction =
 
 /**
  * identification 중복 여부 저장
- * @param isDuplicate 중복 여부
+ * @param formData 중복관련 정보
  */
 export const setIsDuplicateAction =
   (formData: IDuplicate) => async (dispatch: AppDispatch) => {
@@ -175,11 +179,53 @@ export const resetPasswordAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetPassword());
 };
 
-/** password 유효성 관련 정보 저장 */
+/**
+ * password 유효성 관련 정보 저장
+ * @param formData password 관련 정보
+ */
 export const setIsPasswordValidAction =
   (formData: IPasswordState) => async (dispatch: AppDispatch) => {
     dispatch(setIsPasswordValid(formData));
   };
+
+/** 본인 인증 정보 초기화 */
+export const resetVerificationAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetVerification());
+};
+
+/**
+ * E-mail 인증 코드 전송
+ * @param formData E-maile
+ */
+export const verityEmailAction =
+  (formData: { email: string }) => async (dispatch: AppDispatch) => {
+    fetch("/api/auth/emailVerification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => dispatch(setEmailVerified(data)))
+      .catch(err => {
+        dispatch(setVerificationErr("서버 오류가 발생했습니다."));
+
+        console.error(
+          "/src/actions/authAction > verityEmailAction()에서 오류가 발생했습니다. :",
+          err
+        );
+      });
+  };
+
+/** 본인 인증 완료 정보 저장 */
+export const verifyAction = () => (dispatch: AppDispatch) => {
+  dispatch(verify());
+};
 
 /**
  * local 로그아웃

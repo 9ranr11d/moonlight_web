@@ -1,78 +1,11 @@
-.wrapper > h6 {
-  text-align: left;
-  margin-bottom: 3px;
-}
-
-.emailLine button {
-  position: relative;
-  width: 120px;
-  border-radius: 0;
-  color: var(--font-color);
-  background: white;
-  border: 1px solid var(--gray-300);
-  text-align: left;
-}
-
-.emailLine > ul {
-  position: relative;
-  display: flex;
-  column-gap: 10px;
-  align-items: center;
-}
-
-.emailLine > ul > li:first-child {
-  flex: 1;
-}
-.emailLine > ul > li:last-child {
-  flex: 2;
-}
-
-.emailLine > ul > li:last-child > ul {
-  display: grid;
-  grid-template-columns: 1fr 120px;
-  align-items: center;
-  column-gap: 10px;
-}
-
-.emailLine > ul > li:last-child > ul > :last-child > button {
-  display: flex;
-  justify-content: space-between;
-}
-
-.emailLine > ul > li:last-child > ul > :last-child > ul {
-  position: absolute;
-}
-
-.emailLine > ul > li:last-child > ul > :last-child > ul > li > button:hover {
-  background: var(--primary-color);
-  color: white;
-}
-
 .okBtnBox {
   margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 768px) {
-  .identification {
-    width: 100%;
-    flex-direction: column;
-    row-gap: 10px;
-  }
-
-  .identification > div {
-    margin-bottom: 10px;
-  }
-
-  .okBtnBox > button {
-    width: 100%;
-  }
-
-  .emailLine > ul {
-    flex-direction: column;
-    row-gap: 10px;
-  }
-
-  .emailLine > ul > li {
-    width: 100%;
+  .indicator {
+    margin-top: 30px;
   }
 }

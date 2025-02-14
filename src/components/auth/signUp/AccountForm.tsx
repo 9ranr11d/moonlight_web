@@ -10,8 +10,9 @@ import { incrementStepAction } from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
-import IdentificationInput from "@components/auth/input/IdentificationInput";
-import PasswordInput from "@components/auth/input/PasswordInput";
+import IdentificationInput from "@components/common/input/IdentificationInput";
+import PasswordInput from "@components/common/input/PasswordInput";
+import NextBtn from "@components/common/btn/NextBtn";
 
 /** identification, password Form */
 export default function AccountForm() {
@@ -41,13 +42,7 @@ export default function AccountForm() {
       <PasswordInput />
 
       <div className={CSS.okBtnBox}>
-        <button
-          type="button"
-          onClick={clickConfirmBtn}
-          disabled={!isConfirmActive}
-        >
-          다음
-        </button>
+        <NextBtn onClick={clickConfirmBtn} disabled={!isConfirmActive} />
       </div>
     </>
   );

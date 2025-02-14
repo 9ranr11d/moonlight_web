@@ -1,0 +1,18 @@
+.wrapper button {
+  background: white;
+  color: var(--font-color);
+  border: 1px solid var(--gray-300);
+}
+
+.listBox > li > button {
+  border-radius: 0;
+}
+
+.listBox > li > button:hover {
+  background: var(--click-color);
+  color: white;
+}
+
+.listBox > li:last-child > button {
+  border-radius: 0 0 3px 3px;
+}

@@ -143,7 +143,7 @@ export default function Password({
    */
   const checkEmail = (email: string): void => {
     if (email === userEmail) setIsEmailMatching(true);
-    else alert("이메일이 일치하지 않습니다.");
+    else alert("E-mail이 일치하지 않습니다.");
   };
 
   // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
@@ -200,7 +200,7 @@ export default function Password({
         </>
       ) : !isEmailMatching ? (
         <EmailVerification
-          title="이메일로 본인 인증"
+          title="E-mail로 본인 인증"
           verified={email => checkEmail(email)}
           isAutoFocus={true}
           isEmailCheckEnabled={true}

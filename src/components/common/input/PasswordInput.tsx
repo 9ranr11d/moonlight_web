@@ -4,17 +4,18 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
-
 import { AppDispatch } from "@redux/store";
 
-import IconCheck from "@public/svgs/common/icon_check.svg";
 import {
   resetPasswordAction,
   setIsPasswordValidAction,
 } from "@actions/authAction";
-import StatusInput from "./StatusInput";
+
+import CSS from "@components/common/input/Input.module.css";
+
 import { validatePassword } from "@utils/index";
+
+import StatusInput from "@components/common/input/StatusInput";
 
 /** 비밀번호 Input */
 export default function PasswordInput() {

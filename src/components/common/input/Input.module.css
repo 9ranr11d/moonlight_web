@@ -1,0 +1,27 @@
+.wrapper > h6 {
+  text-align: left;
+  margin-bottom: 3px;
+}
+
+.inputCover div {
+  display: flex;
+  column-gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .identification {
+    width: 100%;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .identification > div {
+    margin-bottom: 10px;
+  }
+
+  .inputCover > div {
+    width: 100%;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}

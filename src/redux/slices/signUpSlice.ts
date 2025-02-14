@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
+import {
+  IDuplicate,
+  IEmail,
+  IPasswordState,
+  ITerm,
+  IVerificationState,
+} from "@interfaces/auth";
 
 /** 초기값 Interface */
 interface ITermState {
@@ -22,11 +28,12 @@ interface ISignUpState {
   term: ITermState;
   identification: IIdState;
   password: IPasswordState;
+  verification: IVerificationState;
 }
 
 /** 초기값 */
 const initialState: ISignUpState = {
-  step: 0,
+  step: 2,
   term: {
     latestTerms: [],
     agreedTerms: [],
@@ -43,6 +50,13 @@ const initialState: ISignUpState = {
   password: {
     password: "",
     isValid: false,
+  },
+  verification: {
+    isVerified: false,
+    msg: null,
+    isErr: false,
+    email: null,
+    code: null,
   },
 };
 
@@ -133,6 +147,20 @@ export const SignUp = createSlice({
       state.password.password = action.payload.password;
       state.password.isValid = action.payload.isValid;
     },
+    resetVerification: state => {
+      Object.assign(state.verification, initialState.verification);
+    },
+    setEmailVerified: (state, action: PayloadAction<IEmail>) => {
+      state.verification.email = action.payload.email;
+      state.verification.code = action.payload.code;
+    },
+    setVerificationErr: (state, action: PayloadAction<string>) => {
+      state.verification.isErr = true;
+      state.verification.msg = action.payload;
+    },
+    verify: state => {
+      state.verification.isVerified = true;
+    },
   },
 });
 
@@ -149,6 +177,10 @@ export const {
   setIsDuplicate,
   resetPassword,
   setIsPasswordValid,
+  resetVerification,
+  setEmailVerified,
+  setVerificationErr,
+  verify,
 } = SignUp.actions;
 
 export default SignUp.reducer;

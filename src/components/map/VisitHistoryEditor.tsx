@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 
-import { convertDateII } from "@utils/index";
+import { formatDateII } from "@utils/index";
 
 import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
 import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
@@ -133,7 +133,7 @@ export default function VisitHistoryEditor() {
         <span
           style={{ color: "var(--font-color)", fontSize: 13, marginRight: 5 }}
         >
-          {convertDateII(date, "-")}
+          {formatDateII(date, "-")}
         </span>
 
         {/* <Image src={isOpen ? IconUpTriangle : IconDownTriangle} width={9} alt={isOpen ? "▲" : "▼"} /> */}

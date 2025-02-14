@@ -1,0 +1,26 @@
+.tabBtnBox {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tabBtnBox > button {
+  flex: 1;
+  background: var(--gray-300);
+  border-radius: 0;
+}
+
+.tabBtnBox > button:hover {
+  background: var(--click-color);
+}
+
+.tabBtnBox > button:disabled {
+  background: var(--primary-color);
+}
+
+.tabBtnBox > button:first-child {
+  border-radius: 3px 0 0 3px;
+}
+
+.tabBtnBox > button:last-child {
+  border-radius: 0 3px 3px 0;
+}

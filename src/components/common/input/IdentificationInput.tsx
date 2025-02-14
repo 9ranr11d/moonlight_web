@@ -4,8 +4,6 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
-
 import { AppDispatch, RootState } from "@redux/store";
 
 import {
@@ -13,8 +11,9 @@ import {
   resetIdentificationAction,
 } from "@actions/authAction";
 
-import IconCheck from "@public/svgs/common/icon_check.svg";
-import StatusInput from "./StatusInput";
+import CSS from "@components/common/input/Input.module.css";
+
+import StatusInput from "@components/common/input/StatusInput";
 
 /** identification 중복 검사 Input */
 export default function IdentificationInput() {
@@ -36,7 +35,7 @@ export default function IdentificationInput() {
   };
 
   /** Identification 중복 확인 */
-  const checkDuplicate = (): void => {
+  const clickCheckDuplicate = (): void => {
     const data: { identification: string } = { identification };
 
     dispatch(checkDuplicateAction(data));
@@ -65,7 +64,7 @@ export default function IdentificationInput() {
 
         <button
           type="button"
-          onClick={checkDuplicate}
+          onClick={clickCheckDuplicate}
           disabled={identification.length <= 5}
         >
           중복 확인

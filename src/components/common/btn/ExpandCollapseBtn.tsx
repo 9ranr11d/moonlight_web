@@ -10,20 +10,20 @@ interface IExpandCollapseBtn {
   /** 클릭 시 */
   onClick: () => void;
 
+  /** 현재 더보기 여부 */
+  isExpanded: boolean;
   /** 색상 */
   fill?: string;
   /** 크기 */
   size: number;
-  /** 현재 더보기 여부 */
-  isExpanded: boolean;
 }
 
 /** 더보기 버튼 */
 export default function ExpandCollapseBtn({
   onClick,
+  isExpanded,
   fill = "black",
   size,
-  isExpanded,
 }: IExpandCollapseBtn) {
   return (
     <button

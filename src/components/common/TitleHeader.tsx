@@ -4,11 +4,19 @@ import React from "react";
 
 import IconBack from "@public/svgs/common/icon_less_than.svg";
 
+/** 제목 Header Interface */
 interface ITitleHeader {
-  back: () => void;
+  /** 뒤로가기 클릭 시 */
+  back?: () => void;
+
+  /** CSS */
+  style?: React.CSSProperties;
+  /** 오른쪽 아이콘 */
+  rightIcon?: React.ReactNode;
 }
 
-export default function TitleHeader({ back }: ITitleHeader) {
+/** 제목 Header  */
+export default function TitleHeader({ back, style, rightIcon }: ITitleHeader) {
   return (
     <div
       style={{
@@ -16,7 +24,7 @@ export default function TitleHeader({ back }: ITitleHeader) {
         gridTemplateColumns: "24px 1fr 24px",
         columnGap: 10,
         alignItems: "center",
-        marginBottom: 20,
+        ...(style && style),
       }}
     >
       <button
@@ -31,6 +39,8 @@ export default function TitleHeader({ back }: ITitleHeader) {
       </button>
 
       <h3 style={{ flex: 1 }}>회원가입</h3>
+
+      {rightIcon && rightIcon}
     </div>
   );
 }

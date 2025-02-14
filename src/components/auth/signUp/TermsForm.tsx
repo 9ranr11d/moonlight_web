@@ -19,7 +19,8 @@ import CSS from "@components/auth/signUp/SignUp.module.css";
 import LunarLoader from "@components/common/LunarLoader";
 import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
-import TermInput from "@components/auth/input/TermInput";
+import TermInput from "@components/common/input/TermInput";
+import NextBtn from "@components/common/btn/NextBtn";
 
 /** 약관 동의 Form*/
 export default function TermsForm() {
@@ -86,7 +87,9 @@ export default function TermsForm() {
   return (
     <>
       {signUp.term.isLoaded ? (
-        <LunarLoader />
+        <div style={{ marginBottom: 10 }}>
+          <LunarLoader />
+        </div>
       ) : (
         <>
           <div>
@@ -112,13 +115,7 @@ export default function TermsForm() {
           </div>
 
           <div className={CSS.okBtnBox}>
-            <button
-              type="button"
-              onClick={clickConfirmBtn}
-              disabled={!isConfirmActive}
-            >
-              다음
-            </button>
+            <NextBtn onClick={clickConfirmBtn} disabled={!isConfirmActive} />
           </div>
         </>
       )}

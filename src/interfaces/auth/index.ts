@@ -45,23 +45,47 @@ export interface IIUser extends IUser {
 
 /** 약관 Interface */
 export interface ITerm {
+  /** 약관명 */
   type: string;
+  /** 약관 버전 */
   version: number;
+  /** 필수 약관 여부 */
   isRequired: boolean;
+  /** 약관 내용 */
   content: string;
+  /** 생성일자 */
   createdAt: string;
+  /** 수정일자 */
   updatedAt: string;
 }
 
 /** identification 중복 검사 관련 정보 Interface */
 export interface IDuplicate {
+  /** identification */
   identification: string;
+  /** 중복 검사 여부 */
   isDuplicate: boolean;
+  /** Message */
   msg: string | null;
 }
 
 /** password 관련 정보 Interface */
 export interface IPasswordState {
+  /** password */
   password: string;
+  /** password 검증 여부 */
   isValid: boolean;
 }
+
+export interface IVerification {
+  isVerified: boolean;
+  msg: string | null;
+  isErr: boolean;
+}
+
+export interface IEmail extends IVerification {
+  email: string | null;
+  code: string | null;
+}
+
+export interface IVerificationState extends IEmail {}

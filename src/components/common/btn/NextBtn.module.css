@@ -1,0 +1,13 @@
+.nextBtn {
+  position: relative;
+  padding-left: 15px;
+  padding-right: 30px;
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .nextBtn {
+    width: 100%;
+    padding-left: 30px;
+  }
+}

@@ -19,7 +19,7 @@ import CSS from "./EventModal.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
-import { convertDateII } from "@utils/index";
+import { formatDateII } from "@utils/index";
 
 import Modal from "@components/common/Modal";
 import MiniCalendarView from "@components/calendar/MiniCalendarView";
@@ -1233,7 +1233,7 @@ export default function EventModal({
 
         <h5>
           {!isEditSchedule || isCreateSchedule ? (
-            convertDateII(editScheduleStateStartDate, "-")
+            formatDateII(editScheduleStateStartDate, "-")
           ) : (
             <span>
               <button
@@ -1249,7 +1249,7 @@ export default function EventModal({
                     : undefined
                 }
               >
-                <span>{convertDateII(editScheduleStateStartDate, "-")}</span>
+                <span>{formatDateII(editScheduleStateStartDate, "-")}</span>
 
                 {/* <Image
                   src={
@@ -1289,7 +1289,7 @@ export default function EventModal({
                       : undefined
                   }
                 >
-                  <span>{convertDateII(editScheduleStateEndDate, "-")}</span>
+                  <span>{formatDateII(editScheduleStateEndDate, "-")}</span>
 
                   {/* <Image
                     src={

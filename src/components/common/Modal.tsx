@@ -21,7 +21,7 @@ interface IModalProps {
   /** 적용 될 'style' */
   style?: CSSProperties;
   /** 적용 될 'Component'들 */
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 /** Modal */

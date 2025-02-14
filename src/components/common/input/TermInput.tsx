@@ -74,9 +74,10 @@ export default function TermInput({ term, isAgreed }: ITermInput) {
         </div>
 
         <ExpandCollapseBtn
-          onClick={toggleContentVisible}
-          size={18}
           isExpanded={isContentVisible}
+          onClick={toggleContentVisible}
+          size={12}
+          fill={"var(--gray-500)"}
         />
       </div>
 

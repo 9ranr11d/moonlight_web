@@ -8,13 +8,22 @@ import IconCheck from "@public/svgs/common/icon_check.svg";
 
 /** 현재 상태 표시 Input Interface */
 interface IStatusInput {
+  /** 변경 시  */
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
+  /** type */
   type: "text" | "password";
+  /** value */
   value: string;
+  /** placeholder */
   placeholder: string;
-  showIcon: boolean;
+  /** 상태 */
   msg?: string | null;
+  /** 비활성화 여부 */
+  disabled: boolean;
+  /** 유효성 */
+  showIcon?: boolean;
+  /** 오류 여부 */
   isErr: boolean;
 }
 
@@ -24,8 +33,9 @@ export default function StatusInput({
   type,
   value,
   placeholder,
-  showIcon,
   msg,
+  disabled,
+  showIcon,
   isErr,
 }: IStatusInput) {
   const [isVisible, setIsVisible] = useState<boolean>(false); // 내용 가시 여부
@@ -42,6 +52,7 @@ export default function StatusInput({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        disabled={disabled}
         style={{
           width: "100%",
           paddingRight: showIcon || type === "password" ? 30 : 10,
@@ -71,7 +82,7 @@ export default function StatusInput({
         <p
           style={{
             position: "absolute",
-            left: 10,
+            left: 0,
             paddingTop: 1,
             color: isErr ? "var(--err-color)" : "var(--font-color)",
           }}
