@@ -15,6 +15,7 @@ import ErrorBlock from "@components/common/ErrorBlock";
 import NextBtn from "@components/common/btn/NextBtn";
 
 import EmailForm from "@components/auth/signUp/EmailForm";
+import PhoneForm from "@components/auth/signUp/PhoneForm";
 
 /** 본인 인증 Form */
 export default function VerificationForm() {
@@ -32,7 +33,7 @@ export default function VerificationForm() {
   const clickConfirmBtn = () => {};
 
   /** Input들 */
-  const inputs = useMemo(() => [<EmailForm />], []);
+  const inputs = useMemo(() => [<EmailForm />, <PhoneForm />], []);
 
   // 렌더링 시
   useEffect(() => {
@@ -71,14 +72,16 @@ export default function VerificationForm() {
         </div>
       )}
 
-      <div className={CSS.okBtnBox}>
-        {signUp.verification.isVerified && (
+      <div className={CSS.spacing} />
+
+      {signUp.verification.isVerified && (
+        <div className={CSS.okBtnBox}>
           <NextBtn
             onClick={clickConfirmBtn}
             disabled={!signUp.verification.isVerified}
           />
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }

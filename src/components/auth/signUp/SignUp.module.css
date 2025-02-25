@@ -4,7 +4,15 @@
   justify-content: flex-end;
 }
 
+.spacing {
+  margin-top: 10px;
+}
+
 @media (max-width: 768px) {
+  .spacing {
+    display: none;
+  }
+
   .indicator {
     margin-top: 30px;
   }

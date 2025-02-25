@@ -70,8 +70,6 @@ export default function EmailForm() {
     else alert("인증 코드를 다시 확인해주세요.");
   };
 
-  console.log(signUp.verification);
-
   // 본인인증 관련 오류 시
   useEffect(() => {
     if (signUp.verification.isErr) setIsSent(false);

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import Lottie from "react-lottie-player";
+// import Lottie from "react-lottie-player";
 
 import CSS from "./Recovery.module.css";
 

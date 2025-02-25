@@ -14,7 +14,7 @@ interface IDropdownBtn {
   /** 선택된 순서 */
   idx?: number;
   /** 목록 */
-  list: string[];
+  list: React.ReactNode[];
   /** CSS */
   style?: React.CSSProperties;
 }

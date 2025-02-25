@@ -2,9 +2,13 @@
 
 import React from "react";
 
-import LottiePlayer from "react-lottie-player";
+import dynamic from "next/dynamic";
 
 import LottieLoading from "@public/json/loading_round_white.json";
+
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+});
 
 /** Loading 버튼 Interface */
 interface ILoadingBtn {

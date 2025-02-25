@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
 
-import Lottie from "react-lottie-player";
+// import Lottie from "react-lottie-player";
 
 import { IUser } from "@interfaces/auth/index";
 

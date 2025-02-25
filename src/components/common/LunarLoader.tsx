@@ -2,9 +2,13 @@
 
 import React from "react";
 
-import LottiePlayer from "react-lottie-player";
+import dynamic from "next/dynamic";
 
 import LottieLoading from "@public/json/loading_moon.json";
+
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+});
 
 export default function LunarLoader() {
   return (

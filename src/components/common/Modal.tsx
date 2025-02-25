@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, ReactNode } from "react";
+import React from "react";
 
 import Image from "next/image";
 
@@ -19,7 +19,7 @@ interface IModalProps {
   /** 적용 될 'className' */
   className?: string;
   /** 적용 될 'style' */
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   /** 적용 될 'Component'들 */
   children: React.ReactNode;
 }

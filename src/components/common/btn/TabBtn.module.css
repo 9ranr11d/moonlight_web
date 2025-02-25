@@ -14,7 +14,7 @@
 }
 
 .tabBtnBox > button:disabled {
-  background: var(--primary-color);
+  background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }
 
 .tabBtnBox > button:first-child {
