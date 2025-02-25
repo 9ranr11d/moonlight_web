@@ -59,7 +59,7 @@ export default function EmailVerification({
     if (isEmailCheckEnabled) {
       const data: { email: string } = { email };
 
-      fetch("/api/auth/verifyUserInfoMatch", {
+      fetch("/api/auth/verify-user-info-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -93,7 +93,7 @@ export default function EmailVerification({
   const sendEmail = (): void => {
     const data: { email: string } = { email };
 
-    fetch("/api/auth/emailVerification", {
+    fetch("/api/auth/email-verification", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

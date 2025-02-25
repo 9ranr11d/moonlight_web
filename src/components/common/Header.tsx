@@ -47,7 +47,7 @@ export default function Header() {
 
   /** Refresh Token 확인 */
   const getRefreshAccessToken = (): void => {
-    fetch("/api/auth/refreshAccessToken")
+    fetch("/api/auth/refresh-access-token")
       .then(res => {
         if (res.ok) return res.json();
         // 유효한 Refresh Access Token이 없을 시 시작화면으로 이동

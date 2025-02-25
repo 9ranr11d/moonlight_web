@@ -42,6 +42,17 @@ export const validateEmail = (email: string): boolean => {
 };
 
 /**
+ * 지정된 길이의 랜덤 문자열 생성
+ * @param length 문자열 길이
+ * @returns 랜덤 문자열
+ */
+export const generateRandomCode = (length: number): string => {
+  return Math.random()
+    .toString(36)
+    .slice(2, 2 + length);
+};
+
+/**
  * 시간 형식 설정
  * @param time 시간
  * @returns mm:ss
@@ -115,7 +126,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
   /** 보낼 Access Token */
   const data: { accessToken: string } = { accessToken };
 
-  fetch("/api/auth/getUserByAccessToken", {
+  fetch("/api/auth/get-user-by-access-token", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

@@ -36,7 +36,7 @@
   padding: 10px 40px 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .background {
     display: flex;
     flex-direction: column;

@@ -98,7 +98,7 @@
   transition: top 1s ease, opacity 1s ease;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .afterSignInBox {
     display: flex;
     align-items: center;

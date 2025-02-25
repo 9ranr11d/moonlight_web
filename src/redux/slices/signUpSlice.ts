@@ -4,9 +4,11 @@ import {
   IDuplicate,
   IEmail,
   IPasswordState,
+  IPhone,
   ITerm,
   IVerificationState,
 } from "@interfaces/auth";
+import { set } from "mongoose";
 
 /** 초기값 Interface */
 interface ITermState {
@@ -56,6 +58,7 @@ const initialState: ISignUpState = {
     msg: null,
     isErr: false,
     email: null,
+    phoneNumber: null,
     code: null,
   },
 };
@@ -147,17 +150,26 @@ export const SignUp = createSlice({
       state.password.password = action.payload.password;
       state.password.isValid = action.payload.isValid;
     },
+    /** 본인 인증 정보 초기화 */
     resetVerification: state => {
       Object.assign(state.verification, initialState.verification);
     },
+    /** E-mail 인증 코드 저장 */
     setEmailVerified: (state, action: PayloadAction<IEmail>) => {
       state.verification.email = action.payload.email;
       state.verification.code = action.payload.code;
     },
+    /** 전화번호 인증 코드 저장 */
+    setPhoneVerified: (state, action: PayloadAction<IPhone>) => {
+      state.verification.phoneNumber = action.payload.phoneNumber;
+      state.verification.code = action.payload.code;
+    },
+    /** 본인 인증 오류 정보 저장 */
     setVerificationErr: (state, action: PayloadAction<string>) => {
       state.verification.isErr = true;
       state.verification.msg = action.payload;
     },
+    /** 인증 성공 시 */
     verify: state => {
       state.verification.isVerified = true;
     },
@@ -179,6 +191,7 @@ export const {
   setIsPasswordValid,
   resetVerification,
   setEmailVerified,
+  setPhoneVerified,
   setVerificationErr,
   verify,
 } = SignUp.actions;

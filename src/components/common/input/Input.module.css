@@ -8,7 +8,7 @@
   column-gap: 5px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .identification {
     width: 100%;
     flex-direction: column;

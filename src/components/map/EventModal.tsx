@@ -43,7 +43,7 @@ export default function EventModal({
    * @param _id 해당 장소 _id
    */
   const getHistories = (_id: string): void => {
-    fetch(`/api/map/favoriteLocationHistoryManagement?_id=${_id}`)
+    fetch(`/api/map/favorite-location-history-management?_id=${_id}`)
       .then(res => {
         if (res.ok) return res.json();
 

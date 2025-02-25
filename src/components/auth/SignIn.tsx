@@ -49,7 +49,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       password,
     };
 
-    fetch("/api/auth/signIn", {
+    fetch("/api/auth/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

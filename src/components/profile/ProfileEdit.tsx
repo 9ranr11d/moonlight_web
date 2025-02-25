@@ -72,7 +72,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
       ...userInfo,
     };
 
-    fetch("/api/auth/changeUserInfo", {
+    fetch("/api/auth/change-user-info", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

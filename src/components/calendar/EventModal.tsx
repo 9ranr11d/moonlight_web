@@ -215,7 +215,7 @@ export default function EventModal({
    * @param category 업데이트할 카테고리
    */
   const updateCategory = (category: IIScheduleCategory): void => {
-    fetch("/api/calendar/categoriesManagement", {
+    fetch("/api/calendar/categories-management", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(category),
@@ -249,7 +249,7 @@ export default function EventModal({
       return;
     }
 
-    fetch("/api/calendar/categoriesManagement", {
+    fetch("/api/calendar/categories-management", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newCategory),
@@ -279,7 +279,7 @@ export default function EventModal({
 
   /** 카테고리 삭제 */
   const deleteCategory = (_id: string): void => {
-    fetch(`/api/calendar/categoriesManagement?_id=${_id}`, { method: "DELETE" })
+    fetch(`/api/calendar/categories-management?_id=${_id}`, { method: "DELETE" })
       .then(res => {
         if (res.ok) return res.json();
 
@@ -300,7 +300,7 @@ export default function EventModal({
 
   /** 모든 카테고리 목록 가져오기 */
   const getCategories = (): void => {
-    fetch("/api/calendar/categoriesManagement")
+    fetch("/api/calendar/categories-management")
       .then(res => {
         if (res.ok) return res.json();
 
@@ -317,7 +317,7 @@ export default function EventModal({
 
   /** 일정 생성 */
   const createSchedule = (): void => {
-    fetch("/api/calendar/schedulesManagement", {
+    fetch("/api/calendar/schedules-management", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
@@ -352,7 +352,7 @@ export default function EventModal({
 
   /** 일정 정보 갱신 */
   const updateSchedule = (): void => {
-    fetch("/api/calendar/schedulesManagement", {
+    fetch("/api/calendar/schedules-management", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editSchedule),
@@ -377,7 +377,7 @@ export default function EventModal({
 
   /** 일정 삭제 */
   const deleteSchedule = (): void => {
-    fetch(`/api/calendar/schedulesManagement?_id=${selectedScheduleId}`, {
+    fetch(`/api/calendar/schedules-management?_id=${selectedScheduleId}`, {
       method: "DELETE",
     })
       .then(res => {

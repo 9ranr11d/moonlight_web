@@ -18,6 +18,7 @@ import {
   resetVerification,
   setVerificationErr,
   verify,
+  setPhoneVerified,
 } from "@redux/slices/signUpSlice";
 
 import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
@@ -40,7 +41,7 @@ export const resetSignUpAction = () => async (dispatch: AppDispatch) => {
 export const socialSignInAction =
   (id: string) => async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch(`/api/auth/socialSignIn?id=${id}`);
+      const response = await fetch(`/api/auth/social-sign-in?id=${id}`);
 
       if (!response.ok) {
         const errData = await response.json();
@@ -83,7 +84,7 @@ export const getLatestTermsAction =
 
     if (!isLoaded) return;
 
-    fetch("/api/auth/getLatestTerms")
+    fetch("/api/auth/get-latest-terms")
       .then(res => {
         if (res.ok) return res.json();
         return res.json().then(data => Promise.reject(data.msg));
@@ -124,7 +125,7 @@ export const resetIdentificationAction =
  */
 export const checkDuplicateAction =
   (formData: { identification: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/checkDuplicateId", {
+    fetch("/api/auth/check-duplicate-id", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -199,7 +200,7 @@ export const resetVerificationAction = () => async (dispatch: AppDispatch) => {
  */
 export const verityEmailAction =
   (formData: { email: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/emailVerification", {
+    fetch("/api/auth/email-verification", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -213,10 +214,47 @@ export const verityEmailAction =
       })
       .then(data => dispatch(setEmailVerified(data)))
       .catch(err => {
-        dispatch(setVerificationErr("서버 오류가 발생했습니다."));
+        dispatch(
+          setVerificationErr(
+            "서버 오류입니다. 다시 시도해주세요.가 발생했습니다."
+          )
+        );
 
         console.error(
           "/src/actions/authAction > verityEmailAction()에서 오류가 발생했습니다. :",
+          err
+        );
+      });
+  };
+
+/**
+ * 전화번호 인증 코드 전송
+ * @param formData 전화번호
+ */
+export const verifyPhoneNumberAction =
+  (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
+    fetch("/api/auth/phone-number-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => dispatch(setPhoneVerified(data)))
+      .catch(err => {
+        dispatch(
+          setVerificationErr(
+            "서버 오류입니다. 다시 시도해주세요.가 발생했습니다."
+          )
+        );
+
+        console.error(
+          "/src/actions/authAction > verifyPhoneNumberAction()에서 오류가 발생했습니다. :",
           err
         );
       });
@@ -243,7 +281,7 @@ export const signOutAction = (
   // 사용자가 취소 누를 시
   if (!confirmSignOut) return false;
 
-  fetch("/api/auth/signOut", { method: "POST" })
+  fetch("/api/auth/sign-out", { method: "POST" })
     .then(res => {
       if (res.ok) return res.json();
 

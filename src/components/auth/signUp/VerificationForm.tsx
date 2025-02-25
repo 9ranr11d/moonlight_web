@@ -15,7 +15,7 @@ import ErrorBlock from "@components/common/ErrorBlock";
 import NextBtn from "@components/common/btn/NextBtn";
 
 import EmailForm from "@components/auth/signUp/EmailForm";
-import PhoneForm from "@components/auth/signUp/PhoneForm";
+import PhoneNumberForm from "@components/auth/signUp/PhoneNumberForm";
 
 /** 본인 인증 Form */
 export default function VerificationForm() {
@@ -33,14 +33,14 @@ export default function VerificationForm() {
   const clickConfirmBtn = () => {};
 
   /** Input들 */
-  const inputs = useMemo(() => [<EmailForm />, <PhoneForm />], []);
+  const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
 
   // 렌더링 시
   useEffect(() => {
     /** Window 크기 변경 시 */
     const handleResize = () => {
       // 모바일 화면일 경우
-      if (window.innerWidth <= 768) setSelectedTabIdx(1);
+      if (window.innerWidth <= 767) setSelectedTabIdx(1);
       // 데스크탑 화면일 경우
       else setSelectedTabIdx(0);
     };

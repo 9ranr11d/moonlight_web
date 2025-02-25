@@ -123,7 +123,7 @@ export default function CalendarView() {
 
   /** 모든 사용자 목록 */
   const getUsers = (): void => {
-    fetch("/api/auth/getUsersWithHighAccessLevel")
+    fetch("/api/auth/get-users-with-high-access-level")
       .then(res => {
         if (res.ok) return res.json();
 
@@ -143,7 +143,7 @@ export default function CalendarView() {
   /** 일정 가져오기 */
   const getSchedules = (): void => {
     fetch(
-      `/api/calendar/schedulesManagement/${year}/${month}/${user._id}/${user.coupleCode}`
+      `/api/calendar/schedules-management/${year}/${month}/${user._id}/${user.coupleCode}`
     )
       .then(res => {
         if (res.ok) return res.json();

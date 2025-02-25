@@ -88,4 +88,9 @@ export interface IEmail extends IVerification {
   code: string | null;
 }
 
-export interface IVerificationState extends IEmail {}
+export interface IPhone extends IVerification {
+  phoneNumber: string | null;
+  code: string | null;
+}
+
+export interface IVerificationState extends IEmail, IPhone {}

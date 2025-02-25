@@ -30,7 +30,7 @@ export default function CoupleCodeManager() {
       coupleCode,
     };
 
-    fetch("/api/auth/registerCoupleCode", {
+    fetch("/api/auth/register-couple-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -78,7 +78,7 @@ export default function CoupleCodeManager() {
       id: user.identification,
     };
 
-    fetch("/api/auth/issueCoupleCode", {
+    fetch("/api/auth/issue-couple-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -117,7 +117,7 @@ export default function CoupleCodeManager() {
     }
 
     fetch(
-      `/api/auth/issueCoupleCode?id=${user._id}&coupleCode=${user.coupleCode}`,
+      `/api/auth/issue-couple-code?id=${user._id}&coupleCode=${user.coupleCode}`,
       { method: "DELETE" }
     )
       .then(res => {

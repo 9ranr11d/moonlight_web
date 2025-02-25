@@ -16,7 +16,7 @@
   border: 1px solid var(--gray-300);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .modal {
     width: 90%;
   }

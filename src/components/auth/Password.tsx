@@ -45,7 +45,7 @@ export default function Password({
       identification: _identification,
     };
 
-    fetch("/api/auth/checkId", {
+    fetch("/api/auth/check-id", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -78,7 +78,7 @@ export default function Password({
       password,
     };
 
-    fetch("/api/auth/changePw", {
+    fetch("/api/auth/change-pw", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

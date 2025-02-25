@@ -124,7 +124,7 @@ export default function KakaoMap() {
    * @param resetSelection 선택된 장소의 초기화 여부
    */
   const getFavoriteLocations = (resetSelection: boolean = false): void => {
-    fetch("/api/map/favoriteLocationManagement")
+    fetch("/api/map/favorite-location-management")
       .then(res => {
         if (res.ok) return res.json();
 
@@ -162,7 +162,7 @@ export default function KakaoMap() {
       createdBy: user._id,
     };
 
-    fetch("/api/map/favoriteLocationManagement", {
+    fetch("/api/map/favorite-location-management", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -212,7 +212,7 @@ export default function KakaoMap() {
           )}`;
 
     /** 즐겨찾기 삭제 url */
-    const url = `/api/map/favoriteLocationManagement?${queryParam}`;
+    const url = `/api/map/favorite-location-management?${queryParam}`;
 
     fetch(url, { method: "DELETE" })
       .then(res => {

@@ -315,7 +315,7 @@
   transform: translate(-50%, -50%);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .calendar {
     flex-direction: column;
     right: 0 !important;
