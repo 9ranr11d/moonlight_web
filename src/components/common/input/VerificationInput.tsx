@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { formatTime } from "@utils/index";
 
 import StatusInput from "@components/common/input/StatusInput";
-import LoadingBtn from "@components/common/btn/LoadingBtn";
 
 /** 인증 Input Interface */
 interface IVerificationInput {
@@ -16,6 +15,8 @@ interface IVerificationInput {
 
   /** 남은 시간 */
   timeLeft?: number;
+  /** 메세지 */
+  msg?: string | null;
 }
 
 /** 인증 Input */
@@ -23,6 +24,7 @@ export default function VerificationInput({
   onResendClick,
   onChange,
   timeLeft = 300,
+  msg,
 }: IVerificationInput) {
   const [code, setCode] = useState<string>(""); // 인증 코드
 
@@ -60,8 +62,8 @@ export default function VerificationInput({
             onChange={handleCode}
             placeholder="인증코드를 입력해주세요."
             disabled={timeLeft === 0}
-            isErr={timeLeft === 0}
-            msg={timeLeft === 0 ? "인증 시간이 만료되었습니다." : null}
+            isErr={true}
+            msg={timeLeft === 0 ? "인증 시간이 만료되었습니다." : msg}
           />
 
           <p

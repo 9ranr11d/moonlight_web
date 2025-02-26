@@ -77,20 +77,24 @@ export interface IPasswordState {
   isValid: boolean;
 }
 
+/** 본인 인증 여부 관련 Interface */
 export interface IVerification {
   isVerified: boolean;
   msg: string | null;
   isErr: boolean;
 }
 
+/** E-mail 본인 인증 Interface  */
 export interface IEmail extends IVerification {
   email: string | null;
   code: string | null;
 }
 
+/** 휴대전화 번호 본인 인증 Interface */
 export interface IPhone extends IVerification {
   phoneNumber: string | null;
   code: string | null;
 }
 
+/** 본인 인증 관련 모든 정보 Interface */
 export interface IVerificationState extends IEmail, IPhone {}

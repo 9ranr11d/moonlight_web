@@ -75,7 +75,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   );
 
   return (
-    <div className={CSS.signUpBox} style={{ width: "100%" }}>
+    <div className={CSS.signUpBox}>
       <TitleHeader
         back={clickBack}
         style={{ marginBottom: 20 }}

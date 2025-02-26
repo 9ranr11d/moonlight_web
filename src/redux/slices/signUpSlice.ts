@@ -8,7 +8,6 @@ import {
   ITerm,
   IVerificationState,
 } from "@interfaces/auth";
-import { set } from "mongoose";
 
 /** 초기값 Interface */
 interface ITermState {
@@ -110,6 +109,7 @@ export const SignUp = createSlice({
       state.term.isErr = true;
       state.term.isLoaded = false;
     },
+    /** 약관 동의 여부 */
     setTermAgreement: (state, action: PayloadAction<ITerm>) => {
       const idx = state.term.agreedTerms.findIndex(
         agreedTerm => agreedTerm.type === action.payload.type
@@ -159,7 +159,7 @@ export const SignUp = createSlice({
       state.verification.email = action.payload.email;
       state.verification.code = action.payload.code;
     },
-    /** 전화번호 인증 코드 저장 */
+    /** 휴대전화 번호 인증 코드 저장 */
     setPhoneVerified: (state, action: PayloadAction<IPhone>) => {
       state.verification.phoneNumber = action.payload.phoneNumber;
       state.verification.code = action.payload.code;

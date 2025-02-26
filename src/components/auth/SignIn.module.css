@@ -94,11 +94,12 @@
 
   .signInBox .innerBox > button {
     width: 100%;
+    height: 50px;
     margin-bottom: 10px;
     padding: 10px 0;
   }
 
   .signInBox .innerBox > button > h5 {
-    font-size: 14px;
+    font-size: 18px;
   }
 }

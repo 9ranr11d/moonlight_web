@@ -48,7 +48,7 @@ export const socialSignInAction =
 
         alert(ERR_MSG);
 
-        throw new Error(errData.msg || "소셜 로그인 실패");
+        throw new Error(errData.msg || "소셜 로그인 실패했습니다.");
       }
 
       const data = await response.json();
@@ -214,11 +214,7 @@ export const verityEmailAction =
       })
       .then(data => dispatch(setEmailVerified(data)))
       .catch(err => {
-        dispatch(
-          setVerificationErr(
-            "서버 오류입니다. 다시 시도해주세요.가 발생했습니다."
-          )
-        );
+        dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
 
         console.error(
           "/src/actions/authAction > verityEmailAction()에서 오류가 발생했습니다. :",
@@ -228,8 +224,8 @@ export const verityEmailAction =
   };
 
 /**
- * 전화번호 인증 코드 전송
- * @param formData 전화번호
+ * 휴대전화 번호 인증 코드 전송
+ * @param formData 휴대전화 번호
  */
 export const verifyPhoneNumberAction =
   (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
@@ -247,11 +243,7 @@ export const verifyPhoneNumberAction =
       })
       .then(data => dispatch(setPhoneVerified(data)))
       .catch(err => {
-        dispatch(
-          setVerificationErr(
-            "서버 오류입니다. 다시 시도해주세요.가 발생했습니다."
-          )
-        );
+        dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
 
         console.error(
           "/src/actions/authAction > verifyPhoneNumberAction()에서 오류가 발생했습니다. :",

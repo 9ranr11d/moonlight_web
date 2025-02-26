@@ -82,7 +82,7 @@ export default function StatusInput({
         <p
           style={{
             position: "absolute",
-            left: 0,
+            left: 5,
             paddingTop: 1,
             color: isErr ? "var(--err-color)" : "var(--font-color)",
           }}

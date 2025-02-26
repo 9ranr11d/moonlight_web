@@ -17,6 +17,8 @@ import NextBtn from "@components/common/btn/NextBtn";
 import EmailForm from "@components/auth/signUp/EmailForm";
 import PhoneNumberForm from "@components/auth/signUp/PhoneNumberForm";
 
+import IconCheck from "@public/svgs/common/icon_check.svg";
+
 /** 본인 인증 Form */
 export default function VerificationForm() {
   /** 회원가입 정보 */
@@ -56,31 +58,45 @@ export default function VerificationForm() {
 
   return (
     <>
-      {!signUp.verification.isVerified && (
-        <TabBtn
-          labelArr={["E-mail", "휴대전화"]}
-          idx={selectedTabIdx}
-          onChange={handleTab}
-        />
-      )}
-
-      {inputs[selectedTabIdx] ?? (
-        <div style={{ marginBottom: 10 }}>
-          <ErrorBlock
-            content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
+      {!signUp.verification.isVerified ? (
+        <>
+          <TabBtn
+            labelArr={["E-mail", "휴대전화"]}
+            idx={selectedTabIdx}
+            onChange={handleTab}
           />
-        </div>
-      )}
 
-      <div className={CSS.spacing} />
+          {inputs[selectedTabIdx] ?? (
+            <div style={{ marginBottom: 10 }}>
+              <ErrorBlock
+                content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
+              />
+            </div>
+          )}
 
-      {signUp.verification.isVerified && (
-        <div className={CSS.okBtnBox}>
-          <NextBtn
-            onClick={clickConfirmBtn}
-            disabled={!signUp.verification.isVerified}
-          />
-        </div>
+          <div className={CSS.spacing} />
+        </>
+      ) : (
+        <>
+          <div>
+            <IconCheck width={50} height={50} fill={"var(--primary-color)"} />
+
+            <h6 style={{ marginTop: 10 }}>
+              본인 인증이 완료되었습니다.
+              <br />
+              '다음'버튼을 눌러 다음 단계를 진행해주세요.
+            </h6>
+          </div>
+
+          <div className={CSS.spacing} />
+
+          <div className={CSS.okBtnBox}>
+            <NextBtn
+              onClick={clickConfirmBtn}
+              disabled={!signUp.verification.isVerified}
+            />
+          </div>
+        </>
       )}
     </>
   );

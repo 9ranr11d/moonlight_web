@@ -6,13 +6,13 @@ import { generateRandomCode } from "@utils/index";
 
 export async function POST(req: NextRequest) {
   try {
-    // 전화번호
+    // 휴대전화 번호
     const { phoneNumber }: { phoneNumber: string } = await req.json();
 
-    // 전화번호가 없을 경우
+    // 휴대전화 번호가 없을 경우
     if (!phoneNumber)
       return NextResponse.json(
-        { msg: "전화번호를 입력해주세요." },
+        { msg: "휴대전화 번호를 입력해주세요." },
         { status: 400 }
       );
 

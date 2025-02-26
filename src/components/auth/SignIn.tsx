@@ -15,8 +15,6 @@ import CSS from "./SignIn.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
-import IconEyeClose from "@public/svgs/common/icon_eye_close.svg";
-import IconEyeOpen from "@public/svgs/common/icon_eye_open.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
@@ -39,8 +37,6 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   const [password, setPassword] = useState<string>(""); // Password
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
-  const [isPasswordVisibleHover, setIsPasswordVisibleHover] =
-    useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
 
   /** 로그인 */
   const processSignIn = (): void => {
@@ -102,14 +98,6 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   /** 비밀번호 표시 Toggle */
   const togglePasswordVisibility = (): void => {
     setIsPasswordVisible(prev => !prev);
-  };
-
-  /**
-   * 비밀번호 표시 아이콘 Hover 관리
-   * @param isHover Hover 여부
-   */
-  const hoverPasswordVisibility = (isHover: boolean): void => {
-    setIsPasswordVisibleHover(isHover);
   };
 
   /**

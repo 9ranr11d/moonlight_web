@@ -30,6 +30,7 @@ export default function EmailForm() {
 
   const [email, setEmail] = useState<string>(""); // 입력된 E-mail
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드
+  const [msg, setMsg] = useState<string>(""); // Input 알림 메세지
 
   const [isSent, setIsSent] = useState<boolean>(false); // 전송 여부
 
@@ -67,7 +68,7 @@ export default function EmailForm() {
   /** 인증코드 확인 버튼 클릭 시 */
   const clickConfirmBtn = () => {
     if (code === signUp.verification.code) dispatch(verifyAction());
-    else alert("인증 코드를 다시 확인해주세요.");
+    else setMsg("인증 코드를 다시 확인해주세요.");
   };
 
   // 본인인증 관련 오류 시
@@ -77,41 +78,32 @@ export default function EmailForm() {
 
   return (
     <>
-      {!signUp.verification.isVerified ? (
+      <EmailInput onChange={handleEmail} />
+
+      {signUp.verification.email ? (
         <>
-          <EmailInput onChange={handleEmail} />
+          <VerificationInput
+            onResendClick={clickResendCode}
+            onChange={handleCode}
+            msg={msg}
+          />
 
-          {signUp.verification.email ? (
-            <>
-              <VerificationInput
-                onResendClick={clickResendCode}
-                onChange={handleCode}
-              />
-
-              <button type="button" onClick={clickConfirmBtn}>
-                확인
-              </button>
-            </>
-          ) : (
-            <LoadingBtn
-              onClick={clickSendCode}
-              disabled={!isValidEmail}
-              isLoading={isSent}
-              lavel="인증 코드 전송"
-              style={{ width: "100%" }}
-            />
-          )}
+          <button
+            type="button"
+            onClick={clickConfirmBtn}
+            style={{ marginTop: 20 }}
+          >
+            확인
+          </button>
         </>
       ) : (
-        <div>
-          <IconCheck width={50} height={50} fill={"var(--primary-color)"} />
-
-          <h6 style={{ marginTop: 10 }}>
-            본인 인증이 완료되었습니다.
-            <br />
-            '다음'버튼을 눌러 다음 단계를 진행해주세요.
-          </h6>
-        </div>
+        <LoadingBtn
+          onClick={clickSendCode}
+          disabled={!isValidEmail}
+          isLoading={isSent}
+          lavel="인증 코드 전송"
+          style={{ width: "100%" }}
+        />
       )}
     </>
   );
