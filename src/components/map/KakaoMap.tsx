@@ -150,41 +150,37 @@ export default function KakaoMap() {
   const addFavoriteLocation = (
     locationInfo: IAddress | kakao.maps.services.PlacesSearchResultItem
   ): void => {
-    /** 즐겨찾기 추가에 필요한 정보 */
-    const data: IFavoriteLocation = {
-      ...("id" in locationInfo && { kakaoMapId: locationInfo.id }),
-      ...("place_name" in locationInfo && {
-        placeName: locationInfo.place_name,
-      }),
-      addressName: locationInfo.address_name,
-      x: parseFloat(locationInfo.x),
-      y: parseFloat(locationInfo.y),
-      createdBy: user._id,
-    };
-
-    fetch("/api/map/favorite-location-management", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        getFavoriteLocations();
-      })
-      .catch(err =>
-        console.error(
-          "/src/components/map/KakaoMap > KakaoMap()에서 오류가 발생했습니다. :",
-          err
-        )
-      );
+    // /** 즐겨찾기 추가에 필요한 정보 */
+    // const data: IFavoriteLocation = {
+    //   ...("id" in locationInfo && { kakaoMapId: locationInfo.id }),
+    //   ...("place_name" in locationInfo && {
+    //     placeName: locationInfo.place_name,
+    //   }),
+    //   addressName: locationInfo.address_name,
+    //   x: parseFloat(locationInfo.x),
+    //   y: parseFloat(locationInfo.y),
+    //   createdBy: user._id,
+    // };
+    // fetch("/api/map/favorite-location-management", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then(res => {
+    //     if (res.ok) return res.json();
+    //     alert(ERR_MSG);
+    //     return res.json().then(data => Promise.reject(data.msg));
+    //   })
+    //   .then(data => {
+    //     console.log(data.msg);
+    //     getFavoriteLocations();
+    //   })
+    //   .catch(err =>
+    //     console.error(
+    //       "/src/components/map/KakaoMap > KakaoMap()에서 오류가 발생했습니다. :",
+    //       err
+    //     )
+    //   );
   };
 
   /**

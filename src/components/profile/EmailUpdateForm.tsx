@@ -52,7 +52,7 @@ export default function EmailUpdateForm({
             verified={proceedWithVerifiedEmail}
             isAutoFocus={true}
             isEmailCheckEnabled={true}
-            inputEmail={user.email}
+            // inputEmail={user.email}
           />
         );
     }

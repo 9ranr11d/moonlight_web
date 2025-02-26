@@ -11,16 +11,16 @@ interface IStatusInput {
   /** 변경 시  */
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
-  /** type */
+  /** Type */
   type: "text" | "password";
-  /** value */
+  /** Value */
   value: string;
-  /** placeholder */
+  /** Placeholder */
   placeholder: string;
   /** 상태 */
   msg?: string | null;
   /** 비활성화 여부 */
-  disabled: boolean;
+  disabled?: boolean;
   /** 유효성 */
   showIcon?: boolean;
   /** 오류 여부 */
@@ -34,7 +34,7 @@ export default function StatusInput({
   value,
   placeholder,
   msg,
-  disabled,
+  disabled = false,
   showIcon,
   isErr,
 }: IStatusInput) {

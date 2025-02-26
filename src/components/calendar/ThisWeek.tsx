@@ -40,23 +40,21 @@ export default function ThisWeek() {
 
   /** 일정 정보 가져오기 */
   const getSchedules = (): void => {
-    fetch(
-      `/api/calendar/schedules-management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`
-    )
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(schedules => dispatch(setSchedules(schedules)))
-      .catch(err =>
-        console.error(
-          "/src/components/calendar/ThisWeek > ThisWeek() > getSchedules()에서 오류가 발생했습니다. :",
-          err
-        )
-      );
+    // fetch(
+    //   `/api/calendar/schedules-management/${currentYear}/${currentMonth}/${user._id}/${user.coupleCode}`
+    // )
+    //   .then(res => {
+    //     if (res.ok) return res.json();
+    //     alert(ERR_MSG);
+    //     return res.json().then(data => Promise.reject(data.msg));
+    //   })
+    //   .then(schedules => dispatch(setSchedules(schedules)))
+    //   .catch(err =>
+    //     console.error(
+    //       "/src/components/calendar/ThisWeek > ThisWeek() > getSchedules()에서 오류가 발생했습니다. :",
+    //       err
+    //     )
+    //   );
   };
 
   // 로그인 시 일정 정보 가져오기

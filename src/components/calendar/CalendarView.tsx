@@ -142,23 +142,21 @@ export default function CalendarView() {
 
   /** 일정 가져오기 */
   const getSchedules = (): void => {
-    fetch(
-      `/api/calendar/schedules-management/${year}/${month}/${user._id}/${user.coupleCode}`
-    )
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(_schedules => dispatch(setSchedules(_schedules)))
-      .catch(err =>
-        console.error(
-          "/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :",
-          err
-        )
-      );
+    // fetch(
+    //   `/api/calendar/schedules-management/${year}/${month}/${user._id}/${user.coupleCode}`
+    // )
+    //   .then(res => {
+    //     if (res.ok) return res.json();
+    //     alert(ERR_MSG);
+    //     return res.json().then(data => Promise.reject(data.msg));
+    //   })
+    //   .then(_schedules => dispatch(setSchedules(_schedules)))
+    //   .catch(err =>
+    //     console.error(
+    //       "/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :",
+    //       err
+    //     )
+    //   );
   };
 
   /**
@@ -462,7 +460,7 @@ export default function CalendarView() {
     _year: number,
     _month: number,
     _day: number
-  ): JSX.Element | null => {
+  ): React.JSX.Element | null => {
     /** 렌더링할 날짜 */
     const date: Date = new Date(_year, _month, _day);
 
@@ -504,7 +502,7 @@ export default function CalendarView() {
     _year: number,
     _month: number,
     _day: number
-  ): JSX.Element | null => {
+  ): React.JSX.Element | null => {
     /** 렌더링할 날짜에 있는 시작 날짜와 종료 날짜가 같은 일정들 */
     const schedules: IConvertedSchedules[] = findScheduleByDate(
       _year,

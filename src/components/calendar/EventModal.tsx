@@ -140,7 +140,7 @@ export default function EventModal({
   const newCategoryInitialState: IScheduleCategory = {
     title: "",
     color: "#000000",
-    createdBy: user._id,
+    createdBy: "testId", // user._id,
   };
 
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>(""); // 선택된 일정 Identification
@@ -168,7 +168,7 @@ export default function EventModal({
   // 수정할 일정 정보
   const [editSchedule, setEditSchedule] = useState<IISchedule>({
     ...editScheduleInitialState,
-    user: user._id,
+    user: "testId", // user._id,
   });
 
   const [newCategory, setNewCategory] = useState<IScheduleCategory>(
@@ -279,7 +279,9 @@ export default function EventModal({
 
   /** 카테고리 삭제 */
   const deleteCategory = (_id: string): void => {
-    fetch(`/api/calendar/categories-management?_id=${_id}`, { method: "DELETE" })
+    fetch(`/api/calendar/categories-management?_id=${_id}`, {
+      method: "DELETE",
+    })
       .then(res => {
         if (res.ok) return res.json();
 
@@ -335,7 +337,7 @@ export default function EventModal({
         setEditSchedule(prev => ({
           ...editScheduleInitialState,
           date: prev.date,
-          user: user._id,
+          user: "testId", // user._id,
         }));
 
         setInit();
@@ -733,14 +735,14 @@ export default function EventModal({
     // 일정 팝업 수정 상태 날짜 수정
     setEditSchedule({
       ...schedule,
-      user: String((schedule.user as IIUser)._id),
+      user: "testId", // String((schedule.user as IIUser)._id),
       date: [startDate, endDate],
     });
 
     // 카테고리 생성 상태 초기화
     setNewCategory(prev => ({
       ...prev,
-      createdBy: String((schedule.user as IIUser)._id),
+      createdBy: "testId", // String((schedule.user as IIUser)._id),
     }));
 
     setIsCreateSchedule(false);
@@ -757,20 +759,20 @@ export default function EventModal({
       setEditSchedule(prev => ({
         ...editScheduleInitialState,
         date: prev.date,
-        user: String(_user._id),
+        user: "testId", // String(_user._id),
       }));
     // 일정 팝업이 수정 상태일 시
     else
       setEditSchedule(prev => ({
         ...prev,
-        user: String(_user._id),
+        user: "testId", // String(_user._id),
         categories: [],
       }));
 
     // 카테고리 생성 Input 초기화
     setNewCategory({
       ...newCategoryInitialState,
-      createdBy: String(_user._id),
+      createdBy: "testId", // String(_user._id),
     });
 
     setIsUserListOpen(false);
@@ -815,7 +817,7 @@ export default function EventModal({
   };
 
   /** 조회한 날짜의 팝업 속 일정 렌더링 */
-  const renderModalSchedules = (): JSX.Element => {
+  const renderModalSchedules = (): React.JSX.Element => {
     /** 선택한 날짜 */
     const selectedDate = new Date(editScheduleStateStartDate);
 
@@ -849,8 +851,7 @@ export default function EventModal({
               type="button"
               onClick={() => selectedSchedule(schedule)}
               disabled={
-                user.accessLevel !== 3 &&
-                (schedule.user as IIUser)._id !== user._id
+                user.accessLevel !== 3 && true // (schedule.user as IIUser)._id !== user._id
               }
             >
               <span className={CSS.multiple}>
@@ -887,7 +888,7 @@ export default function EventModal({
   const renderModalInputs = (
     key: string,
     value: TypeScheduleValue
-  ): JSX.Element | null => {
+  ): React.JSX.Element | null => {
     switch (key) {
       // 사용자
       case "user":
@@ -901,15 +902,15 @@ export default function EventModal({
                 isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined
               }
             >
-              <span>{users.find(_user => _user._id === value)?.nickname}</span>
+              {/* <span>{users.find(_user => _user._id === value)?.nickname}</span> */}
 
-              {user.accessLevel >= 3 && (
-                // <Image
-                //   src={isUserListOpen ? IconUpTriangle : IconDownTriangle}
-                //   width={9}
-                //   alt={isUserListOpen ? "▲" : "▼"}
-                // />
-              )}
+              {/* {user.accessLevel >= 3 && (
+                <Image
+                  src={isUserListOpen ? IconUpTriangle : IconDownTriangle}
+                  width={9}
+                  alt={isUserListOpen ? "▲" : "▼"}
+                />
+              )} */}
             </button>
 
             {isUserListOpen && (
@@ -1114,7 +1115,7 @@ export default function EventModal({
   const renderCategories = (
     category: IIScheduleCategory,
     idx: number
-  ): JSX.Element => {
+  ): React.JSX.Element => {
     /** 선택된 카테고리인지 */
     const isSelected: IIScheduleCategory | undefined =
       editSchedule.categories.find(_category => _category._id === category._id);
@@ -1198,7 +1199,7 @@ export default function EventModal({
     if (!isEditSchedule) {
       setEditSchedule({
         ...editScheduleInitialState,
-        user: user._id,
+        user: "testId", // user._id,
         date: [lastSelectedDate, lastSelectedDate],
       });
 

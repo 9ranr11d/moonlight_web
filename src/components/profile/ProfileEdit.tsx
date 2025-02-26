@@ -67,34 +67,30 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * @param userInfo 수정할 정보
    */
   const updateUserInfo = (userInfo: { email?: string; nickname?: string }) => {
-    const data: { _id: string; email?: string; nickname?: string } = {
-      _id: user._id,
-      ...userInfo,
-    };
-
-    fetch("/api/auth/change-user-info", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        console.log(data.msg);
-
-        alert("사용자 정보가 성공적으로 바뀌었습니다.");
-
-        getUser(user.accessToken, dispatch);
-      })
-      .catch(err =>
-        console.error(
-          "/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :",
-          err
-        )
-      );
+    // const data: { _id: string; email?: string; nickname?: string } = {
+    //   _id: user._id,
+    //   ...userInfo,
+    // };
+    // fetch("/api/auth/change-user-info", {
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then(res => {
+    //     if (res.ok) return res.json();
+    //     return res.json().then(data => Promise.reject(data.msg));
+    //   })
+    //   .then(data => {
+    //     console.log(data.msg);
+    //     alert("사용자 정보가 성공적으로 바뀌었습니다.");
+    //     getUser(user.accessToken, dispatch);
+    //   })
+    //   .catch(err =>
+    //     console.error(
+    //       "/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :",
+    //       err
+    //     )
+    //   );
   };
 
   /**
@@ -134,7 +130,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
         break;
       // 별명
       case "nickname":
-        updateUserInfo({ nickname: userData.nickname });
+        // updateUserInfo({ nickname: userData.nickname });
 
         break;
       // '커플 코드 관리' 메뉴로 이동
@@ -173,7 +169,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * 사용자 정보 속성 렌더링
    * @returns 사용자 정보 속성
    */
-  const renderFields = (): JSX.Element[] => {
+  const renderFields = (): React.JSX.Element[] => {
     return editableFields.map(field => {
       const key = field.id as keyof IUser;
 
@@ -225,7 +221,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    * 사용자 정보 수정 Modal 렌더링
    * @returns Modal 내용물
    */
-  const renderModal = (): JSX.Element => {
+  const renderModal = (): React.JSX.Element => {
     switch (renderModalType) {
       // E-mail 수정
       case "email":
@@ -240,7 +236,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
           <Password
             back={() => alert("취소되었습니다")}
             identification={user.identification}
-            inputEmail={user.email}
+            // inputEmail={user.email}
           />
         );
       // Error Message
