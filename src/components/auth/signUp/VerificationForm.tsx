@@ -25,6 +25,7 @@ export default function VerificationForm() {
   const signUp = useSelector((state: RootState) => state.signUpSlice);
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
+  const [timeLeft, setTimeLeft] = useState<number>(5);
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
@@ -55,6 +56,18 @@ export default function VerificationForm() {
     // 이벤트 리스너 제거
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // 남은 시간 변경 시
+  useEffect(() => {
+    // 1초씩 감소
+    if (timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [timeLeft]);
 
   return (
     <>
@@ -94,7 +107,11 @@ export default function VerificationForm() {
             <NextBtn
               onClick={clickConfirmBtn}
               disabled={!signUp.verification.isVerified}
-            />
+            >
+              <span className={CSS.timeLeft}>{timeLeft}</span>
+
+              <span>다음</span>
+            </NextBtn>
           </div>
         </>
       )}

@@ -53,7 +53,7 @@ const initialState: ISignUpState = {
     isValid: false,
   },
   verification: {
-    isVerified: false,
+    isVerified: true,
     msg: null,
     isErr: false,
     email: null,

@@ -72,7 +72,7 @@
 }
 
 .selectedResult {
-  background: var(--click-color) !important;
+  background: var(--primary-dark-color) !important;
   color: white !important;
 }
 

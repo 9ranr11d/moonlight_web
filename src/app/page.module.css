@@ -1,5 +1,5 @@
 .authBox > div {
-  max-width: 60%;
+  width: 500px;
   display: inline-block;
   position: relative;
   left: 50%;

@@ -10,7 +10,7 @@
 }
 
 .tabBtnBox > button:hover {
-  background: var(--click-color);
+  background: var(--primary-dark-color);
 }
 
 .tabBtnBox > button:disabled {

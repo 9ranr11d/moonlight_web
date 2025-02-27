@@ -9,7 +9,7 @@
 }
 
 .listBox > li > button:hover {
-  background: var(--click-color);
+  background: var(--primary-dark-color);
   color: white;
 }
 
