@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
   try {
     const sql = `
       SELECT
+        t1.id,
         t1.type,
         t1.version,
         t1.is_required AS isRequired,

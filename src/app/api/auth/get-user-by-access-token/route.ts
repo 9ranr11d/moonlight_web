@@ -9,7 +9,7 @@ import { verify } from "@utils/jwtUtils";
 interface VerificationResult {
   /** 유효한 Token인지 */
   ok: boolean;
-  /** 유효하다면 사용자 Identification 반환 */
+  /** 유효하다면 사용자 아이디 반환 */
   userIdentification?: string;
   /** 유효하지만 오류 메세지 반환 */
   msg?: string;

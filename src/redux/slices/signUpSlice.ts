@@ -5,9 +5,12 @@ import {
   IEmail,
   IPasswordState,
   IPhone,
+  IProfile,
+  IProfileState,
   ITerm,
   IVerificationState,
 } from "@interfaces/auth";
+import { stat } from "fs";
 
 /** 초기값 Interface */
 interface ITermState {
@@ -30,11 +33,12 @@ interface ISignUpState {
   identification: IIdState;
   password: IPasswordState;
   verification: IVerificationState;
+  profile: IProfileState;
 }
 
 /** 초기값 */
 const initialState: ISignUpState = {
-  step: 2,
+  step: 3,
   term: {
     latestTerms: [],
     agreedTerms: [],
@@ -53,12 +57,18 @@ const initialState: ISignUpState = {
     isValid: false,
   },
   verification: {
-    isVerified: true,
+    isVerified: false,
     msg: null,
     isErr: false,
     email: null,
     phoneNumber: null,
     code: null,
+  },
+  profile: {
+    birthdate: null,
+    gender: null,
+    nickname: null,
+    seq: null,
   },
 };
 
@@ -173,6 +183,20 @@ export const SignUp = createSlice({
     verify: state => {
       state.verification.isVerified = true;
     },
+    /** 프로필 정보 초기화 */
+    resetProfile: state => {
+      Object.assign(state.profile, initialState.profile);
+    },
+    /** 프로필 정보 저장 */
+    setProfile: (state, action: PayloadAction<IProfile>) => {
+      state.profile.birthdate = action.payload.birthdate;
+      state.profile.gender = action.payload.gender;
+      state.profile.nickname = action.payload.nickname;
+    },
+    /** 별명 순서 저장 */
+    setProfileSeq: (state, action: PayloadAction<number>) => {
+      state.profile.seq = action.payload;
+    },
   },
 });
 
@@ -194,6 +218,9 @@ export const {
   setPhoneVerified,
   setVerificationErr,
   verify,
+  resetProfile,
+  setProfile,
+  setProfileSeq,
 } = SignUp.actions;
 
 export default SignUp.reducer;

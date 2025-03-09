@@ -20,7 +20,7 @@ interface ILoadingBtn {
   /** Loading 여부 */
   isLoading?: boolean;
   /** Lavel */
-  lavel?: string;
+  label?: string;
   /** CSS */
   style?: React.CSSProperties;
 }
@@ -30,7 +30,7 @@ export default function LoadingBtn({
   onClick,
   disabled = false,
   isLoading,
-  lavel,
+  label,
   style,
 }: ILoadingBtn) {
   return (
@@ -54,7 +54,7 @@ export default function LoadingBtn({
           style={{ width: 16, height: 16 }}
         />
       ) : (
-        lavel
+        label
       )}
     </button>
   );

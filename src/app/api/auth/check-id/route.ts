@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    // Identification
+    // 아이디
     const { identification }: { identification: string } = await req.json();
 
     /** Identification와 일차하는 사용자 정보 */
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
 
-    // 일차하는 사용자의 Identification, email 반환
+    // 일차하는 사용자의 아이디, email 반환
     return NextResponse.json(
       { identification: user.identification, email: user.email },
       { status: 200 }

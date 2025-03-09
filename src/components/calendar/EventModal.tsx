@@ -143,7 +143,7 @@ export default function EventModal({
     createdBy: "testId", // user._id,
   };
 
-  const [selectedScheduleId, setSelectedScheduleId] = useState<string>(""); // 선택된 일정 Identification
+  const [selectedScheduleId, setSelectedScheduleId] = useState<string>(""); // 선택된 일정 아이디
 
   const [isEditSchedule, setIsEditSchedule] = useState<boolean>(false); // 일정 수정 상태인지
   const [isCreateSchedule, setIsCreateSchedule] = useState<boolean>(false); // 일정 생성 상태인지

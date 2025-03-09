@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    // Identification, PassWord
+    // 아이디, PassWord
     const {
       identification,
       password,
@@ -30,13 +30,13 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
 
-    /** 해싱한 Password 찾은 사용자의 Password 일치 여부 */
+    /** 해싱한 비밀번호 찾은 사용자의 비밀번호 일치 여부 */
     const passwordMatch: boolean = await bcrypt.compare(
       password,
       user.password
     );
 
-    // Password 사용자의 Password가 일치하지 않을 시 404 Error 반환
+    // 비밀번호 사용자의 Password가 일치하지 않을 시 404 Error 반환
     if (!passwordMatch)
       return NextResponse.json(
         { msg: "비밀번호가 일치하지 않습니다." },

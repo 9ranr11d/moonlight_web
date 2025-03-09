@@ -24,7 +24,7 @@ interface IStatusInput {
   /** 유효성 */
   showIcon?: boolean;
   /** 오류 여부 */
-  isErr: boolean;
+  isErr?: boolean;
 }
 
 /** 현재 상태 표시 Input */
@@ -36,12 +36,12 @@ export default function StatusInput({
   msg,
   disabled = false,
   showIcon,
-  isErr,
+  isErr = false,
 }: IStatusInput) {
   const [isVisible, setIsVisible] = useState<boolean>(false); // 내용 가시 여부
 
   /** 가시 여부 버튼 Toggle */
-  const toggleVisibility = () => {
+  const toggleVisibility = (): void => {
     setIsVisible(prev => !prev);
   };
 

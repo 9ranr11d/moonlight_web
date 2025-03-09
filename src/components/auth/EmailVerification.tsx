@@ -15,7 +15,7 @@ import LottieLoading from "@public/json/loading_round_white.json";
 interface IEmailVerificationProps {
   /** 제목 */
   title: string;
-  /** Identification 자동 포커스 할 지 */
+  /** 아이디 자동 포커스 할 지 */
   isAutoFocus: boolean;
   /** 입력한 E-mail을 DB에 있는 지 체크할 지 */
   isEmailCheckEnabled: boolean;

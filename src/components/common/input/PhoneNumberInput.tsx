@@ -65,14 +65,11 @@ export default function PhoneNumberInput({ onChange }: IPhoneInput) {
 
   // 휴대전화 번호 변경 시
   useEffect(() => {
-    if (onChange)
-      onChange(`${countryCallingCodes[conuntryCallingCodeIdx].code}${number}`);
+    onChange?.(`${countryCallingCodes[conuntryCallingCodeIdx].code}${number}`);
   }, [conuntryCallingCodeIdx, number]);
 
   return (
-    <div className={CSS.wrapper}>
-      <h6>휴대전화</h6>
-
+    <>
       <div className={CSS.inputCover} style={{ position: "relative" }}>
         <input
           type="number"
@@ -93,6 +90,6 @@ export default function PhoneNumberInput({ onChange }: IPhoneInput) {
           style={{ position: "absolute", top: 0, width: 90 }}
         />
       </div>
-    </div>
+    </>
   );
 }

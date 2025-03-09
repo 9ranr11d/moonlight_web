@@ -23,6 +23,7 @@ const pool = mariadb.createPool({
   password: DB_PASSWORD,
   database: DB_NAME,
   port: DB_PORT,
+  connectionLimit: 10,
 });
 
 /**
@@ -31,7 +32,10 @@ const pool = mariadb.createPool({
  * @param params - 쿼리 매개변수
  * @returns 쿼리 실행 결과
  */
-export const query = async (sql: string, params?: QueryParams): Promise<any> => {
+export const query = async (
+  sql: string,
+  params?: QueryParams
+): Promise<any> => {
   let connection: mariadb.Connection | undefined;
 
   try {
@@ -41,9 +45,9 @@ export const query = async (sql: string, params?: QueryParams): Promise<any> => 
 
     return result;
   } catch (err) {
-    console.error("Database query 오류 :", err);
+    console.error("Database query 오류입니다. :", err);
 
-    throw new Error("Database query 실패");
+    throw new Error("Database query 실패했습니다.");
   } finally {
     if (connection) await connection.end(); // 연결 종료
   }

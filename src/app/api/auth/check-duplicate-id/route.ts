@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { query } from "@lib/dbConnect";
 
-/** Identification 중복 여부 확인 */
+/** 아이디 중복 여부 확인 */
 export async function POST(req: NextRequest) {
   try {
-    // Identification
+    // 아이디
     const { identification }: { identification: string } = await req.json();
 
     /** SQL 쿼리문 */

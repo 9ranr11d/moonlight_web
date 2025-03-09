@@ -2,12 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
-
-import { AppDispatch } from "@redux/store";
-
-import { setTermAgreementAction } from "@actions/authAction";
-
 import { ITerm } from "@interfaces/auth";
 
 import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
@@ -15,6 +9,9 @@ import ExpandCollapseBtn from "@components/common/btn/ExpandCollapseBtn";
 
 /** 약관 체크 박스 인터페이스 */
 interface ITermInput {
+  /** 체크 변경 여부 */
+  onChange?: (checkedTerm: ITerm) => void;
+
   /** 약관 */
   term: ITerm;
   /** 동의 여부 */
@@ -22,17 +19,14 @@ interface ITermInput {
 }
 
 /** 약관 체크 박스 */
-export default function TermInput({ term, isAgreed }: ITermInput) {
-  /** Dispatch */
-  const dispatch = useDispatch<AppDispatch>();
-
+export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 동의 여부
   const [isContentVisible, setIsContentVisible] = useState<boolean>(false); // 약관 내용 가시 여부
 
   /** 동의 여부 Toggle */
-  const toggleCheck = () => {
-    // 동의 여부를 termsSlice에 저장
-    dispatch(setTermAgreementAction(term));
+  const toggleCheck = (): void => {
+    // 동의 여부 상위 컴포넌트로 전송
+    onChange?.(term);
 
     setIsChecked(prev => !prev);
   };

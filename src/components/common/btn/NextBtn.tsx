@@ -15,6 +15,8 @@ interface INextBtn {
   disabled?: boolean;
   /** 버튼 문자열 */
   label?: string;
+  /** CSS */
+  style?: React.CSSProperties;
   /** 내용 */
   children?: React.ReactNode;
 }
@@ -24,6 +26,7 @@ export default function NextBtn({
   onClick,
   disabled = false,
   label = "다음",
+  style,
   children,
 }: INextBtn) {
   return (
@@ -32,6 +35,7 @@ export default function NextBtn({
       onClick={onClick}
       disabled={disabled}
       className={CSS.nextBtn}
+      style={style}
     >
       {children ? children : label}
 

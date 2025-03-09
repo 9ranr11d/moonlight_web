@@ -4,7 +4,7 @@ import dbConnect from "@lib/dbConnect";
 
 import User, { IIUser } from "@interfaces/auth/index";
 
-/** 해당 E-mail을 가진 사용자 Identification 가져오기 */
+/** 해당 E-mail을 가진 사용자 아이디 가져오기 */
 export async function POST(req: NextRequest) {
   try {
     // DB 연결
@@ -23,10 +23,10 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
 
-    /** 일치하는 사용자의 블러 처리된 Identification(끝에서부터 2자리 '*') */
+    /** 일치하는 사용자의 블러 처리된 아이디(끝에서부터 2자리 '*') */
     const modifiedId: string = `${user.identification.slice(0, -2)}**`;
 
-    // 블러 처리한 사용자 Identification 반환
+    // 블러 처리한 사용자 아이디 반환
     return NextResponse.json({ identification: modifiedId }, { status: 200 });
   } catch (err) {
     console.error(

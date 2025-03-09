@@ -30,7 +30,7 @@ export default function Home() {
   const { data: session } = useSession(); // nextauth의 로그인 정보
 
   const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
-  const [isRecovery, setIsRecovery] = useState<boolean>(false); // Identification/Password 찾기 여부
+  const [isRecovery, setIsRecovery] = useState<boolean>(false); // 아이디/비밀번호 찾기 여부
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {

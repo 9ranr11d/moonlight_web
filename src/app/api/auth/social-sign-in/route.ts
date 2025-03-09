@@ -8,6 +8,12 @@ export async function GET(req: NextRequest) {
     /** identification */
     const id: string | null = req.nextUrl.searchParams.get("id");
 
+    if (!id)
+      return NextResponse.json(
+        { msg: "identification을 입력해주세요." },
+        { status: 400 }
+      );
+
     /** SQL 쿼리문 */
     const sql = `
       SELECT
@@ -42,7 +48,7 @@ export async function GET(req: NextRequest) {
 
     if (result.length === 0)
       return NextResponse.json(
-        { msg: "사용자 정보가 없습니다." },
+        { msg: `${id} 사용자 정보가 없습니다.` },
         { status: 404 }
       );
 
@@ -56,6 +62,7 @@ export async function GET(req: NextRequest) {
           createdAt: new Date(user.createdAt).toISOString(),
           updatedAt: new Date(user.updatedAt).toISOString(),
         },
+        msg: `${id}으로 로그인 성공했습니다.`,
       },
       { status: 200 }
     );

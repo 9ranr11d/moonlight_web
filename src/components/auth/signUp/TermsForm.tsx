@@ -12,6 +12,7 @@ import {
   incrementStepAction,
   resetIdentificationAction,
   resetPasswordAction,
+  setTermAgreementAction,
 } from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
@@ -21,6 +22,7 @@ import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
 import TermInput from "@components/common/input/TermInput";
 import NextBtn from "@components/common/btn/NextBtn";
+import { ITerm } from "@interfaces/auth";
 
 /** 약관 동의 Form*/
 export default function TermsForm() {
@@ -32,6 +34,11 @@ export default function TermsForm() {
 
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false); // 전체 동의 여부
   const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부
+
+  /** 약관 동의 여부 변경 시 */
+  const onTermCheckboxChange = (term: ITerm): void => {
+    dispatch(setTermAgreementAction(term));
+  };
 
   /** 전체 약관 동의 여부 확인 */
   const checkAllTermsAgreed = (): boolean => {
@@ -96,6 +103,7 @@ export default function TermsForm() {
             {signUp.term.latestTerms.map((term, idx) => (
               <TermInput
                 key={idx}
+                onChange={onTermCheckboxChange}
                 term={term}
                 isAgreed={signUp.term.agreedTerms.some(
                   agreedTerm => agreedTerm.type === term.type

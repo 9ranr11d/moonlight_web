@@ -24,7 +24,7 @@ export default function TabBtn({ onChange, labelArr, idx = 0 }: ITabBtn) {
     setSelectedIdx(idx);
 
     // 상위 컴포넌트로 선택한 순서 전달
-    if (onChange) onChange(idx);
+    onChange?.(idx);
   };
 
   // 상위 컴포넌트에서 선택된 순서 변경 시

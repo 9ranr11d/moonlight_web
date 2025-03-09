@@ -19,19 +19,19 @@ interface IRecoveryProps {
 
 /** ID/PW 찾기 */
 export default function Recovery({ back }: IRecoveryProps) {
-  const [isIdRecovery, setIsIdRecovery] = useState<boolean>(true); // Identification 찾기 인지 여부
+  const [isIdRecovery, setIsIdRecovery] = useState<boolean>(true); // 아이디 찾기 인지 여부
 
   /** 뒤로가기 */
   const goBack = () => {
     back();
   };
 
-  /** Identification 찾기 클릭 */
+  /** 아이디 찾기 클릭 */
   const identificationRecovery = () => {
     setIsIdRecovery(true);
   };
 
-  /** Password 찾기 클릭 */
+  /** 비밀번호 찾기 클릭 */
   const passwordRecovery = () => {
     setIsIdRecovery(false);
   };
@@ -53,7 +53,7 @@ export default function Recovery({ back }: IRecoveryProps) {
             onClick={identificationRecovery}
             disabled={isIdRecovery}
           >
-            Identification
+            아이디
           </button>
 
           <button
@@ -61,7 +61,7 @@ export default function Recovery({ back }: IRecoveryProps) {
             onClick={passwordRecovery}
             disabled={!isIdRecovery}
           >
-            Password
+            비밀번호
           </button>
         </div>
 

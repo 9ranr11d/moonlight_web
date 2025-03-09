@@ -6,14 +6,14 @@ import { ERR_MSG } from "@constants/msg";
 
 import EmailVerification from "./EmailVerification";
 
-/** Identification 찾기 */
+/** 아이디 찾기 */
 export default function Identification() {
   const [isVerified, setIsVerified] = useState<boolean>(false); // E-mail 인증 여부
 
-  const [identification, setIdentification] = useState<string>(""); // 찾으려는 Identification
+  const [identification, setIdentification] = useState<string>(""); // 찾으려는 아이디
 
   /**
-   * 입력받은 E-mail과 부합하는 Identification 찾기
+   * 입력받은 E-mail과 부합하는 아이디 찾기
    * @param email E-mail
    */
   const getUserIdentification = (email: string): void => {

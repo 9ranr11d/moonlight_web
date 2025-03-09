@@ -11,6 +11,7 @@ import {
   resetIdentificationAction,
   resetPasswordAction,
   resetTermAction,
+  resetVerificationAction,
 } from "@actions/authAction";
 
 import CSS from "./SignUp.module.css";
@@ -24,6 +25,7 @@ import DotAndBar from "@components/common/indicator/DotAndBar";
 import TermsForm from "@components/auth/signUp/TermsForm";
 import AccountForm from "@components/auth/signUp/AccountForm";
 import VerificationForm from "@components/auth/signUp/VerificationForm";
+import ProfileForm from "@components/auth/signUp/ProfileForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
@@ -54,6 +56,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
     // 단계별 뒤로가기 클릭 시
     switch (step) {
+      case 3:
+        dispatch(resetVerificationAction());
+
+        break;
       case 2:
         dispatch(resetIdentificationAction());
         dispatch(resetPasswordAction());
@@ -70,7 +76,12 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
   /** Step별 컴포넌트 */
   const steps = useMemo(
-    () => [<TermsForm />, <AccountForm />, <VerificationForm />],
+    () => [
+      <TermsForm />,
+      <AccountForm />,
+      <VerificationForm />,
+      <ProfileForm />,
+    ],
     []
   );
 

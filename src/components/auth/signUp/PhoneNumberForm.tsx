@@ -14,6 +14,8 @@ import {
   verifyPhoneNumberAction,
 } from "@actions/authAction";
 
+import CSS from "@components/auth/signUp/SignUp.module.css";
+
 import PhoneNumberInput from "@components/common/input/PhoneNumberInput";
 import VerificationInput from "@components/common/input/VerificationInput";
 import LoadingBtn from "@components/common/btn/LoadingBtn";
@@ -66,7 +68,11 @@ export default function PhoneNumberForm() {
 
   return (
     <>
-      <PhoneNumberInput onChange={handlePhoneNumber} />
+      <div>
+        <h6 className={CSS.label}>휴대전화 번호</h6>
+
+        <PhoneNumberInput onChange={handlePhoneNumber} />
+      </div>
 
       {signUp.verification.phoneNumber ? (
         <>
@@ -89,7 +95,7 @@ export default function PhoneNumberForm() {
           onClick={clickSendCode}
           disabled={!isValidPhoneNumber(phoneNumber)}
           isLoading={isSent}
-          lavel="인증 코드 전송"
+          label="인증 코드 전송"
           style={{ width: "100%" }}
         />
       )}

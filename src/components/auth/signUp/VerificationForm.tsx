@@ -2,9 +2,9 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@redux/store";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -18,14 +18,18 @@ import EmailForm from "@components/auth/signUp/EmailForm";
 import PhoneNumberForm from "@components/auth/signUp/PhoneNumberForm";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
+import { incrementStepAction } from "@actions/authAction";
 
 /** 본인 인증 Form */
 export default function VerificationForm() {
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
   /** 회원가입 정보 */
   const signUp = useSelector((state: RootState) => state.signUpSlice);
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
-  const [timeLeft, setTimeLeft] = useState<number>(5);
+  const [timeLeft, setTimeLeft] = useState<number>(5); // 본인 인증 완료 시 다음 단계 자동 넘기 제한 시간
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
@@ -33,7 +37,9 @@ export default function VerificationForm() {
   };
 
   /** 다음 버튼 클릭 시 */
-  const clickConfirmBtn = () => {};
+  const clickConfirmBtn = () => {
+    dispatch(incrementStepAction());
+  };
 
   /** Input들 */
   const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
@@ -59,15 +65,18 @@ export default function VerificationForm() {
 
   // 남은 시간 변경 시
   useEffect(() => {
-    // 1초씩 감소
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
+    // 본인 인증 완료 시
+    if (signUp.verification.isVerified) {
+      // 1초씩 감소
+      if (timeLeft > 0) {
+        const timer = setInterval(() => {
+          setTimeLeft(prev => prev - 1);
+        }, 1000);
 
-      return () => clearInterval(timer);
+        return () => clearInterval(timer);
+      } else dispatch(incrementStepAction());
     }
-  }, [timeLeft]);
+  }, [timeLeft, signUp.verification.isVerified]);
 
   return (
     <>
@@ -107,6 +116,7 @@ export default function VerificationForm() {
             <NextBtn
               onClick={clickConfirmBtn}
               disabled={!signUp.verification.isVerified}
+              style={{ paddingLeft: 40 }}
             >
               <span className={CSS.timeLeft}>{timeLeft}</span>
 

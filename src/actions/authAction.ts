@@ -19,9 +19,18 @@ import {
   setVerificationErr,
   verify,
   setPhoneVerified,
+  resetProfile,
+  setProfile,
+  setProfileSeq,
 } from "@redux/slices/signUpSlice";
 
-import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
+import {
+  IDuplicate,
+  IIUser,
+  IPasswordState,
+  IProfile,
+  ITerm,
+} from "@interfaces/auth";
 
 import { ERR_MSG } from "@constants/msg";
 
@@ -41,6 +50,8 @@ export const resetSignUpAction = () => async (dispatch: AppDispatch) => {
 export const socialSignInAction =
   (id: string) => async (dispatch: AppDispatch) => {
     try {
+      console.log(`${id}로 소셜 로그인 시도 중...`);
+
       const response = await fetch(`/api/auth/social-sign-in?id=${id}`);
 
       if (!response.ok) {
@@ -52,6 +63,8 @@ export const socialSignInAction =
       }
 
       const data = await response.json();
+
+      console.log(data.msg);
 
       dispatch(socialSignIn(data.user));
     } catch (err) {
@@ -256,6 +269,60 @@ export const verifyPhoneNumberAction =
 export const verifyAction = () => (dispatch: AppDispatch) => {
   dispatch(verify());
 };
+
+/** 프로필 정보 초기화 */
+export const resetProfileAction = () => async (dispatch: AppDispatch) => {
+  dispatch(resetProfile());
+};
+
+/** 프로필 정보 저장 */
+export const setProfileAction =
+  (formData: IProfile) => async (dispatch: AppDispatch) => {
+    dispatch(setProfile(formData));
+  };
+
+export const setProfileSeqAction =
+  (formData: { nickname: string }) => async (dispatch: AppDispatch) => {
+    fetch("/api/auth/get-next-nickname-seq", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        alert(ERR_MSG);
+
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => dispatch(setProfileSeq(data.seq)))
+      .catch(err => {
+        console.error(
+          "/src/actions/authAction > getNextNicknameSeqAction()에서 오류가 발생했습니다. :",
+          err
+        );
+      });
+  };
+
+export const signUpAction =
+  (formData: IIUser) => async (dispatch: AppDispatch) => {
+    fetch("/api/auth/sign-up", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+        return res.json().then(data => Promise.reject(data.msg));
+      })
+      .then(data => {})
+      .catch(err => {
+        console.error(
+          "/src/actions/authAction > signUpAction()에서 오류가 발생했습니다. :",
+          err
+        );
+      });
+  };
 
 /**
  * local 로그아웃

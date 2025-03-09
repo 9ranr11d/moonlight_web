@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 
 import { generateRandomCode } from "@utils/index";
 
-/** 관리자 E-mail Identification */
+/** 관리자 E-mail 아이디 */
 const ADMIN_MAIL: string = process.env.NODEMAILER_ID!;
 /** 관리자 E-mail PassWord(앱 비밀번호) */
 const ADMIN_PASSWORD: string = process.env.NODEMAILER_PW!;

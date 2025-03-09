@@ -17,7 +17,7 @@ export default function EmailInput({ onChange }: IEmailInput) {
   /** E-mail 자동완성 목록 */
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"];
 
-  const [firstEmail, setFirstEmail] = useState<string>(""); // E-mail Identification 부분
+  const [firstEmail, setFirstEmail] = useState<string>(""); // E-mail 아이디 부분
   const [lastEmail, setLastEmail] = useState<string>(""); // E-mail Domain 부분
 
   const [lastEmailIdx, setLastEmailIdx] = useState<number>(0); // E-mail List에서 선택한 순번
@@ -25,7 +25,7 @@ export default function EmailInput({ onChange }: IEmailInput) {
   /** 완성된 E-mail */
   const fullEmail: string = `${firstEmail}@${lastEmail}`;
 
-  /** E-mail Identification 부분 Input */
+  /** E-mail 아이디 부분 Input */
   const handleFirstEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFirstEmail(e.target.value);
   };
@@ -49,13 +49,11 @@ export default function EmailInput({ onChange }: IEmailInput) {
 
   // E-mail 변경 시
   useEffect(() => {
-    if (onChange) onChange(fullEmail);
+    onChange?.(fullEmail);
   }, [fullEmail]);
 
   return (
-    <div className={CSS.wrapper}>
-      <h6>E-mail</h6>
-
+    <>
       <div className={CSS.inputCover}>
         <div>
           <input
@@ -99,6 +97,6 @@ export default function EmailInput({ onChange }: IEmailInput) {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }

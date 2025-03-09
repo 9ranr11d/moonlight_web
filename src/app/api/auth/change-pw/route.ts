@@ -12,7 +12,7 @@ export async function PUT(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    // Identification, PassWord
+    // 아이디, PassWord
     const {
       identification,
       password,
@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
 
-    /** 해싱된 Password */
+    /** 해싱된 비밀번호 */
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
     // DB 속 사용자의 비밀번호 변경
@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest) {
       { new: true }
     );
 
-    // Password 변경 성공 메세지 반환
+    // 비밀번호 변경 성공 메세지 반환
     return NextResponse.json(
       { msg: "비밀번호가 성공적으로 바뀌었습니다." },
       { status: 200 }

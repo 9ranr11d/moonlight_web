@@ -75,7 +75,7 @@ export async function PUT(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    // Identification, 색상, 제목
+    // 아이디, 색상, 제목
     const { _id, color, title }: { _id: string; color: string; title: string } =
       await req.json();
 
@@ -114,7 +114,7 @@ export async function DELETE(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    /** Identification */
+    /** 아이디 */
     const _id = req.nextUrl.searchParams.get("_id");
 
     // 카테고리 삭제

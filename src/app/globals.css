@@ -231,7 +231,6 @@ input[type="color"]::-webkit-color-swatch {
 
 button {
   border: none;
-  /* background: var(--primary-color); */
   background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
   padding: 10px;
   border-radius: 3px;

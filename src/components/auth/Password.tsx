@@ -10,17 +10,17 @@ import EmailVerification from "./EmailVerification";
 
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 
-/** Password 자식 */
+/** 비밀번호 자식 */
 interface IPasswordProps {
   /** 뒤로가기 */
   back: () => void;
-  /** Identification */
+  /** 아이디 */
   identification?: string;
   /** 선 입력 E-mail */
   inputEmail?: string;
 }
 
-/** Password 찾기 */
+/** 비밀번호 찾기 */
 export default function Password({
   back,
   identification,
@@ -28,18 +28,18 @@ export default function Password({
 }: IPasswordProps) {
   const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
-  const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // Identification 인증 여부
+  const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // 아이디 인증 여부
   const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
-  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 Password 확인 일치 여부
+  const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 비밀번호 확인 일치 여부
 
   const [_identification, set_identification] = useState<string>(
     identification || ""
-  ); // 인증할 Identification
+  ); // 인증할 아이디
   const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
-  const [password, setPassword] = useState<string>(""); // 새로 만들 Password
-  const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 Password 확인
+  const [password, setPassword] = useState<string>(""); // 새로 만들 비밀번호
+  const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 비밀번호 확인
 
-  /** Identification 인증 */
+  /** 아이디 인증 */
   const checkIdentification = (): void => {
     const data: { identification: string } = {
       identification: _identification,
@@ -106,31 +106,31 @@ export default function Password({
       );
   };
 
-  /** Identification Input */
+  /** 아이디 Input */
   const handleIdentification = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     set_identification(e.target.value);
   };
 
-  /** Identification Input에서 'Enter'를 누를 시 */
+  /** 아이디 Input에서 'Enter'를 누를 시 */
   const handleIdentificationKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
   ): void => {
     if (e.key === "Enter") checkIdentification();
   };
 
-  /** Password Input */
+  /** 비밀번호 Input */
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  /** Password 확인 Input */
+  /** 비밀번호 확인 Input */
   const handleConfirmPw = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setConfirmPassword(e.target.value);
   };
 
-  /** Password 확인 Input에서 'Enter'를 누를 시 */
+  /** 비밀번호 확인 Input에서 'Enter'를 누를 시 */
   const handleConfirmPwKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
   ): void => {
@@ -152,7 +152,7 @@ export default function Password({
       passwordInputRef.current.focus();
   }, [isEmailMatching]);
 
-  // Password랑 Password 확인 일치 여부 판단
+  // 비밀번호랑 비밀번호 확인 일치 여부 판단
   useEffect(() => {
     if (password.length > 0 && password === confirmPassword)
       setIsPwMatching(true);
@@ -185,7 +185,7 @@ export default function Password({
                     value={identification}
                     onChange={handleIdentification}
                     onKeyDown={handleIdentificationKeyDown}
-                    placeholder="Identification"
+                    placeholder="아이디"
                   />
                 </li>
 
@@ -223,7 +223,7 @@ export default function Password({
                     value={password}
                     onChange={handlePassword}
                     ref={passwordInputRef}
-                    placeholder="Password"
+                    placeholder="비밀번호"
                   />
                 </li>
               </ul>
@@ -241,7 +241,7 @@ export default function Password({
                     value={confirmPassword}
                     onChange={handleConfirmPw}
                     onKeyDown={handleConfirmPwKeyDown}
-                    placeholder="Confirm Password"
+                    placeholder="Confirm 비밀번호"
                   />
 
                   {isPasswordMatching && (

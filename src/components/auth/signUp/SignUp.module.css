@@ -1,6 +1,7 @@
-/* .signUpBox {
-  width: 500px;
-} */
+.label {
+  text-align: left;
+  margin-bottom: 3px;
+}
 
 .okBtnBox {
   margin-top: 20px;
@@ -13,12 +14,14 @@
 }
 
 .timeLeft {
-  display: inline-block;
   width: 20px;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
   background: var(--primary-dark-color);
   padding: 5px;
   border-radius: 5px;
-  margin-right: 7px;
 }
 
 @media (max-width: 767px) {
@@ -28,13 +31,5 @@
 
   .indicator {
     margin-top: 30px;
-  }
-
-  .timeLeft {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    margin-right: 0;
   }
 }

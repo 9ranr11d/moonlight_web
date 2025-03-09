@@ -10,9 +10,16 @@ const LottiePlayer = dynamic(() => import("react-lottie-player"), {
   ssr: false,
 });
 
-export default function LunarLoader() {
+interface ILunarLoader {
+  /** CSS */
+  style?: React.CSSProperties;
+  /** 로딩 메세지 */
+  msg?: React.ReactNode;
+}
+
+export default function LunarLoader({ style, msg }: ILunarLoader) {
   return (
-    <div>
+    <div style={style}>
       <div
         style={{
           height: 100,
@@ -30,9 +37,13 @@ export default function LunarLoader() {
       </div>
 
       <h6>
-        달이 차오르고 있습니다.
-        <br />
-        잠시만 주무시고 오세요.
+        {msg || (
+          <>
+            달이 차오르고 있습니다.
+            <br />
+            잠시만 주무시고 오세요.
+          </>
+        )}
       </h6>
     </div>
   );

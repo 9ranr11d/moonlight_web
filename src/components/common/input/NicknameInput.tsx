@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import { validateNickname } from "@utils/index";
 
-export default function NicknameInput() {
+import StatusInput from "@components/common/input/StatusInput";
+
+/** 별명 Input Interface */
+interface INicknameInput {
+  onChange?: (nickname: string) => void;
+}
+
+/** 별명 Input */
+export default function NicknameInput({ onChange }: INicknameInput) {
   const [nickname, setNickName] = useState<string>(""); // 별명
 
   /** 별명 Input */
@@ -12,16 +20,21 @@ export default function NicknameInput() {
     setNickName(e.target.value);
   };
 
-  return (
-    <div className={CSS.wrapper}>
-      <h6>별명</h6>
+  // 별명 변경 시
+  useEffect(() => {
+    onChange?.(nickname);
+  }, [nickname]);
 
-      <input
-        type="text"
-        value={nickname}
-        onChange={handleNickname}
-        placeholder="Nickname"
-      />
-    </div>
+  return (
+    <StatusInput
+      type="text"
+      value={nickname}
+      onChange={handleNickname}
+      placeholder="영문, 한글, 숫자, '_', '.'을 이용해서 만들어주세요."
+      msg={
+        nickname && !validateNickname(nickname) ? "형식이 잘못됐습니다." : null
+      }
+      isErr={!validateNickname(nickname)}
+    />
   );
 }

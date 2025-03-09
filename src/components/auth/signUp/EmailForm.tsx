@@ -12,13 +12,13 @@ import {
   verityEmailAction,
 } from "@actions/authAction";
 
+import CSS from "@components/auth/signUp/SignUp.module.css";
+
 import { validateEmail } from "@utils/index";
 
 import EmailInput from "@components/common/input/EmailInput";
 import VerificationInput from "@components/common/input/VerificationInput";
 import LoadingBtn from "@components/common/btn/LoadingBtn";
-
-import IconCheck from "@public/svgs/common/icon_check.svg";
 
 /** 이메일 인증 Form */
 export default function EmailForm() {
@@ -78,7 +78,11 @@ export default function EmailForm() {
 
   return (
     <>
-      <EmailInput onChange={handleEmail} />
+      <div>
+        <h6 className={CSS.label}>E-mail</h6>
+
+        <EmailInput onChange={handleEmail} />
+      </div>
 
       {signUp.verification.email ? (
         <>
@@ -101,7 +105,7 @@ export default function EmailForm() {
           onClick={clickSendCode}
           disabled={!isValidEmail}
           isLoading={isSent}
-          lavel="인증 코드 전송"
+          label="인증 코드 전송"
           style={{ width: "100%" }}
         />
       )}

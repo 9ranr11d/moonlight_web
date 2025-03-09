@@ -14,7 +14,7 @@ import { IIISchedule } from "@models/Schedule";
 
 import CSS from "./CalendarView.module.css";
 
-import { DAY_OF_WEEK, MONTH_DAYS, MONTH_NAMES } from "@constants/date";
+import { DAY_OF_WEEK, MONTH_NAMES } from "@constants/date";
 import { ERR_MSG } from "@constants/msg";
 
 import EventModal from "./EventModal";
@@ -25,6 +25,7 @@ import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconClose from "@public/img/common/icon_close_primary.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
+import { getMonthDays } from "@utils/index";
 
 /** 일정 표시를 위한 시작 날짜, 종료 날짜를 변환한 일정 Interface */
 export interface IConvertedSchedules extends IIISchedule {
@@ -64,7 +65,7 @@ export default function CalendarView() {
 
   /** 연도, 월 선택 사이드 메뉴 가로 길이  */
   const siderbarWidth = 250;
-  /** 시작 년도부터 최대 연도 */
+  /** 시작 연도부터 최대 연도 */
   const MaximumSelectableYear = 12;
 
   /** 연도, 월 선택 사이드 메뉴 Ref */
@@ -90,6 +91,8 @@ export default function CalendarView() {
   const [isInputYearMonth, setIsInputYearMonth] = useState<boolean>(false); // 연도 텍스트 입력 필드 가시 여부
 
   const [users, setUsers] = useState<IIUser[]>([]); // 전체 사용자 목록
+
+  const MONTH_DAYS: number[] = getMonthDays(year); // 해당 연도의 월별 일수
 
   const [convertedSchedules, setConvertedSchedules] = useState<
     IConvertedSchedules[]
@@ -229,12 +232,12 @@ export default function CalendarView() {
    */
   const changeYear = (direction: "prev" | "next"): void => {
     switch (direction) {
-      // 이전 년도로 이동
+      // 이전 연도로 이동
       case "prev":
         setYear(prev => prev - 1);
 
         break;
-      // 다음 년도로 이동
+      // 다음 연도로 이동
       case "next":
         setYear(prev => prev + 1);
 
@@ -386,7 +389,7 @@ export default function CalendarView() {
   };
 
   // /**
-  //  * 선택한 년도로 사이드 메뉴 스크롤 이동
+  //  * 선택한 연도로 사이드 메뉴 스크롤 이동
   //  * @param _year 선택한 연도
   //  * @param idx 선택한 연도 순번
   //  */

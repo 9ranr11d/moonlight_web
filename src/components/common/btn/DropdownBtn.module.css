@@ -4,15 +4,15 @@
   border: 1px solid var(--gray-300);
 }
 
-.listBox > li > button {
+.list > li > button {
   border-radius: 0;
 }
 
-.listBox > li > button:hover {
+.list > li > button:hover {
   background: var(--primary-dark-color);
   color: white;
 }
 
-.listBox > li:last-child > button {
+.list > li:last-child > button {
   border-radius: 0 0 3px 3px;
 }

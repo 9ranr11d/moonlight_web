@@ -1,15 +1,19 @@
+export interface ISignUp {}
+
 /** 공개 사용자 정보 Interface */
 export interface IUser {
-  /** Identification */
+  /** 아이디 */
   identification: string;
   /** 프로필 이미지 url */
-  profileImgUrl: string | null;
+  profileImgUrl?: string | null;
   /** 별명 */
   nickname: string | null | undefined;
+  /** 별명 식별자 */
+  seq: string;
   /** 휴대전화 번호 */
-  phoneNumber: string | null;
+  phoneNumber?: string | null;
   /** E-mail */
-  email: string | null | undefined;
+  email?: string | null | undefined;
   /** 회원가입 방법 */
   platform: "web" | "android" | "ios";
   /**
@@ -27,24 +31,28 @@ export interface IUser {
    *  deleted: 사용자가 계정 삭제를 요청 시(1달이 지난 후 데이터가 삭제됨)
    */
   accountStatus: "active" | "dormant" | "deleted";
+  /** 생년월일 */
+  birthdate: string;
+  /** 성별 */
+  gender: "male" | "female";
   /** 생성일 */
-  createdAt: string;
+  createdAt?: string;
   /** 수정일 */
-  updatedAt: string;
-  /** 커플 코드 */
-  coupleCode?: string;
+  updatedAt?: string;
 }
 
-/** 비공개 사용자 정보 Interface */
+/** 비공개 사용자 정보 포함 Interface */
 export interface IIUser extends IUser {
-  /** Password */
+  /** 비밀번호 */
   password: string;
   /** Refresh Token */
-  refreshToken: string;
+  refreshToken?: string;
 }
 
 /** 약관 Interface */
 export interface ITerm {
+  /** 식별자 */
+  id: number;
   /** 약관명 */
   type: string;
   /** 약관 버전 */
@@ -98,3 +106,15 @@ export interface IPhone extends IVerification {
 
 /** 본인 인증 관련 모든 정보 Interface */
 export interface IVerificationState extends IEmail, IPhone {}
+
+/** 프로필 정보 Interface */
+export interface IProfile {
+  birthdate: string | null;
+  gender: "male" | "female" | null;
+  nickname: string | null;
+}
+
+/** 프로필 관련 정보 Interface */
+export interface IProfileState extends IProfile {
+  seq: number | null;
+}

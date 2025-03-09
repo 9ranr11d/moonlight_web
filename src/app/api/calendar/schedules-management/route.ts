@@ -107,7 +107,7 @@ export async function DELETE(req: NextRequest) {
     // DB 연결
     await dbConnect();
 
-    /** Identification */
+    /** 아이디 */
     const _id = req.nextUrl.searchParams.get("_id");
 
     // 일정 삭제

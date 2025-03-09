@@ -49,7 +49,7 @@ export default function VerificationInput({
 
   // 입력된 코드 변경 시
   useEffect(() => {
-    if (onChange) onChange(code);
+    onChange?.(code);
   }, [code]);
 
   return (

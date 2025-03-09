@@ -33,8 +33,8 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const [identification, setIdentification] = useState<string>(""); // Identification
-  const [password, setPassword] = useState<string>(""); // Password
+  const [identification, setIdentification] = useState<string>(""); // 아이디
+  const [password, setPassword] = useState<string>(""); // 비밀번호
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
 
@@ -71,14 +71,14 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       );
   };
 
-  /** Identification Input */
+  /** 아이디 Input */
   const handleIdentification = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setIdentification(e.target.value);
   };
 
-  /** Password Input */
+  /** 비밀번호 Input */
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
@@ -119,7 +119,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               type="text"
               value={identification}
               onChange={handleIdentification}
-              placeholder="Identification"
+              placeholder="아이디"
             />
           </li>
 
@@ -129,7 +129,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               value={password}
               onChange={handlePassword}
               onKeyDown={handlePasswordKeyDown}
-              placeholder="Password"
+              placeholder="비밀번호"
             />
 
             <VisibleBtn
