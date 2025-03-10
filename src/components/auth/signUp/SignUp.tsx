@@ -10,6 +10,7 @@ import {
   decrementStepAcion,
   resetIdentificationAction,
   resetPasswordAction,
+  resetProfileAction,
   resetTermAction,
   resetVerificationAction,
 } from "@actions/authAction";
@@ -56,6 +57,10 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
     // 단계별 뒤로가기 클릭 시
     switch (step) {
+      case 4:
+        dispatch(resetProfileAction());
+
+        break;
       case 3:
         dispatch(resetVerificationAction());
 

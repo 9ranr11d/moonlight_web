@@ -33,12 +33,16 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      { code: code, phoneNumber: phoneNumber },
+      {
+        code: code,
+        phoneNumber: phoneNumber,
+        msg: `${phoneNumber}로 인증 코드를 전송했습니다.`,
+      },
       { status: 200 }
     );
   } catch (err) {
     console.error(
-      "/src/app/api/auth/send-sms > POST()에서 오류가 발생했습니다. :",
+      "/src/app/api/auth/phone-number-verification > POST()에서 오류가 발생했습니다. :",
       err
     );
 

@@ -30,9 +30,8 @@ import {
   IPasswordState,
   IProfile,
   ITerm,
+  IUserAgreedTerms,
 } from "@interfaces/auth";
-
-import { ERR_MSG } from "@constants/msg";
 
 /** authSlice 초기화 */
 export const resetAuthAction = () => async (dispatch: AppDispatch) => {
@@ -45,24 +44,23 @@ export const resetSignUpAction = () => async (dispatch: AppDispatch) => {
 };
 /**
  * 소셜 로그인 정보 저장
- * @param id 소셜 identification
+ * @param identification 소셜 Identification
  */
 export const socialSignInAction =
-  (id: string) => async (dispatch: AppDispatch) => {
+  (identification: string) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`${id}로 소셜 로그인 시도 중...`);
+      console.log(`소셜 로그인 시도 : ${identification}`);
 
-      const response = await fetch(`/api/auth/social-sign-in?id=${id}`);
-
-      if (!response.ok) {
-        const errData = await response.json();
-
-        alert(ERR_MSG);
-
-        throw new Error(errData.msg || "소셜 로그인 실패했습니다.");
-      }
-
+      /** 응답된 값 */
+      const response = await fetch(
+        `/api/auth/social-sign-in?id=${identification}`
+      );
+      /** 받아온 값 */
       const data = await response.json();
+
+      // 오류 시
+      if (!response.ok)
+        throw new Error(data.msg || "소셜 로그인 실패했습니다.");
 
       console.log(data.msg);
 
@@ -93,23 +91,32 @@ export const resetTermAction = () => async (dispatch: AppDispatch) => {
 /** 최신 약관 가져오기 */
 export const getLatestTermsAction =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { isLoaded } = getState().signUpSlice.term;
+    const { isLoaded } = getState().signUpSlice.term; // 약관 로드 여부
 
+    // 로드 됐을 시 다시 요청하지 않음
     if (!isLoaded) return;
 
-    fetch("/api/auth/get-latest-terms")
-      .then(res => {
-        if (res.ok) return res.json();
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => dispatch(setLatestTerm(data.terms)))
-      .catch(err => {
-        console.error(
-          "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
-          err
-        );
-        dispatch(setTermsErr(err));
-      });
+    try {
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/get-latest-terms");
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 오류 시
+      if (!response.ok) throw new Error(data.msg);
+
+      dispatch(setLatestTerm(data.terms));
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > getLatestTermsAction()에서 오류가 발생했습니다. :",
+        err
+      );
+
+      dispatch(
+        setTermsErr(err instanceof Error ? err.message : "약관 가져오기 실패")
+      );
+    }
   };
 
 /**
@@ -126,61 +133,73 @@ export const agreeToAllTermsAction = () => async (dispatch: AppDispatch) => {
   dispatch(agreeToAllTerms());
 };
 
-/** identification 정보 초기화 */
+/** 아이디 정보 초기화 */
 export const resetIdentificationAction =
   () => async (dispatch: AppDispatch) => {
     dispatch(resetIdentification());
   };
 
 /**
- * identification 중복 검사
- * @param formData identification
+ * 아이디 중복 검사
+ * @param formData 아이디
  */
 export const checkDuplicateAction =
   (formData: { identification: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/check-duplicate-id", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (res.ok || res.status === 409) {
-          const is409 = res.status === 409;
+    try {
+      console.log(`중복 검사 : ${formData.identification}`);
 
-          dispatch(
-            setIsDuplicateAction({
-              identification: is409 ? "" : formData.identification,
-              isDuplicate: is409,
-              msg: is409
-                ? "이미 사용 중인 아이디입니다."
-                : "사용 가능한 아이디 입니다.",
-            })
-          );
-
-          return res.json();
-        }
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => console.log(data.msg))
-      .catch(err => {
-        console.error(
-          "/src/actions/authAction > checkDuplicateAction()에서 오류가 발생했습니다. :",
-          err
-        );
-
-        dispatch(
-          setIsDuplicateAction({
-            identification: "",
-            isDuplicate: true,
-            msg: err,
-          })
-        );
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/check-duplicate-id", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 409 (Conflict) 상태는 중복된 경우, 오류가 아니므로 catch로 전달
+      if (response.status === 409)
+        throw { status: 409, message: "이미 사용 중인 아이디입니다." };
+
+      // 오류 시 예외 발생
+      if (!response.ok) throw new Error(data.msg || "중복 검사 실패");
+
+      console.log(data.msg);
+
+      dispatch(
+        setIsDuplicateAction({
+          identification: formData.identification,
+          isDuplicate: false,
+          msg: "사용 가능한 아이디입니다.",
+        })
+      );
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > checkDuplicateAction()에서 오류가 발생했습니다. :",
+        err
+      );
+
+      let msg = "서버 오류입니다. 다시 시도해주세요.";
+
+      if (typeof err === "object" && err !== null && "status" in err) {
+        // 409 에러 처리
+        if ((err as { status: number }).status === 409)
+          msg = "이미 사용 중인 아이디입니다.";
+      } else if (err instanceof Error) msg = err.message;
+
+      dispatch(
+        setIsDuplicateAction({
+          identification: "",
+          isDuplicate: true,
+          msg: msg,
+        })
+      );
+    }
   };
 
 /**
- * identification 중복 여부 저장
+ * 아이디 중복 여부 저장
  * @param formData 중복관련 정보
  */
 export const setIsDuplicateAction =
@@ -188,14 +207,14 @@ export const setIsDuplicateAction =
     dispatch(setIsDuplicate(formData));
   };
 
-/** password 정보 초기화 */
+/** 비밀번호 정보 초기화 */
 export const resetPasswordAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetPassword());
 };
 
 /**
- * password 유효성 관련 정보 저장
- * @param formData password 관련 정보
+ * 비밀번호 유효성 관련 정보 저장
+ * @param formData 비밀번호 관련 정보
  */
 export const setIsPasswordValidAction =
   (formData: IPasswordState) => async (dispatch: AppDispatch) => {
@@ -209,31 +228,37 @@ export const resetVerificationAction = () => async (dispatch: AppDispatch) => {
 
 /**
  * E-mail 인증 코드 전송
- * @param formData E-maile
+ * @param formData E-mail
  */
 export const verityEmailAction =
   (formData: { email: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/email-verification", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+    try {
+      console.log(`E-mail 인증 시도 : ${formData.email}`);
 
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => dispatch(setEmailVerified(data)))
-      .catch(err => {
-        dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
-
-        console.error(
-          "/src/actions/authAction > verityEmailAction()에서 오류가 발생했습니다. :",
-          err
-        );
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/email-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 오류 시
+      if (!response.ok) throw new Error(data.msg);
+
+      console.log(data.msg);
+
+      dispatch(setEmailVerified(data));
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > verityEmailAction()에서 오류가 발생했습니다. :",
+        err
+      );
+
+      dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
+    }
   };
 
 /**
@@ -242,27 +267,33 @@ export const verityEmailAction =
  */
 export const verifyPhoneNumberAction =
   (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/phone-number-verification", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+    try {
+      console.log(`휴대전화 인증 시도 : ${formData.phoneNumber}`);
 
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => dispatch(setPhoneVerified(data)))
-      .catch(err => {
-        dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
-
-        console.error(
-          "/src/actions/authAction > verifyPhoneNumberAction()에서 오류가 발생했습니다. :",
-          err
-        );
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/phone-number-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 오류 시
+      if (!response.ok) throw new Error(data.msg);
+
+      console.log(data.msg);
+
+      dispatch(setPhoneVerified(data));
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > verifyPhoneNumberAction()에서 오류가 발생했습니다. :",
+        err
+      );
+
+      dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
+    }
   };
 
 /** 본인 인증 완료 정보 저장 */
@@ -275,53 +306,105 @@ export const resetProfileAction = () => async (dispatch: AppDispatch) => {
   dispatch(resetProfile());
 };
 
-/** 프로필 정보 저장 */
+/**
+ * 프로필 정보 저장
+ * @param formData 프로필 정보
+ */
 export const setProfileAction =
   (formData: IProfile) => async (dispatch: AppDispatch) => {
     dispatch(setProfile(formData));
   };
 
+/**
+ * 프로필 별명 중복 검사
+ * @param formData 별명
+ */
 export const setProfileSeqAction =
   (formData: { nickname: string }) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/get-next-nickname-seq", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+    try {
+      console.log(`별명 중복 검사 : ${formData.nickname}`);
 
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => dispatch(setProfileSeq(data.seq)))
-      .catch(err => {
-        console.error(
-          "/src/actions/authAction > getNextNicknameSeqAction()에서 오류가 발생했습니다. :",
-          err
-        );
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/get-next-nickname-seq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 오류 시
+      if (!response.ok) throw new Error(data.msg);
+
+      console.log(`최종 별명 : ${formData.nickname}#${data.seq}`);
+
+      dispatch(setProfileSeq(data.seq));
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > setProfileSeqAction()에서 오류가 발생했습니다. :",
+        err
+      );
+    }
   };
 
+/**
+ * 동의된 약관들 저장
+ * @param formData 동의한 사용자, 동의된 약관 Id들
+ */
+export const saveUserTermsAction =
+  (formData: IUserAgreedTerms) => async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const response = await fetch("/api/terms/agree", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.msg);
+
+      console.log(data.msg);
+    } catch (error) {
+      console.error(
+        "/src/actions/authAction > saveUserTermsAction()에서 오류가 발생했습니다. :",
+        error
+      );
+    }
+  };
+
+/**
+ * 회원가입
+ * @param formData 회원가입 정보
+ */
 export const signUpAction =
   (formData: IIUser) => async (dispatch: AppDispatch) => {
-    fetch("/api/auth/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {})
-      .catch(err => {
-        console.error(
-          "/src/actions/authAction > signUpAction()에서 오류가 발생했습니다. :",
-          err
-        );
+    try {
+      console.log(`회원가입 시도 : ${formData}`);
+
+      /** 응답된 값 */
+      const response = await fetch("/api/auth/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      /** 받아온 값 */
+      const data = await response.json();
+
+      // 오류 시
+      if (!response.ok) throw new Error(data.msg);
+
+      console.log(data.msg);
+    } catch (err) {
+      console.error(
+        "/src/actions/authAction > signUpAction()에서 오류가 발생했습니다. :",
+        err
+      );
+    }
   };
 
 /**
@@ -330,37 +413,36 @@ export const signUpAction =
  * @param dispatch dispatch
  * @returns 로그아웃 여부
  */
-export const signOutAction = (
+export const signOutAction = async (
   confirmDesc: string,
   dispatch: AppDispatch
-): boolean => {
-  /** 확인 메세지 */
-  const confirmSignOut: boolean = window.confirm(confirmDesc);
-
+): Promise<boolean> => {
   // 사용자가 취소 누를 시
-  if (!confirmSignOut) return false;
+  if (!window.confirm(confirmDesc)) return false;
 
-  fetch("/api/auth/sign-out", { method: "POST" })
-    .then(res => {
-      if (res.ok) return res.json();
+  try {
+    /** 응답된 값 */
+    const response = await fetch("/api/auth/sign-out", { method: "POST" });
 
-      alert(ERR_MSG);
+    /** 받아온 값 */
+    const data = await response.json();
 
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data => {
-      console.log(data.msg);
+    // 오류 시
+    if (!response.ok) throw new Error(data.msg);
 
-      alert("로그아웃 됐습니다.");
+    console.log("로그아웃 성공:", data.msg);
 
-      dispatch(signOut());
-    })
-    .catch(err =>
-      console.error(
-        "/src/actions/authAction > signOutAction()에서 오류가 발생했습니다. :",
-        err
-      )
+    alert("로그아웃 되었습니다.");
+
+    dispatch(signOut());
+
+    return true;
+  } catch (err) {
+    console.error(
+      "/src/actions/authAction > signOutAction()에서 오류가 발생했습니다. :",
+      err
     );
 
-  return true;
+    return false;
+  }
 };

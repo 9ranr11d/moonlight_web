@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { setProfileAction, setProfileSeqAction } from "@actions/authAction";
+import {
+  setProfileAction,
+  setProfileSeqAction,
+  signUpAction,
+} from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -16,10 +20,10 @@ import DropdownDateBtn from "@components/common/btn/DropdownDateBtn";
 import RadioBtn from "@components/common/btn/RadioBtn";
 import NextBtn from "@components/common/btn/NextBtn";
 import NicknameInput from "@components/common/input/NicknameInput";
+import LunarLoader from "@components/common/LunarLoader";
 
 import IconMale from "@public/svgs/common/icon_male.svg";
 import IconFemale from "@public/svgs/common/icon_female.svg";
-import LunarLoader from "@components/common/LunarLoader";
 
 /** 사용자 정보 Form */
 export default function ProfileForm() {
@@ -103,8 +107,22 @@ export default function ProfileForm() {
     else setIsConfirmActive(false);
   }, [nickname]);
 
+  // 별명 식별자가 설정 시
   useEffect(() => {
+    // 별명 식별자 발급 시
     if (signUp.profile.seq) {
+      dispatch(
+        signUpAction({
+          identification: signUp.identification.identification,
+          password: signUp.password.password,
+          email: signUp.verification.email,
+          phoneNumber: signUp.verification.phoneNumber,
+          birthdate: signUp.profile.birthdate,
+          gender: signUp.profile.gender,
+          nickname: signUp.profile.nickname,
+          seq: signUp.profile.seq,
+        })
+      );
     }
   }, [signUp.profile.seq]);
 

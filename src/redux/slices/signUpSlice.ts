@@ -10,7 +10,6 @@ import {
   ITerm,
   IVerificationState,
 } from "@interfaces/auth";
-import { stat } from "fs";
 
 /** 초기값 Interface */
 interface ITermState {
@@ -38,7 +37,7 @@ interface ISignUpState {
 
 /** 초기값 */
 const initialState: ISignUpState = {
-  step: 3,
+  step: 0,
   term: {
     latestTerms: [],
     agreedTerms: [],

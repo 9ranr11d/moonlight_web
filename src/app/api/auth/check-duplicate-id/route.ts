@@ -17,14 +17,14 @@ export async function POST(req: NextRequest) {
     // 해당 Identification를 가진 사용자가 있을 시 409 Error 반환
     if (Array.isArray(result) && result.length > 0) {
       return NextResponse.json(
-        { msg: "이미 존재하는 Identification입니다." },
+        { msg: `${identification}(은)는 이미 존재하는 아이디입니다.` },
         { status: 409 }
       );
     }
 
     // 해당 Identification를 가진 사용자가 없을 시 '사용 가능' 메세지 반환
     return NextResponse.json(
-      { msg: "해당 Identification는 사용 가능합니다." },
+      { msg: `${identification}(은)는 사용 가능합니다.` },
       { status: 200 }
     );
   } catch (err) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

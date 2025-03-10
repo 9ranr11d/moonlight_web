@@ -36,7 +36,7 @@ export const query = async (
   sql: string,
   params?: QueryParams
 ): Promise<any> => {
-  let connection: mariadb.Connection | undefined;
+  let connection: mariadb.PoolConnection | undefined;
 
   try {
     connection = await pool.getConnection();
@@ -44,11 +44,11 @@ export const query = async (
     const result = await connection.query(sql, params);
 
     return result;
-  } catch (err) {
-    console.error("Database query 오류입니다. :", err);
+  } catch (err: any) {
+    console.error("Database query 오류입니다. :", err.message);
 
     throw new Error("Database query 실패했습니다.");
   } finally {
-    if (connection) await connection.end(); // 연결 종료
+    if (connection) await connection.release(); // 연결 종료
   }
 };

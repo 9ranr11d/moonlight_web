@@ -76,7 +76,10 @@ export async function POST(req: NextRequest) {
     });
 
     // 인증 코드 반환
-    return NextResponse.json({ code: code, email: email }, { status: 200 });
+    return NextResponse.json(
+      { code: code, email: email, msg: `${email}로 인증 코드를 전송했습니다.` },
+      { status: 200 }
+    );
   } catch (err) {
     console.error(
       "/src/app/api/auth/email-verification > POST()에서 오류가 발생했습니다. :",

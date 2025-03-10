@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { incrementStepAction, resetPasswordAction } from "@actions/authAction";
+import {
+  incrementStepAction,
+  resetPasswordAction,
+  setIsPasswordValidAction,
+} from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -28,6 +32,9 @@ export default function AccountForm() {
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 비밀번호 재확인
 
   const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부
+
+  const isValidateConfirmPassword: boolean =
+    validatePassword(confirmPassword) && password === confirmPassword;
 
   /** 비밀번호 입력 시 */
   const handlePassword = (password: string): void => {
@@ -55,6 +62,11 @@ export default function AccountForm() {
     );
   }, [signUp.identification.isDuplicate, signUp.password.isValid]);
 
+  useEffect(() => {
+    if (isValidateConfirmPassword)
+      dispatch(setIsPasswordValidAction({ password, isValid: true }));
+  }, [isValidateConfirmPassword]);
+
   return (
     <>
       <div>
@@ -75,9 +87,7 @@ export default function AccountForm() {
         <PasswordInput
           onChange={handleConfirmPassword}
           placeholder="비밀번호를 한번 더 입력해 주세요."
-          isValid={
-            validatePassword(confirmPassword) && password === confirmPassword
-          }
+          isValid={isValidateConfirmPassword}
         />
       </div>
 
