@@ -135,5 +135,5 @@ export interface IUserAgreedTerms {
   /** 동의한 사용자 아이디 */
   userId: string;
   /** 동의한 약관 Id들 */
-  agreedTermIds: string[];
+  agreedTermIds: number[];
 }

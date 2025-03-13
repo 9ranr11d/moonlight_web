@@ -8,9 +8,9 @@ import {
   setTermsErr,
   setIsDuplicate,
   setIsPasswordValid,
-  incrementStep,
+  incrementSignUpStep,
   resetIdentification,
-  decrementStep,
+  decrementSignUpStep,
   resetSignUp,
   resetPassword,
   resetTerm,
@@ -22,6 +22,8 @@ import {
   resetProfile,
   setProfile,
   setProfileSeq,
+  setSignUpCompleted,
+  setTermsSaved,
 } from "@redux/slices/signUpSlice";
 
 import {
@@ -75,12 +77,12 @@ export const socialSignInAction =
 
 /** step 증가 */
 export const incrementStepAction = () => async (dispatch: AppDispatch) => {
-  dispatch(incrementStep());
+  dispatch(incrementSignUpStep());
 };
 
 /** step 감소 */
 export const decrementStepAcion = () => async (dispatch: AppDispatch) => {
-  dispatch(decrementStep());
+  dispatch(decrementSignUpStep());
 };
 
 /** 약관 정보 초기화 */
@@ -322,7 +324,7 @@ export const setProfileAction =
 export const setProfileSeqAction =
   (formData: { nickname: string }) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`별명 중복 검사 : ${formData.nickname}`);
+      console.log(`별명 중복 검사 시도 : ${formData.nickname}`);
 
       /** 응답된 값 */
       const response = await fetch("/api/auth/get-next-nickname-seq", {
@@ -355,8 +357,11 @@ export const setProfileSeqAction =
 export const saveUserTermsAction =
   (formData: IUserAgreedTerms) => async (dispatch: AppDispatch) => {
     try {
+      console.log("시도한 사용자명 : ", formData.userId);
+      console.log("동의 시도한 약관 Id들 : ", formData.agreedTermIds);
+
       /** 응답된 값 */
-      const response = await fetch("/api/terms/agree", {
+      const response = await fetch("/api/auth/save-user-terms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -368,6 +373,8 @@ export const saveUserTermsAction =
       if (!response.ok) throw new Error(data.msg);
 
       console.log(data.msg);
+
+      dispatch(setTermsSaved());
     } catch (error) {
       console.error(
         "/src/actions/authAction > saveUserTermsAction()에서 오류가 발생했습니다. :",
@@ -399,6 +406,8 @@ export const signUpAction =
       if (!response.ok) throw new Error(data.msg);
 
       console.log(data.msg);
+
+      dispatch(setSignUpCompleted());
     } catch (err) {
       console.error(
         "/src/actions/authAction > signUpAction()에서 오류가 발생했습니다. :",

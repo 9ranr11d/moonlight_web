@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 
 import {
+  saveUserTermsAction,
   setProfileAction,
   setProfileSeqAction,
   signUpAction,
@@ -109,7 +110,6 @@ export default function ProfileForm() {
 
   // 별명 식별자가 설정 시
   useEffect(() => {
-    // 별명 식별자 발급 시
     if (signUp.profile.seq) {
       dispatch(
         signUpAction({
@@ -125,6 +125,17 @@ export default function ProfileForm() {
       );
     }
   }, [signUp.profile.seq]);
+
+  // 회원가입 완료 시
+  useEffect(() => {
+    if (signUp.isCompleted)
+      dispatch(
+        saveUserTermsAction({
+          userId: signUp.identification.identification,
+          agreedTermIds: signUp.term.agreedTerms.map(term => term.id),
+        })
+      );
+  }, [signUp.isCompleted]);
 
   return (
     <>

@@ -4,7 +4,7 @@ import { IUser } from "@interfaces/auth/index";
 
 /** 초기값 Interface  */
 interface IAuthState extends IUser {
-  /** Sign In 여부 */
+  /** 로그인 여부 */
   isAuth: boolean;
   /** Access Token */
   accessToken: string;
@@ -16,15 +16,17 @@ const initialState: IAuthState = {
   identification: "",
   profileImgUrl: null,
   nickname: null,
+  seq: 0,
   phoneNumber: null,
   email: "",
   platform: "web",
   accessLevel: 0,
   provider: "local",
   accountStatus: "active",
+  birthdate: null,
+  gender: null,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  coupleCode: "",
   accessToken: "",
 };
 

@@ -18,6 +18,7 @@ interface ITermState {
   msg: string | null;
   isLoaded: boolean;
   isErr: boolean;
+  isSaved: boolean;
 }
 
 /** identification 초기값 Interface */
@@ -27,7 +28,10 @@ interface IIdState extends IDuplicate {
 
 /** 초기값 Interface */
 interface ISignUpState {
+  msg: string | null;
   step: number;
+  isCompleted: boolean;
+  isErr: boolean;
   term: ITermState;
   identification: IIdState;
   password: IPasswordState;
@@ -37,13 +41,17 @@ interface ISignUpState {
 
 /** 초기값 */
 const initialState: ISignUpState = {
+  msg: null,
   step: 0,
+  isCompleted: false,
+  isErr: false,
   term: {
     latestTerms: [],
     agreedTerms: [],
     msg: null,
     isLoaded: true,
     isErr: false,
+    isSaved: false,
   },
   identification: {
     identification: "",
@@ -81,11 +89,11 @@ export const SignUp = createSlice({
       Object.assign(state, initialState);
     },
     /** step 증가 */
-    incrementStep: state => {
+    incrementSignUpStep: state => {
       state.step += 1;
     },
     /** step 감소 */
-    decrementStep: state => {
+    decrementSignUpStep: state => {
       if (state.step > 0) {
         state.step -= 1;
       }
@@ -196,13 +204,21 @@ export const SignUp = createSlice({
     setProfileSeq: (state, action: PayloadAction<number>) => {
       state.profile.seq = action.payload;
     },
+    /** 회원가입 완료 */
+    setSignUpCompleted: state => {
+      state.isCompleted = true;
+    },
+    /** 동의한 약관 저장 완료 */
+    setTermsSaved: state => {
+      state.term.isSaved = true;
+    },
   },
 });
 
 export const {
   resetSignUp,
-  incrementStep,
-  decrementStep,
+  incrementSignUpStep,
+  decrementSignUpStep,
   resetTerm,
   setLatestTerm,
   setTermsErr,
@@ -220,6 +236,8 @@ export const {
   resetProfile,
   setProfile,
   setProfileSeq,
+  setSignUpCompleted,
+  setTermsSaved,
 } = SignUp.actions;
 
 export default SignUp.reducer;

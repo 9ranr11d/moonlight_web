@@ -86,7 +86,7 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
             style={{
               width: "100%",
               maxHeight: 150,
-              overflowY: "scroll",
+              overflowY: "auto",
             }}
           >
             {term.content}
