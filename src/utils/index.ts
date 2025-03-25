@@ -55,12 +55,12 @@ export const validatePassword = (password: string): boolean => {
 };
 
 /**
- * E-mail 유효성 검사 함수
- * @param email E-mail
+ * Email 유효성 검사 함수
+ * @param email Email
  * @returns 유효성 여부 (true: 사용 가능, false: 사용 불가능)
  */
 export const validateEmail = (email: string): boolean => {
-  /** E-mail 유효성 정규식 */
+  /** Email 유효성 정규식 */
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return emailRegex.test(email);
@@ -220,12 +220,7 @@ export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
         })
       )
     )
-    .catch(err =>
-      console.error(
-        "/src/utils/index > getUser()에서 오류가 발생했습니다. :",
-        err
-      )
-    );
+    .catch(err => console.error("/src/utils/index > getUser() :", err));
 };
 
 /**
@@ -240,10 +235,7 @@ export const copyClipBoard = (text: string): void => {
         alert("클립보드에 복사되었습니다.");
       })
       .catch(err => {
-        console.error(
-          "/src/utils/index > copyClipBoard()에서 오류가 발생했습니다. :",
-          err
-        );
+        console.error("/src/utils/index > copyClipBoard() :", err);
 
         alert(ERR_MSG);
       });

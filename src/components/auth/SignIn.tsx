@@ -65,7 +65,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       })
       .catch(err =>
         console.error(
-          "/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :",
+          "/src/components/auth/SignIn > SignIn() > processSignIn() :",
           err
         )
       );

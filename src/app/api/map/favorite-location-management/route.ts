@@ -18,7 +18,7 @@ export async function GET() {
     return NextResponse.json(locations, { status: 200 });
   } catch (err) {
     console.error(
-      "/src/app/api/map/favorite-location-management > GET()에서 오류가 발생했습니다. :",
+      "/src/app/api/map/favorite-location-management > GET() :",
       err
     );
 

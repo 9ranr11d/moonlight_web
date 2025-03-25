@@ -5,6 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
+import { incrementSignUpStep } from "@redux/slices/signUpSlice";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -18,7 +19,6 @@ import EmailForm from "@components/auth/signUp/EmailForm";
 import PhoneNumberForm from "@components/auth/signUp/PhoneNumberForm";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
-import { incrementStepAction } from "@actions/authAction";
 
 /** 본인 인증 Form */
 export default function VerificationForm() {
@@ -38,7 +38,7 @@ export default function VerificationForm() {
 
   /** 다음 버튼 클릭 시 */
   const clickConfirmBtn = () => {
-    dispatch(incrementStepAction());
+    dispatch(incrementSignUpStep());
   };
 
   /** Input들 */
@@ -74,7 +74,7 @@ export default function VerificationForm() {
         }, 1000);
 
         return () => clearInterval(timer);
-      } else dispatch(incrementStepAction());
+      } else dispatch(incrementSignUpStep());
     }
   }, [timeLeft, signUp.verification.isVerified]);
 
@@ -83,7 +83,7 @@ export default function VerificationForm() {
       {!signUp.verification.isVerified ? (
         <>
           <TabBtn
-            labelArr={["E-mail", "휴대전화"]}
+            labelArr={["Email", "휴대전화"]}
             idx={selectedTabIdx}
             onChange={handleTab}
           />

@@ -8,6 +8,12 @@ export async function POST(req: NextRequest) {
     // 아이디
     const { identification }: { identification: string } = await req.json();
 
+    if (!identification)
+      return NextResponse.json(
+        { msg: "아이디를 입력해주세요." },
+        { status: 400 }
+      );
+
     /** SQL 쿼리문 */
     const sql = "SELECT identification FROM users WHERE identification = ?";
 
@@ -28,10 +34,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/check-duplicate-id > POST()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/check-duplicate-id > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

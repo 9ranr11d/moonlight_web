@@ -20,10 +20,7 @@ export async function GET() {
     // 카테고리들 반환
     return NextResponse.json(categories, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/calendar/categories-management > GET()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/calendar/categories-management > GET() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
@@ -58,7 +55,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error(
-      "/src/app/api/calendar/categories-management > POST()에서 오류가 발생했습니다. :",
+      "/src/app/api/calendar/categories-management > POST() :",
       err
     );
 
@@ -96,10 +93,7 @@ export async function PUT(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json(updatedScheduleCategory, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/calendar/categories-management > PUT()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/calendar/categories-management > PUT() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
@@ -127,7 +121,7 @@ export async function DELETE(req: NextRequest) {
     );
   } catch (err) {
     console.error(
-      "/src/app/api/calendar/categories-management > DELETE()에서 오류가 발생했습니다. :",
+      "/src/app/api/calendar/categories-management > DELETE() :",
       err
     );
 

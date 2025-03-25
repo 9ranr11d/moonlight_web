@@ -1,6 +1,9 @@
 /** 메인 제목 */
 export const MAIN_TITLE = "MOONLIGHT";
 
+/** 도메인 */
+export const MAIN_DOMAIN = "http://localhost:3000/";
+
 /** 위도 초기값 */
 export const DEFAULT_LAT = 35.8655;
 /** 경도 초기값 */

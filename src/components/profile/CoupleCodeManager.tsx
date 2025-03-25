@@ -47,7 +47,7 @@ export default function CoupleCodeManager() {
     //   })
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode()에서 오류가 발생했습니다. :",
+    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > registerCoupleCode() :",
     //       err
     //     )
     //   );
@@ -86,7 +86,7 @@ export default function CoupleCodeManager() {
     //   })
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode()에서 오류가 발생했습니다. :",
+    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > issueCoupleCode() :",
     //       err
     //     )
     //   );
@@ -115,7 +115,7 @@ export default function CoupleCodeManager() {
     //   })
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode()에서 오류가 발생했습니다. :",
+    //       "/src/components/auth/CoupleCodeManager > CoupleCodeManager() > deleteCoupleCode() :",
     //       err
     //     )
     //   );

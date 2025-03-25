@@ -6,12 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import {
-  saveUserTermsAction,
-  setProfileAction,
-  setProfileSeqAction,
-  signUpAction,
-} from "@actions/authAction";
+import { saveUserTermsAction, signUpAction } from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -39,6 +34,7 @@ export default function ProfileForm() {
   const [selectedGenderIdx, setSelectedGenderIdx] = useState<number>(0); // 선택된 성별 순서
 
   const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부
+  const [isLoaded, setIsLoaded] = useState<boolean>(false); // 로딩 여부
 
   /** 성별들 */
   const genders: {
@@ -89,17 +85,21 @@ export default function ProfileForm() {
     );
   });
 
-  /** 다음 버튼 클릭 시 */
+  /** 완료 버튼 클릭 시 */
   const clickConfirmBtn = (): void => {
+    setIsLoaded(true);
+
     dispatch(
-      setProfileAction({
+      signUpAction({
+        identification: signUp.identification.identification,
+        password: signUp.password.password,
+        email: signUp.verification.email,
+        phoneNumber: signUp.verification.phoneNumber,
         birthdate,
         gender: genders[selectedGenderIdx].value,
         nickname,
       })
     );
-
-    dispatch(setProfileSeqAction({ nickname }));
   };
 
   // 별명 입력 시
@@ -108,38 +108,21 @@ export default function ProfileForm() {
     else setIsConfirmActive(false);
   }, [nickname]);
 
-  // 별명 식별자가 설정 시
-  useEffect(() => {
-    if (signUp.profile.seq) {
-      dispatch(
-        signUpAction({
-          identification: signUp.identification.identification,
-          password: signUp.password.password,
-          email: signUp.verification.email,
-          phoneNumber: signUp.verification.phoneNumber,
-          birthdate: signUp.profile.birthdate,
-          gender: signUp.profile.gender,
-          nickname: signUp.profile.nickname,
-          seq: signUp.profile.seq,
-        })
-      );
-    }
-  }, [signUp.profile.seq]);
-
   // 회원가입 완료 시
   useEffect(() => {
-    if (signUp.isCompleted)
+    if (signUp.isCompleted) {
       dispatch(
         saveUserTermsAction({
           userId: signUp.identification.identification,
           agreedTermIds: signUp.term.agreedTerms.map(term => term.id),
         })
       );
+    }
   }, [signUp.isCompleted]);
 
   return (
     <>
-      {!signUp.profile.nickname ? (
+      {!isLoaded ? (
         <>
           <div>
             <h6 className={CSS.label}>생년월일</h6>

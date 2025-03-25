@@ -51,7 +51,7 @@ export default function ThisWeek() {
     //   .then(schedules => dispatch(setSchedules(schedules)))
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/calendar/ThisWeek > ThisWeek() > getSchedules()에서 오류가 발생했습니다. :",
+    //       "/src/components/calendar/ThisWeek > ThisWeek() > getSchedules() :",
     //       err
     //     )
     //   );

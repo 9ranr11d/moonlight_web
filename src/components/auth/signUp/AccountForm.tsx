@@ -5,12 +5,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
-
 import {
-  incrementStepAction,
-  resetPasswordAction,
-  setIsPasswordValidAction,
-} from "@actions/authAction";
+  incrementSignUpStep,
+  resetPassword,
+  setIsPasswordValid,
+} from "@redux/slices/signUpSlice";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -38,21 +37,21 @@ export default function AccountForm() {
 
   /** 비밀번호 입력 시 */
   const handlePassword = (password: string): void => {
-    dispatch(resetPasswordAction());
+    dispatch(resetPassword());
 
     setPassword(password);
   };
 
   /** 비밀번호 재확인 입력 시 */
   const handleConfirmPassword = (password: string): void => {
-    dispatch(resetPasswordAction());
+    dispatch(resetPassword());
 
     setConfirmPassword(password);
   };
 
   /** 다음 버튼 클릭 시 */
   const clickConfirmBtn = (): void => {
-    dispatch(incrementStepAction());
+    dispatch(incrementSignUpStep());
   };
 
   // 아이디, 비밀번호 인증 정보 변경 시
@@ -64,7 +63,7 @@ export default function AccountForm() {
 
   useEffect(() => {
     if (isValidateConfirmPassword)
-      dispatch(setIsPasswordValidAction({ password, isValid: true }));
+      dispatch(setIsPasswordValid({ password, isValid: true }));
   }, [isValidateConfirmPassword]);
 
   return (

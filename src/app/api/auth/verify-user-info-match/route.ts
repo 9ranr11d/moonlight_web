@@ -4,16 +4,16 @@ import dbConnect from "@lib/dbConnect";
 
 import User, { IIUser } from "@interfaces/auth/index";
 
-/** E-mail 일치 여부 */
+/** Email 일치 여부 */
 export async function POST(req: NextRequest) {
   try {
     // DB 연결
     await dbConnect();
 
-    // E-mail
+    // Email
     const { email }: { email: string } = await req.json();
 
-    /** E-mail과 일치하는 사용자 정보 */
+    /** Email과 일치하는 사용자 정보 */
     const user: IIUser[] | null = await User.findOne({ email });
 
     // 일치하는 사용자가 없을 시 404 Error 반환
@@ -24,12 +24,9 @@ export async function POST(req: NextRequest) {
       );
 
     // 일치하는 사용자가 있을 시 성공 메세지 반환
-    return NextResponse.json({ msg: "유효한 E-mail입니다." }, { status: 200 });
+    return NextResponse.json({ msg: "유효한 Email입니다." }, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/verify-user-info-match > POST()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/verify-user-info-match > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },

@@ -5,11 +5,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
+import { resetIdentification } from "@redux/slices/signUpSlice";
 
-import {
-  checkDuplicateAction,
-  resetIdentificationAction,
-} from "@actions/authAction";
+import { checkDuplicateIdAction } from "@actions/authAction";
 
 import { validateIdentification } from "@utils/index";
 
@@ -31,7 +29,7 @@ export default function IdentificationInput() {
   const handleIdentification = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    dispatch(resetIdentificationAction());
+    dispatch(resetIdentification());
 
     setIdentification(e.target.value);
   };
@@ -40,7 +38,7 @@ export default function IdentificationInput() {
   const clickCheckDuplicate = (): void => {
     const data: { identification: string } = { identification };
 
-    dispatch(checkDuplicateAction(data));
+    dispatch(checkDuplicateIdAction(data));
   };
 
   return (

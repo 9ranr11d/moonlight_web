@@ -60,7 +60,7 @@ export default function Header() {
       )
       .catch(err =>
         console.error(
-          "/src/components/common/Header > Header() > getRefreshAccessToken()에서 오류가 발생했습니다. :",
+          "/src/components/common/Header > Header() > getRefreshAccessToken() :",
           err
         )
       );

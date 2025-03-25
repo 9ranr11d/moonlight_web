@@ -40,7 +40,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   /** 사용자 정보 속성들 */
   const editableFields: IEditableFields[] = [
     { id: "identification", name: "아이디", type: "readOnly" },
-    { id: "email", name: "E-mail", type: "requiresVerification" },
+    { id: "email", name: "Email", type: "requiresVerification" },
     { id: "nickname", name: "닉네임", type: "editable" },
     { id: "password", name: "비밀번호", type: "hidden" },
     { id: "coupleCode", name: "커플 코드", type: "requiresVerification" },
@@ -87,7 +87,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
     //   })
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail()에서 오류가 발생했습니다. :",
+    //       "/src/components/profile/ProfileEdit > ProfileEdit() => updateEmail() :",
     //       err
     //     )
     //   );
@@ -118,7 +118,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    */
   const confirmUpdate = (field: IEditableFields): void => {
     switch (field.id) {
-      // E-mail, 비밀번호: Modal 활성화
+      // Email, 비밀번호: Modal 활성화
       case "email":
       case "password":
         setRenderModalType(field.id);
@@ -154,8 +154,8 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
   };
 
   /**
-   * E-mail 인증 성공 시
-   * @param email 인증 성공한 E-mail
+   * Email 인증 성공 시
+   * @param email 인증 성공한 Email
    */
   const verifyEmailSuccess = (email: string) => {
     dispatch(hideBackdrop());
@@ -223,7 +223,7 @@ export default function ProfileEdit({ changePage }: IProfileEditProps) {
    */
   const renderModal = (): React.JSX.Element => {
     switch (renderModalType) {
-      // E-mail 수정
+      // Email 수정
       case "email":
         return (
           <EmailUpdateForm

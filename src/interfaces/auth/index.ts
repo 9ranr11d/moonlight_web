@@ -9,10 +9,10 @@ export interface IUser {
   /** 별명 */
   nickname: string | null | undefined;
   /** 별명 식별자 */
-  seq: number;
+  seq?: number;
   /** 휴대전화 번호 */
   phoneNumber?: string | null;
-  /** E-mail */
+  /** Email */
   email?: string | null | undefined;
   /** 회원가입 방법 */
   platform?: "web" | "android" | "ios";
@@ -89,15 +89,17 @@ export interface IPasswordState {
 export interface IVerification {
   /** 인증 여부 */
   isVerified: boolean;
+  /** 중복 여부 */
+  isDuplicate: boolean;
   /** 메세지 */
   msg: string | null;
   /** 오류 여부 */
   isErr: boolean;
 }
 
-/** E-mail 본인 인증 Interface  */
+/** Email 본인 인증 Interface  */
 export interface IEmail extends IVerification {
-  /** E-mail */
+  /** Email */
   email: string | null;
   /** 인증 코드 */
   code: string | null;
@@ -113,22 +115,6 @@ export interface IPhone extends IVerification {
 
 /** 본인 인증 관련 모든 정보 Interface */
 export interface IVerificationState extends IEmail, IPhone {}
-
-/** 프로필 정보 Interface */
-export interface IProfile {
-  /** 생년월일 */
-  birthdate: string | null;
-  /** 성별 */
-  gender: "male" | "female" | null;
-  /** 별명 */
-  nickname: string | null;
-}
-
-/** 프로필 관련 정보 Interface */
-export interface IProfileState extends IProfile {
-  /** 별명 식별자 */
-  seq: number | null;
-}
 
 /** 동의된 약관 Interface */
 export interface IUserAgreedTerms {

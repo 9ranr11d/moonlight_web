@@ -232,7 +232,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > updateCategory()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > updateCategory() :",
           err
         )
       );
@@ -271,7 +271,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > createCategory()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > createCategory() :",
           err
         )
       );
@@ -294,7 +294,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > deleteCategory()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > deleteCategory() :",
           err
         )
       );
@@ -311,7 +311,7 @@ export default function EventModal({
       .then(_categories => dispatch(setScheduleCategories(_categories)))
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > getCategories()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > getCategories() :",
           err
         )
       );
@@ -346,7 +346,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > createSchedule()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > createSchedule() :",
           err
         )
       );
@@ -371,7 +371,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > updateSchedule()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > updateSchedule() :",
           err
         )
       );
@@ -394,7 +394,7 @@ export default function EventModal({
       })
       .catch(err =>
         console.error(
-          "/src/components/calendar/EventModal > EventModal() > deleteSchedule()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/EventModal > EventModal() > deleteSchedule() :",
           err
         )
       );

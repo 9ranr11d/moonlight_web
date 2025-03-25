@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
 import { AppDispatch, RootState } from "@redux/store";
+import { resetVerification, signUpVerify } from "@redux/slices/signUpSlice";
 
 import {
-  resetVerificationAction,
-  verifyAction,
+  checkDuplicatePhoneNumberAction,
   verifyPhoneNumberAction,
 } from "@actions/authAction";
 
@@ -43,21 +43,23 @@ export default function PhoneNumberForm() {
   };
 
   const clickSendCode = async () => {
+    dispatch(resetVerification());
+
     setIsSent(true);
 
-    dispatch(verifyPhoneNumberAction({ phoneNumber }));
+    dispatch(checkDuplicatePhoneNumberAction({ phoneNumber }));
   };
 
   /** 인증 코드 재전송 버튼 클릭 시 */
   const clickResendCode = () => {
-    dispatch(resetVerificationAction());
+    dispatch(resetVerification());
 
     clickSendCode();
   };
 
   /** 인증코드 확인 버튼 클릭 시 */
   const clickConfirmBtn = () => {
-    if (code === signUp.verification.code) dispatch(verifyAction());
+    if (code === signUp.verification.code) dispatch(signUpVerify());
     else setMsg("인증 코드를 다시 확인해주세요.");
   };
 
@@ -66,12 +68,31 @@ export default function PhoneNumberForm() {
     if (signUp.verification.isErr) setIsSent(false);
   }, [signUp.verification.isErr]);
 
+  // 중복 검사 통과 시
+  useEffect(() => {
+    if (!signUp.verification.isDuplicate)
+      dispatch(verifyPhoneNumberAction({ phoneNumber }));
+  }, [signUp.verification.isDuplicate]);
+
   return (
     <>
-      <div>
+      <div style={{ position: "relative" }}>
         <h6 className={CSS.label}>휴대전화 번호</h6>
 
         <PhoneNumberInput onChange={handlePhoneNumber} />
+
+        {signUp.verification.isErr && (
+          <p
+            style={{
+              position: "absolute",
+              left: 5,
+              paddingTop: 1,
+              color: "var(--err-color)",
+            }}
+          >
+            {signUp.verification.msg}
+          </p>
+        )}
       </div>
 
       {signUp.verification.phoneNumber ? (
@@ -96,7 +117,7 @@ export default function PhoneNumberForm() {
           disabled={!isValidPhoneNumber(phoneNumber)}
           isLoading={isSent}
           label="인증 코드 전송"
-          style={{ width: "100%" }}
+          style={{ width: "100%", marginTop: 10 }}
         />
       )}
     </>

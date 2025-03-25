@@ -5,8 +5,6 @@ import {
   IEmail,
   IPasswordState,
   IPhone,
-  IProfile,
-  IProfileState,
   ITerm,
   IVerificationState,
 } from "@interfaces/auth";
@@ -36,13 +34,12 @@ interface ISignUpState {
   identification: IIdState;
   password: IPasswordState;
   verification: IVerificationState;
-  profile: IProfileState;
 }
 
 /** 초기값 */
 const initialState: ISignUpState = {
   msg: null,
-  step: 0,
+  step: 2,
   isCompleted: false,
   isErr: false,
   term: {
@@ -65,17 +62,12 @@ const initialState: ISignUpState = {
   },
   verification: {
     isVerified: false,
+    isDuplicate: true,
     msg: null,
     isErr: false,
     email: null,
     phoneNumber: null,
     code: null,
-  },
-  profile: {
-    birthdate: null,
-    gender: null,
-    nickname: null,
-    seq: null,
   },
 };
 
@@ -148,7 +140,7 @@ export const SignUp = createSlice({
      * @param state 기존 정보
      * @param action 받아온 값
      */
-    setIsDuplicate: (state, action: PayloadAction<IDuplicate>) => {
+    setIsIdDuplicate: (state, action: PayloadAction<IDuplicate>) => {
       state.identification.identification = action.payload.identification;
       state.identification.isChecking = true;
       state.identification.isDuplicate = action.payload.isDuplicate;
@@ -171,7 +163,7 @@ export const SignUp = createSlice({
     resetVerification: state => {
       Object.assign(state.verification, initialState.verification);
     },
-    /** E-mail 인증 코드 저장 */
+    /** Email 인증 코드 저장 */
     setEmailVerified: (state, action: PayloadAction<IEmail>) => {
       state.verification.email = action.payload.email;
       state.verification.code = action.payload.code;
@@ -186,23 +178,13 @@ export const SignUp = createSlice({
       state.verification.isErr = true;
       state.verification.msg = action.payload;
     },
+    /** 본인인증 중복 검사 통과 */
+    confirmVerificationAvailable: state => {
+      state.verification.isDuplicate = false;
+    },
     /** 인증 성공 시 */
-    verify: state => {
+    signUpVerify: state => {
       state.verification.isVerified = true;
-    },
-    /** 프로필 정보 초기화 */
-    resetProfile: state => {
-      Object.assign(state.profile, initialState.profile);
-    },
-    /** 프로필 정보 저장 */
-    setProfile: (state, action: PayloadAction<IProfile>) => {
-      state.profile.birthdate = action.payload.birthdate;
-      state.profile.gender = action.payload.gender;
-      state.profile.nickname = action.payload.nickname;
-    },
-    /** 별명 순서 저장 */
-    setProfileSeq: (state, action: PayloadAction<number>) => {
-      state.profile.seq = action.payload;
     },
     /** 회원가입 완료 */
     setSignUpCompleted: state => {
@@ -225,17 +207,15 @@ export const {
   setTermAgreement,
   agreeToAllTerms,
   resetIdentification,
-  setIsDuplicate,
+  setIsIdDuplicate,
   resetPassword,
   setIsPasswordValid,
   resetVerification,
   setEmailVerified,
   setPhoneVerified,
   setVerificationErr,
-  verify,
-  resetProfile,
-  setProfile,
-  setProfileSeq,
+  confirmVerificationAvailable,
+  signUpVerify,
   setSignUpCompleted,
   setTermsSaved,
 } = SignUp.actions;

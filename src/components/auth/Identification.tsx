@@ -8,13 +8,13 @@ import EmailVerification from "./EmailVerification";
 
 /** 아이디 찾기 */
 export default function Identification() {
-  const [isVerified, setIsVerified] = useState<boolean>(false); // E-mail 인증 여부
+  const [isVerified, setIsVerified] = useState<boolean>(false); // Email 인증 여부
 
   const [identification, setIdentification] = useState<string>(""); // 찾으려는 아이디
 
   /**
-   * 입력받은 E-mail과 부합하는 아이디 찾기
-   * @param email E-mail
+   * 입력받은 Email과 부합하는 아이디 찾기
+   * @param email Email
    */
   const getUserIdentification = (email: string): void => {
     const data: { email: string } = { email };
@@ -38,7 +38,7 @@ export default function Identification() {
       })
       .catch(err =>
         console.error(
-          "/src/components/auth/Recovery > Identification() > getUserIdentification()에서 오류가 발생했습니다. :",
+          "/src/components/auth/Recovery > Identification() > getUserIdentification() :",
           err
         )
       );
@@ -48,7 +48,7 @@ export default function Identification() {
     <>
       {!isVerified ? (
         <EmailVerification
-          title="E-mail로 본인 인증"
+          title="Email로 본인 인증"
           verified={email => getUserIdentification(email)}
           isAutoFocus={false}
           isEmailCheckEnabled={true}

@@ -71,10 +71,7 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/sign-in > POST()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/sign-in > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },

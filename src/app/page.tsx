@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
+import { resetSignUp } from "@redux/slices/signUpSlice";
 
-import { resetSignUpAction, socialSignInAction } from "@actions/authAction";
+import { socialSignInAction } from "@actions/authAction";
 
 import CSS from "./page.module.css";
 
@@ -23,7 +24,9 @@ export default function Home() {
   /** 라우터 */
   const router = useRouter();
 
+  /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
+
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 
@@ -34,7 +37,7 @@ export default function Home() {
 
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
-    dispatch(resetSignUpAction());
+    dispatch(resetSignUp());
     setIsSignUp(true);
   };
 

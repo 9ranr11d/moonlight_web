@@ -137,7 +137,7 @@ export default function CalendarView() {
       .then(users => setUsers(users))
       .catch(err =>
         console.error(
-          "/src/components/calendar/CalendarView > CalendarView() > getUsers()에서 오류가 발생했습니다. :",
+          "/src/components/calendar/CalendarView > CalendarView() > getUsers() :",
           err
         )
       );
@@ -156,7 +156,7 @@ export default function CalendarView() {
     //   .then(_schedules => dispatch(setSchedules(_schedules)))
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/calendar/CalendarView > CalendarView() > getSchedules()에서 오류가 발생했습니다. :",
+    //       "/src/components/calendar/CalendarView > CalendarView() > getSchedules() :",
     //       err
     //     )
     //   );

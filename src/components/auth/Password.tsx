@@ -16,7 +16,7 @@ interface IPasswordProps {
   back: () => void;
   /** 아이디 */
   identification?: string;
-  /** 선 입력 E-mail */
+  /** 선 입력 Email */
   inputEmail?: string;
 }
 
@@ -29,13 +29,13 @@ export default function Password({
   const passwordInputRef = useRef<HTMLInputElement>(null); // 바꿀 비밀번호 Ref
 
   const [isAuth, setIsAuth] = useState<boolean>(identification ? true : false); // 아이디 인증 여부
-  const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부
+  const [isEmailMatching, setIsEmailMatching] = useState<boolean>(false); // 입력 받은 Email과 DB 속 해당 Identification의 Email 일치 여부
   const [isPasswordMatching, setIsPwMatching] = useState<boolean>(false); // 새로 만들 Password랑 비밀번호 확인 일치 여부
 
   const [_identification, set_identification] = useState<string>(
     identification || ""
   ); // 인증할 아이디
-  const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 E-mail
+  const [userEmail, setUserEmail] = useState<string>(""); // 입력 받은 Email
   const [password, setPassword] = useState<string>(""); // 새로 만들 비밀번호
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 새로 만들 비밀번호 확인
 
@@ -65,7 +65,7 @@ export default function Password({
       })
       .catch(err =>
         console.error(
-          "/src/components/auth/Recovery > Password() > checkIdentification()에서 오류가 발생했습니다. :",
+          "/src/components/auth/Recovery > Password() > checkIdentification() :",
           err
         )
       );
@@ -100,7 +100,7 @@ export default function Password({
       })
       .catch(err =>
         console.error(
-          "/src/components/auth/Recovery > Password() > changePassword()에서 오류가 발생했습니다. :",
+          "/src/components/auth/Recovery > Password() > changePassword() :",
           err
         )
       );
@@ -138,12 +138,12 @@ export default function Password({
   };
 
   /**
-   * 입력 받은 E-mail과 DB 속 해당 Identification의 E-mail 일치 여부 판단
-   * @param email E-mail
+   * 입력 받은 Email과 DB 속 해당 Identification의 Email 일치 여부 판단
+   * @param email Email
    */
   const checkEmail = (email: string): void => {
     if (email === userEmail) setIsEmailMatching(true);
-    else alert("E-mail이 일치하지 않습니다.");
+    else alert("Email이 일치하지 않습니다.");
   };
 
   // 인증 코드가 일치 시 바꿀 비밀번호 텍스트 입력 필드로 포커스
@@ -200,7 +200,7 @@ export default function Password({
         </>
       ) : !isEmailMatching ? (
         <EmailVerification
-          title="E-mail로 본인 인증"
+          title="Email로 본인 인증"
           verified={email => checkEmail(email)}
           isAutoFocus={true}
           isEmailCheckEnabled={true}

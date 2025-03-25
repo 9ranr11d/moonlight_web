@@ -44,10 +44,7 @@ export async function PUT(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/change-pw > PUT()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/change-pw > PUT() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },

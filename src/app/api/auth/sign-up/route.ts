@@ -18,11 +18,29 @@ export async function POST(req: NextRequest) {
       birthdate,
       gender,
       nickname,
-      seq,
     }: IIUser = await req.json();
+
+    // 별명이 없으면 오류
+    if (!nickname)
+      return NextResponse.json(
+        { msg: "별명을 입력해주세요." },
+        { status: 400 }
+      );
 
     /** 해싱된 비밀번호 */
     const hashedPw: string = await bcrypt.hash(password, 10);
+
+    // 트랜잭션 시작
+    await query("START TRANSACTION");
+
+    /** 현재 nickname의 최대 seq 값 가져오기 (행 잠금) */
+    const seqResult = await query(
+      `SELECT COALESCE(MAX(seq), -1) + 1 AS nextSeq FROM users WHERE nickname = ? FOR UPDATE`,
+      [nickname]
+    );
+
+    /** 별명 식별자 */
+    const seq = seqResult[0]?.nextSeq ?? 0;
 
     /** SQL문 */
     const sql = `
@@ -65,10 +83,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/sign-up > POST()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/sign-up > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

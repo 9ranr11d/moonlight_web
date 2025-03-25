@@ -177,7 +177,7 @@ export default function KakaoMap() {
     //   })
     //   .catch(err =>
     //     console.error(
-    //       "/src/components/map/KakaoMap > KakaoMap()에서 오류가 발생했습니다. :",
+    //       "/src/components/map/KakaoMap > KakaoMap() :",
     //       err
     //     )
     //   );

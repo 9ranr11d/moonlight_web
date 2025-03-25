@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
-
 import {
-  decrementStepAcion,
-  resetIdentificationAction,
-  resetPasswordAction,
-  resetProfileAction,
-  resetTermAction,
-  resetVerificationAction,
-} from "@actions/authAction";
+  decrementSignUpStep,
+  resetIdentification,
+  resetPassword,
+  resetSignUp,
+  resetTerm,
+  resetVerification,
+} from "@redux/slices/signUpSlice";
 
 import CSS from "./SignUp.module.css";
 
@@ -44,7 +43,9 @@ export default function SignUp({ completed, back }: ISignUpProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 회원가입 관련 정보 */
-  const step = useSelector((state: RootState) => state.signUpSlice.step);
+  const { step, isCompleted } = useSelector(
+    (state: RootState) => state.signUpSlice
+  );
 
   /** 뒤로 가기 클릭 시 */
   const clickBack = (): void => {
@@ -57,26 +58,22 @@ export default function SignUp({ completed, back }: ISignUpProps) {
 
     // 단계별 뒤로가기 클릭 시
     switch (step) {
-      case 4:
-        dispatch(resetProfileAction());
-
-        break;
       case 3:
-        dispatch(resetVerificationAction());
+        dispatch(resetVerification());
 
         break;
       case 2:
-        dispatch(resetIdentificationAction());
-        dispatch(resetPasswordAction());
+        dispatch(resetIdentification());
+        dispatch(resetPassword());
 
         break;
       case 1:
-        dispatch(resetTermAction());
+        dispatch(resetTerm());
 
         break;
     }
 
-    dispatch(decrementStepAcion());
+    dispatch(decrementSignUpStep());
   };
 
   /** Step별 컴포넌트 */
@@ -89,6 +86,14 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     ],
     []
   );
+
+  useEffect(() => {
+    if (isCompleted) {
+      dispatch(resetSignUp());
+
+      completed();
+    }
+  }, [isCompleted]);
 
   return (
     <div className={CSS.signUpBox}>

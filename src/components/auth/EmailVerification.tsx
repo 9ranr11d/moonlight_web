@@ -17,16 +17,16 @@ interface IEmailVerificationProps {
   title: string;
   /** 아이디 자동 포커스 할 지 */
   isAutoFocus: boolean;
-  /** 입력한 E-mail을 DB에 있는 지 체크할 지 */
+  /** 입력한 Email을 DB에 있는 지 체크할 지 */
   isEmailCheckEnabled: boolean;
-  /** 선 입력 E-mail */
+  /** 선 입력 Email */
   inputEmail?: string;
 
-  /** 인증 된 E-mail 반환 */
+  /** 인증 된 Email 반환 */
   verified: (email: string) => void;
 }
 
-/** E-mail 인증 */
+/** Email 인증 */
 export default function EmailVerification({
   title,
   isAutoFocus,
@@ -37,21 +37,21 @@ export default function EmailVerification({
   /** 인증 코드 입력 제한시간 최대값 */
   const maxDeadline: number = 600;
 
-  /** E-mail 아이디 부분 Input Ref */
+  /** Email 아이디 부분 Input Ref */
   const emailInputRef = useRef<HTMLInputElement>(null);
   /** 인증 코드 입력 Input Ref */
   const verificationCodeInputRef = useRef<HTMLInputElement>(null);
 
-  const [email, setEmail] = useState<string>(inputEmail || ""); // 입력된 E-mail
+  const [email, setEmail] = useState<string>(inputEmail || ""); // 입력된 Email
   const [verificationCode, setVerificationCode] = useState<string>(""); // 인증 코드
   const [verificationInput, setVerificationInput] = useState<string>(""); // 입력 받은 인증 코드
 
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false); // 인증 코드 발송 여부
-  const [isVerifyingEmail, setIsVerifyingEmail] = useState<boolean>(false); // 유효한 E-mail인지 판단하고, 유효할 시 인증 코드 발송을 했는지
+  const [isVerifyingEmail, setIsVerifyingEmail] = useState<boolean>(false); // 유효한 Email인지 판단하고, 유효할 시 인증 코드 발송을 했는지
 
   const [deadline, setDeadline] = useState<number>(0); // 인증 코드 입력 제한시간
 
-  /** DB에 등록 되어있는 E-mail인지 확인 */
+  /** DB에 등록 되어있는 Email인지 확인 */
   const verifyMatch = (): void => {
     setIsEmailSent(false);
     setIsVerifyingEmail(true);
@@ -82,7 +82,7 @@ export default function EmailVerification({
         })
         .catch(err =>
           console.error(
-            "/src/components/auth/Recovery > EmailSender() > verifyMatch()에서 오류가 발생했습니다. :",
+            "/src/components/auth/Recovery > EmailSender() > verifyMatch() :",
             err
           )
         );
@@ -113,13 +113,13 @@ export default function EmailVerification({
       })
       .catch(err =>
         console.error(
-          "/src/components/auth/Recovery > EmailSender() > sendEmail()에서 오류가 발생했습니다. :",
+          "/src/components/auth/Recovery > EmailSender() > sendEmail() :",
           err
         )
       );
   };
 
-  /** E-mail Input */
+  /** Email Input */
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setIsEmailSent(false);
     setVerificationCode("");
@@ -177,7 +177,7 @@ export default function EmailVerification({
     };
   }, [deadline]);
 
-  // 인증 E-mail 전송 시 인증 코드 텍스트 입력 필드로 포커스
+  // 인증 Email 전송 시 인증 코드 텍스트 입력 필드로 포커스
   useEffect(() => {
     if (isEmailSent && verificationCodeInputRef.current)
       verificationCodeInputRef.current.focus();
@@ -195,7 +195,7 @@ export default function EmailVerification({
         <li>
           <ul>
             <li>
-              <h6>E-mail</h6>
+              <h6>Email</h6>
             </li>
 
             <li>
@@ -205,7 +205,7 @@ export default function EmailVerification({
                 onChange={handleEmail}
                 ref={emailInputRef}
                 onKeyDown={handleEmailKeyDown}
-                placeholder="E-mail"
+                placeholder="Email"
                 disabled={!!inputEmail}
               />
             </li>

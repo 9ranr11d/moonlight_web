@@ -84,7 +84,7 @@ export async function GET(req: NextRequest, { params }: { params: IParams }) {
     return NextResponse.json(schedules, { status: 200 });
   } catch (err) {
     console.error(
-      "/src/app/api/calendar/schedules-management/[year]/[month] > GET()에서 오류가 발생했습니다. :",
+      "/src/app/api/calendar/schedules-management/[year]/[month] > GET() :",
       err
     );
 

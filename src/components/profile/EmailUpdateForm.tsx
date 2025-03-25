@@ -7,16 +7,16 @@ import { RootState } from "@redux/store";
 
 import EmailVerification from "@components/auth/EmailVerification";
 
-/** E-mail 수정 Form 자식들 */
+/** Email 수정 Form 자식들 */
 interface IEmailUpdateFormProps {
   /**
-   * E-mail 인증 성공 시
-   * @param email 인증 성공한 E-mail
+   * Email 인증 성공 시
+   * @param email 인증 성공한 Email
    */
   verifyEmailSuccess: (email: string) => void;
 }
 
-/** E-mail 수정 Form */
+/** Email 수정 Form */
 export default function EmailUpdateForm({
   verifyEmailSuccess,
 }: IEmailUpdateFormProps) {
@@ -25,7 +25,7 @@ export default function EmailUpdateForm({
 
   const [step, setStep] = useState<number>(0); // 단계
 
-  /** E-mail 인증 완료 */
+  /** Email 인증 완료 */
   const proceedWithVerifiedEmail = (): void => {
     setStep(1);
   };
@@ -37,7 +37,7 @@ export default function EmailUpdateForm({
         return (
           <EmailVerification
             key="step1"
-            title="새로운 E-mail을 입력해주세요."
+            title="새로운 Email을 입력해주세요."
             verified={email => verifyEmailSuccess(email)}
             isAutoFocus={true}
             isEmailCheckEnabled={false}
@@ -48,7 +48,7 @@ export default function EmailUpdateForm({
         return (
           <EmailVerification
             key="step0"
-            title="E-mail로 본인 인증"
+            title="Email로 본인 인증"
             verified={proceedWithVerifiedEmail}
             isAutoFocus={true}
             isEmailCheckEnabled={true}

@@ -5,15 +5,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
-
 import {
-  agreeToAllTermsAction,
-  getLatestTermsAction,
-  incrementStepAction,
-  resetIdentificationAction,
-  resetPasswordAction,
-  setTermAgreementAction,
-} from "@actions/authAction";
+  agreeToAllTerms,
+  incrementSignUpStep,
+  resetIdentification,
+  resetPassword,
+  setTermAgreement,
+} from "@redux/slices/signUpSlice";
+
+import { getLatestTermsAction } from "@actions/authAction";
+
+import { ITerm } from "@interfaces/auth";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
@@ -22,7 +24,6 @@ import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
 import TermInput from "@components/common/input/TermInput";
 import NextBtn from "@components/common/btn/NextBtn";
-import { ITerm } from "@interfaces/auth";
 
 /** 약관 동의 Form*/
 export default function TermsForm() {
@@ -37,7 +38,7 @@ export default function TermsForm() {
 
   /** 약관 동의 여부 변경 시 */
   const onTermCheckboxChange = (term: ITerm): void => {
-    dispatch(setTermAgreementAction(term));
+    dispatch(setTermAgreement(term));
   };
 
   /** 전체 약관 동의 여부 확인 */
@@ -66,17 +67,17 @@ export default function TermsForm() {
   /** 전체 동의 여부 Toggle */
   const toggleAllChecked = () => {
     // 전체 동의 시
-    if (!isCheckedAll) dispatch(agreeToAllTermsAction());
+    if (!isCheckedAll) dispatch(agreeToAllTerms());
 
     setIsCheckedAll(prev => !prev);
   };
 
   /** 다음 버튼 클릭 시 */
   const clickConfirmBtn = (): void => {
-    dispatch(resetIdentificationAction());
-    dispatch(resetPasswordAction());
+    dispatch(resetIdentification());
+    dispatch(resetPassword());
 
-    dispatch(incrementStepAction());
+    dispatch(incrementSignUpStep());
   };
 
   // 렌더 시

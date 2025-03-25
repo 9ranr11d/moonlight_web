@@ -20,7 +20,7 @@ interface ILoadingBtn {
   /** Loading 여부 */
   isLoading?: boolean;
   /** Lavel */
-  label?: string;
+  label?: React.ReactNode;
   /** CSS */
   style?: React.CSSProperties;
 }

@@ -62,9 +62,17 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
         >
           <CheckBoxBtn onClick={toggleCheck} size={12} isChecked={isChecked} />
 
-          <p>
-            ({term.isRequired ? "필수" : "선택"}) {term.type}
-          </p>
+          <a
+            href="#"
+            onClick={e => {
+              e.preventDefault();
+              toggleCheck();
+            }}
+          >
+            <p>
+              ({term.isRequired ? "필수" : "선택"}) {term.type}
+            </p>
+          </a>
         </div>
 
         <ExpandCollapseBtn

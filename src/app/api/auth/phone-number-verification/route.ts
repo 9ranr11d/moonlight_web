@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error(
-      "/src/app/api/auth/phone-number-verification > POST()에서 오류가 발생했습니다. :",
+      "/src/app/api/auth/phone-number-verification > POST() :",
       err
     );
 

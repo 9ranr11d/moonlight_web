@@ -36,10 +36,7 @@ export async function POST(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json({ msg: "일정을 생성했습니다." }, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/calendar/schedules-management > POST()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/calendar/schedules-management > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
@@ -89,10 +86,7 @@ export async function PUT(req: NextRequest) {
     // 성공 메세지 반환
     return NextResponse.json({ msg: "일정을 수정했습니다." }, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/calendar/schedules-management > PUT()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/calendar/schedules-management > PUT() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
@@ -117,7 +111,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ msg: "일정을 삭제했습니다." }, { status: 200 });
   } catch (err) {
     console.error(
-      "/src/app/api/calendar/schedules-management > DELETE()에서 오류가 발생했습니다. :",
+      "/src/app/api/calendar/schedules-management > DELETE() :",
       err
     );
 

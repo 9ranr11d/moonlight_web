@@ -46,10 +46,7 @@ export async function GET(req: NextRequest) {
     // Access Token을 반환
     return NextResponse.json({ accessToken }, { status: 200 });
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/refresh-access-token > GET()에서 오류가 발생했습니다. :",
-      err
-    );
+    console.error("/src/app/api/auth/refresh-access-token > GET() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },

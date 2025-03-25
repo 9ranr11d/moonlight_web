@@ -8,36 +8,36 @@ import DropdownBtn from "@components/common/btn/DropdownBtn";
 
 /** EmailInput Interface */
 interface IEmailInput {
-  /** E-mail 변경 시 */
+  /** Email 변경 시 */
   onChange?: (email: string) => void;
 }
 
-/** E-mail Input */
+/** Email Input */
 export default function EmailInput({ onChange }: IEmailInput) {
-  /** E-mail 자동완성 목록 */
+  /** Email 자동완성 목록 */
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"];
 
-  const [firstEmail, setFirstEmail] = useState<string>(""); // E-mail 아이디 부분
-  const [lastEmail, setLastEmail] = useState<string>(""); // E-mail Domain 부분
+  const [firstEmail, setFirstEmail] = useState<string>(""); // Email 아이디 부분
+  const [lastEmail, setLastEmail] = useState<string>(""); // Email Domain 부분
 
-  const [lastEmailIdx, setLastEmailIdx] = useState<number>(0); // E-mail List에서 선택한 순번
+  const [lastEmailIdx, setLastEmailIdx] = useState<number>(0); // Email List에서 선택한 순번
 
-  /** 완성된 E-mail */
+  /** 완성된 Email */
   const fullEmail: string = `${firstEmail}@${lastEmail}`;
 
-  /** E-mail 아이디 부분 Input */
+  /** Email 아이디 부분 Input */
   const handleFirstEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFirstEmail(e.target.value);
   };
 
-  /** E-mail Domain 부분 Input */
+  /** Email Domain 부분 Input */
   const handleLastEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLastEmail(e.target.value);
   };
 
   /**
-   * E-mail 자동완성 목록 선택 시
-   * @param idx 몇 번째 E-mail인지
+   * Email 자동완성 목록 선택 시
+   * @param idx 몇 번째 Email인지
    */
   const selectEmail = (idx: number): void => {
     setLastEmailIdx(idx);
@@ -47,7 +47,7 @@ export default function EmailInput({ onChange }: IEmailInput) {
     else setLastEmail(emailList[idx]);
   };
 
-  // E-mail 변경 시
+  // Email 변경 시
   useEffect(() => {
     onChange?.(fullEmail);
   }, [fullEmail]);

@@ -24,7 +24,7 @@ export async function GET() {
     return NextResponse.json(user, { status: 200 });
   } catch (err) {
     console.error(
-      "/src/app/api/auth/get-users-with-high-access-level > GET()에서 오류가 발생했습니다. :",
+      "/src/app/api/auth/get-users-with-high-access-level > GET() :",
       err
     );
 
