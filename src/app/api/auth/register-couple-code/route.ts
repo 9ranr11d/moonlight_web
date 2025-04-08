@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     // 해당 커플 코드를 등록
     await User.findByIdAndUpdate(id, { coupleCode }, { new: true });
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "커플 코드 발급되었습니다." },
       { status: 200 }

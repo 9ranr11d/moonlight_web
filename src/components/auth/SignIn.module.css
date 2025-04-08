@@ -43,6 +43,7 @@
 }
 
 .signInBox .innerBox > ul {
+  width: 100%;
   margin-right: 10px;
 }
 
@@ -101,5 +102,9 @@
 
   .signInBox .innerBox > button > h5 {
     font-size: 18px;
+  }
+
+  .signInBox > .subBox > .errBox {
+    top: 0;
   }
 }

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "성공적으로 커플 코드가 발급되었습니다." },
       { status: 200 }
@@ -69,7 +69,7 @@ export async function DELETE(req: NextRequest) {
         { status: 404 }
       );
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/auth/issue-couple-code > DELETE() :", err);

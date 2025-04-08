@@ -9,7 +9,7 @@ import CSS from "./ProfileEdit.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
-import { copyClipBoard, getUser } from "@utils/index";
+import { copyClipBoard } from "@utils/index";
 
 /** 커플 코드 관리 */
 export default function CoupleCodeManager() {

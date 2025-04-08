@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
 
-    // 일치하는 사용자가 있을 시 성공 메세지 반환
+    // 일치하는 사용자가 있을 시 성공 Message 반환
     return NextResponse.json({ msg: "유효한 Email입니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/auth/verify-user-info-match > POST() :", err);

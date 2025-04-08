@@ -4,21 +4,23 @@ import React, { useState } from "react";
 
 import Image from "next/image";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { signIn as socialSignIn } from "next-auth/react";
 
-import { AppDispatch } from "@redux/store";
-import { signIn } from "@redux/slices/authSlice";
+import { AppDispatch, RootState } from "@redux/store";
+import { resetAuth } from "@redux/slices/authSlice";
+
+import { signInAction } from "@actions/authAction";
 
 import CSS from "./SignIn.module.css";
 
-import { ERR_MSG } from "@constants/msg";
+import VisibleBtn from "@components/common/btn/VisibleBtn";
 
+import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
-import VisibleBtn from "@components/common/btn/VisibleBtn";
 
 /** SignIn 자식 */
 interface ISignInProps {
@@ -33,6 +35,9 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
+  /** 사용자 정보 */
+  const user = useSelector((state: RootState) => state.authSlice);
+
   const [identification, setIdentification] = useState<string>(""); // 아이디
   const [password, setPassword] = useState<string>(""); // 비밀번호
 
@@ -45,30 +50,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
       password,
     };
 
-    fetch("/api/auth/sign-in", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        if (res.status === 404 || res.status === 401)
-          alert("ID와 PW를 다시 확인해주세요.");
-        else alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        // 사용자 정보 AuthSlice(Redux)에 저장
-        dispatch(signIn(data.user));
-      })
-      .catch(err =>
-        console.error(
-          "/src/components/auth/SignIn > SignIn() > processSignIn() :",
-          err
-        )
-      );
+    dispatch(signInAction(data));
   };
 
   /** 아이디 Input */
@@ -83,7 +65,7 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
     setPassword(e.target.value);
   };
 
-  /** Password에서 'Enter'를 누를 시 */
+  /** 비밀번호에서 'Enter'를 누를 시 */
   const handlePasswordKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
   ): void => {
@@ -150,7 +132,42 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
         </button>
       </div>
 
-      <div className={CSS.subBox}>
+      <div className={CSS.subBox} style={{ position: "relative" }}>
+        {user.isErr && (
+          <div
+            className={CSS.errBox}
+            style={{
+              position: "absolute",
+              width: "100%",
+              background: "var(--err-background-color)",
+              padding: 10,
+              borderRadius: 5,
+            }}
+          >
+            <p style={{ color: "var(--err-color)" }}>{user.msg}</p>
+
+            <button
+              type="button"
+              style={{
+                padding: 0,
+                background: "none",
+                position: "absolute",
+                right: 15,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+              onClick={() => dispatch(resetAuth())}
+            >
+              <IconClose
+                width={12}
+                height={12}
+                fill={"var(--err-color)"}
+                style={{ display: "flex" }}
+              />
+            </button>
+          </div>
+        )}
+
         <ul>
           <li>
             <a href="#" onClick={handleRecovery}>

@@ -15,11 +15,11 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    /** SQL문 */
-    const sql = "SELECT COUNT(*) AS count FROM users WHERE phone_number = ?";
-
     /** 결과 */
-    const result = await query(sql, [phoneNumber]);
+    const result = await query(
+      `SELECT COUNT(*) AS count FROM users WHERE phone_number = ?`,
+      [phoneNumber]
+    );
 
     /** 중복 여부 */
     const isDuplicate = result[0]?.count > 0;

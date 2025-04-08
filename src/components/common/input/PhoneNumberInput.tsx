@@ -11,11 +11,13 @@ import DropdownBtn from "@components/common/btn/DropdownBtn";
 import FlagKor from "@public/imgs/country_flag/korea.png";
 import FlagUsa from "@public/imgs/country_flag/usa.png";
 
+/** 휴대전화 번호 Input Interface */
 interface IPhoneInput {
   /** 휴대전화 번호 변경 시 */
   onChange?: (number: string) => void;
 }
 
+/** 나라 국가, 나라 전화 코드 Interface */
 interface IConuntryCallingCode {
   flag: React.ReactNode;
   code: string;

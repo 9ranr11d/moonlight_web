@@ -1,6 +1,12 @@
 import { AppDispatch, RootState } from "@redux/store";
 
-import { signOut, socialSignIn } from "@redux/slices/authSlice";
+import {
+  setAuthErr,
+  setRefreshAccessToken,
+  signIn,
+  signOut,
+  socialSignIn,
+} from "@redux/slices/authSlice";
 import {
   setLatestTerm,
   setTermsErr,
@@ -17,7 +23,7 @@ import { IIUser, IUserAgreedTerms } from "@interfaces/auth";
 
 /**
  * 소셜 로그인 정보 저장
- * @param identification 소셜 Identification
+ * @param identification 소셜 아이디
  */
 export const socialSignInAction =
   (identification: string) => async (dispatch: AppDispatch) => {
@@ -25,15 +31,12 @@ export const socialSignInAction =
       console.log(`소셜 로그인 시도 : ${identification}`);
 
       /** 응답된 값 */
-      const response = await fetch(
-        `/api/auth/social-sign-in?id=${identification}`
-      );
+      const res = await fetch(`/api/auth/social-sign-in?id=${identification}`);
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       console.log(data.msg);
 
@@ -53,24 +56,23 @@ export const getLatestTermsAction =
 
     try {
       /** 응답된 값 */
-      const response = await fetch("/api/auth/get-latest-terms");
+      const res = await fetch("/api/auth/get-latest-terms");
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setTermsErr(msg));
+
+        throw new Error(msg);
+      }
 
       dispatch(setLatestTerm(data.terms));
     } catch (err) {
       console.error("/src/actions/authAction > getLatestTermsAction() :", err);
-
-      dispatch(
-        setTermsErr(
-          err instanceof Error ? err.message : "서버 오류가 발생했습니다."
-        )
-      );
     }
   };
 
@@ -84,18 +86,29 @@ export const checkDuplicateIdAction =
       console.log(`중복 검사 : ${formData.identification}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/check-duplicate-id", {
+      const res = await fetch("/api/auth/check-duplicate-id", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시 예외 발생
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(
+          setIsIdDuplicate({
+            identification: "",
+            isDuplicate: true,
+            msg: msg,
+          })
+        );
+
+        throw new Error(msg);
+      }
 
       console.log(data.msg);
 
@@ -111,19 +124,6 @@ export const checkDuplicateIdAction =
         "/src/actions/authAction > checkDuplicateIdAction() :",
         err
       );
-
-      const msg =
-        err instanceof Error
-          ? err?.message
-          : "서버 오류가 발생했습니다. 다시 시도해주세요.";
-
-      dispatch(
-        setIsIdDuplicate({
-          identification: "",
-          isDuplicate: true,
-          msg: msg,
-        })
-      );
     }
   };
 
@@ -137,34 +137,31 @@ export const checkDuplicateEmailAction =
       console.log(`Email 중복 검사 시도 : ${formData.email}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/check-duplicate-email", {
+      const res = await fetch("/api/auth/check-duplicate-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
 
-      console.log(data.msg);
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
+
+      console.log();
 
       dispatch(confirmVerificationAvailable());
     } catch (err) {
       console.error(
         "/src/actions/authAction > checkDuplicateEmailAction() :",
         err
-      );
-
-      dispatch(
-        setVerificationErr(
-          err instanceof Error
-            ? err?.message
-            : "서버 오류입니다. 다시 시도해주세요."
-        )
       );
     }
   };
@@ -179,18 +176,23 @@ export const checkDuplicatePhoneNumberAction =
       console.log(`휴대전화 번호 중복 검사 시도 : ${formData.phoneNumber}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/check-duplicate-phone-number", {
+      const res = await fetch("/api/auth/check-duplicate-phone-number", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
 
       console.log(data.msg);
 
@@ -199,14 +201,6 @@ export const checkDuplicatePhoneNumberAction =
       console.error(
         "/src/actions/authAction > checkDuplicatePhoneNumberAction() :",
         err
-      );
-
-      dispatch(
-        setVerificationErr(
-          err instanceof Error
-            ? err?.message
-            : "서버 오류입니다. 다시 시도해주세요."
-        )
       );
     }
   };
@@ -221,26 +215,29 @@ export const verityEmailAction =
       console.log(`Email 인증 시도 : ${formData.email}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/email-verification", {
+      const res = await fetch("/api/auth/email-verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
 
       console.log(data.msg);
 
       dispatch(setEmailVerified(data));
     } catch (err) {
       console.error("/src/actions/authAction > verityEmailAction() :", err);
-
-      dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
     }
   };
 
@@ -254,18 +251,23 @@ export const verifyPhoneNumberAction =
       console.log(`휴대전화 인증 시도 : ${formData.phoneNumber}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/phone-number-verification", {
+      const res = await fetch("/api/auth/phone-number-verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
 
       console.log(data.msg);
 
@@ -275,8 +277,6 @@ export const verifyPhoneNumberAction =
         "/src/actions/authAction > verifyPhoneNumberAction() :",
         err
       );
-
-      dispatch(setVerificationErr("서버 오류입니다. 다시 시도해주세요."));
     }
   };
 
@@ -291,23 +291,22 @@ export const saveUserTermsAction =
       console.log("동의 시도한 약관 Id들 : ", formData.agreedTermIds);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/save-user-terms", {
+      const res = await fetch("/api/auth/save-user-terms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       console.log(data.msg);
 
       dispatch(setTermsSaved());
-    } catch (error) {
-      console.error("/src/actions/authAction > saveUserTermsAction() :", error);
+    } catch (err) {
+      console.error("/src/actions/authAction > saveUserTermsAction() :", err);
     }
   };
 
@@ -321,18 +320,17 @@ export const signUpAction =
       console.log(`회원가입 시도 : ${formData}`);
 
       /** 응답된 값 */
-      const response = await fetch("/api/auth/sign-up", {
+      const res = await fetch("/api/auth/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       /** 받아온 값 */
-      const data = await response.json();
+      const data = await res.json();
 
       // 오류 시
-      if (!response.ok)
-        throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       console.log(data.msg);
 
@@ -342,9 +340,84 @@ export const signUpAction =
     }
   };
 
+export const signInAction =
+  (formData: { identification: string; password: string }) =>
+  async (dispatch: AppDispatch) => {
+    try {
+      console.log(`로그인 시도 : ${formData.identification}`);
+
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await res.json();
+
+      if (!res.ok) {
+        const msg: string =
+          res.status === 404 || res.status === 401
+            ? "아이디 또는 비밀번호를 확인해주세요."
+            : data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setAuthErr(msg));
+
+        throw new Error(msg);
+      }
+
+      dispatch(signIn(data.user));
+    } catch (err) {
+      console.error("/src/actions/authAction > signInAction() :", err);
+    }
+  };
+
+/** Refresh Token 확인 */
+export const checkRefreshTokenAction = () => async (dispatch: AppDispatch) => {
+  try {
+    console.log("Refresh Token 확인");
+
+    /** 응답된 값 */
+    const res = await fetch("/api/auth/refresh-access-token");
+    /** 받아온 값 */
+    const data = await res.json();
+
+    // 오류 시
+    if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+
+    dispatch(setRefreshAccessToken(data));
+  } catch (err) {
+    console.error("/src/actions/authAction > checkRefreshToken() :", err);
+  }
+};
+
+/** 사용자 정보 가져오기 */
+export const getUserByAccessTokenAction =
+  (formData: { accessToken: string }) => async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/get-user-by-access-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      // 오류 시
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+
+      console.log("getUserByAccessTokenAction :", data);
+      dispatch(signIn(data.user));
+    } catch (err) {
+      console.error("/src/actions/authAction > getUserAction() :", err);
+    }
+  };
+
 /**
  * local 로그아웃
- * @param confirmDesc 띄울 확인 메세지
+ * @param confirmDesc 띄울 확인 Message
  * @param dispatch dispatch
  * @returns 로그아웃 여부
  */
@@ -357,13 +430,13 @@ export const signOutAction = async (
 
   try {
     /** 응답된 값 */
-    const response = await fetch("/api/auth/sign-out", { method: "POST" });
+    const res = await fetch("/api/auth/sign-out", { method: "POST" });
 
     /** 받아온 값 */
-    const data = await response.json();
+    const data = await res.json();
 
     // 오류 시
-    if (!response.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+    if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
     console.log("로그아웃 성공:", data.msg);
 

@@ -13,7 +13,7 @@ const LottiePlayer = dynamic(() => import("react-lottie-player"), {
 interface ILunarLoader {
   /** CSS */
   style?: React.CSSProperties;
-  /** 로딩 메세지 */
+  /** 로딩 Message */
   msg?: React.ReactNode;
 }
 

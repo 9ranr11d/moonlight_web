@@ -4,7 +4,7 @@ import { query } from "@lib/dbConnect";
 
 export async function GET(req: NextRequest) {
   try {
-    const sql = `
+    const result = await query(`
       SELECT
         t1.id,
         t1.type,
@@ -28,9 +28,7 @@ export async function GET(req: NextRequest) {
       ORDER BY
         t1.is_required DESC,
         t1.type;
-    `;
-
-    const result = await query(sql);
+    `);
 
     const terms = result.map((row: any) => ({
       ...row,

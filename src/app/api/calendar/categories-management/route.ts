@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     // 카테고리 DB에 저장
     await newScheduleCategory.save();
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "카테고리를 생성했습니다." },
       { status: 200 }
@@ -90,7 +90,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(updatedScheduleCategory, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/calendar/categories-management > PUT() :", err);
@@ -114,7 +114,7 @@ export async function DELETE(req: NextRequest) {
     // 카테고리 삭제
     await ScheduleCategory.findByIdAndDelete(_id);
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "카테고리를 삭제했습니다." },
       { status: 200 }

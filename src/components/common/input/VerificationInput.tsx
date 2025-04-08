@@ -15,7 +15,7 @@ interface IVerificationInput {
 
   /** 남은 시간 */
   timeLeft?: number;
-  /** 메세지 */
+  /** Message */
   msg?: string | null;
 }
 

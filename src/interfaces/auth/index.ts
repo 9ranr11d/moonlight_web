@@ -73,7 +73,7 @@ export interface IDuplicate {
   identification: string;
   /** 중복 검사 여부 */
   isDuplicate: boolean;
-  /** 메세지 */
+  /** Message */
   msg: string | null;
 }
 
@@ -91,7 +91,7 @@ export interface IVerification {
   isVerified: boolean;
   /** 중복 여부 */
   isDuplicate: boolean;
-  /** 메세지 */
+  /** Message */
   msg: string | null;
   /** 오류 여부 */
   isErr: boolean;

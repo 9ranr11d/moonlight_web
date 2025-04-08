@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     // FavoriteLocation 저장
     await newFavoriteLocation.save();
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "즐겨찾기에 등록했습니다." },
       { status: 200 }
@@ -98,7 +98,7 @@ export async function DELETE(req: NextRequest) {
         { status: 404 }
       );
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json(
       { msg: "즐겨찾기를 삭제했습니다." },
       { status: 200 }

@@ -29,7 +29,7 @@ export default function PhoneNumberForm() {
 
   const [phoneNumber, setPhoneNumber] = useState<string>(""); // 휴대전화 번호
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드
-  const [msg, setMsg] = useState<string>(""); // Input 알림 메세지
+  const [msg, setMsg] = useState<string>(""); // Input 알림 Message
 
   const [isSent, setIsSent] = useState<boolean>(false); // 전송 여부
 

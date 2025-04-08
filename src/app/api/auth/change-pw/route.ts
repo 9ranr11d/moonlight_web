@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest) {
       { new: true }
     );
 
-    // 비밀번호 변경 성공 메세지 반환
+    // 비밀번호 변경 성공 Message 반환
     return NextResponse.json(
       { msg: "비밀번호가 성공적으로 바뀌었습니다." },
       { status: 200 }

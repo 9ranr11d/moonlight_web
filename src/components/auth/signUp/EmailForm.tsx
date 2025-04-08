@@ -30,7 +30,7 @@ export default function EmailForm() {
 
   const [email, setEmail] = useState<string>(""); // 입력된 Email
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드
-  const [msg, setMsg] = useState<string>(""); // Input 알림 메세지
+  const [msg, setMsg] = useState<string>(""); // Input 알림 Message
 
   const [isSent, setIsSent] = useState<boolean>(false); // 전송 여부
 

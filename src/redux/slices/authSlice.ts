@@ -8,6 +8,10 @@ interface IAuthState extends IUser {
   isAuth: boolean;
   /** Access Token */
   accessToken: string;
+  /** Message */
+  msg: string | null;
+  /** 오류 여부 */
+  isErr: boolean;
 }
 
 /** 초기값 */
@@ -28,6 +32,8 @@ const initialState: IAuthState = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   accessToken: "",
+  msg: null,
+  isErr: false,
 };
 
 /** 사용자 인증 정보 */
@@ -38,6 +44,15 @@ export const Auth = createSlice({
     /** 초기화 */
     resetAuth: state => {
       Object.assign(state, initialState);
+    },
+    /**
+     * 오류 처리
+     * @param state 기존 정보
+     * @param action 받아온 값
+     */
+    setAuthErr: (state, action: PayloadAction<string>) => {
+      state.msg = action.payload;
+      state.isErr = true;
     },
     /**
      * 로그인
@@ -66,10 +81,10 @@ export const Auth = createSlice({
     },
     /**
      * Refresh Token으로 재발행 된 Access Token 저장
-     * @param State 기존 정보
+     * @param state 기존 정보
      * @param action 받아온 값
      */
-    refreshAccessToken: (
+    setRefreshAccessToken: (
       state,
       action: PayloadAction<{ accessToken: string }>
     ) => {
@@ -78,7 +93,13 @@ export const Auth = createSlice({
   },
 });
 
-export const { resetAuth, signIn, socialSignIn, signOut, refreshAccessToken } =
-  Auth.actions;
+export const {
+  resetAuth,
+  setAuthErr,
+  signIn,
+  socialSignIn,
+  signOut,
+  setRefreshAccessToken,
+} = Auth.actions;
 
 export default Auth.reducer;

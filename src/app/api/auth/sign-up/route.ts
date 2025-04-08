@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     );
 
     /** 별명 식별자 */
-    const seq = seqResult[0]?.nextSeq ?? 0;
+    const seq: number = seqResult[0]?.nextSeq ?? 0;
 
     /** SQL문 */
     const sql = `
@@ -58,7 +58,8 @@ export async function POST(req: NextRequest) {
           provider
         ) 
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
 
     /** 삽입할 정보 */
     const params = [
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
     /** 결과 */
     const result = await query(sql, params);
 
-    // 회원가입 성공 메세지 반환
+    // 회원가입 성공 Message 반환
     return NextResponse.json(
       { msg: `회원가입 성공 : ${result}` },
       { status: 200 }

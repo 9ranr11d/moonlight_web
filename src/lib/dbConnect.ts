@@ -16,7 +16,7 @@ const DB_NAME: string = process.env.DB_NAME!;
 /** 포트 번호 */
 const DB_PORT: number = Number(process.env.DB_PORT!);
 
-// MariaDB 풀 생성
+/** MariaDB 풀 */
 const pool = mariadb.createPool({
   host: DB_HOST,
   user: DB_USER,

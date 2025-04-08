@@ -25,23 +25,20 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
 
-    // 유효할 시, Cookie의 Refresh Token과 동일한 refresh Token을 가진 사용자 정보
-    /** 쿼리문 */
-    const sql = "SELECT * FROM users WHERE refreshToken = ?";
-    /** 매개변수 */
-    const params = [refreshToken];
     /** 결과값 */
-    const [user] = await query(sql, params);
+    const user = await query(`SELECT * FROM users WHERE refresh_token = ?`, [
+      refreshToken,
+    ]);
 
     // Cookie의 Refresh Token과 동일한 Refresh Token을 가진 사용자가 없을 시 404 Error 반환
-    if (!user)
+    if (Array.isArray(user) && user.length === 0)
       return NextResponse.json(
         { msg: "사용자를 찾지 못했습니다." },
         { status: 404 }
       );
 
     /** 사용자의 Identification로 Access Token 재발급 */
-    const accessToken: string = sign(user.identification);
+    const accessToken: string = sign(user[0].identification);
 
     // Access Token을 반환
     return NextResponse.json({ accessToken }, { status: 200 });
@@ -49,7 +46,7 @@ export async function GET(req: NextRequest) {
     console.error("/src/app/api/auth/refresh-access-token > GET() :", err);
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

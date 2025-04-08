@@ -1,10 +1,11 @@
 :root {
   --primary-color: #b67a80;
+  --primary-dark-color: #ae5861;
   --secondary-color: #7295a4;
 
-  --primary-dark-color: #ae5861;
   --font-color: #111;
   --err-color: #e63946;
+  --err-background-color: #ffe5e9;
 
   --background-color: linear-gradient(
     to bottom,

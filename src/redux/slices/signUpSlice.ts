@@ -39,7 +39,7 @@ interface ISignUpState {
 /** 초기값 */
 const initialState: ISignUpState = {
   msg: null,
-  step: 2,
+  step: 0,
   isCompleted: false,
   isErr: false,
   term: {

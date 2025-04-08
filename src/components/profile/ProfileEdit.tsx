@@ -14,8 +14,6 @@ import { IUser } from "@interfaces/auth/index";
 
 import { ERR_MSG } from "@constants/msg";
 
-import { getUser } from "@utils/index";
-
 import Modal from "@components/common/Modal";
 import Password from "@components/auth/Password";
 import EmailUpdateForm from "./EmailUpdateForm";

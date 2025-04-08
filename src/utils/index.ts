@@ -184,46 +184,6 @@ export const getMonthDays = (year: number): number[] => [
 ];
 
 /**
- * Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인
- * @param accessToken Access Token
- * @param dispatch Dispatch
- */
-export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
-  // Access Token이 없을 시
-  if (!accessToken) {
-    console.error("Access Token을 찾지 못했습니다.");
-
-    return;
-  }
-
-  /** 보낼 Access Token */
-  const data: { accessToken: string } = { accessToken };
-
-  fetch("/api/auth/get-user-by-access-token", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then(res => {
-      if (res.ok) return res.json();
-
-      alert(ERR_MSG);
-
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data =>
-      // 사용자 정보 AuthSlice(Redux)에 저장
-      dispatch(
-        signIn({
-          ...data,
-          isAuth: true,
-        })
-      )
-    )
-    .catch(err => console.error("/src/utils/index > getUser() :", err));
-};
-
-/**
  * 클립보드로 복사
  * @param text 복사할 문자열
  */

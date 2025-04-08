@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
     /** 인증 코드 */
     const code: string = generateRandomCode(6);
 
+    console.log(`'${phoneNumber}' 인증 코드 : ${code}`);
+
     /** Twilio 설정 */
     const client = twilio(
       process.env.TWILIO_ACCOUNT_SID,
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
       {
         code: code,
         phoneNumber: phoneNumber,
-        msg: `${phoneNumber}로 인증 코드를 전송했습니다.`,
+        msg: `'${phoneNumber}'(으)로 인증 코드를 전송했습니다.`,
       },
       { status: 200 }
     );

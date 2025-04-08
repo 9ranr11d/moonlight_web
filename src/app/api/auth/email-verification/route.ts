@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
     /** 인증 코드 */
     const code: string = generateRandomCode(6);
 
+    console.log(`'${email}' 인증 코드 : ${code}`);
+
     /** 인증 코드가 포함된 Emaili 양식 */
     const content: string = `
       <html>
@@ -177,7 +179,7 @@ export async function POST(req: NextRequest) {
 
               <div style="background: #f9f9f9; padding: 20px 10px; border-radius: 3px; margin: 0px 20px">
                 <a href="javascript:void(0);" class="code">
-                  <h4 style="text-align: center">pu1w1g</h4>
+                  <h4 style="text-align: center">${code}</h4>
                 </a>
               </div>
 
@@ -236,7 +238,11 @@ export async function POST(req: NextRequest) {
 
     // 인증 코드 반환
     return NextResponse.json(
-      { code: code, email: email, msg: `${email}로 인증 코드를 전송했습니다.` },
+      {
+        code: code,
+        email: email,
+        msg: `'${email}'(으)로 인증 코드를 전송했습니다.`,
+      },
       { status: 200 }
     );
   } catch (err) {

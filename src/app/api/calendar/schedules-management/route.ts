@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     // 일정 저장
     await newSchedule.save();
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json({ msg: "일정을 생성했습니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/calendar/schedules-management > POST() :", err);
@@ -83,7 +83,7 @@ export async function PUT(req: NextRequest) {
         { status: 404 }
       );
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json({ msg: "일정을 수정했습니다." }, { status: 200 });
   } catch (err) {
     console.error("/src/app/api/calendar/schedules-management > PUT() :", err);
@@ -107,7 +107,7 @@ export async function DELETE(req: NextRequest) {
     // 일정 삭제
     await Schedule.findByIdAndDelete(_id);
 
-    // 성공 메세지 반환
+    // 성공 Message 반환
     return NextResponse.json({ msg: "일정을 삭제했습니다." }, { status: 200 });
   } catch (err) {
     console.error(

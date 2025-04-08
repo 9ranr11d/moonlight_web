@@ -14,13 +14,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    /** SQL 쿼리문 */
-    const sql = "SELECT identification FROM users WHERE identification = ?";
-
     /** 검색 결과 */
-    const result = await query(sql, [identification]);
+    const result = await query(
+      `SELECT identification FROM users WHERE identification = ?`,
+      [identification]
+    );
 
-    // 해당 Identification를 가진 사용자가 있을 시 409 Error 반환
+    // 해당 아이디를 가진 사용자가 있을 시 409 Error 반환
     if (Array.isArray(result) && result.length > 0) {
       return NextResponse.json(
         { msg: `${identification}(은)는 이미 존재하는 아이디입니다.` },
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 해당 Identification를 가진 사용자가 없을 시 '사용 가능' 메세지 반환
+    // 해당 아이디를 가진 사용자가 없을 시 '사용 가능' Message 반환
     return NextResponse.json(
       { msg: `${identification}(은)는 사용 가능합니다.` },
       { status: 200 }

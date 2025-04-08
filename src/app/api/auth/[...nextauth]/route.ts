@@ -129,10 +129,19 @@ const createUser = async (data: {
   try {
     /** 쿼리문 */
     const sql = `
-      INSERT INTO users 
-        (identification, profile_img_url, nickname, email, platform, access_level, provider, last_login)
+      INSERT INTO
+        users (
+          identification,
+          profile_img_url,
+          nickname,
+          email,
+          platform,
+          access_level,
+          provider,
+          seq
+        ) 
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, NOW())
+        (?, ?, ?, ?, ?, ?, ?, 0)
     `;
 
     const result = await query(sql, [
