@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 // import Lottie from "react-lottie-player";
 
-import CSS from "./Recovery.module.css";
+import CSS from "./recovery/Recovery.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 import { formatTime } from "@utils/index";

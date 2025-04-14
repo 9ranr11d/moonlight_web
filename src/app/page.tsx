@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
 import { resetSignUp } from "@redux/slices/signUpSlice";
+import { resetVerification } from "@redux/slices/VerificationSlice";
 
 import { socialSignInAction } from "@actions/authAction";
 
@@ -17,7 +18,8 @@ import CSS from "./page.module.css";
 
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/signUp/SignUp";
-import Recovery from "@components/auth/Recovery";
+
+import Recovery from "@components/auth/recovery/Recovery";
 
 /** 시작 페이지 */
 export default function Home() {
@@ -38,6 +40,8 @@ export default function Home() {
   /** 회원가입 버튼 클릭 시 */
   const handleSignUp = (): void => {
     dispatch(resetSignUp());
+    dispatch(resetVerification());
+
     setIsSignUp(true);
   };
 

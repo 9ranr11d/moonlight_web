@@ -17,7 +17,14 @@ export async function POST(req: NextRequest) {
 
     /** 결과 */
     const result = await query(
-      `SELECT COUNT(*) AS count FROM users WHERE phone_number = ?`,
+      `
+      SELECT
+        COUNT(*) AS count
+      FROM
+        users
+      WHERE
+        phone_number = ?
+      `,
       [phoneNumber]
     );
 
@@ -25,19 +32,30 @@ export async function POST(req: NextRequest) {
     const isDuplicate = result[0]?.count > 0;
 
     // 중복 시
-    if (isDuplicate)
+    if (isDuplicate) {
+      console.log(
+        "auth/check-duplicate-phone-number > POST() :",
+        `'${phoneNumber}'(은)는 이미 사용 중인 휴대전화 번호입니다.`
+      );
+
       return NextResponse.json(
-        { msg: `${phoneNumber}은 이미 사용 중인 휴대전화 번호입니다.` },
+        { msg: "해당 휴대전화 번호는 이미 사용 중인 휴대전화 번호입니다." },
         { status: 409 }
       );
+    }
+
+    console.log(
+      "auth/check-duplicate-phone-number > POST() :",
+      `'${phoneNumber}'(은)는 사용 가능한 휴대전화 번호입니다.`
+    );
 
     // 휴대전화 번호 중복 여부 반환
     return NextResponse.json(
-      { msg: `${phoneNumber}는 사용가능한 휴대전화 번호입니다.` },
+      { msg: "해당 휴대전화 번호는 사용 가능한 휴대전화 번호입니다." },
       { status: 200 }
     );
   } catch (err) {
-    console.error("/src/app/api/auth/check_email > POST() :", err);
+    console.error("auth/check-duplicate-phone-number > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

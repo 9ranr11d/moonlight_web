@@ -17,7 +17,7 @@ export async function POST() {
       }
     );
   } catch (err) {
-    console.error("/src/app/api/auth/sign-out > POST() :", err);
+    console.error("auth/sign-out > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

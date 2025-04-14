@@ -26,7 +26,10 @@ export default function ProfileForm() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
+  /** 회원가입 정보 */
   const signUp = useSelector((state: RootState) => state.signUpSlice);
+  /** 본인인증 정보 */
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [birthdate, setBirthdate] = useState<string>(""); // 생년월일
   const [nickname, setNickName] = useState<string>(""); // 별명
@@ -93,8 +96,8 @@ export default function ProfileForm() {
       signUpAction({
         identification: signUp.identification.identification,
         password: signUp.password.password,
-        email: signUp.verification.email,
-        phoneNumber: signUp.verification.phoneNumber,
+        email: verification.email,
+        phoneNumber: verification.phoneNumber,
         birthdate,
         gender: genders[selectedGenderIdx].value,
         nickname,

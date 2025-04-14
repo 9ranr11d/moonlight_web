@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
         t1.type;
     `);
 
+    /** 약관 목록 */
     const terms = result.map((row: any) => ({
       ...row,
       isRequired: !!row.isRequired, // 0 -> false, 1 -> true
@@ -37,7 +38,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ terms }, { status: 200 });
   } catch (err) {
-    console.error("/src/app/api/auth/get-latest-terms > GET() :", err);
+    console.error("auth/get-latest-terms > GET() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },

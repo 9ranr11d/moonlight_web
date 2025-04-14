@@ -3,14 +3,13 @@
 import React, { useState } from "react";
 
 import { ERR_MSG } from "@constants/msg";
-
-import EmailVerification from "./EmailVerification";
+import VerificationForm from "./VerificationForm";
 
 /** 아이디 찾기 */
 export default function Identification() {
-  const [isVerified, setIsVerified] = useState<boolean>(false); // Email 인증 여부
-
   const [identification, setIdentification] = useState<string>(""); // 찾으려는 아이디
+
+  const [isVerified, setIsVerified] = useState<boolean>(false); // Email 인증 여부
 
   /**
    * 입력받은 Email과 부합하는 아이디 찾기
@@ -47,12 +46,13 @@ export default function Identification() {
   return (
     <>
       {!isVerified ? (
-        <EmailVerification
-          title="Email로 본인 인증"
-          verified={email => getUserIdentification(email)}
-          isAutoFocus={false}
-          isEmailCheckEnabled={true}
-        />
+        // <EmailVerification
+        //   title="Email로 본인 인증"
+        //   verified={email => getUserIdentification(email)}
+        //   isAutoFocus={false}
+        //   isEmailCheckEnabled={true}
+        // />
+        <VerificationForm />
       ) : (
         <div>
           <h4>찾으시는 아이디는</h4>

@@ -7,17 +7,21 @@ import {
   signOut,
   socialSignIn,
 } from "@redux/slices/authSlice";
+
 import {
   setLatestTerm,
   setTermsErr,
   setIsIdDuplicate,
-  setEmailVerified,
-  setVerificationErr,
-  setPhoneVerified,
   setSignUpCompleted,
   setTermsSaved,
-  confirmVerificationAvailable,
 } from "@redux/slices/signUpSlice";
+
+import {
+  confirmVerificationAvailable,
+  setEmailVerified,
+  setPhoneVerified,
+  setVerificationErr,
+} from "@redux/slices/VerificationSlice";
 
 import { IIUser, IUserAgreedTerms } from "@interfaces/auth";
 

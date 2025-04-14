@@ -10,6 +10,7 @@ import { signIn as socialSignIn } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
 import { resetAuth } from "@redux/slices/authSlice";
+import { resetVerification } from "@redux/slices/VerificationSlice";
 
 import { signInAction } from "@actions/authAction";
 
@@ -74,6 +75,8 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
 
   /** ID/PW 찾기로 전환 */
   const handleRecovery = (): void => {
+    dispatch(resetVerification());
+
     recovery();
   };
 

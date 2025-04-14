@@ -6,7 +6,7 @@ import Image from "next/image";
 import CSS from "./Recovery.module.css";
 
 import { ERR_MSG } from "@constants/msg";
-import EmailVerification from "./EmailVerification";
+import EmailVerification from "../EmailVerification";
 
 import IconCheck from "@public/img/common/icon_check_primary.svg";
 

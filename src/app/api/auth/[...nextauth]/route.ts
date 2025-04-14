@@ -28,22 +28,25 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      // 사용자의 프로필 정보를 받아오는 부분
-      console.log("소셜 로그인 정보 :", { user, account, profile });
+      console.log(
+        "[...nextauth] > handler() > callbacks :",
+        `'${user.id}'(으)로 Social SignIn 시도했습니다.`
+      );
 
+      // 사용자의 프로필 정보를 받아오는 부분
       const userExists = await checkUserExists(user.id);
 
-      if (!userExists) {
+      // 가입된 사용자가 아닐 시
+      if (!userExists)
         await createUser({
           identification: user.id,
           profile_img_url: user.image || null,
-          nickname: user.name || "Unknown",
+          nickname: user.name || null,
           email: user.email || null,
           platform: "web",
           access_level: 1,
           provider: account?.provider!,
         });
-      }
 
       return true;
     },
@@ -89,26 +92,33 @@ const handler = NextAuth({
  * @returns 가입된 사용자인지
  */
 const checkUserExists = async (identification: string) => {
-  /** SQL 쿼리문 */
-  const sql = `
+  /** 색인 결과 */
+  const result = await query(
+    `
     SELECT
       identification
     FROM
       users
     WHERE
       identification = ?
-  `;
-  /** 색인 결과 */
-  const result = await query(sql, [identification]);
+    `,
+    [identification]
+  );
 
   // 색인 결과가 없을 시
   if (result.length === 0) {
-    console.error("사용자를 찾을 수 없습니다.");
+    console.log(
+      "[...nextauth] > checkUserExists() :",
+      `'${identification}'(은)는 가입된 사용자가 아닙니다.`
+    );
 
     return false;
   }
 
-  console.log("사용자 정보 :", result[0]);
+  console.log(
+    "[...nextauth] > checkUserExists() :",
+    `'${identification}'(은)는 가입된 사용자입니다.`
+  );
 
   return true;
 };
@@ -120,15 +130,15 @@ const checkUserExists = async (identification: string) => {
 const createUser = async (data: {
   identification: string;
   profile_img_url: string | null;
-  nickname: string;
+  nickname: string | null;
   email: string | null;
   platform: string;
   access_level: number;
   provider: string;
 }) => {
   try {
-    /** 쿼리문 */
-    const sql = `
+    await query(
+      `
       INSERT INTO
         users (
           identification,
@@ -140,23 +150,27 @@ const createUser = async (data: {
           provider,
           seq
         ) 
-      VALUES
-        (?, ?, ?, ?, ?, ?, ?, 0)
-    `;
+      VALUES (
+        ?, ?, ?, ?, ?, ?, ?, 0
+      )
+      `,
+      [
+        data.identification,
+        data.profile_img_url,
+        data.nickname,
+        data.email,
+        data.platform,
+        data.access_level,
+        data.provider,
+      ]
+    );
 
-    const result = await query(sql, [
-      data.identification,
-      data.profile_img_url,
-      data.nickname,
-      data.email,
-      data.platform,
-      data.access_level,
-      data.provider,
-    ]);
-
-    console.log("사용자 생성 성공했습니다 :", result);
-  } catch (error) {
-    console.error("사용자 생성 중 오류 발생했습니다 :", error);
+    console.log(
+      "[...nextauth] > createUser() :",
+      `'${data.identification}'(으)로 사용자 생성 성공했습니다.`
+    );
+  } catch (err) {
+    console.error("[...nextauth] > createUser() :", err);
   }
 };
 

@@ -1,5 +1,3 @@
-export interface ISignUp {}
-
 /** 공개 사용자 정보 Interface */
 export interface IUser {
   /** 아이디 */

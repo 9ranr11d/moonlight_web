@@ -26,24 +26,40 @@ export async function GET(req: NextRequest) {
       );
 
     /** 결과값 */
-    const user = await query(`SELECT * FROM users WHERE refresh_token = ?`, [
-      refreshToken,
-    ]);
+    const result = await query(
+      `
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        refresh_token = ?
+      `,
+      [refreshToken]
+    );
 
     // Cookie의 Refresh Token과 동일한 Refresh Token을 가진 사용자가 없을 시 404 Error 반환
-    if (Array.isArray(user) && user.length === 0)
+    if (result.length === 0) {
+      console.log(
+        "auth/refresh-access-token > GET() :",
+        `${refreshToken}(와)과 일치하는 사용자가 없습니다.`
+      );
+
       return NextResponse.json(
         { msg: "사용자를 찾지 못했습니다." },
         { status: 404 }
       );
+    }
+
+    const [user] = result; // 사용자 정보
 
     /** 사용자의 Identification로 Access Token 재발급 */
-    const accessToken: string = sign(user[0].identification);
+    const accessToken: string = sign(user.identification);
 
     // Access Token을 반환
     return NextResponse.json({ accessToken }, { status: 200 });
   } catch (err) {
-    console.error("/src/app/api/auth/refresh-access-token > GET() :", err);
+    console.error("auth/refresh-access-token > GET() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

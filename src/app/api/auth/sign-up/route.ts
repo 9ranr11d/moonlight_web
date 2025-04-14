@@ -35,15 +35,23 @@ export async function POST(req: NextRequest) {
 
     /** 현재 nickname의 최대 seq 값 가져오기 (행 잠금) */
     const seqResult = await query(
-      `SELECT COALESCE(MAX(seq), -1) + 1 AS nextSeq FROM users WHERE nickname = ? FOR UPDATE`,
+      `
+      SELECT
+        COALESCE(MAX(seq), -1) + 1 AS nextSeq
+      FROM
+        users
+      WHERE
+        nickname = ? FOR UPDATE
+      `,
       [nickname]
     );
 
     /** 별명 식별자 */
     const seq: number = seqResult[0]?.nextSeq ?? 0;
 
-    /** SQL문 */
-    const sql = `
+    // 사용자 등록
+    await query(
+      `
       INSERT INTO
         users (
           identification,
@@ -57,34 +65,36 @@ export async function POST(req: NextRequest) {
           platform,
           provider
         ) 
-      VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+      VALUES (
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      )
+      `,
+      [
+        identification,
+        hashedPw,
+        email || null,
+        phoneNumber || null,
+        birthdate,
+        gender,
+        nickname,
+        seq,
+        "web",
+        "local",
+      ]
+    );
 
-    /** 삽입할 정보 */
-    const params = [
-      identification,
-      hashedPw,
-      email || null,
-      phoneNumber || null,
-      birthdate,
-      gender,
-      nickname,
-      seq,
-      "web",
-      "local",
-    ];
-
-    /** 결과 */
-    const result = await query(sql, params);
+    console.log(
+      "auth/sign-up > POST() :",
+      `'${identification}'(이)가 가입했습니다.`
+    );
 
     // 회원가입 성공 Message 반환
     return NextResponse.json(
-      { msg: `회원가입 성공 : ${result}` },
+      { msg: "회원가입 성공했습니다." },
       { status: 200 }
     );
   } catch (err) {
-    console.error("/src/app/api/auth/sign-up > POST() :", err);
+    console.error("auth/sign-up > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

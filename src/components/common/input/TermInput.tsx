@@ -48,9 +48,16 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: 10,
-          borderBottom: "1px solid var(--gray-300)",
-          background: isChecked ? "var(--gray-50)" : undefined,
+          padding: 0,
+          border: "2px solid transparent",
+          borderRadius: isContentVisible ? "5px 5px 0 0" : 5,
+          backgroundImage: isChecked
+            ? "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--primary-color), #e0a3a7)"
+            : isContentVisible
+            ? "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--gray-200), var(--gray-100))"
+            : "linear-gradient(#fff, #fff)",
+          backgroundOrigin: "border-box",
+          backgroundClip: "content-box, border-box",
         }}
       >
         <div
@@ -58,6 +65,7 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
             display: "flex",
             alignItems: "center",
             columnGap: 10,
+            padding: 10,
           }}
         >
           <CheckBoxBtn onClick={toggleCheck} size={12} isChecked={isChecked} />
@@ -80,6 +88,7 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
           onClick={toggleContentVisible}
           size={12}
           fill={"var(--gray-500)"}
+          style={{ marginRight: 10 }}
         />
       </div>
 
@@ -87,6 +96,7 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
         <div
           style={{
             background: "var(--gray-100)",
+            borderRadius: "0 0 5px 5px",
             padding: 10,
           }}
         >

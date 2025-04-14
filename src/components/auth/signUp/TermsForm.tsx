@@ -100,7 +100,7 @@ export default function TermsForm() {
         </div>
       ) : (
         <>
-          <div>
+          <div style={{ display: "flex", flexDirection: "column", rowGap: 1 }}>
             {signUp.term.latestTerms.map((term, idx) => (
               <TermInput
                 key={idx}

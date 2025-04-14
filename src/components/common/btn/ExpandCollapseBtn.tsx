@@ -16,6 +16,8 @@ interface IExpandCollapseBtn {
   fill?: string;
   /** 크기 */
   size: number;
+  /** Style */
+  style?: React.CSSProperties;
 }
 
 /** 더보기 버튼 */
@@ -24,6 +26,7 @@ export default function ExpandCollapseBtn({
   isExpanded,
   fill = "black",
   size,
+  style,
 }: IExpandCollapseBtn) {
   return (
     <button
@@ -34,6 +37,7 @@ export default function ExpandCollapseBtn({
         height: size,
         padding: 0,
         background: "none",
+        ...(style && { ...style }),
       }}
     >
       <span

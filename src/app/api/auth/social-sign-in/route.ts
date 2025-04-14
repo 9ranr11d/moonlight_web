@@ -2,20 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { query } from "@lib/dbConnect";
 
-/** identification으로 사용자 정보 검색 */
+/** 아이디로 사용자 정보 검색 */
 export async function GET(req: NextRequest) {
   try {
-    /** identification */
+    /** 아이디 */
     const id: string | null = req.nextUrl.searchParams.get("id");
 
     if (!id)
       return NextResponse.json(
-        { msg: "identification을 입력해주세요." },
+        { msg: "아이디를 입력해주세요." },
         { status: 400 }
       );
 
-    /** SQL 쿼리문 */
-    const sql = `
+    /** 검색 결과 */
+    const result = await query(
+      `
       SELECT
         u.identification, 
         u.profile_img_url AS profileImgUrl, 
@@ -41,19 +42,22 @@ export async function GET(req: NextRequest) {
           cu.couple_code = c.couple_code
       WHERE
         identification = ?
-    `;
-
-    /** 검색 결과 */
-    const result = await query(sql, [id]);
+    `,
+      [id]
+    );
 
     if (result.length === 0)
       return NextResponse.json(
-        { msg: `${id} 사용자 정보가 없습니다.` },
+        { msg: "사용자 정보가 없습니다." },
         { status: 404 }
       );
 
-    /** 사용자 정보 */
-    const user = result[0];
+    const [user] = result; // 사용자 정보
+
+    console.log(
+      "auth/social-sign-in > GET() :",
+      `'${id}'(으)로 소셜 로그인 성공했습니다`
+    );
 
     return NextResponse.json(
       {
@@ -62,15 +66,15 @@ export async function GET(req: NextRequest) {
           createdAt: new Date(user.createdAt).toISOString(),
           updatedAt: new Date(user.updatedAt).toISOString(),
         },
-        msg: `${id}으로 로그인 성공했습니다.`,
+        msg: "소셜 로그인을 성공했습니다.",
       },
       { status: 200 }
     );
   } catch (err) {
-    console.error("/src/app/api/suth/social-sign-in > POST() :", err);
+    console.error("auth/social-sign-in > GET() :", err);
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

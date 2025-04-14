@@ -1,6 +1,3 @@
-import { AppDispatch } from "@redux/store";
-import { signIn } from "@redux/slices/authSlice";
-
 import { ILatLng } from "@interfaces/index";
 
 import { FORBIDDEN_WORDS } from "@constants/index";

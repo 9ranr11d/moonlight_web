@@ -15,20 +15,27 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    /** SQL문 */
-    const sql = `
-      INSERT INTO user_terms (user_id, term_id)
-      VALUES ${agreedTermIds.map(() => "(?, ?)").join(", ")}
-    `;
+    await query(
+      `
+      INSERT INTO
+        user_terms (
+          user_id,
+          term_id
+        )
+      VALUES
+        ${agreedTermIds.map(() => "(?, ?)").join(", ")}
+      `,
+      agreedTermIds.flatMap(termId => [userId, termId])
+    );
 
-    /** 삽입할 정보 */
-    const params = agreedTermIds.flatMap(termId => [userId, termId]);
-
-    await query(sql, params);
+    console.log(
+      "auth/save-user-terms > POST() :",
+      `${userId}(이)가 동의한 약관 ${agreedTermIds}(이)가 저장되었습니다.`
+    );
 
     // 인증 코드 반환
     return NextResponse.json(
-      { msg: `${userId}(이)가 동의한 약관 ${agreedTermIds}가 저장되었습니다.` },
+      { msg: "동의한 약관들이 저장되었습니다." },
       { status: 200 }
     );
   } catch (err) {

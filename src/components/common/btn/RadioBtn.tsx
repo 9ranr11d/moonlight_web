@@ -52,11 +52,11 @@ export default function RadioBtn({
               _idx === selectedIdx
                 ? "2px solid transparent"
                 : "1px solid var(--gray-300)",
+            borderRadius: 20,
             backgroundImage:
               "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--primary-color), #e0a3a7)",
             backgroundOrigin: "border-box",
             backgroundClip: "content-box, border-box",
-            borderRadius: 20,
             padding: 0,
             color:
               _idx === selectedIdx ? "var(--primary-color)" : "var(--gray-300)",

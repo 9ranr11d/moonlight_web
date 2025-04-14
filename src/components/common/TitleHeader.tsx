@@ -9,6 +9,8 @@ interface ITitleHeader {
   /** 뒤로가기 클릭 시 */
   back?: () => void;
 
+  /** 제목 */
+  title?: string;
   /** CSS */
   style?: React.CSSProperties;
   /** 오른쪽 아이콘 */
@@ -16,7 +18,12 @@ interface ITitleHeader {
 }
 
 /** 제목 Header  */
-export default function TitleHeader({ back, style, rightIcon }: ITitleHeader) {
+export default function TitleHeader({
+  back,
+  title,
+  style,
+  rightIcon,
+}: ITitleHeader) {
   return (
     <div
       style={{
@@ -38,7 +45,7 @@ export default function TitleHeader({ back, style, rightIcon }: ITitleHeader) {
         <IconBack width={24} height={24} fill={"black"} />
       </button>
 
-      <h3 style={{ flex: 1 }}>회원가입</h3>
+      <h3 style={{ flex: 1 }}>{title}</h3>
 
       {rightIcon && rightIcon}
     </div>

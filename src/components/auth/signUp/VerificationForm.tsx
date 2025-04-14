@@ -11,12 +11,12 @@ import CSS from "@components/auth/signUp/SignUp.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
-import TabBtn from "@components/common/btn/TabBtn";
+import HorizontalTabBtn from "@components/common/btn/HorizontalTabBtn";
 import ErrorBlock from "@components/common/ErrorBlock";
 import NextBtn from "@components/common/btn/NextBtn";
 
-import EmailForm from "@components/auth/signUp/EmailForm";
-import PhoneNumberForm from "@components/auth/signUp/PhoneNumberForm";
+import EmailForm from "@components/auth/verification/EmailForm";
+import PhoneNumberForm from "@components/auth/verification/PhoneNumberForm";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
 
@@ -25,11 +25,14 @@ export default function VerificationForm() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  /** 회원가입 정보 */
-  const signUp = useSelector((state: RootState) => state.signUpSlice);
+  /** 본인인증 정보 */
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
   const [timeLeft, setTimeLeft] = useState<number>(5); // 본인 인증 완료 시 다음 단계 자동 넘기 제한 시간
+
+  /** Input들 */
+  const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
@@ -40,9 +43,6 @@ export default function VerificationForm() {
   const clickConfirmBtn = () => {
     dispatch(incrementSignUpStep());
   };
-
-  /** Input들 */
-  const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
 
   // 렌더링 시
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function VerificationForm() {
   // 남은 시간 변경 시
   useEffect(() => {
     // 본인 인증 완료 시
-    if (signUp.verification.isVerified) {
+    if (verification.isVerified) {
       // 1초씩 감소
       if (timeLeft > 0) {
         const timer = setInterval(() => {
@@ -76,13 +76,13 @@ export default function VerificationForm() {
         return () => clearInterval(timer);
       } else dispatch(incrementSignUpStep());
     }
-  }, [timeLeft, signUp.verification.isVerified]);
+  }, [timeLeft, verification.isVerified]);
 
   return (
     <>
-      {!signUp.verification.isVerified ? (
+      {!verification.isVerified ? (
         <>
-          <TabBtn
+          <HorizontalTabBtn
             labelArr={["Email", "휴대전화"]}
             idx={selectedTabIdx}
             onChange={handleTab}
@@ -115,7 +115,7 @@ export default function VerificationForm() {
           <div className={CSS.okBtnBox}>
             <NextBtn
               onClick={clickConfirmBtn}
-              disabled={!signUp.verification.isVerified}
+              disabled={!verification.isVerified}
               style={{ paddingLeft: 40 }}
             >
               <span className={CSS.timeLeft}>{timeLeft}</span>

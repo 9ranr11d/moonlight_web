@@ -1,26 +1,41 @@
-.tabBtnBox {
+.horizontalTabBtnBox {
   display: flex;
   margin-bottom: 10px;
 }
 
-.tabBtnBox > button {
+.horizontalTabBtnBox > button {
   flex: 1;
   background: var(--gray-300);
   border-radius: 0;
 }
 
-.tabBtnBox > button:hover {
+.horizontalTabBtnBox > button:hover {
   background: var(--primary-dark-color);
 }
 
-.tabBtnBox > button:disabled {
+.horizontalTabBtnBox > button:disabled {
   background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }
 
-.tabBtnBox > button:first-child {
+.horizontalTabBtnBox > button:first-child {
   border-radius: 3px 0 0 3px;
 }
 
-.tabBtnBox > button:last-child {
+.horizontalTabBtnBox > button:last-child {
   border-radius: 0 3px 3px 0;
+}
+
+.verticalTabBtnBox > button {
+  background: none;
+  color: var(--font-color);
+  padding: 0;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border-radius: 5px;
+}
+
+.verticalTabBtnBox > button:hover {
+  background-image: linear-gradient(#fff, #fff),
+    linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }

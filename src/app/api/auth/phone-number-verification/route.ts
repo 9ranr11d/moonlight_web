@@ -19,8 +19,6 @@ export async function POST(req: NextRequest) {
     /** 인증 코드 */
     const code: string = generateRandomCode(6);
 
-    console.log(`'${phoneNumber}' 인증 코드 : ${code}`);
-
     /** Twilio 설정 */
     const client = twilio(
       process.env.TWILIO_ACCOUNT_SID,
@@ -34,19 +32,21 @@ export async function POST(req: NextRequest) {
       to: phoneNumber,
     });
 
+    console.log(
+      "auth/phone-number-verification > POST() :",
+      `'${phoneNumber}'(으)로 인증 코드 ${code} 전송했습니다.`
+    );
+
     return NextResponse.json(
       {
         code: code,
         phoneNumber: phoneNumber,
-        msg: `'${phoneNumber}'(으)로 인증 코드를 전송했습니다.`,
+        msg: "해당 휴대전화 번호로 인증 코드를 전송했습니다.",
       },
       { status: 200 }
     );
   } catch (err) {
-    console.error(
-      "/src/app/api/auth/phone-number-verification > POST() :",
-      err
-    );
+    console.error("auth/phone-number-verification > POST() :", err);
 
     return NextResponse.json(
       { msg: "서버 오류입니다. 다시 시도해주세요." },

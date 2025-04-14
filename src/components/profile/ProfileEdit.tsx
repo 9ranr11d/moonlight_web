@@ -15,7 +15,7 @@ import { IUser } from "@interfaces/auth/index";
 import { ERR_MSG } from "@constants/msg";
 
 import Modal from "@components/common/Modal";
-import Password from "@components/auth/Password";
+import Password from "@components/auth/recovery/Password";
 import EmailUpdateForm from "./EmailUpdateForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";

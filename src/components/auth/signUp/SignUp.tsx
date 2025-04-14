@@ -11,8 +11,8 @@ import {
   resetPassword,
   resetSignUp,
   resetTerm,
-  resetVerification,
 } from "@redux/slices/signUpSlice";
+import { resetVerification } from "@redux/slices/VerificationSlice";
 
 import CSS from "./SignUp.module.css";
 
@@ -99,6 +99,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
     <div className={CSS.signUpBox}>
       <TitleHeader
         back={clickBack}
+        title="회원가입"
         style={{ marginBottom: 20 }}
         rightIcon={
           <button
