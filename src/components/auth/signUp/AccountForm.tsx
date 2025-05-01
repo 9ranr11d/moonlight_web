@@ -19,7 +19,7 @@ import IdentificationInput from "@components/common/input/IdentificationInput";
 import PasswordInput from "@components/common/input/PasswordInput";
 import NextBtn from "@components/common/btn/NextBtn";
 
-/** identification, password Form */
+/** 아이디, 비밀번호 Form */
 export default function AccountForm() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();

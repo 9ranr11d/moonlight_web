@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { ERR_MSG } from "@constants/msg";
+
 import IconNoEntry from "@public/svgs/common/icon_no_entry.svg";
 
 /** 오류 Interface */
@@ -25,7 +27,7 @@ export default function ErrorBlock({ content }: IErrorBlock) {
         <IconNoEntry width={100} height={100} fill={"var(--err-color)"} />
       </div>
 
-      {content && content}
+      {content || <h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
     </div>
   );
 }

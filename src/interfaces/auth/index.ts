@@ -83,37 +83,6 @@ export interface IPasswordState {
   isValid: boolean;
 }
 
-/** 본인 인증 여부 관련 Interface */
-export interface IVerification {
-  /** 인증 여부 */
-  isVerified: boolean;
-  /** 중복 여부 */
-  isDuplicate: boolean;
-  /** Message */
-  msg: string | null;
-  /** 오류 여부 */
-  isErr: boolean;
-}
-
-/** Email 본인 인증 Interface  */
-export interface IEmail extends IVerification {
-  /** Email */
-  email: string | null;
-  /** 인증 코드 */
-  code: string | null;
-}
-
-/** 휴대전화 번호 본인 인증 Interface */
-export interface IPhone extends IVerification {
-  /** 휴대전화 번호 */
-  phoneNumber: string | null;
-  /** 인증 코드 */
-  code: string | null;
-}
-
-/** 본인 인증 관련 모든 정보 Interface */
-export interface IVerificationState extends IEmail, IPhone {}
-
 /** 동의된 약관 Interface */
 export interface IUserAgreedTerms {
   /** 동의한 사용자 아이디 */
@@ -121,3 +90,5 @@ export interface IUserAgreedTerms {
   /** 동의한 약관 Id들 */
   agreedTermIds: number[];
 }
+
+export type TVerificationType = "signUp" | "findId";

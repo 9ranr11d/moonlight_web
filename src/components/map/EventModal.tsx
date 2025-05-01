@@ -16,7 +16,7 @@ import VisitHistories from "./VisitHistories";
 import VisitHistoryEditor from "./VisitHistoryEditor";
 
 /** 즐겨찾기 방문 일지 모달 자식들 */
-interface IEventModalProps {
+interface IEventModal {
   /** 닫기 */
   closeModal: () => void;
 
@@ -25,10 +25,7 @@ interface IEventModalProps {
 }
 
 /** 즐겨찾기 방문 일지 모달 */
-export default function EventModal({
-  closeModal,
-  locationData,
-}: IEventModalProps) {
+export default function EventModal({ closeModal, locationData }: IEventModal) {
   console.log("선택한 즐겨찾기 장소 정보 :", locationData);
 
   /** 즐겨찾기 Reducer */

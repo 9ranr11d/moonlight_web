@@ -10,10 +10,12 @@ import DropdownBtn from "@components/common/btn/DropdownBtn";
 interface IEmailInput {
   /** Email 변경 시 */
   onChange?: (email: string) => void;
+  /** 키 클릭 시 */
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 /** Email Input */
-export default function EmailInput({ onChange }: IEmailInput) {
+export default function EmailInput({ onChange, onKeyDown }: IEmailInput) {
   /** Email 자동완성 목록 */
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"];
 
@@ -73,6 +75,7 @@ export default function EmailInput({ onChange }: IEmailInput) {
                 value={lastEmail}
                 onChange={handleLastEmail}
                 placeholder="직접 입력"
+                onKeyDown={onKeyDown}
                 readOnly={lastEmailIdx !== 0}
               />
             )}

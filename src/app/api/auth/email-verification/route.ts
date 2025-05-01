@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
               </p>
 
               <div style="background: #f9f9f9; padding: 20px 10px; border-radius: 3px; margin: 0px 20px">
-                <h4 style="text-align: center">${code}</h4>
+                <h4 style="text-align: center; color: #b67a80">${code}</h4>
               </div>
 
               <p style="text-align: center">
@@ -234,7 +234,7 @@ export async function POST(req: NextRequest) {
 
     console.log(
       "auth/email-verification > POST() :",
-      `'${email}'(으)로 인증 코드 ${code} 전송했습니다.`
+      `'${email}'(으)로 인증 코드 '${code}' 전송했습니다.`
     );
 
     // 인증 코드 반환

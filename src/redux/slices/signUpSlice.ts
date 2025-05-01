@@ -26,7 +26,6 @@ interface ISignUpState {
   term: ITermState;
   identification: IIdState;
   password: IPasswordState;
-  // verification: IVerificationState;
 }
 
 /** 초기값 */
@@ -64,11 +63,11 @@ export const SignUp = createSlice({
     resetSignUp: state => {
       Object.assign(state, initialState);
     },
-    /** step 증가 */
+    /** Step 증가 */
     incrementSignUpStep: state => {
       state.step += 1;
     },
-    /** step 감소 */
+    /** Step 감소 */
     decrementSignUpStep: state => {
       if (state.step > 0) {
         state.step -= 1;

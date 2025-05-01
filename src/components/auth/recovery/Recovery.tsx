@@ -1,49 +1,81 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 
 import CSS from "./Recovery.module.css";
 
-import Identification from "./Identification";
-import Password from "./Password";
-import TitleHeader from "@components/common/TitleHeader";
+import { AppDispatch, RootState } from "@redux/store";
 
-import HorizontalTabBtn from "@components/common/btn/HorizontalTabBtn";
+import { resetVerification } from "@redux/slices/verificationSlice";
+
+import {
+  decrementRecoveryStep,
+  resetRecovery,
+} from "@redux/slices/recoverySlice";
+
+import TitleHeader from "@components/common/TitleHeader";
+import HorizontalTabBtns from "@components/common/btn/HorizontalTabBtns";
 import ErrorBlock from "@components/common/ErrorBlock";
 
-import { ERR_MSG } from "@constants/msg";
+import Identification from "./Identification";
+import Password from "./Password";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
-/** Recovery 자식 */
-interface IRecoveryProps {
+/** ID/PW 찾기 Interface */
+interface IRecovery {
   /** 뒤로가기 */
   back: () => void;
 }
 
 /** ID/PW 찾기 */
-export default function Recovery({ back }: IRecoveryProps) {
+export default function Recovery({ back }: IRecovery) {
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { step } = useSelector((state: RootState) => state.recoverySlice); // ID/PW 찾기 Step
+
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
 
   /** Input들 */
   const inputs = useMemo(
-    () => [<Identification />, <Password back={back} />],
+    () => [<Identification back={back} />, <Password back={back} />],
     []
   );
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
+    dispatch(resetVerification());
+    dispatch(resetRecovery());
+
     setSelectedTabIdx(idx);
   };
 
   /** 뒤로가기 */
   const clickBack = () => {
-    back();
+    switch (step) {
+      case 2:
+        dispatch(resetVerification());
+        dispatch(resetRecovery());
+
+        break;
+      case 1:
+        dispatch(decrementRecoveryStep());
+
+        break;
+      case 0:
+      default:
+        back();
+
+        break;
+    }
   };
 
   return (
     <>
-      <div className={CSS.recoveryBox}>
+      <div className={CSS.recoveryBox} style={{ paddingBottom: 40 }}>
         <TitleHeader
           back={clickBack}
           title="ID / PW 찾기"
@@ -59,7 +91,7 @@ export default function Recovery({ back }: IRecoveryProps) {
           }
         />
 
-        <HorizontalTabBtn
+        <HorizontalTabBtns
           labelArr={["아이디", "비밀번호"]}
           idx={selectedTabIdx}
           onChange={handleTab}
@@ -68,9 +100,7 @@ export default function Recovery({ back }: IRecoveryProps) {
         <div style={{ marginTop: 20 }}>
           {inputs[selectedTabIdx] ?? (
             <div style={{ marginBottom: 10 }}>
-              <ErrorBlock
-                content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
-              />
+              <ErrorBlock />
             </div>
           )}
         </div>

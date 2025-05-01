@@ -9,9 +9,11 @@ import StatusInput from "@components/common/input/StatusInput";
 /** 인증 Input Interface */
 interface IVerificationInput {
   /** 재전송 클릭 시 */
-  onResendClick?: () => void;
+  onClickResendCode?: () => void;
   /** 코드 변경 시 */
   onChange?: (code: string) => void;
+  /** 키 누를 시 */
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
   /** 남은 시간 */
   timeLeft?: number;
@@ -21,8 +23,9 @@ interface IVerificationInput {
 
 /** 인증 Input */
 export default function VerificationInput({
-  onResendClick,
+  onClickResendCode,
   onChange,
+  onKeyDown,
   timeLeft = 300,
   msg,
 }: IVerificationInput) {
@@ -33,6 +36,12 @@ export default function VerificationInput({
   /** 인증 코드 Input 관리 */
   const handleCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setCode(e.target.value);
+  };
+
+  const clickResendCode = () => {
+    setRemainingTime(timeLeft);
+
+    onClickResendCode?.();
   };
 
   // 남은 시간 변경 시
@@ -60,6 +69,7 @@ export default function VerificationInput({
             type="text"
             value={code}
             onChange={handleCode}
+            onKeyDown={onKeyDown}
             placeholder="인증코드를 입력해주세요."
             disabled={timeLeft === 0}
             isErr={true}
@@ -82,7 +92,7 @@ export default function VerificationInput({
         <div>
           <button
             type="button"
-            onClick={onResendClick}
+            onClick={clickResendCode}
             style={{ whiteSpace: "nowrap" }}
           >
             재전송

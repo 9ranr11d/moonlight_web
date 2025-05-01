@@ -8,7 +8,7 @@ import { RootState } from "@redux/store";
 import EmailVerification from "@components/auth/EmailVerification";
 
 /** Email 수정 Form 자식들 */
-interface IEmailUpdateFormProps {
+interface IEmailUpdateForm {
   /**
    * Email 인증 성공 시
    * @param email 인증 성공한 Email
@@ -19,7 +19,7 @@ interface IEmailUpdateFormProps {
 /** Email 수정 Form */
 export default function EmailUpdateForm({
   verifyEmailSuccess,
-}: IEmailUpdateFormProps) {
+}: IEmailUpdateForm) {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 

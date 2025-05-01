@@ -15,7 +15,7 @@ import CSS from "@components/common/input/Input.module.css";
 
 import StatusInput from "@components/common/input/StatusInput";
 
-/** 아이디 중복 검사 Input */
+/** 아이디 Input */
 export default function IdentificationInput() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
@@ -50,7 +50,7 @@ export default function IdentificationInput() {
         type="text"
         value={identification}
         onChange={handleIdentification}
-        placeholder="영문 소문자, 숫자, '_', '-'을 이용해서 만들어주세요."
+        placeholder={"영문 소문자, 숫자, '_', '-'을 이용해서 만들어주세요."}
         showIcon={
           signUp.identification.isChecking && !signUp.identification.isDuplicate
         }

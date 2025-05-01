@@ -12,11 +12,9 @@ import {
   resetSignUp,
   resetTerm,
 } from "@redux/slices/signUpSlice";
-import { resetVerification } from "@redux/slices/VerificationSlice";
+import { resetVerification } from "@redux/slices/verificationSlice";
 
 import CSS from "./SignUp.module.css";
-
-import { ERR_MSG } from "@constants/msg";
 
 import TitleHeader from "@components/common/TitleHeader";
 import ErrorBlock from "@components/common/ErrorBlock";
@@ -30,7 +28,7 @@ import ProfileForm from "@components/auth/signUp/ProfileForm";
 import IconHome from "@public/svgs/common/icon_home.svg";
 
 /** SignUp 자식 */
-interface ISignUpProps {
+interface ISignUp {
   /** 회원가입 완료 */
   completed: () => void;
   /** 뒤로가기 */
@@ -38,14 +36,13 @@ interface ISignUpProps {
 }
 
 /** 회원가입 */
-export default function SignUp({ completed, back }: ISignUpProps) {
+export default function SignUp({ completed, back }: ISignUp) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  /** 회원가입 관련 정보 */
   const { step, isCompleted } = useSelector(
     (state: RootState) => state.signUpSlice
-  );
+  ); // 회원가입 Step과 완료 여부
 
   /** 뒤로 가기 클릭 시 */
   const clickBack = (): void => {
@@ -121,9 +118,7 @@ export default function SignUp({ completed, back }: ISignUpProps) {
       >
         {steps[step] ?? (
           <div style={{ marginBottom: 10 }}>
-            <ErrorBlock
-              content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
-            />
+            <ErrorBlock />
           </div>
         )}
       </div>

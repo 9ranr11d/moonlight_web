@@ -10,7 +10,7 @@ import { signIn as socialSignIn } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
 import { resetAuth } from "@redux/slices/authSlice";
-import { resetVerification } from "@redux/slices/VerificationSlice";
+import { resetVerification } from "@redux/slices/verificationSlice";
 
 import { signInAction } from "@actions/authAction";
 
@@ -24,7 +24,7 @@ import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
 
 /** SignIn 자식 */
-interface ISignInProps {
+interface ISignIn {
   /** 회원가입으로 전환 */
   signUp: () => void;
   /** ID/PW 찾기 전환 */
@@ -32,7 +32,7 @@ interface ISignInProps {
 }
 
 /** 로그인 */
-export default function SignIn({ signUp, recovery }: ISignInProps) {
+export default function SignIn({ signUp, recovery }: ISignIn) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 

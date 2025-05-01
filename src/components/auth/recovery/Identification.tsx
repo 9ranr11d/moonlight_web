@@ -1,63 +1,78 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
-import { ERR_MSG } from "@constants/msg";
+import dynamic from "next/dynamic";
+
+import { useSelector } from "react-redux";
+
+import { RootState } from "@redux/store";
+
 import VerificationForm from "./VerificationForm";
 
+import LottieLoading from "@public/json/loading_round_black.json";
+
+import IconHome from "@public/svgs/common/icon_home.svg";
+
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+});
+
+interface IIdentification {
+  /** 뒤로가기 */
+  back: () => void;
+}
+
 /** 아이디 찾기 */
-export default function Identification() {
-  const [identification, setIdentification] = useState<string>(""); // 찾으려는 아이디
-
-  const [isVerified, setIsVerified] = useState<boolean>(false); // Email 인증 여부
-
-  /**
-   * 입력받은 Email과 부합하는 아이디 찾기
-   * @param email Email
-   */
-  const getUserIdentification = (email: string): void => {
-    const data: { email: string } = { email };
-
-    fetch("/api/auth/get-user-id-by-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-        else alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        setIdentification(data.identification);
-        setIsVerified(true);
-      })
-      .catch(err =>
-        console.error(
-          "/src/components/auth/Recovery > Identification() > getUserIdentification() :",
-          err
-        )
-      );
-  };
+export default function Identification({ back }: IIdentification) {
+  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
+  const { modifiedId } = useSelector((state: RootState) => state.recoverySlice); // Step과 가려진 아이디
 
   return (
     <>
       {!isVerified ? (
-        // <EmailVerification
-        //   title="Email로 본인 인증"
-        //   verified={email => getUserIdentification(email)}
-        //   isAutoFocus={false}
-        //   isEmailCheckEnabled={true}
-        // />
         <VerificationForm />
       ) : (
         <div>
-          <h4>찾으시는 아이디는</h4>
-          <h2>『 {identification} 』</h2>
-          <h4>입니다.</h4>
+          <p style={{ textAlign: "center" }}>본인 확인이 완료되었습니다.</p>
+
+          <p style={{ textAlign: "center" }}>
+            확인된 회원님의 아이디는 아래와 같습니다.
+          </p>
+
+          <div
+            style={{
+              background: "var(--gray-50)",
+              padding: "20px 10px",
+              borderRadius: 3,
+              margin: "10px 0px 20px",
+            }}
+          >
+            <h4 style={{ textAlign: "center", color: "var(--primary-color)" }}>
+              {modifiedId || (
+                <span style={{ display: "flex", justifyContent: "center" }}>
+                  <LottiePlayer
+                    loop
+                    animationData={LottieLoading}
+                    play
+                    style={{ width: 28, height: 28 }}
+                  />
+                </span>
+              )}
+            </h4>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button
+              type="button"
+              onClick={back}
+              style={{ display: "flex", columnGap: 5 }}
+            >
+              <IconHome width={15} height={15} fill="white" />
+
+              <span>홈으로 돌아가기</span>
+            </button>
+          </div>
         </div>
       )}
     </>

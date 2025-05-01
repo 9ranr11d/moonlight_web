@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     console.log(
       "auth/save-user-terms > POST() :",
-      `${userId}(이)가 동의한 약관 ${agreedTermIds}(이)가 저장되었습니다.`
+      `'${userId}'(이)가 동의한 약관 ${agreedTermIds}(이)가 저장되었습니다.`
     );
 
     // 인증 코드 반환

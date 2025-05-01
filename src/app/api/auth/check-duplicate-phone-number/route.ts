@@ -2,11 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { query } from "@lib/dbConnect";
 
+import { TVerificationType } from "@interfaces/auth";
+
 /** 휴대전화 번호 중복 검사 */
 export async function POST(req: NextRequest) {
   try {
     // 휴대전화 번호
-    const { phoneNumber } = await req.json();
+    const {
+      phoneNumber,
+      type,
+    }: { phoneNumber: string; type: TVerificationType } = await req.json();
 
     // 휴대전화 번호이 없을 경우
     if (!phoneNumber)
@@ -31,29 +36,46 @@ export async function POST(req: NextRequest) {
     /** 중복 여부 */
     const isDuplicate = result[0]?.count > 0;
 
-    // 중복 시
-    if (isDuplicate) {
-      console.log(
-        "auth/check-duplicate-phone-number > POST() :",
-        `'${phoneNumber}'(은)는 이미 사용 중인 휴대전화 번호입니다.`
-      );
+    switch (type) {
+      case "findId":
+        console.log(
+          "auth/check-duplicate-phone-number > POST() :",
+          `'${phoneNumber}'(은)는 ${
+            isDuplicate ? "등록된" : "등록되지 않은"
+          } 휴대전화 번호입니다.`
+        );
 
-      return NextResponse.json(
-        { msg: "해당 휴대전화 번호는 이미 사용 중인 휴대전화 번호입니다." },
-        { status: 409 }
-      );
+        return NextResponse.json(
+          { isRegistered: isDuplicate },
+          { status: 200 }
+        );
+
+      case "signUp":
+      default:
+        // 중복 시
+        if (isDuplicate) {
+          console.log(
+            "auth/check-duplicate-phone-number > POST() :",
+            `'${phoneNumber}'(은)는 이미 사용 중인 휴대전화 번호입니다.`
+          );
+
+          return NextResponse.json(
+            { msg: "해당 휴대전화 번호는 이미 사용 중인 휴대전화 번호입니다." },
+            { status: 409 }
+          );
+        }
+
+        console.log(
+          "auth/check-duplicate-phone-number > POST() :",
+          `'${phoneNumber}'(은)는 사용 가능한 휴대전화 번호입니다.`
+        );
+
+        // 휴대전화 번호 중복 여부 반환
+        return NextResponse.json(
+          { msg: "해당 휴대전화 번호는 사용 가능한 휴대전화 번호입니다." },
+          { status: 200 }
+        );
     }
-
-    console.log(
-      "auth/check-duplicate-phone-number > POST() :",
-      `'${phoneNumber}'(은)는 사용 가능한 휴대전화 번호입니다.`
-    );
-
-    // 휴대전화 번호 중복 여부 반환
-    return NextResponse.json(
-      { msg: "해당 휴대전화 번호는 사용 가능한 휴대전화 번호입니다." },
-      { status: 200 }
-    );
   } catch (err) {
     console.error("auth/check-duplicate-phone-number > POST() :", err);
 

@@ -20,10 +20,12 @@ import {
   confirmVerificationAvailable,
   setEmailVerified,
   setPhoneVerified,
+  setRegistered,
   setVerificationErr,
-} from "@redux/slices/VerificationSlice";
+} from "@redux/slices/verificationSlice";
 
-import { IIUser, IUserAgreedTerms } from "@interfaces/auth";
+import { IIUser, IUserAgreedTerms, TVerificationType } from "@interfaces/auth";
+import { setModifiedId } from "@redux/slices/recoverySlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -32,8 +34,6 @@ import { IIUser, IUserAgreedTerms } from "@interfaces/auth";
 export const socialSignInAction =
   (identification: string) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`소셜 로그인 시도 : ${identification}`);
-
       /** 응답된 값 */
       const res = await fetch(`/api/auth/social-sign-in?id=${identification}`);
       /** 받아온 값 */
@@ -42,11 +42,9 @@ export const socialSignInAction =
       // 오류 시
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-      console.log(data.msg);
-
       dispatch(socialSignIn(data.user));
     } catch (err) {
-      console.error("/src/actions/authAction > socialSignInAction() :", err);
+      console.error("actions/authAction > socialSignInAction() :", err);
     }
   };
 
@@ -76,7 +74,7 @@ export const getLatestTermsAction =
 
       dispatch(setLatestTerm(data.terms));
     } catch (err) {
-      console.error("/src/actions/authAction > getLatestTermsAction() :", err);
+      console.error("actions/authAction > getLatestTermsAction() :", err);
     }
   };
 
@@ -87,8 +85,6 @@ export const getLatestTermsAction =
 export const checkDuplicateIdAction =
   (formData: { identification: string }) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`중복 검사 : ${formData.identification}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/check-duplicate-id", {
         method: "POST",
@@ -114,8 +110,6 @@ export const checkDuplicateIdAction =
         throw new Error(msg);
       }
 
-      console.log(data.msg);
-
       dispatch(
         setIsIdDuplicate({
           identification: formData.identification,
@@ -124,22 +118,18 @@ export const checkDuplicateIdAction =
         })
       );
     } catch (err) {
-      console.error(
-        "/src/actions/authAction > checkDuplicateIdAction() :",
-        err
-      );
+      console.error("actions/authAction > checkDuplicateIdAction() :", err);
     }
   };
 
 /**
  * Email 중복 여부 검사
- * @param formData Email
+ * @param formData Email, Type
  */
 export const checkDuplicateEmailAction =
-  (formData: { email: string }) => async (dispatch: AppDispatch) => {
+  (formData: { email: string; type: TVerificationType }) =>
+  async (dispatch: AppDispatch) => {
     try {
-      console.log(`Email 중복 검사 시도 : ${formData.email}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/check-duplicate-email", {
         method: "POST",
@@ -159,14 +149,19 @@ export const checkDuplicateEmailAction =
         throw new Error(msg);
       }
 
-      console.log();
+      switch (formData.type) {
+        case "findId":
+          dispatch(setRegistered(data.isRegistered));
 
-      dispatch(confirmVerificationAvailable());
+          break;
+        case "signUp":
+        default:
+          dispatch(confirmVerificationAvailable());
+
+          break;
+      }
     } catch (err) {
-      console.error(
-        "/src/actions/authAction > checkDuplicateEmailAction() :",
-        err
-      );
+      console.error("actions/authAction > checkDuplicateEmailAction() :", err);
     }
   };
 
@@ -175,10 +170,9 @@ export const checkDuplicateEmailAction =
  * @param formData 휴대전화 번호
  */
 export const checkDuplicatePhoneNumberAction =
-  (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
+  (formData: { phoneNumber: string; type: TVerificationType }) =>
+  async (dispatch: AppDispatch) => {
     try {
-      console.log(`휴대전화 번호 중복 검사 시도 : ${formData.phoneNumber}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/check-duplicate-phone-number", {
         method: "POST",
@@ -198,12 +192,20 @@ export const checkDuplicatePhoneNumberAction =
         throw new Error(msg);
       }
 
-      console.log(data.msg);
+      switch (formData.type) {
+        case "findId":
+          dispatch(setRegistered(data.isRegistered));
 
-      dispatch(confirmVerificationAvailable());
+          break;
+        case "signUp":
+        default:
+          dispatch(confirmVerificationAvailable());
+
+          break;
+      }
     } catch (err) {
       console.error(
-        "/src/actions/authAction > checkDuplicatePhoneNumberAction() :",
+        "actions/authAction > checkDuplicatePhoneNumberAction() :",
         err
       );
     }
@@ -216,8 +218,6 @@ export const checkDuplicatePhoneNumberAction =
 export const verityEmailAction =
   (formData: { email: string }) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`Email 인증 시도 : ${formData.email}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/email-verification", {
         method: "POST",
@@ -237,11 +237,9 @@ export const verityEmailAction =
         throw new Error(msg);
       }
 
-      console.log(data.msg);
-
       dispatch(setEmailVerified(data));
     } catch (err) {
-      console.error("/src/actions/authAction > verityEmailAction() :", err);
+      console.error("actions/authAction > verityEmailAction() :", err);
     }
   };
 
@@ -252,8 +250,6 @@ export const verityEmailAction =
 export const verifyPhoneNumberAction =
   (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`휴대전화 인증 시도 : ${formData.phoneNumber}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/phone-number-verification", {
         method: "POST",
@@ -273,14 +269,9 @@ export const verifyPhoneNumberAction =
         throw new Error(msg);
       }
 
-      console.log(data.msg);
-
       dispatch(setPhoneVerified(data));
     } catch (err) {
-      console.error(
-        "/src/actions/authAction > verifyPhoneNumberAction() :",
-        err
-      );
+      console.error("actions/authAction > verifyPhoneNumberAction() :", err);
     }
   };
 
@@ -291,9 +282,6 @@ export const verifyPhoneNumberAction =
 export const saveUserTermsAction =
   (formData: IUserAgreedTerms) => async (dispatch: AppDispatch) => {
     try {
-      console.log("시도한 사용자명 : ", formData.userId);
-      console.log("동의 시도한 약관 Id들 : ", formData.agreedTermIds);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/save-user-terms", {
         method: "POST",
@@ -306,11 +294,9 @@ export const saveUserTermsAction =
 
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-      console.log(data.msg);
-
       dispatch(setTermsSaved());
     } catch (err) {
-      console.error("/src/actions/authAction > saveUserTermsAction() :", err);
+      console.error("actions/authAction > saveUserTermsAction() :", err);
     }
   };
 
@@ -321,8 +307,6 @@ export const saveUserTermsAction =
 export const signUpAction =
   (formData: IIUser) => async (dispatch: AppDispatch) => {
     try {
-      console.log(`회원가입 시도 : ${formData}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/sign-up", {
         method: "POST",
@@ -336,11 +320,9 @@ export const signUpAction =
       // 오류 시
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-      console.log(data.msg);
-
       dispatch(setSignUpCompleted());
     } catch (err) {
-      console.error("/src/actions/authAction > signUpAction() :", err);
+      console.error("actions/authAction > signUpAction() :", err);
     }
   };
 
@@ -348,8 +330,6 @@ export const signInAction =
   (formData: { identification: string; password: string }) =>
   async (dispatch: AppDispatch) => {
     try {
-      console.log(`로그인 시도 : ${formData.identification}`);
-
       /** 응답된 값 */
       const res = await fetch("/api/auth/sign-in", {
         method: "POST",
@@ -373,15 +353,13 @@ export const signInAction =
 
       dispatch(signIn(data.user));
     } catch (err) {
-      console.error("/src/actions/authAction > signInAction() :", err);
+      console.error("actions/authAction > signInAction() :", err);
     }
   };
 
 /** Refresh Token 확인 */
 export const checkRefreshTokenAction = () => async (dispatch: AppDispatch) => {
   try {
-    console.log("Refresh Token 확인");
-
     /** 응답된 값 */
     const res = await fetch("/api/auth/refresh-access-token");
     /** 받아온 값 */
@@ -392,7 +370,7 @@ export const checkRefreshTokenAction = () => async (dispatch: AppDispatch) => {
 
     dispatch(setRefreshAccessToken(data));
   } catch (err) {
-    console.error("/src/actions/authAction > checkRefreshToken() :", err);
+    console.error("actions/authAction > checkRefreshToken() :", err);
   }
 };
 
@@ -412,10 +390,70 @@ export const getUserByAccessTokenAction =
       // 오류 시
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-      console.log("getUserByAccessTokenAction :", data);
       dispatch(signIn(data.user));
     } catch (err) {
-      console.error("/src/actions/authAction > getUserAction() :", err);
+      console.error("actions/authAction > getUserAction() :", err);
+    }
+  };
+
+/** Email 기반으로 아이디 가져오기 */
+export const getUserIdByEmailAction =
+  (formData: { email: string }) => async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/get-user-id-by-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await res.json();
+
+      // 오류 시
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
+
+      dispatch(setModifiedId(data.identification));
+    } catch (err) {
+      console.error("action/authAction > getUserIdByEmailAction() :", err);
+    }
+  };
+
+/** 휴대전화 번호를 기반으로 아이디 가져오기 */
+export const getUserIdByPhoneNumberAction =
+  (formData: { phoneNumber: string }) => async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/get-user-id-by-phone-number", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await res.json();
+
+      // 오류 시
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setVerificationErr(msg));
+
+        throw new Error(msg);
+      }
+
+      dispatch(setModifiedId(data.identification));
+    } catch (err) {
+      console.error(
+        "action/authAction > getUserIdByPhoneNumberAction() :",
+        err
+      );
     }
   };
 
@@ -442,15 +480,13 @@ export const signOutAction = async (
     // 오류 시
     if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-    console.log("로그아웃 성공:", data.msg);
-
     alert("로그아웃 되었습니다.");
 
     dispatch(signOut());
 
     return true;
   } catch (err) {
-    console.error("/src/actions/authAction > signOutAction() :", err);
+    console.error("actions/authAction > signOutAction() :", err);
 
     return false;
   }

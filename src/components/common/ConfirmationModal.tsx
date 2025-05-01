@@ -4,11 +4,11 @@ import React, { ReactNode } from "react";
 
 import Modal from "./Modal";
 
-interface IConfimationModalProps {
+interface IConfimationModal {
   children: ReactNode;
 }
 
-export default function ConfirmationModal({ children }: IConfimationModalProps) {
+export default function ConfirmationModal({ children }: IConfimationModal) {
   return (
     <Modal>
       {children}

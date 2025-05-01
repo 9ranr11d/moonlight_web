@@ -44,7 +44,7 @@ import IconDeleteOpenPrimary from "@public/img/common/icon_delete_open_primary.s
 import IconDeleteClosePrimary from "@public/img/common/icon_delete_close_primary.svg";
 
 /** Event Modal 자식들 */
-interface IEventModalProps {
+interface IEventModal {
   /** 닫기 */
   closeModal: () => void;
   /** 일정 가져오기 */
@@ -104,7 +104,7 @@ export default function EventModal({
   users,
   getSchedules,
   lastSelectedDate,
-}: IEventModalProps) {
+}: IEventModal) {
   /** 오늘 날짜 */
   const today: Date = new Date();
 

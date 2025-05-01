@@ -1,31 +1,31 @@
-.horizontalTabBtnBox {
+.horizontalTabBtnsBox {
   display: flex;
   margin-bottom: 10px;
 }
 
-.horizontalTabBtnBox > button {
+.horizontalTabBtnsBox > button {
   flex: 1;
   background: var(--gray-300);
   border-radius: 0;
 }
 
-.horizontalTabBtnBox > button:hover {
+.horizontalTabBtnsBox > button:hover {
   background: var(--primary-dark-color);
 }
 
-.horizontalTabBtnBox > button:disabled {
+.horizontalTabBtnsBox > button:disabled {
   background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }
 
-.horizontalTabBtnBox > button:first-child {
+.horizontalTabBtnsBox > button:first-child {
   border-radius: 3px 0 0 3px;
 }
 
-.horizontalTabBtnBox > button:last-child {
+.horizontalTabBtnsBox > button:last-child {
   border-radius: 0 3px 3px 0;
 }
 
-.verticalTabBtnBox > button {
+.directionTabBtnsBox > button {
   background: none;
   color: var(--font-color);
   padding: 0;
@@ -35,7 +35,7 @@
   border-radius: 5px;
 }
 
-.verticalTabBtnBox > button:hover {
-  background-image: linear-gradient(#fff, #fff),
+.directionTabBtnsBox > button:hover {
+  background-image: linear-gradient(#fff),
     linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }

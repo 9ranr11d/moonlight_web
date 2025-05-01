@@ -12,7 +12,7 @@ import CSS from "./Modal.module.css";
 import IconClose from "@public/img/common/icon_close_black.svg";
 
 /** Modal 자식들 */
-interface IModalProps {
+interface IModal {
   /** 닫기 */
   close?: () => void;
 
@@ -30,7 +30,7 @@ export default function Modal({
   style = {},
   close,
   children,
-}: IModalProps) {
+}: IModal) {
   /** Dispatch */
   const dispatch = useDispatch();
 

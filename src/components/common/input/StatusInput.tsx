@@ -9,7 +9,9 @@ import IconCheck from "@public/svgs/common/icon_check.svg";
 /** 현재 상태 표시 Input Interface */
 interface IStatusInput {
   /** 변경 시  */
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** 키 누를 시 */
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
   /** Type */
   type: "text" | "password";
@@ -30,6 +32,7 @@ interface IStatusInput {
 /** 현재 상태 표시 Input */
 export default function StatusInput({
   onChange,
+  onKeyDown,
   type,
   value,
   placeholder,
@@ -51,6 +54,7 @@ export default function StatusInput({
         type={type === "password" && !isVisible ? "password" : "text"}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
         style={{

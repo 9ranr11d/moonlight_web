@@ -2,53 +2,90 @@
 
 import React, { useMemo, useState } from "react";
 
-import CSS from "./VerificationForm.module.css";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ERR_MSG } from "@constants/msg";
+import { AppDispatch, RootState } from "@redux/store";
 
-import VerticalTabBtn from "@components/common/btn/VerticalTabBtn";
+import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
+
+import DirectionTabBtns from "@components/common/btn/DirectionTabBtns";
 import ErrorBlock from "@components/common/ErrorBlock";
 
 import EmailForm from "@components/auth/verification/EmailForm";
 import PhoneNumberForm from "@components/auth/verification/PhoneNumberForm";
 
-export default function VerificationForm() {
-  const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
+import IconGreaterThen from "@public/svgs/common/icon_greater_than.svg";
 
-  /** Input들 */
-  const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
+/** 아이디 찾기의 본인인증 방법 탭 Style */
+const findIdTabBtnsStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "15px 20px",
+};
+
+/** 본인인증 Form */
+export default function VerificationForm() {
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { step } = useSelector((state: RootState) => state.recoverySlice); // ID/PW 찾기 Step
+
+  const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
     setSelectedTabIdx(idx);
+
+    dispatch(incrementRecoveryStep());
   };
 
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "100px 3fr",
-        columnGap: 15,
-      }}
-    >
-      <VerticalTabBtn
-        labelArr={[
-          <p className={CSS.sideMenuLabel}>Email</p>,
-          <p className={CSS.sideMenuLabel}>휴대전화</p>,
-        ]}
-        idx={selectedTabIdx}
-        onChange={handleTab}
-      />
+  /** Input들 */
+  const inputs = useMemo(
+    () => [<EmailForm type="findId" />, <PhoneNumberForm type="findId" />],
+    []
+  );
 
+  const steps = useMemo(
+    () => [
+      <DirectionTabBtns
+        labelArr={[
+          <div style={findIdTabBtnsStyle}>
+            <h6>Email</h6>
+
+            <span>
+              <IconGreaterThen width={18} height={18} fill="black" />
+            </span>
+          </div>,
+          <div style={findIdTabBtnsStyle}>
+            <h6>휴대전화 번호</h6>
+
+            <span>
+              <IconGreaterThen width={18} height={18} fill="black" />
+            </span>
+          </div>,
+        ]}
+        direction="column"
+        onChange={handleTab}
+      />,
       <div>
         {inputs[selectedTabIdx] ?? (
           <div style={{ marginBottom: 10 }}>
-            <ErrorBlock
-              content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
-            />
+            <ErrorBlock />
           </div>
         )}
-      </div>
+      </div>,
+    ],
+    [step, inputs, selectedTabIdx]
+  );
+
+  return (
+    <div>
+      {steps[step] ?? (
+        <div style={{ marginBottom: 10 }}>
+          <ErrorBlock />
+        </div>
+      )}
     </div>
   );
 }

@@ -5,14 +5,19 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "@redux/store";
-import { resetVerification, verify } from "@redux/slices/VerificationSlice";
+
+import { resetVerification, verify } from "@redux/slices/verificationSlice";
+import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
 
 import {
   checkDuplicateEmailAction,
+  getUserIdByEmailAction,
   verityEmailAction,
 } from "@actions/authAction";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
+
+import { TVerificationType } from "@interfaces/auth";
 
 import { validateEmail } from "@utils/index";
 
@@ -20,8 +25,14 @@ import EmailInput from "@components/common/input/EmailInput";
 import VerificationInput from "@components/common/input/VerificationInput";
 import LoadingBtn from "@components/common/btn/LoadingBtn";
 
+/** 이메일 인증 Form Interface */
+interface IEmailForm {
+  /** 사용처 */
+  type?: TVerificationType;
+}
+
 /** 이메일 인증 Form */
-export default function EmailForm() {
+export default function EmailForm({ type = "signUp" }: IEmailForm) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
@@ -40,10 +51,18 @@ export default function EmailForm() {
   /** Email 기입 시 */
   const handleEmail = (email: string) => {
     setEmail(email);
+    setMsg("");
 
     setIsSent(false);
 
     dispatch(resetVerification());
+  };
+
+  /** Email Input에서 키 클릭 시 */
+  const handleEmailKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (e.key === "Enter" && !isSent) clickSendCode();
   };
 
   /** 인증 코드 입력 시 */
@@ -57,7 +76,7 @@ export default function EmailForm() {
 
     setIsSent(true);
 
-    dispatch(checkDuplicateEmailAction({ email }));
+    dispatch(checkDuplicateEmailAction({ email, type }));
   };
 
   /** 인증 코드 재전송 버튼 클릭 시 */
@@ -69,8 +88,23 @@ export default function EmailForm() {
 
   /** 인증코드 확인 버튼 클릭 시 */
   const clickConfirmBtn = () => {
-    if (code === verification.code) dispatch(verify());
-    else setMsg("인증 코드를 다시 확인해주세요.");
+    const isCodeEmpty = !code || code.trim() === "";
+    const isCodeMismatch = code !== verification.code;
+
+    if (isCodeEmpty || isCodeMismatch) {
+      setMsg("인증 코드를 다시 확인해주세요.");
+
+      return;
+    }
+
+    if (type === "findId") {
+      dispatch(getUserIdByEmailAction({ email }));
+      dispatch(incrementRecoveryStep());
+    }
+
+    dispatch(verify());
+
+    setMsg("인증이 완료되었습니다.");
   };
 
   // 본인인증 관련 오류 시
@@ -80,15 +114,16 @@ export default function EmailForm() {
 
   // 중복 검사 통과 시
   useEffect(() => {
-    if (!verification.isDuplicate) dispatch(verityEmailAction({ email }));
-  }, [verification.isDuplicate]);
+    if (!verification.isDuplicate || verification.isRegistered)
+      dispatch(verityEmailAction({ email }));
+  }, [verification.isDuplicate, verification.isRegistered]);
 
   return (
-    <>
-      <div style={{ position: "relative" }}>
+    <div>
+      <div style={{ position: "relative", marginBottom: 20 }}>
         <h6 className={CSS.label}>Email</h6>
 
-        <EmailInput onChange={handleEmail} />
+        <EmailInput onChange={handleEmail} onKeyDown={handleEmailKeyDown} />
 
         {verification.isErr && (
           <p
@@ -104,18 +139,21 @@ export default function EmailForm() {
         )}
       </div>
 
-      {verification.email ? (
+      {isSent ? (
         <>
           <VerificationInput
-            onResendClick={clickResendCode}
+            onClickResendCode={clickResendCode}
             onChange={handleCode}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+              if (e.key === "Enter") clickConfirmBtn();
+            }}
             msg={msg}
           />
 
           <button
             type="button"
             onClick={clickConfirmBtn}
-            style={{ marginTop: 20 }}
+            style={{ width: "100%", marginTop: 20 }}
           >
             확인
           </button>
@@ -129,6 +167,6 @@ export default function EmailForm() {
           style={{ width: "100%", marginTop: 10 }}
         />
       )}
-    </>
+    </div>
   );
 }

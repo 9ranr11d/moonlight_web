@@ -15,6 +15,8 @@ import FlagUsa from "@public/imgs/country_flag/usa.png";
 interface IPhoneInput {
   /** 휴대전화 번호 변경 시 */
   onChange?: (number: string) => void;
+  /** 키 클릭 시 */
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 /** 나라 국가, 나라 전화 코드 Interface */
@@ -24,7 +26,7 @@ interface IConuntryCallingCode {
 }
 
 /** 휴대전화 번호 Input */
-export default function PhoneNumberInput({ onChange }: IPhoneInput) {
+export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
   /** 나라 코드 Style */
   const countryCallingCodeStyle = { display: "flex", alignItems: "center" };
   /** 나라 국기 Style */
@@ -77,6 +79,7 @@ export default function PhoneNumberInput({ onChange }: IPhoneInput) {
           type="number"
           value={number}
           onChange={handleNumber}
+          onKeyDown={onKeyDown}
           placeholder="-을 빼고 입력해주세요."
           style={{ paddingLeft: 100 }}
         />

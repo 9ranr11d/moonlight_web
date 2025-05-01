@@ -21,7 +21,7 @@ import EmailUpdateForm from "./EmailUpdateForm";
 import LottieLoading from "@public/json/loading_round_black.json";
 
 /** 사용자 정보 수정 자식들 */
-interface IProfileEditProps {
+interface IProfileEdit {
   /** 메뉴 변경 */
   changePage: (code: string) => void;
 }
@@ -34,7 +34,7 @@ interface IEditableFields {
 }
 
 /** 사용자 정보 수정 */
-export default function ProfileEdit({ changePage }: IProfileEditProps) {
+export default function ProfileEdit({ changePage }: IProfileEdit) {
   /** 사용자 정보 속성들 */
   const editableFields: IEditableFields[] = [
     { id: "identification", name: "아이디", type: "readOnly" },

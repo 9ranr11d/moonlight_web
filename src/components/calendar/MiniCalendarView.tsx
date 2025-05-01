@@ -14,7 +14,7 @@ import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconNextGray from "@public/img/common/icon_greater_than_gray.svg";
 
 /** 미니 캘린더 자식 */
-interface IMiniCalendarProps {
+interface IMiniCalendar {
   /**
    * 달 변경
    * @param direction 변경 방향
@@ -44,7 +44,7 @@ export default function MiniCalendarView({
   currentDate,
   startDate,
   endDate,
-}: IMiniCalendarProps) {
+}: IMiniCalendar) {
   /** 현재 연도 */
   const currentYear: number = currentDate.getFullYear();
   /** 현재 달 */

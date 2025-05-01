@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     console.log(
       "auth/phone-number-verification > POST() :",
-      `'${phoneNumber}'(으)로 인증 코드 ${code} 전송했습니다.`
+      `'${phoneNumber}'(으)로 인증 코드 '${code}' 전송했습니다.`
     );
 
     return NextResponse.json(

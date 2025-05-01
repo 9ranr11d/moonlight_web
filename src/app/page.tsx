@@ -9,8 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
+
 import { resetSignUp } from "@redux/slices/signUpSlice";
-import { resetVerification } from "@redux/slices/VerificationSlice";
+
+import { resetVerification } from "@redux/slices/verificationSlice";
+
+import { resetRecovery } from "@redux/slices/recoverySlice";
 
 import { socialSignInAction } from "@actions/authAction";
 
@@ -18,7 +22,6 @@ import CSS from "./page.module.css";
 
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/signUp/SignUp";
-
 import Recovery from "@components/auth/recovery/Recovery";
 
 /** 시작 페이지 */
@@ -57,6 +60,9 @@ export default function Home() {
 
   /** ID/PW 찾기 버튼 클릭 시 */
   const handleRecovery = (): void => {
+    dispatch(resetVerification());
+    dispatch(resetRecovery());
+
     setIsRecovery(true);
   };
 

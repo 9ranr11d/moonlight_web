@@ -13,7 +13,7 @@ import CSS from "@components/auth/signUp/SignUp.module.css";
 import { validateNickname } from "@utils/index";
 
 import DropdownDateBtn from "@components/common/btn/DropdownDateBtn";
-import RadioBtn from "@components/common/btn/RadioBtn";
+import RadioBtns from "@components/common/btn/RadioBtns";
 import NextBtn from "@components/common/btn/NextBtn";
 import NicknameInput from "@components/common/input/NicknameInput";
 import LunarLoader from "@components/common/LunarLoader";
@@ -135,7 +135,7 @@ export default function ProfileForm() {
           <div>
             <h6 className={CSS.label}>성별</h6>
 
-            <RadioBtn list={genderBtns} onChange={setSelectedGenderIdx} />
+            <RadioBtns list={genderBtns} onChange={setSelectedGenderIdx} />
           </div>
           <div>
             <h6 className={CSS.label}>별명</h6>

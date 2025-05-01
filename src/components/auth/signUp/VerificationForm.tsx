@@ -9,9 +9,7 @@ import { incrementSignUpStep } from "@redux/slices/signUpSlice";
 
 import CSS from "@components/auth/signUp/SignUp.module.css";
 
-import { ERR_MSG } from "@constants/msg";
-
-import HorizontalTabBtn from "@components/common/btn/HorizontalTabBtn";
+import HorizontalTabBtns from "@components/common/btn/HorizontalTabBtns";
 import ErrorBlock from "@components/common/ErrorBlock";
 import NextBtn from "@components/common/btn/NextBtn";
 
@@ -81,8 +79,8 @@ export default function VerificationForm() {
   return (
     <>
       {!verification.isVerified ? (
-        <>
-          <HorizontalTabBtn
+        <div style={{ marginBottom: 20 }}>
+          <HorizontalTabBtns
             labelArr={["Email", "휴대전화"]}
             idx={selectedTabIdx}
             onChange={handleTab}
@@ -90,14 +88,10 @@ export default function VerificationForm() {
 
           {inputs[selectedTabIdx] ?? (
             <div style={{ marginBottom: 10 }}>
-              <ErrorBlock
-                content={<h6 style={{ whiteSpace: "pre-line" }}>{ERR_MSG}</h6>}
-              />
+              <ErrorBlock />
             </div>
           )}
-
-          <div className={CSS.spacing} />
-        </>
+        </div>
       ) : (
         <>
           <div>
