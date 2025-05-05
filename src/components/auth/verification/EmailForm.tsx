@@ -29,10 +29,15 @@ import LoadingBtn from "@components/common/btn/LoadingBtn";
 interface IEmailForm {
   /** 사용처 */
   type?: TVerificationType;
+  /** 아이디 */
+  identification?: string;
 }
 
 /** 이메일 인증 Form */
-export default function EmailForm({ type = "signUp" }: IEmailForm) {
+export default function EmailForm({
+  type = "signUp",
+  identification,
+}: IEmailForm) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
@@ -50,7 +55,7 @@ export default function EmailForm({ type = "signUp" }: IEmailForm) {
 
   /** Email 기입 시 */
   const handleEmail = (email: string) => {
-    setEmail(email);
+    setEmail(email.trim());
     setMsg("");
 
     setIsSent(false);
@@ -67,7 +72,7 @@ export default function EmailForm({ type = "signUp" }: IEmailForm) {
 
   /** 인증 코드 입력 시 */
   const handleCode = (code: string) => {
-    setCode(code);
+    setCode(code.trim());
   };
 
   /** 인증 코드 전송 버튼 클릭 시 */
@@ -76,7 +81,13 @@ export default function EmailForm({ type = "signUp" }: IEmailForm) {
 
     setIsSent(true);
 
-    dispatch(checkDuplicateEmailAction({ email, type }));
+    dispatch(
+      checkDuplicateEmailAction({
+        email,
+        ...(identification && { identification }),
+        type,
+      })
+    );
   };
 
   /** 인증 코드 재전송 버튼 클릭 시 */
@@ -97,14 +108,18 @@ export default function EmailForm({ type = "signUp" }: IEmailForm) {
       return;
     }
 
-    if (type === "findId") {
-      dispatch(getUserIdByEmailAction({ email }));
-      dispatch(incrementRecoveryStep());
+    switch (type) {
+      case "findId":
+        dispatch(getUserIdByEmailAction({ email }));
+      case "findPw":
+        dispatch(incrementRecoveryStep());
+      default:
+        dispatch(verify());
+
+        setMsg("인증이 완료되었습니다.");
+
+        break;
     }
-
-    dispatch(verify());
-
-    setMsg("인증이 완료되었습니다.");
   };
 
   // 본인인증 관련 오류 시

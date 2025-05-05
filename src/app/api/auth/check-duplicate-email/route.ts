@@ -8,7 +8,11 @@ import { TVerificationType } from "@interfaces/auth";
 export async function POST(req: NextRequest) {
   try {
     // Email
-    const { email, type }: { email: string; type: TVerificationType } =
+    const {
+      email,
+      identification,
+      type,
+    }: { email: string; identification: string; type: TVerificationType } =
       await req.json();
 
     // Email이 없을 경우
@@ -18,59 +22,89 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    /** 결과 */
-    const result = await query(
-      `
-      SELECT
-        COUNT(*) AS count
-      FROM
-        users
-      WHERE
-        email = ?
-      `,
-      [email]
-    );
-
-    /** 중복 여부 */
-    const isDuplicate = result[0]?.count > 0;
-
     switch (type) {
-      case "findId":
+      case "findPw":
+        if (!identification)
+          return NextResponse.json(
+            { msg: "아이디를 입력해주세요." },
+            { status: 400 }
+          );
+
+        /** 결과 */
+        const resultI = await query(
+          `
+            SELECT COUNT(*) AS count
+            FROM users
+            WHERE email = ? AND identification = ?
+            `,
+          [email, identification]
+        );
+
+        /** 중복 여부 */
+        const isMatch = resultI[0]?.count > 0;
+
         console.log(
           "auth/check-duplicate-email > POST() :",
-          `'${email}'(은)는 ${
-            isDuplicate ? "등록된" : "등록되지 않은"
+          `'${identification}'(과)와 '${email}'(은)는 ${
+            isMatch ? "등록된" : "등록되지 않은"
           } Email입니다.`
         );
 
-        return NextResponse.json(
-          { isRegistered: isDuplicate },
-          { status: 200 }
-        );
-
+        return NextResponse.json({ isRegistered: isMatch }, { status: 200 });
+      case "findId":
       case "signUp":
       default:
-        // 중복 시
-        if (isDuplicate) {
+        /** 결과 */
+        const resultII = await query(
+          `
+          SELECT
+            COUNT(*) AS count
+          FROM
+            users
+          WHERE
+            email = ?
+          `,
+          [email]
+        );
+
+        /** 중복 여부 */
+        const isRegistered = resultII[0]?.count > 0;
+
+        if (type === "signUp") {
+          // 중복 시
+          if (isRegistered) {
+            console.log(
+              "auth/check-duplicate-email > POST() :",
+              `'${email}'(은)는 이미 사용 중인 Email입니다.`
+            );
+
+            return NextResponse.json(
+              { msg: "해당 Email은 이미 사용 중인 Email입니다." },
+              { status: 409 }
+            );
+          }
+
           console.log(
             "auth/check-duplicate-email > POST() :",
-            `'${email}'(은)는 이미 사용 중인 Email입니다.`
+            `'${email}'(은)는 사용 가능한 Email입니다입니다.`
           );
 
+          // Email 중복 여부 반환
           return NextResponse.json(
-            { msg: "해당 Email은 이미 사용 중인 Email입니다." },
-            { status: 409 }
+            { msg: "해당 Email은 사용 가능한 Email입니다." },
+            { status: 200 }
           );
         }
 
         console.log(
           "auth/check-duplicate-email > POST() :",
-          `'${email}'(은)는 사용 가능한 Email입니다입니다.`
+          `'${email}'(은)는 ${
+            isRegistered ? "등록된" : "등록되지 않은"
+          } Email입니다.`
         );
 
-        // Email 중복 여부 반환
         return NextResponse.json(
-          { msg: "해당 Email은 사용 가능한 Email입니다." },
+          { isRegistered: isRegistered },
           { status: 200 }
         );
     }

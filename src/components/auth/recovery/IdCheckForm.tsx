@@ -17,6 +17,7 @@ import NextBtn from "@components/common/btn/NextBtn";
 
 /** 아이디 확인 Form Interface */
 interface IIdCheckForm {
+  /** 아이디 저장 */
   saveId: (id: string) => void;
 }
 
@@ -44,6 +45,9 @@ export default function IdCheckForm({ saveId }: IIdCheckForm) {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setId(e.target.value)
         }
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (e.key === "Enter") clickNext();
+        }}
         placeholder="찾으시려는 아이디를 입력해 주세요."
       />
 

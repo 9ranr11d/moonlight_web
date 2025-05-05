@@ -91,4 +91,6 @@ export interface IUserAgreedTerms {
   agreedTermIds: number[];
 }
 
-export type TVerificationType = "signUp" | "findId";
+export type TVerificationType = "signUp" | "findId" | "findPw";
+
+export type TVerificationMethod = "email" | "phoneNumber";

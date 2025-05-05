@@ -25,7 +25,11 @@ import {
 } from "@redux/slices/verificationSlice";
 
 import { IIUser, IUserAgreedTerms, TVerificationType } from "@interfaces/auth";
-import { setModifiedId } from "@redux/slices/recoverySlice";
+import {
+  passwordChangeCompleted,
+  passwordChangeFailed,
+  setModifiedId,
+} from "@redux/slices/recoverySlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -127,7 +131,11 @@ export const checkDuplicateIdAction =
  * @param formData Email, Type
  */
 export const checkDuplicateEmailAction =
-  (formData: { email: string; type: TVerificationType }) =>
+  (formData: {
+    email: string;
+    identification?: string;
+    type: TVerificationType;
+  }) =>
   async (dispatch: AppDispatch) => {
     try {
       /** 응답된 값 */
@@ -151,6 +159,7 @@ export const checkDuplicateEmailAction =
 
       switch (formData.type) {
         case "findId":
+        case "findPw":
           dispatch(setRegistered(data.isRegistered));
 
           break;
@@ -170,7 +179,11 @@ export const checkDuplicateEmailAction =
  * @param formData 휴대전화 번호
  */
 export const checkDuplicatePhoneNumberAction =
-  (formData: { phoneNumber: string; type: TVerificationType }) =>
+  (formData: {
+    phoneNumber: string;
+    identification?: string;
+    type: TVerificationType;
+  }) =>
   async (dispatch: AppDispatch) => {
     try {
       /** 응답된 값 */
@@ -194,6 +207,7 @@ export const checkDuplicatePhoneNumberAction =
 
       switch (formData.type) {
         case "findId":
+        case "findPw":
           dispatch(setRegistered(data.isRegistered));
 
           break;
@@ -454,6 +468,36 @@ export const getUserIdByPhoneNumberAction =
         "action/authAction > getUserIdByPhoneNumberAction() :",
         err
       );
+    }
+  };
+
+/** 비밀번호 변경 */
+export const changePwAction =
+  (formData: { identification: string; password: string }) =>
+  async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/change-pw", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await res.json();
+
+      // 오류 시
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(passwordChangeFailed(msg));
+
+        throw new Error(msg);
+      }
+
+      dispatch(passwordChangeCompleted());
+    } catch (err) {
+      console.error("action/authAction > changePwAction() :", err);
     }
   };
 

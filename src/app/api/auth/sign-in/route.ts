@@ -15,13 +15,14 @@ export async function POST(req: NextRequest) {
       password,
     }: { identification: string; password: string } = await req.json();
 
+    // 아이디 또는 비밀번호가 없을 경우
     if (!identification || !password)
       return NextResponse.json(
         { msg: "아이디 또는 비밀번호를 입력해주세요." },
         { status: 400 }
       );
 
-    /** 아이디 일차하는 사용자 정보 */
+    /** 결과 */
     const result = await query(
       `
       SELECT
@@ -49,13 +50,13 @@ export async function POST(req: NextRequest) {
     );
 
     /** 해싱한 비밀번호 찾은 사용자의 비밀번호 일치 여부 */
-    const passwordMatch: boolean = await bcrypt.compare(
+    const isPasswordMatch: boolean = await bcrypt.compare(
       password,
       user.password
     );
 
-    // 비밀번호 사용자의 비밀번호가 일치하지 않을 시 404 Error 반환
-    if (!passwordMatch)
+    // 비밀번호 사용자의 비밀번호가 일치하지 않을 시 401 Error 반환
+    if (!isPasswordMatch)
       return NextResponse.json(
         { msg: "비밀번호가 일치하지 않습니다." },
         { status: 401 }

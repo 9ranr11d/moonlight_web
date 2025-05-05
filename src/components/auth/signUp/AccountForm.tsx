@@ -39,14 +39,14 @@ export default function AccountForm() {
   const handlePassword = (password: string): void => {
     dispatch(resetPassword());
 
-    setPassword(password);
+    setPassword(password.trim());
   };
 
   /** 비밀번호 재확인 입력 시 */
   const handleConfirmPassword = (password: string): void => {
     dispatch(resetPassword());
 
-    setConfirmPassword(password);
+    setConfirmPassword(password.trim());
   };
 
   /** 다음 버튼 클릭 시 */

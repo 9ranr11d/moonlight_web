@@ -28,12 +28,17 @@ import LoadingBtn from "@components/common/btn/LoadingBtn";
 
 /** 휴대전화 번호 인증 Form Interface */
 interface IPhoneNumberForm {
-  /** 휴대전화 번호 사용처 */
+  /** 사용처 */
   type?: TVerificationType;
+  /** 아이디 */
+  identification?: string;
 }
 
 /** 휴대전화 번호 인증 Form */
-export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
+export default function PhoneNumberForm({
+  type = "signUp",
+  identification,
+}: IPhoneNumberForm) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
@@ -48,7 +53,12 @@ export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
 
   /** 휴대전화 번호 기입 시 */
   const handlePhoneNumber = (number: string) => {
-    setPhoneNumber(number);
+    setPhoneNumber(number.trim());
+    setMsg("");
+
+    setIsSent(false);
+
+    dispatch(resetVerification());
   };
 
   /** 휴대전화 번호 Input에서 키 클릭 시 */
@@ -60,7 +70,7 @@ export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
 
   /** 인증 코드 입력 시 */
   const handleCode = (code: string) => {
-    setCode(code);
+    setCode(code.trim());
   };
 
   /** 인증 코드 전송 버튼 클릭 시 */
@@ -69,7 +79,13 @@ export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
 
     setIsSent(true);
 
-    dispatch(checkDuplicatePhoneNumberAction({ phoneNumber, type }));
+    dispatch(
+      checkDuplicatePhoneNumberAction({
+        phoneNumber,
+        ...(identification && { identification }),
+        type,
+      })
+    );
   };
 
   /** 인증 코드 재전송 버튼 클릭 시 */
@@ -90,14 +106,18 @@ export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
       return;
     }
 
-    if (type === "findId") {
-      dispatch(getUserIdByPhoneNumberAction({ phoneNumber }));
-      dispatch(incrementRecoveryStep());
+    switch (type) {
+      case "findId":
+        dispatch(getUserIdByPhoneNumberAction({ phoneNumber }));
+      case "findPw":
+        dispatch(incrementRecoveryStep());
+      default:
+        dispatch(verify());
+
+        setMsg("인증이 완료되었습니다.");
+
+        break;
     }
-
-    dispatch(verify());
-
-    setMsg("인증이 완료되었습니다.");
   };
 
   // 본인인증 관련 오류 시
@@ -149,7 +169,7 @@ export default function PhoneNumberForm({ type = "signUp" }: IPhoneNumberForm) {
           <button
             type="button"
             onClick={clickConfirmBtn}
-            style={{ marginTop: 20 }}
+            style={{ width: "100%", marginTop: 20 }}
           >
             확인
           </button>

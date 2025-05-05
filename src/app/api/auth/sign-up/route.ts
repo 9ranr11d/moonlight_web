@@ -20,10 +20,18 @@ export async function POST(req: NextRequest) {
       nickname,
     }: IIUser = await req.json();
 
-    // 별명이 없으면 오류
-    if (!nickname)
+    // 파라미터가 없을 경우
+    if (
+      !identification ||
+      !password ||
+      !email ||
+      !phoneNumber ||
+      !birthdate ||
+      !gender ||
+      !nickname
+    )
       return NextResponse.json(
-        { msg: "별명을 입력해주세요." },
+        { msg: "회원가입에 필요한 정보를 확인해주세요." },
         { status: 400 }
       );
 

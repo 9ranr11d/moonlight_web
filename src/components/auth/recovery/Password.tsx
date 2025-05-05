@@ -6,13 +6,20 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@redux/store";
 
+import CSS from "./Recovery.module.css";
+
 import ErrorBlock from "@components/common/ErrorBlock";
 import DotAndBar from "@components/common/indicator/DotAndBar";
 
 import IdCheckForm from "./IdCheckForm";
+import VerificationMethodForm from "./VerificationMethodForm";
 import VerificationForm from "./VerificationForm";
+import ChangePwForm from "./ChangePwForm";
 
-/** 비밀번호 자식 */
+import IconLock from "@public/svgs/common/icon_lock.svg";
+import IconHome from "@public/svgs/common/icon_home.svg";
+
+/** 비밀번호 찾기 Interface */
 interface IPassword {
   /** 뒤로가기 */
   back: () => void;
@@ -20,98 +27,82 @@ interface IPassword {
 
 /** 비밀번호 찾기 */
 export default function Password({ back }: IPassword) {
-  const { step: step } = useSelector((state: RootState) => state.recoverySlice); // ID/PW 찾기 관련 정보
+  const { step, isChanged } = useSelector(
+    (state: RootState) => state.recoverySlice
+  ); // ID/PW 찾기 관련 정보
 
-  const [id, setId] = useState<string>(""); // 인증할 아이디
-
-  /** 아이디 인증 */
-  // const checkIdentification = (): void => {
-  //   const data: { identification: string } = {
-  //     identification: identification,
-  //   };
-
-  //   fetch("/api/auth/check-id", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then(res => {
-  //       if (res.ok) return res.json();
-
-  //       if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-  //       else alert(ERR_MSG);
-
-  //       return res.json().then(data => Promise.reject(data.msg));
-  //     })
-  //     .then(data => {
-  //       setIdentification(data.identification);
-  //       setUserEmail(data.email);
-  //       setIsAuth(true);
-  //     })
-  //     .catch(err =>
-  //       console.error(
-  //         "/src/components/auth/Recovery > Password() > checkIdentification() :",
-  //         err
-  //       )
-  //     );
-  // };
-
-  /** 비밀번호 변경 */
-  // const changePassword = (): void => {
-  //   const data: { identification: string; password: string } = {
-  //     identification: identification,
-  //     password,
-  //   };
-
-  //   fetch("/api/auth/change-pw", {
-  //     method: "PUT",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then(res => {
-  //       if (res.ok) return res.json();
-
-  //       if (res.status === 404) alert("존재하지 않는 아이디입니다.");
-  //       else alert(ERR_MSG);
-
-  //       return res.json().then(data => Promise.reject(data.msg));
-  //     })
-  //     .then(data => {
-  //       console.log(data.msg);
-
-  //       alert("비밀번호가 성공적으로 바뀌었습니다.");
-
-  //       back();
-  //     })
-  //     .catch(err =>
-  //       console.error(
-  //         "/src/components/auth/Recovery > Password() > changePassword() :",
-  //         err
-  //       )
-  //     );
-  // };
+  const [identification, setIdentification] = useState<string>(""); // 인증할 아이디
 
   /** Step별 컴포넌트 */
   const steps = useMemo(
     () => [
-      <IdCheckForm saveId={(_id: string) => setId(_id)} />,
-      <VerificationForm />,
+      <IdCheckForm saveId={(id: string) => setIdentification(id)} />,
+      <div style={{ marginBottom: 10 }}>
+        <VerificationMethodForm />
+      </div>,
+      <VerificationForm
+        style={{ marginBottom: 10 }}
+        type="findPw"
+        identification={identification}
+      />,
+      <ChangePwForm identification={identification} />,
     ],
-    []
+    [step]
   );
 
   return (
     <div>
-      {steps[step] ?? (
-        <div style={{ marginBottom: 10 }}>
-          <ErrorBlock />
-        </div>
-      )}
+      {!isChanged ? (
+        <>
+          {steps[step] ?? (
+            <div style={{ marginBottom: 10 }}>
+              <ErrorBlock />
+            </div>
+          )}
 
-      {step < steps.length && (
-        <div>
-          <DotAndBar progress={step} maxValue={steps.length} />
-        </div>
+          {step < steps.length && (
+            <div className={CSS.indicator}>
+              <DotAndBar progress={step} maxValue={steps.length} />
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <div style={{ marginBottom: 10 }}>
+            <span
+              style={{
+                width: 50,
+                height: 50,
+                display: "inline-block",
+                borderRadius: 40,
+                padding: 10,
+                background: "var(--primary-color)",
+              }}
+            >
+              <IconLock width={30} height={30} fill="white" />
+            </span>
+          </div>
+
+          <h5 style={{ marginBottom: 10 }}>비밀번호 변경이 완료되었습니다.</h5>
+
+          <p style={{ marginBottom: 25 }}>
+            MOONLIGHT의 회원이 되신 것을 환영합니다.
+            <br />
+            아래 버튼으로 메인 홈에서 로그인 해주세요.
+          </p>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button
+              type="button"
+              onClick={back}
+              style={{ display: "flex", columnGap: 5 }}
+            >
+              <IconHome width={15} height={15} fill="white" />
+
+              <span>홈으로 돌아가기</span>
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

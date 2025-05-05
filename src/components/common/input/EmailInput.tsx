@@ -29,12 +29,12 @@ export default function EmailInput({ onChange, onKeyDown }: IEmailInput) {
 
   /** Email 아이디 부분 Input */
   const handleFirstEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFirstEmail(e.target.value);
+    setFirstEmail(e.target.value.trim());
   };
 
   /** Email Domain 부분 Input */
   const handleLastEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setLastEmail(e.target.value);
+    setLastEmail(e.target.value.trim());
   };
 
   /**

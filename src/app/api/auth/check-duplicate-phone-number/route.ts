@@ -10,8 +10,13 @@ export async function POST(req: NextRequest) {
     // 휴대전화 번호
     const {
       phoneNumber,
+      identification,
       type,
-    }: { phoneNumber: string; type: TVerificationType } = await req.json();
+    }: {
+      phoneNumber: string;
+      identification: string;
+      type: TVerificationType;
+    } = await req.json();
 
     // 휴대전화 번호이 없을 경우
     if (!phoneNumber)
@@ -20,59 +25,91 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    /** 결과 */
-    const result = await query(
-      `
-      SELECT
-        COUNT(*) AS count
-      FROM
-        users
-      WHERE
-        phone_number = ?
-      `,
-      [phoneNumber]
-    );
-
-    /** 중복 여부 */
-    const isDuplicate = result[0]?.count > 0;
-
     switch (type) {
-      case "findId":
-        console.log(
-          "auth/check-duplicate-phone-number > POST() :",
-          `'${phoneNumber}'(은)는 ${
-            isDuplicate ? "등록된" : "등록되지 않은"
-          } 휴대전화 번호입니다.`
-        );
-
-        return NextResponse.json(
-          { isRegistered: isDuplicate },
-          { status: 200 }
-        );
-
-      case "signUp":
-      default:
-        // 중복 시
-        if (isDuplicate) {
-          console.log(
-            "auth/check-duplicate-phone-number > POST() :",
-            `'${phoneNumber}'(은)는 이미 사용 중인 휴대전화 번호입니다.`
+      case "findPw":
+        if (!identification)
+          return NextResponse.json(
+            { msg: "아이디를 입력해주세요." },
+            { status: 400 }
           );
 
+        /** 결과 */
+        const resultI = await query(
+          `
+          SELECT COUNT(*) AS count
+          FROM users
+          WHERE phone_number = ? AND identification = ?
+          `,
+          [phoneNumber, identification]
+        );
+
+        /** 중복 여부 */
+        const isMatch = resultI[0]?.count > 0;
+
+        console.log(
+          "auth/check-duplicate-phone-number > POST() :",
+          `'${identification}'(과)와 '${phoneNumber}'(은)는 ${
+            isMatch ? "등록된" : "등록되지 않은"
+          } Email입니다.`
+        );
+
+        return NextResponse.json({ isRegistered: isMatch }, { status: 200 });
+      case "findId":
+      case "signUp":
+      default:
+        /** 결과 */
+        const resultII = await query(
+          `
+          SELECT
+            COUNT(*) AS count
+          FROM
+            users
+          WHERE
+            phone_number = ?
+          `,
+          [phoneNumber]
+        );
+
+        /** 중복 여부 */
+        const isRegistered = resultII[0]?.count > 0;
+
+        if (type === "signUp") {
+          // 중복 시
+          if (isRegistered) {
+            console.log(
+              "auth/check-duplicate-phone-number > POST() :",
+              `'${phoneNumber}'(은)는 이미 사용 중인 휴대전화 번호입니다.`
+            );
+
+            return NextResponse.json(
+              {
+                msg: "해당 휴대전화 번호는 이미 사용 중인 휴대전화 번호입니다.",
+              },
+              { status: 409 }
+            );
+          }
+
+          console.log(
+            "auth/check-duplicate-phone-number > POST() :",
+            `'${phoneNumber}'(은)는 사용 가능한 휴대전화 번호입니다.`
+          );
+
+          // 휴대전화 번호 중복 여부 반환
           return NextResponse.json(
-            { msg: "해당 휴대전화 번호는 이미 사용 중인 휴대전화 번호입니다." },
-            { status: 409 }
+            { msg: "해당 휴대전화 번호는 사용 가능한 휴대전화 번호입니다." },
+            { status: 200 }
           );
         }
 
         console.log(
           "auth/check-duplicate-phone-number > POST() :",
-          `'${phoneNumber}'(은)는 사용 가능한 휴대전화 번호입니다.`
+          `'${phoneNumber}'(은)는 ${
+            isRegistered ? "등록된" : "등록되지 않은"
+          } 휴대전화 번호입니다.`
         );
 
-        // 휴대전화 번호 중복 여부 반환
         return NextResponse.json(
-          { msg: "해당 휴대전화 번호는 사용 가능한 휴대전화 번호입니다." },
+          { isRegistered: isRegistered },
           { status: 200 }
         );
     }

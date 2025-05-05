@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import dynamic from "next/dynamic";
 
@@ -8,9 +8,16 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@redux/store";
 
+import CSS from "./Recovery.module.css";
+
 import VerificationForm from "./VerificationForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";
+
+import DotAndBar from "@components/common/indicator/DotAndBar";
+import ErrorBlock from "@components/common/ErrorBlock";
+
+import VerificationMethodForm from "./VerificationMethodForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
@@ -26,12 +33,31 @@ interface IIdentification {
 /** 아이디 찾기 */
 export default function Identification({ back }: IIdentification) {
   const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
-  const { modifiedId } = useSelector((state: RootState) => state.recoverySlice); // Step과 가려진 아이디
+  const { step, modifiedId } = useSelector(
+    (state: RootState) => state.recoverySlice
+  ); // Step과 가려진 아이디
+
+  /** Steps */
+  const steps = useMemo(
+    () => [
+      <div style={{ marginBottom: 10 }}>
+        <VerificationMethodForm />
+      </div>,
+      <div style={{ marginBottom: 10 }}>
+        <VerificationForm type="findId" />
+      </div>,
+    ],
+    [step]
+  );
 
   return (
-    <>
+    <div>
       {!isVerified ? (
-        <VerificationForm />
+        steps[step] ?? (
+          <div style={{ marginBottom: 10 }}>
+            <ErrorBlock />
+          </div>
+        )
       ) : (
         <div>
           <p style={{ textAlign: "center" }}>본인 확인이 완료되었습니다.</p>
@@ -75,6 +101,12 @@ export default function Identification({ back }: IIdentification) {
           </div>
         </div>
       )}
-    </>
+
+      {step < steps.length && (
+        <div className={CSS.indicator}>
+          <DotAndBar progress={step} maxValue={steps.length} />
+        </div>
+      )}
+    </div>
   );
 }

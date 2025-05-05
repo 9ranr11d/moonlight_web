@@ -54,30 +54,41 @@ export default function DirectionTabBtns({
       }}
     >
       {labelArr.map((label, idx) => (
-        <button
-          key={idx}
-          type="button"
-          onClick={() => selectIdx(idx)}
-          disabled={idx === selectedIdx}
-          style={{
-            ...(direction === "row" && { borderRadius: 20 }),
-            ...(idx === selectedIdx
-              ? {
-                  backgroundImage:
-                    "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--primary-color), #e0a3a7)",
-                  color: "var(--font-color)",
-                }
-              : direction === "row"
-              ? {
-                  backgroundImage:
-                    "linear-gradient(#fff, #fff), linear-gradient(var(--gray-200))",
-                  color: "var(--gray-400)",
-                }
-              : undefined),
-          }}
-        >
-          {label}
-        </button>
+        <React.Fragment key={idx}>
+          <button
+            type="button"
+            onClick={() => selectIdx(idx)}
+            disabled={idx === selectedIdx}
+            style={{
+              ...(direction === "row" && { borderRadius: 20 }),
+              ...(idx === selectedIdx
+                ? {
+                    backgroundImage:
+                      "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--primary-color), #e0a3a7)",
+                    color: "var(--font-color)",
+                  }
+                : direction === "row"
+                ? {
+                    backgroundImage:
+                      "linear-gradient(#fff, #fff), linear-gradient(var(--gray-200))",
+                    color: "var(--gray-400)",
+                  }
+                : undefined),
+            }}
+          >
+            {label}
+          </button>
+
+          {direction === "column" && idx < labelArr.length - 1 && (
+            <div
+              style={{
+                width: "100%",
+                height: 1,
+                background: "var(--gray-100)",
+              }}
+            />
+          )}
+        </React.Fragment>
       ))}
     </div>
   );

@@ -13,6 +13,7 @@ import { resetVerification } from "@redux/slices/verificationSlice";
 import {
   decrementRecoveryStep,
   resetRecovery,
+  setVerificationMethod,
 } from "@redux/slices/recoverySlice";
 
 import TitleHeader from "@components/common/TitleHeader";
@@ -35,7 +36,11 @@ export default function Recovery({ back }: IRecovery) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const { step } = useSelector((state: RootState) => state.recoverySlice); // ID/PW 찾기 Step
+  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
+
+  const { step, isChanged } = useSelector(
+    (state: RootState) => state.recoverySlice
+  ); // ID/PW 찾기 Step
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
 
@@ -56,6 +61,11 @@ export default function Recovery({ back }: IRecovery) {
   /** 뒤로가기 */
   const clickBack = () => {
     switch (step) {
+      case 3:
+        dispatch(decrementRecoveryStep());
+        dispatch(decrementRecoveryStep());
+
+        break;
       case 2:
         dispatch(resetVerification());
         dispatch(resetRecovery());
@@ -81,13 +91,15 @@ export default function Recovery({ back }: IRecovery) {
           title="ID / PW 찾기"
           style={{ marginBottom: 20 }}
           rightIcon={
-            <button
-              type="button"
-              onClick={back}
-              style={{ padding: 0, background: "none" }}
-            >
-              <IconHome width={24} height={24} fill={"black"} />
-            </button>
+            !(isVerified || isChanged) && (
+              <button
+                type="button"
+                onClick={back}
+                style={{ padding: 0, background: "none" }}
+              >
+                <IconHome width={24} height={24} fill={"black"} />
+              </button>
+            )
           }
         />
 

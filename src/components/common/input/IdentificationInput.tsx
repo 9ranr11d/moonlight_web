@@ -31,14 +31,12 @@ export default function IdentificationInput() {
   ): void => {
     dispatch(resetIdentification());
 
-    setIdentification(e.target.value);
+    setIdentification(e.target.value.trim());
   };
 
   /** 아이디 중복 확인 */
   const clickCheckDuplicate = (): void => {
-    const data: { identification: string } = { identification };
-
-    dispatch(checkDuplicateIdAction(data));
+    dispatch(checkDuplicateIdAction({ identification }));
   };
 
   return (

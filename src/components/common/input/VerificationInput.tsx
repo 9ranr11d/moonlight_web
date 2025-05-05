@@ -71,9 +71,9 @@ export default function VerificationInput({
             onChange={handleCode}
             onKeyDown={onKeyDown}
             placeholder="인증코드를 입력해주세요."
-            disabled={timeLeft === 0}
+            disabled={remainingTime === 0}
             isErr={true}
-            msg={timeLeft === 0 ? "인증 시간이 만료되었습니다." : msg}
+            msg={remainingTime === 0 ? "인증 시간이 만료되었습니다." : msg}
           />
 
           <p
