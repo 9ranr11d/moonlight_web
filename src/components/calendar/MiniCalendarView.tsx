@@ -13,7 +13,7 @@ import IconPrevGray from "@public/img/common/icon_less_than_gray.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconNextGray from "@public/img/common/icon_greater_than_gray.svg";
 
-/** 미니 캘린더 자식 */
+/** 미니 캘린더 Interface */
 interface IMiniCalendar {
   /**
    * 달 변경

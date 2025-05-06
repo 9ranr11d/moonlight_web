@@ -94,3 +94,9 @@ export interface IUserAgreedTerms {
 export type TVerificationType = "signUp" | "findId" | "findPw";
 
 export type TVerificationMethod = "email" | "phoneNumber";
+
+export interface IVerificationInfo {
+  method: TVerificationMethod;
+  identification?: string;
+  info: string;
+}

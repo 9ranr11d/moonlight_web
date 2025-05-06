@@ -15,7 +15,7 @@ import Modal from "@components/common/Modal";
 import VisitHistories from "./VisitHistories";
 import VisitHistoryEditor from "./VisitHistoryEditor";
 
-/** 즐겨찾기 방문 일지 모달 자식들 */
+/** 즐겨찾기 방문 일지 모달 Interface */
 interface IEventModal {
   /** 닫기 */
   closeModal: () => void;

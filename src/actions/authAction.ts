@@ -3,6 +3,7 @@ import { AppDispatch, RootState } from "@redux/store";
 import {
   setAuthErr,
   setRefreshAccessToken,
+  setVerificationInfo,
   signIn,
   signOut,
   socialSignIn,
@@ -24,7 +25,13 @@ import {
   setVerificationErr,
 } from "@redux/slices/verificationSlice";
 
-import { IIUser, IUserAgreedTerms, TVerificationType } from "@interfaces/auth";
+import {
+  IIUser,
+  IUserAgreedTerms,
+  IVerificationInfo,
+  TVerificationMethod,
+  TVerificationType,
+} from "@interfaces/auth";
 import {
   passwordChangeCompleted,
   passwordChangeFailed,
@@ -99,7 +106,7 @@ export const checkDuplicateIdAction =
       /** 받아온 값 */
       const data = await res.json();
 
-      // 오류 시 예외 발생
+      // 오류 시
       if (!res.ok) {
         const msg: string = data?.msg || "서버 오류가 발생했습니다.";
 
@@ -306,6 +313,7 @@ export const saveUserTermsAction =
       /** 받아온 값 */
       const data = await res.json();
 
+      // 오류 시
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       dispatch(setTermsSaved());
@@ -354,6 +362,7 @@ export const signInAction =
       /** 받아온 값 */
       const data = await res.json();
 
+      // 오류 시
       if (!res.ok) {
         const msg: string =
           res.status === 404 || res.status === 401
@@ -498,6 +507,29 @@ export const changePwAction =
       dispatch(passwordChangeCompleted());
     } catch (err) {
       console.error("action/authAction > changePwAction() :", err);
+    }
+  };
+
+/** 본인인증 정보 저장 */
+export const setVerificationInfoAction =
+  (formData: IVerificationInfo) => async (dispatch: AppDispatch) => {
+    try {
+      /** 응답된 값 */
+      const res = await fetch("/api/auth/save-verification-info", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      /** 받아온 값 */
+      const data = await res.json();
+
+      // 오류 시
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+
+      dispatch(setVerificationInfo(formData));
+    } catch (err) {
+      console.error("action/authAction > setVerificationInfoAction() :", err);
     }
   };
 

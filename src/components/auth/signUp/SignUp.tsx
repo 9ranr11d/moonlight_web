@@ -28,7 +28,7 @@ import ProfileForm from "@components/auth/signUp/ProfileForm";
 import IconHome from "@public/svgs/common/icon_home.svg";
 import IconCheck from "@public/svgs/common/icon_check.svg";
 
-/** SignUp 자식 */
+/** SignUp Interface */
 interface ISignUp {
   /** 회원가입 완료 */
   completed: () => void;

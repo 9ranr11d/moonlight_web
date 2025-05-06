@@ -8,16 +8,18 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@redux/store";
 
+import { TVerificationMethod } from "@interfaces/auth";
+
 import CSS from "./Recovery.module.css";
 
-import VerificationForm from "./VerificationForm";
+import VerificationForm from "../verification/VerificationForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";
 
 import DotAndBar from "@components/common/indicator/DotAndBar";
 import ErrorBlock from "@components/common/ErrorBlock";
 
-import VerificationMethodForm from "./VerificationMethodForm";
+import VerificationMethodForm from "../verification/VerificationMethodForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
@@ -28,12 +30,16 @@ const LottiePlayer = dynamic(() => import("react-lottie-player"), {
 interface IIdentification {
   /** 뒤로가기 */
   back: () => void;
+  /** 선택 시 */
+  onTabSelect: (idx: number) => void;
 }
 
 /** 아이디 찾기 */
-export default function Identification({ back }: IIdentification) {
-  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
-  const { step, modifiedId } = useSelector(
+export default function Identification({ back, onTabSelect }: IIdentification) {
+  const { isVerified } = useSelector(
+    (state: RootState) => state.verificationSlice
+  ); // 본인인증 여부
+  const { step, modifiedId, verificationMethod } = useSelector(
     (state: RootState) => state.recoverySlice
   ); // Step과 가려진 아이디
 
@@ -41,10 +47,13 @@ export default function Identification({ back }: IIdentification) {
   const steps = useMemo(
     () => [
       <div style={{ marginBottom: 10 }}>
-        <VerificationMethodForm />
+        <VerificationMethodForm onTabSelect={onTabSelect} />
       </div>,
       <div style={{ marginBottom: 10 }}>
-        <VerificationForm type="findId" />
+        <VerificationForm
+          type="findId"
+          method={verificationMethod as TVerificationMethod}
+        />
       </div>,
     ],
     [step]

@@ -20,8 +20,11 @@ import { socialSignInAction } from "@actions/authAction";
 
 import CSS from "./page.module.css";
 
+import LunarLoader from "@components/common/LunarLoader";
+
 import SignIn from "@components/auth/SignIn";
 import SignUp from "@components/auth/signUp/SignUp";
+import MissingContactForm from "@components/auth/signUp/MissingContactForm";
 import Recovery from "@components/auth/recovery/Recovery";
 
 /** 시작 페이지 */
@@ -79,14 +82,14 @@ export default function Home() {
 
   // 로그인 정보가 있을 시 '메인 홈'으로
   useEffect(() => {
-    if (user.isAuth) router.push("/home");
-  }, [user.isAuth, router]);
+    if (user.isAuth && (user.email || user.phoneNumber)) router.push("/home");
+  }, [user.isAuth, user.email, user.phoneNumber, router]);
 
   return (
-    <main className={CSS.container}>
-      {!user.isAuth && (
-        <div className={CSS.authBox}>
-          {!isSignUp ? (
+    <main>
+      <div className={CSS.authBox}>
+        {!user.isAuth ? (
+          !isSignUp ? (
             !isRecovery ? (
               <SignIn signUp={handleSignUp} recovery={handleRecovery} />
             ) : (
@@ -94,9 +97,22 @@ export default function Home() {
             )
           ) : (
             <SignUp completed={handleCompleted} back={handleSignUpBack} />
-          )}
-        </div>
-      )}
+          )
+        ) : !(user.email || user.phoneNumber) ? (
+          <MissingContactForm />
+        ) : (
+          <LunarLoader
+            style={{ marginBottom: 20 }}
+            msg={
+              <span>
+                로그인 중입니다.
+                <br />
+                잠시만 기다려주세요
+              </span>
+            }
+          />
+        )}
+      </div>
     </main>
   );
 }

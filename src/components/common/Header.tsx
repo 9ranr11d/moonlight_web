@@ -59,11 +59,9 @@ export default function Header() {
     setIsSideMenuOpen(prev => !prev);
   };
 
-  /** 로그인 전 로고 불가시 여부 */
+  /** 로그인 전 로고 가시 여부 */
   const hiddenBeforeLogo = (): void => {
-    if (user.isAuth) {
-      setIsHidden(true);
-    }
+    if (user.isAuth && (user.email || user.phoneNumber)) setIsHidden(true);
   };
 
   /** 사용자 정보 창 닫기 */
@@ -74,7 +72,7 @@ export default function Header() {
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
     // 이미 로그인이 된 상태면 패스
-    if (user.isAuth) return;
+    if (user.isAuth && (user.email || user.phoneNumber)) return;
     // 로그인 상태가 아닐 시
     else router.push("/");
 
@@ -84,7 +82,7 @@ export default function Header() {
     if (user.accessToken.length !== 0)
       dispatch(getUserByAccessTokenAction({ accessToken: user.accessToken }));
     else dispatch(checkRefreshTokenAction());
-  }, [user.accessToken, user.isAuth]);
+  }, [user.accessToken, user.isAuth, user.email, user.phoneNumber]);
 
   // 50분마다 Access Token 자동 재발급
   useEffect(() => {
@@ -112,11 +110,27 @@ export default function Header() {
   }, [backdrop.isVisible]);
 
   return (
-    <header style={user.isAuth ? { zIndex: 999 } : undefined}>
-      <nav style={user.isAuth ? undefined : { height: 0, padding: 0 }}>
+    <header
+      style={
+        user.isAuth && (user.email || user.phoneNumber)
+          ? { zIndex: 999 }
+          : undefined
+      }
+    >
+      <nav
+        style={
+          user.isAuth && (user.email || user.phoneNumber)
+            ? undefined
+            : { height: 0, padding: 0 }
+        }
+      >
         <div
           className={CSS.afterSignInBox}
-          style={user.isAuth ? { bottom: 0 } : { bottom: 50, opacity: 0 }}
+          style={
+            user.isAuth && (user.email || user.phoneNumber)
+              ? { bottom: 0 }
+              : { bottom: 50, opacity: 0 }
+          }
         >
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
@@ -157,7 +171,7 @@ export default function Header() {
           style={
             isHidden
               ? { display: "none" } // 애니메이션 후에 display: none 설정
-              : user.isAuth
+              : user.isAuth && (user.email || user.phoneNumber)
               ? { top: -30, opacity: 0 } // top과 opacity 애니메이션
               : { top: 30 }
           }

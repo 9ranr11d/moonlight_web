@@ -7,7 +7,7 @@ import CSS from "./TabBtn.module.css";
 /** 세로 Tab 버튼 Interface */
 interface IDirectionTabBtns {
   /** 선택한 순서 */
-  onChange?: (idx: number) => void;
+  onTabSelect?: (idx: number) => void;
 
   /** 제목 배열 */
   labelArr: React.ReactNode[];
@@ -21,7 +21,7 @@ interface IDirectionTabBtns {
 
 /** 세로 Tab 버튼 */
 export default function DirectionTabBtns({
-  onChange,
+  onTabSelect,
   labelArr,
   idx = -1,
   direction = "column",
@@ -33,7 +33,7 @@ export default function DirectionTabBtns({
   const selectIdx = (idx: number): void => {
     setSelectedIdx(idx);
 
-    onChange?.(idx);
+    onTabSelect?.(idx);
   };
 
   // 상위 컴포넌트에서 선택된 순서 변경 시

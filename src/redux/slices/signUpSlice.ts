@@ -77,11 +77,7 @@ export const SignUp = createSlice({
     resetTerm: state => {
       Object.assign(state.term, initialState.term);
     },
-    /**
-     * 약관 정보 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 약관 정보 저장 */
     setLatestTerm: (state, action: PayloadAction<ITerm[]>) => {
       state.term.latestTerms = action.payload;
       state.term.agreedTerms = [];
@@ -89,11 +85,7 @@ export const SignUp = createSlice({
       state.term.isErr = false;
       state.term.isLoaded = false;
     },
-    /**
-     * 오류 정보 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 오류 정보 저장 */
     setTermsErr: (state, action: PayloadAction<string>) => {
       state.term.latestTerms = [];
       state.term.agreedTerms = [];
@@ -118,11 +110,7 @@ export const SignUp = createSlice({
     resetIdentification: state => {
       Object.assign(state.identification, initialState.identification);
     },
-    /**
-     * 중복 여부 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 중복 여부 저장 */
     setIsIdDuplicate: (state, action: PayloadAction<IDuplicate>) => {
       state.identification.identification = action.payload.identification;
       state.identification.isChecking = true;
@@ -133,11 +121,7 @@ export const SignUp = createSlice({
     resetPassword: state => {
       Object.assign(state.password, initialState.password);
     },
-    /**
-     * 비밀번호 유효성 관련 정보 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 비밀번호 유효성 관련 정보 저장 */
     setIsPasswordValid: (state, action: PayloadAction<IPasswordState>) => {
       state.password.password = action.payload.password;
       state.password.isValid = action.payload.isValid;

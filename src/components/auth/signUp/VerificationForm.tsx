@@ -24,7 +24,9 @@ export default function VerificationForm() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 본인인증 정보 */
-  const verification = useSelector((state: RootState) => state.verification);
+  const verification = useSelector(
+    (state: RootState) => state.verificationSlice
+  );
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
   const [timeLeft, setTimeLeft] = useState<number>(5); // 본인 인증 완료 시 다음 단계 자동 넘기 제한 시간

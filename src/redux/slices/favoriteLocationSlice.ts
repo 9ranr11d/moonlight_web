@@ -42,19 +42,12 @@ export const FavoriteLocation = createSlice({
   name: "favoriteLocation",
   initialState,
   reducers: {
-    /**
-     * 즐겨찾기 새로 만들기
-     * @param state 기존 정보
-     */
+    /** 즐겨찾기 새로 만들기 */
     createActiveLocation: state => {
       state.operationMode = "create";
       state.activeLocation = initialActiveLocation;
     },
-    /**
-     * 수정할 즐겨찾기 정보 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 수정할 즐겨찾기 정보 저장 */
     setActiveLocation: (
       state,
       action: PayloadAction<TypeFavoriteLocationHistory>

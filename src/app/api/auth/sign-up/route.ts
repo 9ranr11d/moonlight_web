@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       !nickname
     )
       return NextResponse.json(
-        { msg: "회원가입에 필요한 정보를 확인해주세요." },
+        { msg: "잘못된 요청 데이터입니다." },
         { status: 400 }
       );
 

@@ -12,6 +12,7 @@ import { resetVerification } from "@redux/slices/verificationSlice";
 
 import {
   decrementRecoveryStep,
+  incrementRecoveryStep,
   resetRecovery,
   setVerificationMethod,
 } from "@redux/slices/recoverySlice";
@@ -44,18 +45,29 @@ export default function Recovery({ back }: IRecovery) {
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
 
-  /** Input들 */
-  const inputs = useMemo(
-    () => [<Identification back={back} />, <Password back={back} />],
-    []
-  );
-
   /** 선택된 Tab 변경 */
-  const handleTab = (idx: number): void => {
+  const handleRecoveryTypeTab = (idx: number): void => {
     dispatch(resetVerification());
     dispatch(resetRecovery());
 
     setSelectedTabIdx(idx);
+  };
+
+  /** 선택된 Tab 관리자 */
+  const handleVerificationMethodTab = (idx: number): void => {
+    switch (idx) {
+      case 1:
+        dispatch(setVerificationMethod("phoneNumber"));
+
+        break;
+      case 0:
+      default:
+        dispatch(setVerificationMethod("email"));
+
+        break;
+    }
+
+    dispatch(incrementRecoveryStep());
   };
 
   /** 뒤로가기 */
@@ -83,6 +95,15 @@ export default function Recovery({ back }: IRecovery) {
     }
   };
 
+  /** Input들 */
+  const inputs = useMemo(
+    () => [
+      <Identification back={back} onTabSelect={handleVerificationMethodTab} />,
+      <Password back={back} onTabSelect={handleVerificationMethodTab} />,
+    ],
+    []
+  );
+
   return (
     <>
       <div className={CSS.recoveryBox} style={{ paddingBottom: 40 }}>
@@ -106,7 +127,7 @@ export default function Recovery({ back }: IRecovery) {
         <HorizontalTabBtns
           labelArr={["아이디", "비밀번호"]}
           idx={selectedTabIdx}
-          onChange={handleTab}
+          onChange={handleRecoveryTypeTab}
         />
 
         <div style={{ marginTop: 20 }}>

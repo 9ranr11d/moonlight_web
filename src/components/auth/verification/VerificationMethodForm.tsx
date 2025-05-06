@@ -2,18 +2,15 @@
 
 import React from "react";
 
-import { useDispatch } from "react-redux";
-
-import { AppDispatch } from "@redux/store";
-
-import {
-  incrementRecoveryStep,
-  setVerificationMethod,
-} from "@redux/slices/recoverySlice";
-
 import DirectionTabBtns from "@components/common/btn/DirectionTabBtns";
 
 import IconGreaterThen from "@public/svgs/common/icon_greater_than.svg";
+
+/** 본인인증 방법 선택 Form */
+interface IVerificationMethodForm {
+  /** 선택 시 */
+  onTabSelect: (idx: number) => void;
+}
 
 /** 아이디 찾기의 본인인증 방법 탭 Style */
 const findIdTabBtnsStyle: React.CSSProperties = {
@@ -24,27 +21,9 @@ const findIdTabBtnsStyle: React.CSSProperties = {
 };
 
 /** 본인인증 방법 선택 Form */
-export default function VerificationMethodForm() {
-  /** Dispatch */
-  const dispatch = useDispatch<AppDispatch>();
-
-  /** 선택된 Tab 관리자 */
-  const handleTab = (idx: number): void => {
-    switch (idx) {
-      case 1:
-        dispatch(setVerificationMethod("phoneNumber"));
-
-        break;
-      case 0:
-      default:
-        dispatch(setVerificationMethod("email"));
-
-        break;
-    }
-
-    dispatch(incrementRecoveryStep());
-  };
-
+export default function VerificationMethodForm({
+  onTabSelect,
+}: IVerificationMethodForm) {
   return (
     <div>
       <h6
@@ -76,7 +55,7 @@ export default function VerificationMethodForm() {
           </div>,
         ]}
         direction="column"
-        onChange={handleTab}
+        onTabSelect={onTabSelect}
       />
     </div>
   );

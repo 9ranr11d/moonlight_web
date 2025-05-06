@@ -11,7 +11,7 @@ import CSS from "./Modal.module.css";
 
 import IconClose from "@public/img/common/icon_close_black.svg";
 
-/** Modal 자식들 */
+/** Modal Interface */
 interface IModal {
   /** 닫기 */
   close?: () => void;

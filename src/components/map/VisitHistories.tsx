@@ -11,7 +11,7 @@ import { IIFavoriteLocationHistory } from "@models/FavoriteLocationHistory";
 
 import IconPlus from "@public/img/common/icon_plus_black.svg";
 
-/** 방문 일지 목록 자식들 */
+/** 방문 일지 목록 Interface */
 interface IVisitHistories {
   /** 해당 장소 방문 일지 목록 */
   histories: IIFavoriteLocationHistory[];

@@ -29,7 +29,9 @@ export default function ProfileForm() {
   /** 회원가입 정보 */
   const signUp = useSelector((state: RootState) => state.signUpSlice);
   /** 본인인증 정보 */
-  const verification = useSelector((state: RootState) => state.verification);
+  const verification = useSelector(
+    (state: RootState) => state.verificationSlice
+  );
 
   const [birthdate, setBirthdate] = useState<string>(""); // 생년월일
   const [nickname, setNickName] = useState<string>(""); // 별명

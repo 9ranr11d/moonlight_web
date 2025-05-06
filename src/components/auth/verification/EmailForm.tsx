@@ -42,7 +42,9 @@ export default function EmailForm({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 본인인증 정보 */
-  const verification = useSelector((state: RootState) => state.verification);
+  const verification = useSelector(
+    (state: RootState) => state.verificationSlice
+  );
 
   const [email, setEmail] = useState<string>(""); // 입력된 Email
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드
@@ -154,7 +156,7 @@ export default function EmailForm({
         )}
       </div>
 
-      {isSent ? (
+      {(type === "signUp" ? verification.email : isSent) ? (
         <>
           <VerificationInput
             onClickResendCode={clickResendCode}

@@ -6,14 +6,16 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@redux/store";
 
+import { TVerificationMethod } from "@interfaces/auth";
+
 import CSS from "./Recovery.module.css";
 
 import ErrorBlock from "@components/common/ErrorBlock";
 import DotAndBar from "@components/common/indicator/DotAndBar";
 
 import IdCheckForm from "./IdCheckForm";
-import VerificationMethodForm from "./VerificationMethodForm";
-import VerificationForm from "./VerificationForm";
+import VerificationMethodForm from "../verification/VerificationMethodForm";
+import VerificationForm from "../verification/VerificationForm";
 import ChangePwForm from "./ChangePwForm";
 
 import IconLock from "@public/svgs/common/icon_lock.svg";
@@ -23,11 +25,13 @@ import IconHome from "@public/svgs/common/icon_home.svg";
 interface IPassword {
   /** 뒤로가기 */
   back: () => void;
+  /** 선택 시 */
+  onTabSelect: (idx: number) => void;
 }
 
 /** 비밀번호 찾기 */
-export default function Password({ back }: IPassword) {
-  const { step, isChanged } = useSelector(
+export default function Password({ back, onTabSelect }: IPassword) {
+  const { step, isChanged, verificationMethod } = useSelector(
     (state: RootState) => state.recoverySlice
   ); // ID/PW 찾기 관련 정보
 
@@ -38,12 +42,13 @@ export default function Password({ back }: IPassword) {
     () => [
       <IdCheckForm saveId={(id: string) => setIdentification(id)} />,
       <div style={{ marginBottom: 10 }}>
-        <VerificationMethodForm />
+        <VerificationMethodForm onTabSelect={onTabSelect} />
       </div>,
       <VerificationForm
         style={{ marginBottom: 10 }}
         type="findPw"
         identification={identification}
+        method={verificationMethod as TVerificationMethod}
       />,
       <ChangePwForm identification={identification} />,
     ],

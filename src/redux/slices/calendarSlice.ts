@@ -24,22 +24,14 @@ export const Calendar = createSlice({
   name: "calendar",
   initialState,
   reducers: {
-    /**
-     * 일정 갱신
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 일정 갱신 */
     setSchedules: (
       state,
       action: PayloadAction<WritableDraft<IIISchedule>[]>
     ) => {
       state.schedules = action.payload;
     },
-    /**
-     * 일정 카테고리 갱신
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 일정 카테고리 갱신 */
     setScheduleCategories: (
       state,
       action: PayloadAction<WritableDraft<IIScheduleCategory>[]>

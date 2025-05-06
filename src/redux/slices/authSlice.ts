@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IUser } from "@interfaces/auth/index";
+import { IUser, IVerificationInfo } from "@interfaces/auth/index";
 
 /** 초기값 Interface  */
 interface IAuthState extends IUser {
@@ -22,7 +22,7 @@ const initialState: IAuthState = {
   nickname: null,
   seq: 0,
   phoneNumber: null,
-  email: "",
+  email: null,
   platform: "web",
   accessLevel: 0,
   provider: "local",
@@ -45,50 +45,45 @@ export const Auth = createSlice({
     resetAuth: state => {
       Object.assign(state, initialState);
     },
-    /**
-     * 오류 처리
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 오류 처리 */
     setAuthErr: (state, action: PayloadAction<string>) => {
       state.msg = action.payload;
       state.isErr = true;
     },
-    /**
-     * 로그인
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 로그인 */
     signIn: (state, action: PayloadAction<IAuthState>) => {
       Object.assign(state, action.payload); // 기존 상태에 action.payload 병합
       state.isAuth = true;
     },
-    /**
-     * 소셜 로그인
-     * @param state 기존 정보
-     * @param actions 받아온 값
-     */
+    /** 소셜 로그인 */
     socialSignIn: (state, actions: PayloadAction<IUser>) => {
       Object.assign(state, actions.payload);
       state.isAuth = true;
     },
-    /**
-     * 로그아웃
-     * @param state 기존 정보
-     */
+    /** 로그아웃 */
     signOut: state => {
       Object.assign(state, initialState); // 상태를 초기값으로 재설정
     },
-    /**
-     * Refresh Token으로 재발행 된 Access Token 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** Refresh Token으로 재발행 된 Access Token 저장 */
     setRefreshAccessToken: (
       state,
       action: PayloadAction<{ accessToken: string }>
     ) => {
       state.accessToken = action.payload.accessToken;
+    },
+    /** 본인인증 정보 저장 */
+    setVerificationInfo: (state, action: PayloadAction<IVerificationInfo>) => {
+      switch (action.payload.method) {
+        case "phoneNumber":
+          state.phoneNumber = action.payload.info;
+
+          break;
+        case "email":
+        default:
+          state.email = action.payload.info;
+
+          break;
+      }
     },
   },
 });
@@ -100,6 +95,7 @@ export const {
   socialSignIn,
   signOut,
   setRefreshAccessToken,
+  setVerificationInfo,
 } = Auth.actions;
 
 export default Auth.reducer;

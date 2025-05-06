@@ -15,17 +15,11 @@ export const Backdrop = createSlice({
   name: "backdrop",
   initialState,
   reducers: {
-    /**
-     * 배경화면 가시
-     * @param state 기존 정보
-     */
+    /** 배경화면 가시 */
     showBackdrop: state => {
       state.isVisible = true;
     },
-    /**
-     * 배경화면 불가시
-     * @param state 기존 정보
-     */
+    /** 배경화면 불가시 */
     hideBackdrop: state => {
       state.isVisible = false;
     },

@@ -43,7 +43,7 @@ import IconDeleteCloseWhite from "@public/img/common/icon_delete_close_white.svg
 import IconDeleteOpenPrimary from "@public/img/common/icon_delete_open_primary.svg";
 import IconDeleteClosePrimary from "@public/img/common/icon_delete_close_primary.svg";
 
-/** Event Modal 자식들 */
+/** Event Modal Interface */
 interface IEventModal {
   /** 닫기 */
   closeModal: () => void;

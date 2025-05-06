@@ -7,7 +7,7 @@ import { RootState } from "@redux/store";
 
 import EmailVerification from "@components/auth/EmailVerification";
 
-/** Email 수정 Form 자식들 */
+/** Email 수정 Form Interface */
 interface IEmailUpdateForm {
   /**
    * Email 인증 성공 시

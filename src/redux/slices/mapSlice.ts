@@ -55,21 +55,13 @@ export const Map = createSlice({
   name: "map",
   initialState,
   reducers: {
-    /**
-     * 주소 검색 결과 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 주소 검색 결과 저장 */
     setSearchedAddress: (state, action: PayloadAction<IAddress[]>) => {
       state.searchedAddress = action.payload;
       state.searchedPlaces = [];
       state.selectedLocationIdx = -1;
     },
-    /**
-     * 장소 검색 결과 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 장소 검색 결과 저장 */
     setSearchedPlaces: (
       state,
       action: PayloadAction<kakao.maps.services.PlacesSearchResult>
@@ -78,11 +70,7 @@ export const Map = createSlice({
       state.searchedPlaces = action.payload;
       state.selectedLocationIdx = -1;
     },
-    /**
-     * 즐겨찾기 목록 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 즐겨찾기 목록 저장 */
     setFavoriteLocations: (
       state,
       action: PayloadAction<{
@@ -94,36 +82,21 @@ export const Map = createSlice({
 
       if (action.payload.resetSelection) state.selectedLocationIdx = -1;
     },
-    /**
-     * 지도 중심 좌표 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 지도 중심 좌표 저장 */
     setMapCenter: (state, action: PayloadAction<ILatLng>) => {
       state.mapCenter = action.payload;
     },
-    /**
-     * 마지막 검색 좌표 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 마지막 검색 좌표 저장 */
     setLastCenter: (state, action: PayloadAction<ILatLng>) => {
       state.lastCenter = action.payload;
     },
-    /**
-     * 검색 결과 목록 초기화
-     * @param state 기존 정보
-     */
+    /** 검색 결과 목록 초기화 */
     resetSearchPlaces: state => {
       state.searchedAddress = [];
       state.searchedPlaces = [];
       state.selectedLocationIdx = -1;
     },
-    /**
-     * 선택한 검색 결과 순서 저장
-     * @param state 기존 정보
-     * @param action 받아온 값
-     */
+    /** 선택한 검색 결과 순서 저장 */
     setSelectedLocationIdx: (state, action: PayloadAction<number>) => {
       state.selectedLocationIdx = action.payload;
     },

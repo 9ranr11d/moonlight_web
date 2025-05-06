@@ -25,7 +25,7 @@ import IconCollapse from "@public/img/common/icon_collapse_white.svg";
 import IconHeart from "@public/img/common/icon_heart_primary.svg";
 import IconHeartWhite from "@public/img/common/icon_heart_white.svg";
 
-/** Search Input 자식들 */
+/** Search Input Interface */
 interface ISearchInput {
   /** 검색 결과 목록 선택 시 */
   selectedResult: (idx: number) => void;

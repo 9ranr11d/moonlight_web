@@ -23,7 +23,7 @@ import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
 
-/** SignIn 자식 */
+/** SignIn Interface */
 interface ISignIn {
   /** 회원가입으로 전환 */
   signUp: () => void;

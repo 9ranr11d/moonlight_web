@@ -43,7 +43,9 @@ export default function PhoneNumberForm({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 본인인증 정보 */
-  const verification = useSelector((state: RootState) => state.verification);
+  const verification = useSelector(
+    (state: RootState) => state.verificationSlice
+  );
 
   const [phoneNumber, setPhoneNumber] = useState<string>(""); // 휴대전화 번호
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드
@@ -155,7 +157,7 @@ export default function PhoneNumberForm({
         )}
       </div>
 
-      {isSent ? (
+      {(type === "signUp" ? verification.phoneNumber : isSent) ? (
         <>
           <VerificationInput
             onClickResendCode={clickResendCode}

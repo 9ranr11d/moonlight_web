@@ -20,7 +20,7 @@ import EmailUpdateForm from "./EmailUpdateForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";
 
-/** 사용자 정보 수정 자식들 */
+/** 사용자 정보 수정 Interface */
 interface IProfileEdit {
   /** 메뉴 변경 */
   changePage: (code: string) => void;
