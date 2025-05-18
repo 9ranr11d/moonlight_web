@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import { signOutAction } from "@actions/authAction";
 
-import CSS from "./ProfileModal.module.css";
+import styles from "./ProfileModal.module.css";
 
 /** 사용자 정보 수정 모달 Interface */
 interface IProfileModal {
@@ -39,7 +39,7 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
   };
 
   return (
-    <div className={CSS.option}>
+    <div className={styles.option}>
       <h6>{user.nickname}님</h6>
 
       <ul>

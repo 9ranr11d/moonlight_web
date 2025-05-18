@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import styles from "./DotAndBar.module.css";
+
 /** ., - Indicator Interface */
 interface IDotAndBar {
   /** 현재 단계 */
@@ -12,7 +14,7 @@ interface IDotAndBar {
   color?: string;
   /** 비활성화 색상 */
   disabledColor?: string;
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
 }
 
@@ -26,6 +28,7 @@ export default function DotAndBar({
 }: IDotAndBar) {
   return (
     <div
+      className={styles.indicator}
       style={{
         display: "flex",
         flex: 1,

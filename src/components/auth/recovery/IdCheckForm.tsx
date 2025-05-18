@@ -8,7 +8,7 @@ import { AppDispatch } from "@redux/store";
 
 import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
 
-import CSS from "./Recovery.module.css";
+import styles from "./Recovery.module.css";
 
 import { validateIdentification } from "@utils/index";
 
@@ -51,7 +51,7 @@ export default function IdCheckForm({ saveId }: IIdCheckForm) {
         placeholder="찾으시려는 아이디를 입력해 주세요."
       />
 
-      <div className={CSS.okBtnBox}>
+      <div className="okBtnBox">
         <NextBtn onClick={clickNext} disabled={!validateIdentification(id)} />
       </div>
     </div>

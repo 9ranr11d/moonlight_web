@@ -83,6 +83,11 @@ export async function POST(req: NextRequest) {
     /** Refresh Token을 저장할 쿠키의 수명 (현재 14일) */
     const maxAge: number = 14 * 24 * 60 * 60;
 
+    /** Set-Cookie 헤더 설정 */
+    let cookie = `refreshToken=${refreshToken}; HttpOnly; path=/; Secure; SameSite=Strict;`;
+
+    if (isRememberMe) cookie += ` Max-Age=${maxAge};`;
+
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(
       {
@@ -108,9 +113,7 @@ export async function POST(req: NextRequest) {
       {
         status: 200,
         headers: {
-          ...(isRememberMe && {
-            "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; path=/; Max-Age=${maxAge}; Secure; SameSite=Strict;`,
-          }),
+          "Set-Cookie": cookie,
         },
       }
     );

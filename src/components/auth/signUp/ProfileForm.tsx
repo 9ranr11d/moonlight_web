@@ -8,7 +8,7 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import { saveUserTermsAction, signUpAction } from "@actions/authAction";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import { validateNickname } from "@utils/index";
 
@@ -130,21 +130,21 @@ export default function ProfileForm() {
       {!isLoaded ? (
         <>
           <div>
-            <h6 className={CSS.label}>생년월일</h6>
+            <h6 className={styles.label}>생년월일</h6>
 
             <DropdownDateBtn onChange={setBirthdate} />
           </div>
           <div>
-            <h6 className={CSS.label}>성별</h6>
+            <h6 className={styles.label}>성별</h6>
 
             <RadioBtns list={genderBtns} onChange={setSelectedGenderIdx} />
           </div>
           <div>
-            <h6 className={CSS.label}>별명</h6>
+            <h6 className={styles.label}>별명</h6>
 
             <NicknameInput onChange={setNickName} />
           </div>
-          <div className={CSS.okBtnBox}>
+          <div className="okBtnBox">
             <NextBtn
               onClick={clickConfirmBtn}
               disabled={!isConfirmActive}

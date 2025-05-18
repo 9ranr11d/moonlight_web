@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -10,22 +10,12 @@ import { useSession } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
 
-import { resetSignUp } from "@redux/slices/signUpSlice";
-
-import { resetVerification } from "@redux/slices/verificationSlice";
-
-import { resetRecovery } from "@redux/slices/recoverySlice";
-
 import { socialSignInAction } from "@actions/authAction";
-
-import CSS from "./page.module.css";
 
 import LunarLoader from "@components/common/LunarLoader";
 
 import SignIn from "@components/auth/SignIn";
-import SignUp from "@components/auth/signUp/SignUp";
 import MissingContactForm from "@components/auth/signUp/MissingContactForm";
-import Recovery from "@components/auth/recovery/Recovery";
 
 /** 시작 페이지 */
 export default function Home() {
@@ -40,40 +30,6 @@ export default function Home() {
 
   const { data: session } = useSession(); // nextauth의 로그인 정보
 
-  const [isSignUp, setIsSignUp] = useState<boolean>(false); // 회원가입 여부
-  const [isRecovery, setIsRecovery] = useState<boolean>(false); // 아이디/비밀번호 찾기 여부
-
-  /** 회원가입 버튼 클릭 시 */
-  const handleSignUp = (): void => {
-    dispatch(resetSignUp());
-    dispatch(resetVerification());
-
-    setIsSignUp(true);
-  };
-
-  /** 회원가입 완료 시 */
-  const handleCompleted = (): void => {
-    setIsSignUp(false);
-  };
-
-  /** 회원가입 창에서 뒤로가기 버튼 */
-  const handleSignUpBack = (): void => {
-    setIsSignUp(false);
-  };
-
-  /** ID/PW 찾기 버튼 클릭 시 */
-  const handleRecovery = (): void => {
-    dispatch(resetVerification());
-    dispatch(resetRecovery());
-
-    setIsRecovery(true);
-  };
-
-  /** ID/PW 찾기 창에서 뒤로가기 버튼 */
-  const handleRecoveryBack = (): void => {
-    setIsRecovery(false);
-  };
-
   // 소셜 로그인 정보가 있을 시
   useEffect(() => {
     if (session?.user && session.user.id)
@@ -86,33 +42,23 @@ export default function Home() {
   }, [user.isAuth, user.email, user.phoneNumber, router]);
 
   return (
-    <main>
-      <div className={CSS.authBox}>
-        {!user.isAuth ? (
-          !isSignUp ? (
-            !isRecovery ? (
-              <SignIn signUp={handleSignUp} recovery={handleRecovery} />
-            ) : (
-              <Recovery back={handleRecoveryBack} />
-            )
-          ) : (
-            <SignUp completed={handleCompleted} back={handleSignUpBack} />
-          )
-        ) : !(user.email || user.phoneNumber) ? (
-          <MissingContactForm />
-        ) : (
-          <LunarLoader
-            style={{ marginBottom: 20 }}
-            msg={
-              <span>
-                로그인 중입니다.
-                <br />
-                잠시만 기다려주세요
-              </span>
-            }
-          />
-        )}
-      </div>
-    </main>
+    <div className="authBox">
+      {!user.isAuth ? (
+        <SignIn />
+      ) : !(user.email || user.phoneNumber) ? (
+        <MissingContactForm />
+      ) : (
+        <LunarLoader
+          style={{ marginBottom: 20 }}
+          msg={
+            <span>
+              로그인 중입니다.
+              <br />
+              잠시만 기다려주세요
+            </span>
+          }
+        />
+      )}
+    </div>
   );
 }

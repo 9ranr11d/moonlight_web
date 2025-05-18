@@ -15,7 +15,7 @@ import {
   verityEmailAction,
 } from "@actions/authAction";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import { TVerificationType } from "@interfaces/auth";
 
@@ -138,7 +138,7 @@ export default function EmailForm({
   return (
     <div>
       <div style={{ position: "relative", marginBottom: 20 }}>
-        <h6 className={CSS.label}>Email</h6>
+        <h6 className={styles.label}>Email</h6>
 
         <EmailInput onChange={handleEmail} onKeyDown={handleEmailKeyDown} />
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import CSS from "./NextBtn.module.css";
+import styles from "./NextBtn.module.css";
 
 import IconGreaterThan from "@public/svgs/common/icon_greater_than.svg";
 
@@ -15,7 +15,7 @@ interface INextBtn {
   disabled?: boolean;
   /** 버튼 문자열 */
   label?: string;
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
   /** 내용 */
   children?: React.ReactNode;
@@ -34,7 +34,7 @@ export default function NextBtn({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={CSS.nextBtn}
+      className={styles.nextBtn}
       style={style}
     >
       {children ? children : label}

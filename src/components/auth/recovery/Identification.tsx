@@ -2,6 +2,8 @@
 
 import React, { useMemo } from "react";
 
+import { useRouter } from "next/navigation";
+
 import dynamic from "next/dynamic";
 
 import { useSelector } from "react-redux";
@@ -9,8 +11,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 
 import { TVerificationMethod } from "@interfaces/auth";
-
-import CSS from "./Recovery.module.css";
 
 import VerificationForm from "../verification/VerificationForm";
 
@@ -28,14 +28,15 @@ const LottiePlayer = dynamic(() => import("react-lottie-player"), {
 });
 
 interface IIdentification {
-  /** 뒤로가기 */
-  back: () => void;
   /** 선택 시 */
   onTabSelect: (idx: number) => void;
 }
 
 /** 아이디 찾기 */
-export default function Identification({ back, onTabSelect }: IIdentification) {
+export default function Identification({ onTabSelect }: IIdentification) {
+  /** Router */
+  const router = useRouter();
+
   const { isVerified } = useSelector(
     (state: RootState) => state.verificationSlice
   ); // 본인인증 여부
@@ -58,6 +59,8 @@ export default function Identification({ back, onTabSelect }: IIdentification) {
     ],
     [step]
   );
+
+  console.log("STEP :", step);
 
   return (
     <div>
@@ -100,7 +103,7 @@ export default function Identification({ back, onTabSelect }: IIdentification) {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <button
               type="button"
-              onClick={back}
+              onClick={() => router.push("/")}
               style={{ display: "flex", columnGap: 5 }}
             >
               <IconHome width={15} height={15} fill="white" />
@@ -112,9 +115,7 @@ export default function Identification({ back, onTabSelect }: IIdentification) {
       )}
 
       {step < steps.length && (
-        <div className={CSS.indicator}>
-          <DotAndBar progress={step} maxValue={steps.length} />
-        </div>
+        <DotAndBar progress={step} maxValue={steps.length} />
       )}
     </div>
   );

@@ -12,7 +12,7 @@ import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
 import { IIUser } from "@interfaces/auth/index";
 import { IIISchedule } from "@models/Schedule";
 
-import CSS from "./CalendarView.module.css";
+import styles from "./CalendarView.module.css";
 
 import { DAY_OF_WEEK, MONTH_NAMES } from "@constants/date";
 import { ERR_MSG } from "@constants/msg";
@@ -479,10 +479,10 @@ export default function CalendarView() {
         {matchingSchedule.map((schedule, idx) => (
           <p
             key={idx}
-            className={`${CSS.schedule} ${CSS.multipleSchedules}`}
+            className={`${styles.schedule} ${styles.multipleSchedules}`}
             style={{ background: schedule.categories[0].color }}
           >
-            <span className={CSS.truncated}>
+            <span className={styles.truncated}>
               {date.getTime() === new Date(schedule.date[0]).getTime() ||
               date.getTime() === new Date(schedule.date[1]).getTime()
                 ? schedule.title
@@ -516,8 +516,8 @@ export default function CalendarView() {
     return schedules.length > 0 ? (
       <>
         {schedules.map((schedule, idx) => (
-          <p key={idx} className={CSS.schedule}>
-            <span className={CSS.multiple}>
+          <p key={idx} className={styles.schedule}>
+            <span className={styles.multiple}>
               {schedule.categories.slice(0, 2).map((category, _idx) => (
                 <span
                   key={`${idx}-${_idx}`}
@@ -527,7 +527,7 @@ export default function CalendarView() {
               {schedule.categories.length > 2 && <span>...</span>}
             </span>
 
-            <span className={CSS.truncated}>{schedule.title}</span>
+            <span className={styles.truncated}>{schedule.title}</span>
           </p>
         ))}
       </>
@@ -578,17 +578,17 @@ export default function CalendarView() {
   return (
     <div>
       <div
-        className={CSS.calendar}
+        className={styles.calendar}
         style={{ right: isSiderbarOpen ? 0 : siderbarWidth / 2 }}
       >
         <div
-          className={CSS.subBox}
+          className={styles.subBox}
           style={{ left: isSiderbarOpen ? 0 : siderbarWidth }}
         >
           <button
             type="button"
             onClick={toggleSiderbar}
-            className={CSS.moreBtn}
+            className={styles.moreBtn}
           >
             {/* <Image
               src={isSiderbarOpen ? IconNextWhite : IconPrevWhite}
@@ -597,8 +597,8 @@ export default function CalendarView() {
             /> */}
           </button>
 
-          <div className={CSS.content} style={{ width: siderbarWidth }}>
-            <ul className={CSS.header}>
+          <div className={styles.content} style={{ width: siderbarWidth }}>
+            <ul className={styles.header}>
               <li>
                 <button
                   type="button"
@@ -611,7 +611,7 @@ export default function CalendarView() {
               </li>
 
               <li>
-                <ul className={CSS.yearMonthToggleBtn}>
+                <ul className={styles.yearMonthToggleBtn}>
                   <li>
                     <button
                       type="button"
@@ -647,7 +647,7 @@ export default function CalendarView() {
             </ul>
 
             <ul
-              className={CSS.content}
+              className={styles.content}
               style={{ height: calendarHeight, paddingRight: isYear ? 5 : 0 }}
               ref={siderbarRef}
             >
@@ -657,7 +657,7 @@ export default function CalendarView() {
                       <button
                         type="button"
                         onClick={() => selectMonth(idx)}
-                        className={idx === month ? CSS.selected : undefined}
+                        className={idx === month ? styles.selected : undefined}
                       >
                         <h6>{monthName}</h6>
                       </button>
@@ -666,11 +666,11 @@ export default function CalendarView() {
                 : years.map((_year, idx) => (
                     // <li key={idx} ref={(el) => (yearRefs.current[idx] = el!)}>
                     <li key={idx}>
-                      {/* <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? CSS.selected : undefined}> */}
+                      {/* <button type="button" onClick={() => selectYear(_year, idx)} className={year === _year ? styles.selected : undefined}> */}
                       <button
                         type="button"
                         onClick={() => selectYear(_year)}
-                        className={year === _year ? CSS.selected : undefined}
+                        className={year === _year ? styles.selected : undefined}
                       >
                         <h6>{_year}</h6>
                       </button>
@@ -680,14 +680,14 @@ export default function CalendarView() {
           </div>
         </div>
 
-        <div className={CSS.mainBox}>
+        <div className={styles.mainBox}>
           <ul
-            className={CSS.header}
+            className={styles.header}
             style={isInputYearMonth ? { columnGap: 20 } : undefined}
           >
             {isInputYearMonth ? (
               <>
-                <li className={CSS.inputYear}>
+                <li className={styles.inputYear}>
                   <input
                     type="number"
                     value={inputYear}
@@ -696,7 +696,7 @@ export default function CalendarView() {
                   />
                 </li>
 
-                <li className={CSS.inputMonth}>
+                <li className={styles.inputMonth}>
                   <input
                     type="number"
                     value={inputMonth}
@@ -741,8 +741,8 @@ export default function CalendarView() {
             )}
           </ul>
 
-          <div className={CSS.content} ref={calendarRef}>
-            <ul className={CSS.daysOfWeek}>
+          <div className={styles.content} ref={calendarRef}>
+            <ul className={styles.daysOfWeek}>
               {DAY_OF_WEEK.map((day, idx) => (
                 <li key={idx}>
                   <h6>{day}</h6>
@@ -750,7 +750,7 @@ export default function CalendarView() {
               ))}
             </ul>
 
-            <ul className={CSS.days}>
+            <ul className={styles.days}>
               {Array.from({ length: totalDays }, (_, idx) => {
                 /** 이전 달의 날짜인지 */
                 const isPrevMonth: boolean = idx < firstDayOfMonth;
@@ -777,27 +777,27 @@ export default function CalendarView() {
                     <button
                       type="button"
                       onClick={() => selectDay(year, _month, day)}
-                      className={CSS.content}
+                      className={styles.content}
                     >
                       <span
                         className={`${
                           isPrevMonth
-                            ? CSS.subDate
+                            ? styles.subDate
                             : isNextMonth
-                            ? CSS.subDate
+                            ? styles.subDate
                             : year === currentYear &&
                               month === currentMonth &&
                               day === currentDay
-                            ? CSS.today
+                            ? styles.today
                             : undefined
-                        } ${CSS.day}`}
+                        } ${styles.day}`}
                       >
                         {day}
                       </span>
 
                       {(multipleSchedules.length > 0 ||
                         convertedSchedules.length > 0) && (
-                        <span className={CSS.scheduleCovers}>
+                        <span className={styles.scheduleCovers}>
                           {renderMultipleSchedules(year, _month, day)}
                           {renderSchedules(year, _month, day)}
                         </span>

@@ -14,7 +14,7 @@ import {
   setSearchedPlaces,
 } from "@redux/slices/mapSlice";
 
-import CSS from "./Map.module.css";
+import styles from "./Map.module.css";
 
 import Modal from "@components/common/Modal";
 
@@ -272,15 +272,15 @@ export default function SearchInput({
   return (
     <>
       <div
-        className={`${CSS.searchBox} ${
+        className={`${styles.searchBox} ${
           (isSearchResultsAvailable || map.favoriteLocations.length > 0) &&
           isSearchPanelVisible
-            ? CSS.searched
+            ? styles.searched
             : undefined
         }`}
         style={panelStyle}
       >
-        <div className={CSS.searchInput}>
+        <div className={styles.searchInput}>
           <span>
             <input
               type="text"
@@ -302,7 +302,7 @@ export default function SearchInput({
           </button>
         </div>
 
-        <div className={CSS.results} ref={resultsRef}>
+        <div className={styles.results} ref={resultsRef}>
           {isSearchResultsAvailable ? (
             <ul>
               {map.searchedAddress.map((address, idx) => (
@@ -316,7 +316,7 @@ export default function SearchInput({
                     type="button"
                     className={
                       map.selectedLocationIdx === idx
-                        ? CSS.selectedResult
+                        ? styles.selectedResult
                         : undefined
                     }
                     onClick={() => selectedResult(idx)}
@@ -327,7 +327,7 @@ export default function SearchInput({
                       </li>
 
                       <li>
-                        <p className={CSS.category}>
+                        <p className={styles.category}>
                           {formatAddressType(address.address_type)}
                         </p>
                       </li>
@@ -340,7 +340,7 @@ export default function SearchInput({
                     </ul>
 
                     {checkIsFavoriteLocation(address) && (
-                      <div className={CSS.favoriteLocations}>
+                      <div className={styles.favoriteLocations}>
                         {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     )}
@@ -359,7 +359,7 @@ export default function SearchInput({
                     type="button"
                     className={
                       map.selectedLocationIdx === idx
-                        ? CSS.selectedResult
+                        ? styles.selectedResult
                         : undefined
                     }
                     onClick={() => selectedResult(idx)}
@@ -370,7 +370,7 @@ export default function SearchInput({
                       </li>
 
                       <li>
-                        <p className={CSS.category}>
+                        <p className={styles.category}>
                           {place.category_group_name}
                         </p>
                       </li>
@@ -381,7 +381,7 @@ export default function SearchInput({
                     </ul>
 
                     {checkIsFavoriteLocation(place) && (
-                      <div className={CSS.favoriteLocations}>
+                      <div className={styles.favoriteLocations}>
                         {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     )}
@@ -403,7 +403,7 @@ export default function SearchInput({
                       type="button"
                       className={
                         map.selectedLocationIdx === idx
-                          ? CSS.selectedResult
+                          ? styles.selectedResult
                           : undefined
                       }
                       onClick={() => selectedResult(idx)}
@@ -420,7 +420,7 @@ export default function SearchInput({
                         )}
                       </ul>
 
-                      <div className={CSS.favoriteLocations}>
+                      <div className={styles.favoriteLocations}>
                         {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     </button>
@@ -431,7 +431,7 @@ export default function SearchInput({
           )}
         </div>
 
-        <div className={CSS.panelController}>
+        <div className={styles.panelController}>
           <button
             type="button"
             onClick={togglePanelVisible}
@@ -441,7 +441,7 @@ export default function SearchInput({
           </button>
         </div>
 
-        <div className={CSS.panelController} style={{ right: -55 }}>
+        <div className={styles.panelController} style={{ right: -55 }}>
           {!isSearchPanelVisible && map.favoriteLocations.length > 0 && (
             <button
               type="button"
@@ -464,7 +464,7 @@ export default function SearchInput({
         <button
           type="button"
           onClick={searchAddress}
-          className={CSS.reSearchBtn}
+          className={styles.reSearchBtn}
         >
           현 위치에서 재검색
         </button>

@@ -10,7 +10,7 @@ import { clearRecoveryMsg } from "@redux/slices/recoverySlice";
 
 import { changePwAction } from "@actions/authAction";
 
-import CSS from "./Recovery.module.css";
+import styles from "./Recovery.module.css";
 
 import { validatePassword } from "@utils/index";
 
@@ -71,7 +71,7 @@ export default function ChangePwForm({ identification }: IChagePwForm) {
         />
       </div>
 
-      <div className={CSS.okBtnBox}>
+      <div className="okBtnBox">
         {!msg ? (
           <NextBtn onClick={clickNext} disabled={!isValidateConfirmPassword} />
         ) : (

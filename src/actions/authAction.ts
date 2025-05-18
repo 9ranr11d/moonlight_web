@@ -15,6 +15,7 @@ import {
   setIsIdDuplicate,
   setSignUpCompleted,
   setTermsSaved,
+  setSignUpErr,
 } from "@redux/slices/signUpSlice";
 
 import {
@@ -26,17 +27,17 @@ import {
 } from "@redux/slices/verificationSlice";
 
 import {
-  IIUser,
-  IUserAgreedTerms,
-  IVerificationInfo,
-  TVerificationMethod,
-  TVerificationType,
-} from "@interfaces/auth";
-import {
   passwordChangeCompleted,
   passwordChangeFailed,
   setModifiedId,
 } from "@redux/slices/recoverySlice";
+
+import {
+  IIUser,
+  IUserAgreedTerms,
+  IVerificationInfo,
+  TVerificationType,
+} from "@interfaces/auth";
 
 /**
  * 소셜 로그인 정보 저장
@@ -340,7 +341,13 @@ export const signUpAction =
       const data = await res.json();
 
       // 오류 시
-      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
+      if (!res.ok) {
+        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
+
+        dispatch(setSignUpErr(msg));
+
+        throw new Error(msg);
+      }
 
       dispatch(setSignUpCompleted());
     } catch (err) {

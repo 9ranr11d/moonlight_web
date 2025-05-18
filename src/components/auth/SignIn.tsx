@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import Link from "next/link";
+
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,13 +14,11 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import { resetAuth } from "@redux/slices/authSlice";
 
-import { resetVerification } from "@redux/slices/verificationSlice";
-
 import { signInAction } from "@actions/authAction";
 
 import { ISignInData } from "@interfaces/auth";
 
-import CSS from "./SignIn.module.css";
+import styles from "./SignIn.module.css";
 
 import VisibleBtn from "@components/common/btn/VisibleBtn";
 
@@ -28,16 +28,8 @@ import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
 import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
-/** SignIn Interface */
-interface ISignIn {
-  /** 회원가입으로 전환 */
-  signUp: () => void;
-  /** ID/PW 찾기 전환 */
-  recovery: () => void;
-}
-
 /** 로그인 */
-export default function SignIn({ signUp, recovery }: ISignIn) {
+export default function SignIn() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
@@ -80,13 +72,6 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
     if (e.key === "Enter") processSignIn();
   };
 
-  /** ID/PW 찾기로 전환 */
-  const handleRecovery = (): void => {
-    dispatch(resetVerification());
-
-    recovery();
-  };
-
   /** 비밀번호 표시 Toggle */
   const togglePasswordVisibility = (): void => {
     setIsPasswordVisible(prev => !prev);
@@ -101,10 +86,10 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
   };
 
   return (
-    <div className={CSS.signInBox}>
+    <div className={styles.signInBox}>
       <h3>로그인</h3>
 
-      <div className={CSS.innerBox}>
+      <div className={styles.innerBox}>
         <ul>
           <li>
             <input
@@ -147,15 +132,16 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
           onClick={() => setIsRememberMe(prev => !prev)}
           size={14}
           isChecked={isRememberMe}
+          fill={isRememberMe ? "var(--gray-800)" : "var(--gray-200)"}
         />
 
         <span>로그인 상태 유지</span>
       </div>
 
-      <div className={CSS.subBox} style={{ position: "relative" }}>
+      <div className={styles.subBox} style={{ position: "relative" }}>
         {user.isErr && (
           <div
-            className={CSS.errBox}
+            className={styles.errBox}
             style={{
               position: "absolute",
               width: "100%",
@@ -190,22 +176,18 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
 
         <ul>
           <li>
-            <a href="#" onClick={handleRecovery}>
-              ID / PW 찾기
-            </a>
+            <Link href="/recovery">ID / PW 찾기</Link>
           </li>
 
           <li style={{ color: "var(--gray-800)" }}>|</li>
 
           <li>
-            <a href="#" onClick={signUp}>
-              회원가입
-            </a>
+            <Link href="/sign-up">회원가입</Link>
           </li>
         </ul>
       </div>
 
-      <div className={CSS.socialSignInBox}>
+      <div className={styles.socialSignInBox}>
         <div style={{ display: "flex", alignItems: "center", columnGap: 10 }}>
           <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
 
@@ -214,7 +196,7 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
           <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
         </div>
 
-        <div className={CSS.btnBox}>
+        <div className={styles.btnBox}>
           <button
             type="button"
             onClick={() => clickSocialSignIn("google")}

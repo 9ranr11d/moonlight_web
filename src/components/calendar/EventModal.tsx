@@ -15,7 +15,7 @@ import {
   IScheduleCategory,
 } from "@models/ScheduleCategory";
 
-import CSS from "./EventModal.module.css";
+import styles from "./EventModal.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 
@@ -844,7 +844,7 @@ export default function EventModal({
     ];
 
     return totalSchedules.length > 0 ? (
-      <ul className={CSS.schedules}>
+      <ul className={styles.schedules}>
         {totalSchedules.map((schedule, idx) => (
           <li key={idx}>
             <button
@@ -854,20 +854,20 @@ export default function EventModal({
                 user.accessLevel !== 3 && true // (schedule.user as IIUser)._id !== user._id
               }
             >
-              <span className={CSS.multiple}>
+              <span className={styles.multiple}>
                 {schedule.categories.slice(0, 2).map((category, _idx) => (
                   <span
                     key={_idx}
-                    className={CSS.categoriesColor}
+                    className={styles.categoriesColor}
                     style={{ background: category.color }}
                   ></span>
                 ))}
                 {schedule.categories.length > 2 && <span>...</span>}
               </span>
 
-              <span className={CSS.truncated}>{schedule.title}</span>
+              <span className={styles.truncated}>{schedule.title}</span>
 
-              <span className={CSS.truncated}>
+              <span className={styles.truncated}>
                 {(schedule.user as IIUser).nickname}
               </span>
             </button>
@@ -914,11 +914,11 @@ export default function EventModal({
             </button>
 
             {isUserListOpen && (
-              <ul className={CSS.user}>
+              <ul className={styles.user}>
                 {users.map((_user, idx) => (
                   <li key={idx}>
                     <button type="button" onClick={() => selectUser(_user)}>
-                      <span className={CSS.truncated}>{_user.nickname}</span>
+                      <span className={styles.truncated}>{_user.nickname}</span>
                     </button>
                   </li>
                 ))}
@@ -957,7 +957,9 @@ export default function EventModal({
                 isCategoryListOpen ? { borderRadius: "5px 5px 0 0" } : undefined
               }
             >
-              <span className={`${CSS.selectedCategories} ${CSS.multiple}`}>
+              <span
+                className={`${styles.selectedCategories} ${styles.multiple}`}
+              >
                 {(value as IIScheduleCategory[]).length > 0
                   ? (value as IIScheduleCategory[]).map(
                       (category: IIScheduleCategory, idx: number) => (
@@ -975,13 +977,13 @@ export default function EventModal({
             </button>
 
             {isCategoryListOpen && (
-              <ul className={CSS.categories}>
+              <ul className={styles.categories}>
                 {userCategories.length > 0 &&
                   userCategories.map((category, idx) =>
                     editCategories.some(
                       _category => _category._id === category._id
                     ) ? (
-                      <li key={idx} className={CSS.edit}>
+                      <li key={idx} className={styles.edit}>
                         <input
                           type="color"
                           value={category.color}
@@ -1027,7 +1029,7 @@ export default function EventModal({
 
                 {isCreateCategory && (
                   <li
-                    className={`${CSS.edit} ${CSS.createCategory}`}
+                    className={`${styles.edit} ${styles.createCategory}`}
                     style={{ bottom: 24 }}
                   >
                     <input
@@ -1049,7 +1051,7 @@ export default function EventModal({
                   </li>
                 )}
 
-                <li className={CSS.createCategory}>
+                <li className={styles.createCategory}>
                   <button
                     type="button"
                     onClick={toggleCreateCategory}
@@ -1080,7 +1082,9 @@ export default function EventModal({
             />
             <label
               htmlFor="repeating"
-              className={editSchedule.isRepeating ? CSS.repeating : undefined}
+              className={
+                editSchedule.isRepeating ? styles.repeating : undefined
+              }
             >
               반복
             </label>
@@ -1095,7 +1099,9 @@ export default function EventModal({
             />
             <label
               htmlFor="nonrepeating"
-              className={!editSchedule.isRepeating ? CSS.repeating : undefined}
+              className={
+                !editSchedule.isRepeating ? styles.repeating : undefined
+              }
             >
               반복 안함
             </label>
@@ -1123,12 +1129,14 @@ export default function EventModal({
     return (
       <li
         key={idx}
-        className={isSelected ? `${CSS.selectedList} ${CSS.list}` : CSS.list}
+        className={
+          isSelected ? `${styles.selectedList} ${styles.list}` : styles.list
+        }
       >
         <button
           type="button"
           onClick={() => selectCategory(category)}
-          className={CSS.truncated}
+          className={styles.truncated}
         >
           <span>{category.title}</span>
         </button>
@@ -1224,8 +1232,8 @@ export default function EventModal({
   }, [lastSelectedDate]);
 
   return (
-    <Modal close={closeModal} className={CSS.modal}>
-      <div className={CSS.header}>
+    <Modal close={closeModal} className={styles.modal}>
+      <div className={styles.header}>
         {isEditSchedule && (
           <button type="button" onClick={toggleCreateSchedule}>
             {/* <Image src={IconPrevBlack} width={20} alt="<" /> */}
@@ -1240,7 +1248,7 @@ export default function EventModal({
               <button
                 type="button"
                 onClick={toggleStartDate}
-                className={CSS.startDate}
+                className={styles.startDate}
                 style={
                   isStartMiniCalendarOpen
                     ? {
@@ -1319,7 +1327,7 @@ export default function EventModal({
         <div style={{ height: "100%" }} />
       </div>
 
-      <div className={CSS.content}>
+      <div className={styles.content}>
         {!isEditSchedule ? (
           renderModalSchedules()
         ) : (
@@ -1345,7 +1353,7 @@ export default function EventModal({
             </ul>
 
             <div
-              className={CSS.btnBox}
+              className={styles.btnBox}
               style={{
                 justifyContent: isCreateSchedule ? "center" : "space-between",
               }}

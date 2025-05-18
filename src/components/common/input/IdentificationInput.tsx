@@ -11,7 +11,7 @@ import { checkDuplicateIdAction } from "@actions/authAction";
 
 import { validateIdentification } from "@utils/index";
 
-import CSS from "@components/common/input/Input.module.css";
+import styles from "@components/common/input/Input.module.css";
 
 import StatusInput from "@components/common/input/StatusInput";
 
@@ -41,7 +41,7 @@ export default function IdentificationInput() {
 
   return (
     <div
-      className={CSS.identification}
+      className={styles.identification}
       style={{ display: "flex", columnGap: 10 }}
     >
       <StatusInput

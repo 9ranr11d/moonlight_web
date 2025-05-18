@@ -3,12 +3,6 @@
   margin-bottom: 3px;
 }
 
-.okBtnBox {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .timeLeft {
   width: 20px;
   position: absolute;
@@ -23,9 +17,5 @@
 @media (max-width: 767px) {
   .spacing {
     display: none;
-  }
-
-  .indicator {
-    margin-top: 30px;
   }
 }

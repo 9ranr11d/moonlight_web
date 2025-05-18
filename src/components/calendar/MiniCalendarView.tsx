@@ -4,7 +4,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import CSS from "./CalendarView.module.css";
+import styles from "./CalendarView.module.css";
 
 import { DAY_OF_WEEK, MONTH_DAYS, MONTH_NAMES } from "@constants/date";
 
@@ -84,8 +84,8 @@ export default function MiniCalendarView({
       : monthDaysWithPrevLastWeek + (7 - fillRemainingDays);
 
   return (
-    <div className={CSS.miniCalendar}>
-      <ul className={CSS.header}>
+    <div className={styles.miniCalendar}>
+      <ul className={styles.header}>
         <li>
           <button
             type="button"
@@ -111,8 +111,8 @@ export default function MiniCalendarView({
         </li>
       </ul>
 
-      <div className={CSS.content}>
-        <ul className={CSS.daysOfWeek}>
+      <div className={styles.content}>
+        <ul className={styles.daysOfWeek}>
           {DAY_OF_WEEK.map((day, idx) => (
             <li key={idx}>
               <h6>{day}</h6>
@@ -120,7 +120,7 @@ export default function MiniCalendarView({
           ))}
         </ul>
 
-        <ul className={CSS.days}>
+        <ul className={styles.days}>
           {Array.from({ length: totalDays }, (_, idx) => {
             /** 이전 달의 날짜인지 */
             const isPrevMonth: boolean = idx < firstDayOfMonth;
@@ -156,23 +156,23 @@ export default function MiniCalendarView({
                   onClick={() => selectDay(thisDate)}
                   className={
                     isDisabledDate
-                      ? `${CSS.content} ${CSS.disabled}`
-                      : CSS.content
+                      ? `${styles.content} ${styles.disabled}`
+                      : styles.content
                   }
                   disabled={isDisabledDate}
                 >
                   <span
                     className={
                       isDisabledDate
-                        ? CSS.subDate
+                        ? styles.subDate
                         : isPrevMonth
-                        ? CSS.subDate
+                        ? styles.subDate
                         : isNextMonth
-                        ? CSS.subDate
+                        ? styles.subDate
                         : miniYear === currentYear &&
                           miniMonth === currentMonth &&
                           day === currentDay
-                        ? CSS.today
+                        ? styles.today
                         : undefined
                     }
                   >

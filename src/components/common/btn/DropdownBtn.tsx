@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import CSS from "./DropdownBtn.module.css";
+import styles from "./DropdownBtn.module.css";
 
 import IconDownTriangle from "@public/svgs/common/icon_down_triangle.svg";
 
@@ -19,7 +19,7 @@ interface IDropdownBtn {
   idx?: number;
   /** 목록 */
   list: React.ReactNode[];
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
 }
 
@@ -92,7 +92,7 @@ export default function DropdownBtn({
 
   return (
     <div
-      className={CSS.wrapper}
+      className={styles.wrapper}
       style={{ position: "relative", ...(style && style) }}
     >
       <button
@@ -119,7 +119,7 @@ export default function DropdownBtn({
       {isListOpen && (
         <ul
           ref={listRef}
-          className={CSS.list}
+          className={styles.list}
           style={{
             position: "absolute",
             width: "100%",

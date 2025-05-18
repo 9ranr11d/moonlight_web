@@ -130,6 +130,11 @@ export const SignUp = createSlice({
     setSignUpCompleted: state => {
       state.isCompleted = true;
     },
+    /** 회원가입 시 오류 저장 */
+    setSignUpErr: (state, action: PayloadAction<string>) => {
+      state.msg = action.payload;
+      state.isErr = true;
+    },
     /** 동의한 약관 저장 완료 */
     setTermsSaved: state => {
       state.term.isSaved = true;
@@ -151,6 +156,7 @@ export const {
   resetPassword,
   setIsPasswordValid,
   setSignUpCompleted,
+  setSignUpErr,
   setTermsSaved,
 } = SignUp.actions;
 

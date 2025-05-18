@@ -8,7 +8,7 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import { TVerificationMethod } from "@interfaces/auth";
 
-import CSS from "./SignUp.module.css";
+import styles from "./SignUp.module.css";
 
 import ErrorBlock from "@components/common/ErrorBlock";
 import DotAndBar from "@components/common/indicator/DotAndBar";
@@ -133,9 +133,7 @@ export default function MissingContactForm() {
           )}
 
           {step < steps.length && (
-            <div className={CSS.indicator}>
-              <DotAndBar progress={step} maxValue={steps.length} />
-            </div>
+            <DotAndBar progress={step} maxValue={steps.length} />
           )}
         </>
       ) : (

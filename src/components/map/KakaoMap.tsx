@@ -19,7 +19,7 @@ import { showBackdrop } from "@redux/slices/backdropSlice";
 
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 
-import CSS from "./Map.module.css";
+import styles from "./Map.module.css";
 
 import {
   IFavoriteLocation,
@@ -366,7 +366,7 @@ export default function KakaoMap() {
       >
         <div style={{ position: "relative", bottom: 70 }}>
           <Modal
-            className={CSS.searchedOverlay}
+            className={styles.searchedOverlay}
             style={{
               width: "initial",
               padding: 10,
@@ -576,7 +576,7 @@ export default function KakaoMap() {
           <button
             type="button"
             onClick={clickCurrentLocation}
-            className={CSS.currentLocationBtn}
+            className={styles.currentLocationBtn}
           >
             {/* <Image
               src={IconCurrentPosition}

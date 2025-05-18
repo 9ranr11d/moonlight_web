@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { hideBackdrop } from "@redux/slices/backdropSlice";
 
-import CSS from "./Modal.module.css";
+import styles from "./Modal.module.css";
 
 import IconClose from "@public/img/common/icon_close_black.svg";
 
@@ -44,7 +44,7 @@ export default function Modal({
   };
 
   return (
-    <div className={`${CSS.modal} ${className}`} style={style}>
+    <div className={`${styles.modal} ${className}`} style={style}>
       {close && (
         <button
           type="button"

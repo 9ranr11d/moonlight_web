@@ -95,9 +95,10 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
       {isContentVisible && (
         <div
           style={{
-            background: "var(--gray-100)",
+            background: "var(--gray-50)",
             borderRadius: "0 0 5px 5px",
             padding: 10,
+            marginBottom: 5,
           }}
         >
           <p

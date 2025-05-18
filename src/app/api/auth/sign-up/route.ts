@@ -20,20 +20,32 @@ export async function POST(req: NextRequest) {
       nickname,
     }: IIUser = await req.json();
 
-    // 파라미터가 없을 경우
+    console.log(
+      "sign-up :",
+      identification,
+      password,
+      email,
+      phoneNumber,
+      birthdate,
+      gender,
+      nickname
+    );
+
+    // 필수 파라미터가 없을 경우
     if (
       !identification ||
       !password ||
-      !email ||
-      !phoneNumber ||
+      (!email && !phoneNumber) ||
       !birthdate ||
       !gender ||
       !nickname
-    )
-      return NextResponse.json(
-        { msg: "잘못된 요청 데이터입니다." },
-        { status: 400 }
-      );
+    ) {
+      const msg = "잘못된 요청 데이터입니다.";
+
+      console.error("auth/sign-up > POST() :", `'${identification}'의 ${msg}`);
+
+      return NextResponse.json({ msg }, { status: 400 });
+    }
 
     /** 해싱된 비밀번호 */
     const hashedPw: string = await bcrypt.hash(password, 10);

@@ -2,13 +2,13 @@
 
 import React, { useMemo, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { useSelector } from "react-redux";
 
 import { RootState } from "@redux/store";
 
 import { TVerificationMethod } from "@interfaces/auth";
-
-import CSS from "./Recovery.module.css";
 
 import ErrorBlock from "@components/common/ErrorBlock";
 import DotAndBar from "@components/common/indicator/DotAndBar";
@@ -23,14 +23,15 @@ import IconHome from "@public/svgs/common/icon_home.svg";
 
 /** 비밀번호 찾기 Interface */
 interface IPassword {
-  /** 뒤로가기 */
-  back: () => void;
   /** 선택 시 */
   onTabSelect: (idx: number) => void;
 }
 
 /** 비밀번호 찾기 */
-export default function Password({ back, onTabSelect }: IPassword) {
+export default function Password({ onTabSelect }: IPassword) {
+  /** Router */
+  const router = useRouter();
+
   const { step, isChanged, verificationMethod } = useSelector(
     (state: RootState) => state.recoverySlice
   ); // ID/PW 찾기 관련 정보
@@ -66,9 +67,7 @@ export default function Password({ back, onTabSelect }: IPassword) {
           )}
 
           {step < steps.length && (
-            <div className={CSS.indicator}>
-              <DotAndBar progress={step} maxValue={steps.length} />
-            </div>
+            <DotAndBar progress={step} maxValue={steps.length} />
           )}
         </>
       ) : (
@@ -99,7 +98,7 @@ export default function Password({ back, onTabSelect }: IPassword) {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <button
               type="button"
-              onClick={back}
+              onClick={() => router.push("/")}
               style={{ display: "flex", columnGap: 5 }}
             >
               <IconHome width={15} height={15} fill="white" />

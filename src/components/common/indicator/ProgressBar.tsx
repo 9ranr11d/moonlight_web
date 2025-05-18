@@ -12,7 +12,7 @@ interface IProgressBar {
   height?: number;
   /** 색상 */
   color?: string;
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
 }
 

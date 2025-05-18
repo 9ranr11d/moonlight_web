@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import CSS from "@components/common/input/Input.module.css";
+import styles from "@components/common/input/Input.module.css";
 
 import DropdownBtn from "@components/common/btn/DropdownBtn";
 
@@ -56,7 +56,7 @@ export default function EmailInput({ onChange, onKeyDown }: IEmailInput) {
 
   return (
     <>
-      <div className={CSS.inputCover}>
+      <div className={styles.inputCover}>
         <div>
           <input
             type="text"

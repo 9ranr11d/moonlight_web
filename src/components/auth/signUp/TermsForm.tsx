@@ -17,7 +17,7 @@ import { getLatestTermsAction } from "@actions/authAction";
 
 import { ITerm } from "@interfaces/auth";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import LunarLoader from "@components/common/LunarLoader";
 import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
@@ -123,7 +123,7 @@ export default function TermsForm() {
             <span>약관 전체동의</span>
           </div>
 
-          <div className={CSS.okBtnBox}>
+          <div className="okBtnBox">
             <NextBtn onClick={clickConfirmBtn} disabled={!isConfirmActive} />
           </div>
         </>

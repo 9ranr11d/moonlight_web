@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
 
-import CSS from "./Header.module.css";
+import styles from "./Header.module.css";
 
 import { MAIN_MENUS } from "@constants/menu";
 
@@ -116,16 +116,16 @@ export default function Header() {
     <header style={isAuth ? { zIndex: 999 } : undefined}>
       <nav style={isAuth ? undefined : { height: 0, padding: 0 }}>
         <div
-          className={CSS.afterSignInBox}
+          className={styles.afterSignInBox}
           style={isAuth ? { bottom: 0 } : { bottom: 50, opacity: 0 }}
         >
-          <div className={CSS.logoBox}>
+          <div className={styles.logoBox}>
             <Link prefetch={true} href={"/"}>
               <IconLogoHorizontal width={150} height={34} />
             </Link>
           </div>
 
-          <div className={CSS.menuBox}>
+          <div className={styles.menuBox}>
             <ul>
               {MAIN_MENUS.map((menu, idx) => (
                 <li key={idx}>
@@ -146,7 +146,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleSideMenu}
-              className={CSS.mobile}
+              className={styles.mobile}
             >
               <IconHamburger width={24} height={24} />
             </button>
@@ -154,7 +154,7 @@ export default function Header() {
         </div>
 
         <div
-          className={CSS.beforeSignInBox}
+          className={styles.beforeSignInBox}
           style={
             isHidden
               ? { display: "none" } // 애니메이션 후에 display: none 설정
@@ -173,10 +173,10 @@ export default function Header() {
       <Backdrop />
 
       <div
-        className={CSS.sideMenu}
+        className={styles.sideMenu}
         style={{ right: isSideMenuOpen ? 0 : "-100%" }}
       >
-        <div className={CSS.sideMenuHeader}>
+        <div className={styles.sideMenuHeader}>
           <button type="button" onClick={toggleSideMenu}>
             <IconClose alt="X" width={24} height={24} />
           </button>

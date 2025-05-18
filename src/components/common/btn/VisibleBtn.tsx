@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import CSS from "./VisibleBtn.module.css";
+import styles from "./VisibleBtn.module.css";
 
 import IconEyeClose from "@public/svgs/common/icon_eye_close.svg";
 import IconEyeOpen from "@public/svgs/common/icon_eye_open.svg";
@@ -32,7 +32,7 @@ export default function VisibleBtn({ onClick, isVisible, style }: IVisibleBtn) {
   return (
     <button
       type="button"
-      className={CSS.visibleBtn}
+      className={styles.visibleBtn}
       style={style && style}
       onClick={onClick}
       onMouseOver={e => hoverVisibility(true)}

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSchedules } from "@redux/slices/calendarSlice";
 import { RootState } from "@redux/store";
 
-import CSS from "./ThisWeek.module.css";
+import styles from "./ThisWeek.module.css";
 
 import { ERR_MSG } from "@constants/msg";
 import { DAY_OF_WEEK } from "@constants/date";
@@ -63,7 +63,7 @@ export default function ThisWeek() {
   }, [user]);
 
   return (
-    <div className={CSS.week}>
+    <div className={styles.week}>
       <ul>
         {DAY_OF_WEEK.map((day, idx) => (
           <li key={idx}>
@@ -72,7 +72,7 @@ export default function ThisWeek() {
         ))}
       </ul>
 
-      <ul className={CSS.day}>
+      <ul className={styles.day}>
         {Array.from({ length: 7 }, (_, idx) => {
           const thisDate: Date = new Date(
             thisSunday.getFullYear(),
@@ -94,19 +94,19 @@ export default function ThisWeek() {
 
               {schedules.length > 0 &&
                 schedules.map((schedule, idx) => (
-                  <p key={idx} className={CSS.schedule}>
-                    <span className={CSS.categories}>
+                  <p key={idx} className={styles.schedule}>
+                    <span className={styles.categories}>
                       {schedule.categories.slice(0, 2).map((category, _idx) => (
                         <span
                           key={`${idx}-${_idx}`}
-                          className={CSS.bulletPoint}
+                          className={styles.bulletPoint}
                           style={{ background: category.color }}
                         ></span>
                       ))}
                       {schedule.categories.length > 2 && <span>...</span>}
                     </span>
 
-                    <span className={CSS.title}>{schedule.title}</span>
+                    <span className={styles.title}>{schedule.title}</span>
                   </p>
                 ))}
             </li>

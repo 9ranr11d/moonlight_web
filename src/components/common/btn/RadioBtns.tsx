@@ -11,7 +11,7 @@ interface IRadioBtn {
   idx?: number;
   /** 목록 */
   list: React.ReactNode[];
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
   /** 선택된 항목 Font */
   font?: "pretendard" | "sf";

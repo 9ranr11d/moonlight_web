@@ -21,7 +21,7 @@ interface ILoadingBtn {
   isLoading?: boolean;
   /** Lavel */
   label?: React.ReactNode;
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
 }
 

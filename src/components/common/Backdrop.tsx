@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
 import { hideBackdrop } from "@redux/slices/backdropSlice";
 
-import CSS from "./Backdrop.module.css";
+import styles from "./Backdrop.module.css";
 
 /** Modal 배경 화면 */
 export default function Backdrop() {
@@ -24,7 +24,7 @@ export default function Backdrop() {
   return (
     <>
       {backdrop.isVisible && (
-        <div className={CSS.backdrop}>
+        <div className={styles.backdrop}>
           <button type="button" onClick={closeBackdrop} />
         </div>
       )}

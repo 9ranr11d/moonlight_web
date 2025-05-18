@@ -11,7 +11,7 @@ import {
   setIsPasswordValid,
 } from "@redux/slices/signUpSlice";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import { validatePassword } from "@utils/index";
 
@@ -69,19 +69,19 @@ export default function AccountForm() {
   return (
     <>
       <div>
-        <h6 className={CSS.label}>아이디</h6>
+        <h6 className={styles.label}>아이디</h6>
 
         <IdentificationInput />
       </div>
 
       <div>
-        <h6 className={CSS.label}>비밀번호</h6>
+        <h6 className={styles.label}>비밀번호</h6>
 
         <PasswordInput onChange={handlePassword} />
       </div>
 
       <div>
-        <h6 className={CSS.label}>비밀번호 재확인</h6>
+        <h6 className={styles.label}>비밀번호 재확인</h6>
 
         <PasswordInput
           onChange={handleConfirmPassword}
@@ -90,7 +90,7 @@ export default function AccountForm() {
         />
       </div>
 
-      <div className={CSS.okBtnBox}>
+      <div className="okBtnBox">
         <NextBtn onClick={clickConfirmBtn} disabled={!isConfirmActive} />
       </div>
     </>

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 
-import CSS from "./TabBtn.module.css";
+import styles from "./TabBtn.module.css";
 
 /** 세로 Tab 버튼 Interface */
 interface IDirectionTabBtns {
@@ -15,7 +15,7 @@ interface IDirectionTabBtns {
   idx?: number;
   /** 방향 */
   direction: "row" | "column";
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
 }
 
@@ -44,7 +44,7 @@ export default function DirectionTabBtns({
 
   return (
     <div
-      className={CSS.directionTabBtnsBox}
+      className={styles.directionTabBtnsBox}
       style={{
         display: "flex",
         flexDirection: direction,

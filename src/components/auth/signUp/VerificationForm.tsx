@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@redux/store";
 import { incrementSignUpStep } from "@redux/slices/signUpSlice";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import HorizontalTabBtns from "@components/common/btn/HorizontalTabBtns";
 import ErrorBlock from "@components/common/ErrorBlock";
@@ -106,15 +106,15 @@ export default function VerificationForm() {
             </h6>
           </div>
 
-          <div className={CSS.spacing} />
+          <div className={styles.spacing} />
 
-          <div className={CSS.okBtnBox}>
+          <div className="okBtnBox">
             <NextBtn
               onClick={clickConfirmBtn}
               disabled={!verification.isVerified}
               style={{ paddingLeft: 40 }}
             >
-              <span className={CSS.timeLeft}>{timeLeft}</span>
+              <span className={styles.timeLeft}>{timeLeft}</span>
 
               <span>다음</span>
             </NextBtn>

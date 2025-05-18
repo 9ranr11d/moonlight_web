@@ -11,7 +11,7 @@ interface ITitleHeader {
 
   /** 제목 */
   title?: string;
-  /** CSS */
+  /** styles */
   style?: React.CSSProperties;
   /** 오른쪽 아이콘 */
   rightIcon?: React.ReactNode;
@@ -34,16 +34,20 @@ export default function TitleHeader({
         ...(style && style),
       }}
     >
-      <button
-        type="button"
-        onClick={back}
-        style={{
-          background: "none",
-          padding: 0,
-        }}
-      >
-        <IconBack width={24} height={24} fill={"black"} />
-      </button>
+      {back ? (
+        <button
+          type="button"
+          onClick={back}
+          style={{
+            background: "none",
+            padding: 0,
+          }}
+        >
+          <IconBack width={24} height={24} fill={"black"} />
+        </button>
+      ) : (
+        <div />
+      )}
 
       <h3 style={{ flex: 1 }}>{title}</h3>
 

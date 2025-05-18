@@ -18,7 +18,7 @@ import {
   verifyPhoneNumberAction,
 } from "@actions/authAction";
 
-import CSS from "@components/auth/signUp/SignUp.module.css";
+import styles from "@components/auth/signUp/SignUp.module.css";
 
 import { TVerificationType } from "@interfaces/auth";
 
@@ -136,7 +136,7 @@ export default function PhoneNumberForm({
   return (
     <div>
       <div style={{ position: "relative", marginBottom: 20 }}>
-        <h6 className={CSS.label}>휴대전화 번호</h6>
+        <h6 className={styles.label}>휴대전화 번호</h6>
 
         <PhoneNumberInput
           onChange={handlePhoneNumber}

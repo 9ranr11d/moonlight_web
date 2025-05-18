@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import CSS from "./TabBtn.module.css";
+import styles from "./TabBtn.module.css";
 
 /** 가로 Tab 버튼 Interface */
 interface IHorizontalTabBtn {
@@ -37,7 +37,7 @@ export default function HorizontalTabBtns({
   }, [idx]);
 
   return (
-    <div className={CSS.horizontalTabBtnsBox}>
+    <div className={styles.horizontalTabBtnsBox}>
       {labelArr.map((label, idx) => (
         <button
           key={idx}

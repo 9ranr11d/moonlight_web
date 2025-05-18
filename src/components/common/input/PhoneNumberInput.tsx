@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import CSS from "@components/common/input/Input.module.css";
+import styles from "@components/common/input/Input.module.css";
 
 import DropdownBtn from "@components/common/btn/DropdownBtn";
 
@@ -74,7 +74,7 @@ export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
 
   return (
     <>
-      <div className={CSS.inputCover} style={{ position: "relative" }}>
+      <div className={styles.inputCover} style={{ position: "relative" }}>
         <input
           type="number"
           value={number}
