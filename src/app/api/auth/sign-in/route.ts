@@ -4,16 +4,16 @@ import bcrypt from "bcrypt";
 
 import { query } from "@lib/dbConnect";
 
+import { ISignInData } from "@interfaces/auth";
+
 import { refresh, sign } from "@utils/jwtUtils";
 
 /** 로그인 */
 export async function POST(req: NextRequest) {
   try {
     // 아이디, 비밀번호
-    const {
-      identification,
-      password,
-    }: { identification: string; password: string } = await req.json();
+    const { identification, password, isRememberMe }: ISignInData =
+      await req.json();
 
     // 아이디 또는 비밀번호가 없을 경우
     if (!identification || !password)
@@ -108,7 +108,9 @@ export async function POST(req: NextRequest) {
       {
         status: 200,
         headers: {
-          "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; path=/; Max-Age=${maxAge}; Secure; SameSite=Strict;`,
+          ...(isRememberMe && {
+            "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; path=/; Max-Age=${maxAge}; Secure; SameSite=Strict;`,
+          }),
         },
       }
     );

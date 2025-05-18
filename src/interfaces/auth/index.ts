@@ -100,3 +100,9 @@ export interface IVerificationInfo {
   identification?: string;
   info: string;
 }
+
+export interface ISignInData {
+  identification: string;
+  password: string;
+  isRememberMe: boolean;
+}

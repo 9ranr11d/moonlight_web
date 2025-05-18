@@ -23,7 +23,7 @@ export async function GET() {
     );
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }
@@ -110,7 +110,7 @@ export async function DELETE(req: NextRequest) {
     );
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

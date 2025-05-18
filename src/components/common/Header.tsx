@@ -46,6 +46,9 @@ export default function Header() {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false); // 사이드 메뉴 가시 여부
 
+  /** Auth 여부 */
+  const isAuth = user.isAuth && (user.email || user.phoneNumber);
+
   /** 사용자 Panel Toggle */
   const toggleUserPanel = (): void => {
     setIsUserPanelOpen(prev => !prev);
@@ -61,7 +64,7 @@ export default function Header() {
 
   /** 로그인 전 로고 가시 여부 */
   const hiddenBeforeLogo = (): void => {
-    if (user.isAuth && (user.email || user.phoneNumber)) setIsHidden(true);
+    if (isAuth) setIsHidden(true);
   };
 
   /** 사용자 정보 창 닫기 */
@@ -72,7 +75,7 @@ export default function Header() {
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
     // 이미 로그인이 된 상태면 패스
-    if (user.isAuth && (user.email || user.phoneNumber)) return;
+    if (isAuth) return;
     // 로그인 상태가 아닐 시
     else router.push("/");
 
@@ -110,27 +113,11 @@ export default function Header() {
   }, [backdrop.isVisible]);
 
   return (
-    <header
-      style={
-        user.isAuth && (user.email || user.phoneNumber)
-          ? { zIndex: 999 }
-          : undefined
-      }
-    >
-      <nav
-        style={
-          user.isAuth && (user.email || user.phoneNumber)
-            ? undefined
-            : { height: 0, padding: 0 }
-        }
-      >
+    <header style={isAuth ? { zIndex: 999 } : undefined}>
+      <nav style={isAuth ? undefined : { height: 0, padding: 0 }}>
         <div
           className={CSS.afterSignInBox}
-          style={
-            user.isAuth && (user.email || user.phoneNumber)
-              ? { bottom: 0 }
-              : { bottom: 50, opacity: 0 }
-          }
+          style={isAuth ? { bottom: 0 } : { bottom: 50, opacity: 0 }}
         >
           <div className={CSS.logoBox}>
             <Link prefetch={true} href={"/"}>
@@ -171,7 +158,7 @@ export default function Header() {
           style={
             isHidden
               ? { display: "none" } // 애니메이션 후에 display: none 설정
-              : user.isAuth && (user.email || user.phoneNumber)
+              : isAuth
               ? { top: -30, opacity: 0 } // top과 opacity 애니메이션
               : { top: 30 }
           }

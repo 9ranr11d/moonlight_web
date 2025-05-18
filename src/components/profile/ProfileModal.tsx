@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { signOut as socialSignOut } from "next-auth/react";
 
-import { RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@redux/store";
 
 import { signOutAction } from "@actions/authAction";
 
@@ -23,21 +23,19 @@ interface IProfileModal {
 /** 사용자 정보 수정 모달 */
 export default function ProfileModal({ closeModal }: IProfileModal) {
   /** Dispatch */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 
   /** '로그아웃' 클릭 시 */
   const clickSignOut = () => {
-    if (user.provider === "local") {
-      const isSignedOut = signOutAction("로그아웃 하시겠습니까?", dispatch);
+    if (!window.confirm("로그아웃 하시겠습니까?")) return;
 
-      if (isSignedOut) closeModal();
-    } else {
-      socialSignOut();
-      closeModal();
-    }
+    if (user.provider === "local") dispatch(signOutAction());
+    else socialSignOut();
+
+    closeModal();
   };
 
   return (

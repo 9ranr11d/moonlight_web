@@ -9,10 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { signIn as socialSignIn } from "next-auth/react";
 
 import { AppDispatch, RootState } from "@redux/store";
+
 import { resetAuth } from "@redux/slices/authSlice";
+
 import { resetVerification } from "@redux/slices/verificationSlice";
 
 import { signInAction } from "@actions/authAction";
+
+import { ISignInData } from "@interfaces/auth";
 
 import CSS from "./SignIn.module.css";
 
@@ -22,6 +26,7 @@ import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
+import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
 /** SignIn Interface */
 interface ISignIn {
@@ -43,12 +48,14 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
   const [password, setPassword] = useState<string>(""); // 비밀번호
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
+  const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
 
   /** 로그인 */
   const processSignIn = (): void => {
-    const data: { identification: string; password: string } = {
+    const data: ISignInData = {
       identification,
       password,
+      isRememberMe,
     };
 
     dispatch(signInAction(data));
@@ -133,6 +140,16 @@ export default function SignIn({ signUp, recovery }: ISignIn) {
         <button type="button" onClick={processSignIn}>
           <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
         </button>
+      </div>
+
+      <div style={{ display: "flex", gap: 5 }}>
+        <CheckBoxBtn
+          onClick={() => setIsRememberMe(prev => !prev)}
+          size={14}
+          isChecked={isRememberMe}
+        />
+
+        <span>로그인 상태 유지</span>
       </div>
 
       <div className={CSS.subBox} style={{ position: "relative" }}>

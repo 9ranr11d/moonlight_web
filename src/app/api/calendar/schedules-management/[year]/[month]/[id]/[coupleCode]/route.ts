@@ -89,7 +89,7 @@ export async function GET(req: NextRequest, { params }: { params: IParams }) {
     );
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

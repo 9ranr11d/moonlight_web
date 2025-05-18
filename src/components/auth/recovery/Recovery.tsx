@@ -37,7 +37,9 @@ export default function Recovery({ back }: IRecovery) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
+  const { isVerified } = useSelector(
+    (state: RootState) => state.verificationSlice
+  ); // 본인인증 여부
 
   const { step, isChanged } = useSelector(
     (state: RootState) => state.recoverySlice

@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest) {
     console.error("/src/app/api/auth/change-user-info > PUT() :", err);
 
     return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요.입니다." },
+      { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
   }

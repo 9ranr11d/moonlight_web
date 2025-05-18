@@ -539,13 +539,7 @@ export const setVerificationInfoAction =
  * @param dispatch dispatch
  * @returns 로그아웃 여부
  */
-export const signOutAction = async (
-  confirmDesc: string,
-  dispatch: AppDispatch
-): Promise<boolean> => {
-  // 사용자가 취소 누를 시
-  if (!window.confirm(confirmDesc)) return false;
-
+export const signOutAction = () => async (dispatch: AppDispatch) => {
   try {
     /** 응답된 값 */
     const res = await fetch("/api/auth/sign-out", { method: "POST" });
@@ -556,14 +550,8 @@ export const signOutAction = async (
     // 오류 시
     if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
-    alert("로그아웃 되었습니다.");
-
     dispatch(signOut());
-
-    return true;
   } catch (err) {
     console.error("actions/authAction > signOutAction() :", err);
-
-    return false;
   }
 };

@@ -34,10 +34,16 @@ export default function CheckBoxBtn({
         height: size,
         padding: 0,
         background: "none",
+        margin: 0,
       }}
     >
       <span
-        style={{ display: "inline-block", position: "relative", bottom: 0.5 }}
+        style={{
+          width: size,
+          height: size,
+          display: "inline-block",
+          position: "relative",
+        }}
       >
         {isChecked ? (
           <IconCheckBox width={size} height={size} fill={fill} />
