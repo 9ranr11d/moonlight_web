@@ -3,6 +3,25 @@ export const TODAY = new Date();
 /** 현재 연도 */
 export const CURRENT_YEAR = TODAY.getFullYear();
 
+/** 달의 일수 */
+export const MONTH_DAYS: number[] = [
+  31,
+  (CURRENT_YEAR % 4 === 0 && CURRENT_YEAR % 100 !== 0) ||
+  CURRENT_YEAR % 400 === 0
+    ? 29
+    : 28,
+  31,
+  30,
+  31,
+  30,
+  31,
+  31,
+  30,
+  31,
+  30,
+  31,
+];
+
 /** 달 이름 */
 export const MONTH_NAMES: string[] = [
   "1",

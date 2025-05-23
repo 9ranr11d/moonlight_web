@@ -27,9 +27,10 @@
   --gray-800: #4d4d4d;
   --gray-900: #333333;
 
-  --bright-blue: #00bfff;
-  --bright-red: #ff69b4;
-  --bright-green: #7fff00;
+  --saturday-color: #00bfff;
+  --sunday-color: #ff69b4;
+  --today-color: #2e7d32;
+  --today-background-color: #e8f5e9;
 
   --naver-color: #03c75a;
   --kakao-color: #fee500;

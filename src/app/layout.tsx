@@ -28,7 +28,9 @@ export default function RootLayout({
           <Provider>
             <Header />
 
-            <main>{children}</main>
+            <main style={{ display: "grid", gridTemplateColumns: "1fr" }}>
+              {children}
+            </main>
 
             <Footer />
           </Provider>

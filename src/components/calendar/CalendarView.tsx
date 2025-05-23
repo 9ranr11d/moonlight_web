@@ -126,21 +126,19 @@ export default function CalendarView() {
 
   /** 모든 사용자 목록 */
   const getUsers = (): void => {
-    fetch("/api/auth/get-users-with-high-access-level")
-      .then(res => {
-        if (res.ok) return res.json();
-
-        alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(users => setUsers(users))
-      .catch(err =>
-        console.error(
-          "/src/components/calendar/CalendarView > CalendarView() > getUsers() :",
-          err
-        )
-      );
+    // fetch("/api/auth/get-users-with-high-access-level")
+    //   .then(res => {
+    //     if (res.ok) return res.json();
+    //     alert(ERR_MSG);
+    //     return res.json().then(data => Promise.reject(data.msg));
+    //   })
+    //   .then(users => setUsers(users))
+    //   .catch(err =>
+    //     console.error(
+    //       "/src/components/calendar/CalendarView > CalendarView() > getUsers() :",
+    //       err
+    //     )
+    //   );
   };
 
   /** 일정 가져오기 */

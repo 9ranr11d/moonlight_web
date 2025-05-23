@@ -1,0 +1,121 @@
+.day {
+  aspect-ratio: 1;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  background: white;
+  border: 1px solid var(--gray-50);
+}
+
+.day:hover {
+  transform: scale(1.03);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.day.selected {
+  background-color: var(--today-background-color);
+  color: var(--today-color) !important;
+  font-weight: 600;
+}
+
+.day.empty {
+  cursor: default;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.day.sunday {
+  color: var(--sunday-color);
+}
+
+.day.saturday {
+  color: var(--saturday-color);
+}
+
+.day.today {
+  color: var(--today-color);
+}
+
+.day.today:hover {
+  background-color: #45a049;
+}
+
+.monthControlBtn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.monthControlBtn:hover {
+  background-color: var(--gray-50);
+  transform: scale(1.05);
+}
+
+.monthControlBtn svg {
+  fill: var(--gray-800);
+}
+
+.monthControlBtn:hover svg {
+  fill: var(--font-color);
+}
+
+.container {
+  background: white;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.yearMonthControlBtn {
+  color: var(--gray-800);
+  background: none;
+  transition: all 0.2s ease;
+  padding: 10px 30px;
+  border-radius: 8px;
+}
+
+.yearMonthControlBtn:hover {
+  background-color: var(--gray-50);
+  transform: scale(1.05);
+  color: var(--font-color);
+}
+
+.dayBox {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+
+.weekDay {
+  text-align: center;
+  font-weight: 600;
+  background: white;
+  padding: 12px;
+}
+
+.weekDay.sunday {
+  color: var(--sunday-color);
+}
+
+.weekDay.saturday {
+  color: var(--saturday-color);
+}
+
+.weekDayBox {
+  display: grid;
+  background: var(--gray-50);
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--gray-100);
+}

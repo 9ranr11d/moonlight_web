@@ -15,7 +15,6 @@ import {
   setIsIdDuplicate,
   setSignUpCompleted,
   setTermsSaved,
-  setSignUpErr,
 } from "@redux/slices/signUpSlice";
 
 import {
@@ -27,17 +26,17 @@ import {
 } from "@redux/slices/verificationSlice";
 
 import {
-  passwordChangeCompleted,
-  passwordChangeFailed,
-  setModifiedId,
-} from "@redux/slices/recoverySlice";
-
-import {
   IIUser,
+  ISignInData,
   IUserAgreedTerms,
   IVerificationInfo,
   TVerificationType,
 } from "@interfaces/auth";
+import {
+  passwordChangeCompleted,
+  passwordChangeFailed,
+  setModifiedId,
+} from "@redux/slices/recoverySlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -341,13 +340,7 @@ export const signUpAction =
       const data = await res.json();
 
       // 오류 시
-      if (!res.ok) {
-        const msg: string = data?.msg || "서버 오류가 발생했습니다.";
-
-        dispatch(setSignUpErr(msg));
-
-        throw new Error(msg);
-      }
+      if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       dispatch(setSignUpCompleted());
     } catch (err) {
@@ -356,8 +349,7 @@ export const signUpAction =
   };
 
 export const signInAction =
-  (formData: { identification: string; password: string }) =>
-  async (dispatch: AppDispatch) => {
+  (formData: ISignInData) => async (dispatch: AppDispatch) => {
     try {
       /** 응답된 값 */
       const res = await fetch("/api/auth/sign-in", {
