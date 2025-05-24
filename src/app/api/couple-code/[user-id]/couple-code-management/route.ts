@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { "user-id": string } }
+  request: NextRequest,
+  context: { params: { "user-id": string } }
 ) {
   try {
-    const { "user-id": userId } = await params;
+    const { "user-id": userId } = context.params;
 
     console.log(userId);
 
