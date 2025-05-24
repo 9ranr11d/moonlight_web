@@ -2,14 +2,20 @@
 
 import React from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@redux/store";
+import { getCoupleCodeAction } from "@actions/coupleCodeAction";
 
 /** 메인 홈 */
 export default function Home() {
+  /** Dispatch */
+  const dispatch = useDispatch<AppDispatch>();
+
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 
-  return <div></div>;
+  dispatch(getCoupleCodeAction({ userId: user.identification }));
+
+  return <div style={{ background: "white" }}></div>;
 }

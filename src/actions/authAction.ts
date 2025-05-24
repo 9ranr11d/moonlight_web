@@ -26,17 +26,18 @@ import {
 } from "@redux/slices/verificationSlice";
 
 import {
+  passwordChangeCompleted,
+  passwordChangeFailed,
+  setModifiedId,
+} from "@redux/slices/recoverySlice";
+
+import {
   IIUser,
   ISignInData,
   IUserAgreedTerms,
   IVerificationInfo,
   TVerificationType,
 } from "@interfaces/auth";
-import {
-  passwordChangeCompleted,
-  passwordChangeFailed,
-  setModifiedId,
-} from "@redux/slices/recoverySlice";
 
 /**
  * 소셜 로그인 정보 저장

@@ -17,7 +17,7 @@ import LunarLoader from "@components/common/LunarLoader";
 import SignIn from "@components/auth/SignIn";
 import MissingContactForm from "@components/auth/signUp/MissingContactForm";
 
-/** 시작 페이지 */
+/** 시작 Page */
 export default function Home() {
   /** 라우터 */
   const router = useRouter();
