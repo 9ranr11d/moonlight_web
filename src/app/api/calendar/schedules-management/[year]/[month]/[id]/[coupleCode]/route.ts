@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface IParams {
+type RouteParams = {
   year: string;
   month: string;
   id: string;
   coupleCode: string;
-}
+};
 
 /**
  * 해당 달 +-1달 일정 정보 가져오기
@@ -14,7 +14,10 @@ interface IParams {
  * @param id 사용자 Id
  * @param coupleCode 커플 코드
  */
-export async function GET(request: NextRequest, context: { params: IParams }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: RouteParams }
+): Promise<NextResponse> {
   try {
     /** 일정들 반환 */
     return NextResponse.json({ msg: "success" }, { status: 200 });
