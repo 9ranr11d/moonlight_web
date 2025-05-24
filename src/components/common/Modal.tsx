@@ -2,14 +2,11 @@
 
 import React from "react";
 
-import Image from "next/image";
-
 import { useDispatch } from "react-redux";
 import { hideBackdrop } from "@redux/slices/backdropSlice";
 
 import styles from "./Modal.module.css";
-
-import IconClose from "@public/img/common/icon_close_black.svg";
+import CloseBtn from "./btn/CloseBtn";
 
 /** Modal Interface */
 interface IModal {
@@ -46,19 +43,14 @@ export default function Modal({
   return (
     <div className={`${styles.modal} ${className}`} style={style}>
       {close && (
-        <button
-          type="button"
+        <CloseBtn
           onClick={clickClose}
           style={{
             position: "absolute",
             top: 10,
             right: 10,
-            background: "none",
-            padding: 0,
           }}
-        >
-          {/* <Image src={IconClose} width={20} height={20} alt="X" /> */}
-        </button>
+        />
       )}
 
       {children}

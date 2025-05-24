@@ -2,29 +2,43 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-import { MONTH_NAMES, TODAY } from "@constants/date";
+import { MONTH_NAMES } from "@constants/date";
 
 import styles from "./YearMonthPicker.module.css";
 
 import IconTop from "@public/svgs/common/icon_expand.svg";
 import IconBottom from "@public/svgs/common/icon_collapse.svg";
+import IconClose from "@public/svgs/common/icon_x.svg";
 
+/** 연도, 달 선택 Interface */
 interface IYearMonthPicker {
+  /** 선택한 년도, 달 */
   onSelect: (date: Date) => void;
+  /** 연도 표기 형식일 때 제목 클릭 시 */
+  onYearClick?: () => void;
 
+  /** 선택된 년도, 달 */
   date?: Date;
 }
 
+/** 표시할 아이템 */
 type DisplayItem = number | { year: number; month: number };
 
+/** 표시할 년도 범위 */
 const YEAR_RANGE = 16;
+
+/** 페이지당 표시할 아이템 수 */
 const ITEMS_PER_PAGE = 12;
+
+/** 최소 년도 */
 const MIN_YEAR = 1900;
 
+/** 연도 아이템 생성 */
 const createYearItems = (startYear: number, count: number): number[] => {
   return Array.from({ length: count }, (_, i) => startYear + i);
 };
 
+/** 달 아이템 생성 */
 const createMonthItems = (year: number): DisplayItem[] => {
   return Array.from({ length: 12 }, (_, i) => ({
     year,
@@ -32,25 +46,32 @@ const createMonthItems = (year: number): DisplayItem[] => {
   }));
 };
 
+/** 연도, 달 선택 컴포넌트 */
 export default function YearMonthPicker({
   onSelect,
+  onYearClick,
   date = new Date(),
 }: IYearMonthPicker) {
+  /** 스크롤 요소 Ref */
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  /** 연도, 달 요소 Ref */
   const yearMonthRef = useRef<HTMLDivElement>(null);
 
+  /** 표시할 Item Ref */
   const displayItemsRef = useRef<DisplayItem[]>([]);
 
-  const [gridHeight, setGridHeight] = useState<number>(0);
+  const [gridHeight, setGridHeight] = useState<number>(0); // Grid 높이
 
-  const [isAddPrevItem, setIsAddPrevItem] = useState<boolean>(false);
+  const [isAddPrevItem, setIsAddPrevItem] = useState<boolean>(false); // 이전 Item 추가 여부
 
-  const [selectedDate, setSelectedDate] = useState<Date>(date || new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(date || new Date()); // 선택된 날짜
 
-  const [hoveredItem, setHoveredItem] = useState<DisplayItem | null>(null);
-  const [displayItems, setDisplayItems] = useState<DisplayItem[]>([]);
-  const [mode, setMode] = useState<"year" | "month">("year");
+  const [hoveredItem, setHoveredItem] = useState<DisplayItem | null>(null); // Hover 날짜
+  const [displayItems, setDisplayItems] = useState<DisplayItem[]>([]); // 표시할 Item
+  const [mode, setMode] = useState<"year" | "month">("year"); // 표기 형식
 
+  /** 달 선택자 */
   const handleMonthClick = useCallback(
     (year: number, month: number) => {
       const newDate = new Date(year, month - 1, 1);
@@ -60,6 +81,7 @@ export default function YearMonthPicker({
     [onSelect]
   );
 
+  /** 연도 선택자 */
   const handleYearClick = useCallback(
     (year: number) => {
       setSelectedDate(new Date(year, selectedDate.getMonth(), 1));
@@ -68,6 +90,7 @@ export default function YearMonthPicker({
     [selectedDate]
   );
 
+  /** 이전 년도 선택자 */
   const handlePrevYear = useCallback(() => {
     const newDate = new Date(selectedDate);
 
@@ -77,6 +100,7 @@ export default function YearMonthPicker({
     setSelectedDate(newDate);
   }, [selectedDate, mode]);
 
+  /** 다음 년도 선택자 */
   const handleNextYear = useCallback(() => {
     const newDate = new Date(selectedDate);
 
@@ -86,14 +110,19 @@ export default function YearMonthPicker({
     setSelectedDate(newDate);
   }, [selectedDate, mode]);
 
+  /** Scroll 관리자 */
   const handleScroll = useCallback(() => {
     if (!scrollRef.current || !yearMonthRef.current) return;
 
+    // Scroll 요소의 현재 Scroll 위치, Scroll 영역 전체 높이, 보이는 영역 높이
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
+    // Scroll 최상단 도달 시
     if (scrollTop === 0) {
+      /** 첫 번째 Item */
       const firstItem = displayItemsRef.current[0];
 
+      /** 추가될 Item */
       const newItems =
         mode === "year"
           ? createYearItems(
@@ -105,10 +134,14 @@ export default function YearMonthPicker({
       setDisplayItems(prev => [...newItems, ...prev]);
 
       setIsAddPrevItem(true);
-    } else if (scrollTop >= scrollHeight - clientHeight - 1) {
+    }
+    // Scroll 최하단 도달 시
+    else if (scrollTop >= scrollHeight - clientHeight - 1) {
+      /** 마지막 Item */
       const lastItem =
         displayItemsRef.current[displayItemsRef.current.length - 1];
 
+      /** 추가될 Item */
       const newItems =
         mode === "year"
           ? createYearItems((lastItem as number) + 1, ITEMS_PER_PAGE)
@@ -118,32 +151,39 @@ export default function YearMonthPicker({
     }
   }, [mode]);
 
+  /** 선택된 날짜 변경 시 */
   useEffect(() => {
     if (date) setSelectedDate(date);
   }, [date]);
 
+  /** 표시할 Item 형식이나 선택된 날짜 변경 시 */
   useEffect(() => {
     if (mode === "year") {
-      const currentYear = selectedDate.getFullYear();
-      const startYear = Math.max(MIN_YEAR, currentYear - YEAR_RANGE);
+      /** 선택된 년도 */
+      const selectedYear = selectedDate.getFullYear();
+      /** 시작 년도 */
+      const startYear = Math.max(MIN_YEAR, selectedYear - YEAR_RANGE);
 
       setDisplayItems(createYearItems(startYear, YEAR_RANGE * 2));
     } else {
-      const currentYear = selectedDate.getFullYear();
+      /** 선택된 년도 */
+      const selectedYear = selectedDate.getFullYear();
 
       setDisplayItems([
-        ...createMonthItems(currentYear - 1),
-        ...createMonthItems(currentYear),
-        ...createMonthItems(currentYear + 1),
+        ...createMonthItems(selectedYear - 1),
+        ...createMonthItems(selectedYear),
+        ...createMonthItems(selectedYear + 1),
       ]);
     }
   }, [mode, selectedDate]);
 
+  // 표시할 Item 변경 시
   useEffect(() => {
     if (yearMonthRef.current) {
       setGridHeight(yearMonthRef.current.offsetHeight * 3);
 
       if (scrollRef.current && displayItems) {
+        /** 선택된 Item 인덱스 변수(기본 값: -1) */
         let itemIdx = -1;
 
         itemIdx = displayItems.findIndex(item =>
@@ -155,6 +195,10 @@ export default function YearMonthPicker({
                 selectedDate.getMonth() + 1
         );
 
+        // 선택된 Item 인덱스가 없으면 종료
+        if (itemIdx === -1) return;
+
+        /** 선택된 Item 행 */
         const itemRow = Math.floor(itemIdx / 4);
 
         scrollRef.current.scrollTo({
@@ -165,6 +209,7 @@ export default function YearMonthPicker({
     }
   }, [displayItems]);
 
+  // Scroll 시
   useEffect(() => {
     const scrollElement = scrollRef.current;
 
@@ -175,10 +220,12 @@ export default function YearMonthPicker({
     }
   }, [handleScroll]);
 
+  // 표시할 Item 변경 시
   useEffect(() => {
     displayItemsRef.current = displayItems;
   }, [displayItems]);
 
+  // 이전 Item 추가해야할 때
   useEffect(() => {
     if (isAddPrevItem) {
       setIsAddPrevItem(false);
@@ -187,7 +234,9 @@ export default function YearMonthPicker({
     }
   }, [isAddPrevItem, gridHeight]);
 
+  /** Item 렌더링 */
   const renderItem = (item: DisplayItem, index: number) => {
+    /** 선택된 Item 여부 */
     const isSelected =
       mode === "year"
         ? selectedDate.getFullYear() === item
@@ -234,7 +283,9 @@ export default function YearMonthPicker({
             type="button"
             className={styles.yearMonthControlBtn}
             onClick={() =>
-              setMode(prev => (prev === "year" ? "month" : "year"))
+              mode === "year"
+                ? onYearClick?.()
+                : setMode(prev => (prev === "year" ? "month" : "year"))
             }
           >
             <h5>

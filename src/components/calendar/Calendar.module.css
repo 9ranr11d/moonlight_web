@@ -36,6 +36,7 @@
 
 .day.today {
   color: var(--today-color);
+  font-family: "pretendard_bold";
 }
 
 .day.today:hover {

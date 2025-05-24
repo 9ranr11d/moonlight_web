@@ -275,6 +275,18 @@ button:disabled {
   justify-content: flex-end;
 }
 
+.noOutlineBtn {
+  background: none;
+  border: 0.5px solid transparent;
+  padding: 5px;
+}
+
+.noOutlineBtn:hover {
+  /* background: var(--gray-100); */
+  scale: 1.05;
+  border: 0.5px solid var(--gray-900);
+}
+
 @media (max-width: 767px) {
   main {
     padding: 110px 10px;
