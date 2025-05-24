@@ -196,7 +196,7 @@ export default function VisitHistoryEditor() {
 
   return (
     <div>
-      <ul>
+      {/* <ul>
         {Object.entries(favoriteLocation.activeLocation).map(
           ([key, value], idx) => {
             const isKeyInLabels: boolean = key in labels;
@@ -220,7 +220,7 @@ export default function VisitHistoryEditor() {
             );
           }
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }

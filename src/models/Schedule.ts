@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-import { IIUser } from "./User";
 import { IIScheduleCategory } from "./ScheduleCategory";
+import { IIUser } from "@interfaces/auth";
 
 /** 1차 일정 Interface */
 export interface ISchedule {

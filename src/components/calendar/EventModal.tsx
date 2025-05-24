@@ -897,7 +897,6 @@ export default function EventModal({
             <button
               type="button"
               onClick={toggleUserList}
-              disabled={user.accessLevel < 3}
               style={
                 isUserListOpen ? { borderRadius: "5px 5px 0 0" } : undefined
               }
