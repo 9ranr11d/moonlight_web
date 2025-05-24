@@ -60,8 +60,6 @@ export default function Identification({ onTabSelect }: IIdentification) {
     [step, onTabSelect, verificationMethod]
   );
 
-  console.log("STEP :", step);
-
   return (
     <div>
       {!isVerified ? (

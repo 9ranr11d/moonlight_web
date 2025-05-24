@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,7 +15,10 @@ export default function Home() {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 
-  dispatch(getCoupleCodeAction({ userId: user.identification }));
+  useEffect(() => {
+    if (user.identification)
+      dispatch(getCoupleCodeAction({ userId: user.identification }));
+  }, [user.identification]);
 
   return <div style={{ background: "white" }}></div>;
 }
