@@ -95,10 +95,13 @@ export default function Recovery() {
   /** Input들 */
   const inputs = useMemo(
     () => [
-      <Identification onTabSelect={handleVerificationMethodTab} />,
-      <Password onTabSelect={handleVerificationMethodTab} />,
+      <Identification
+        key="identification"
+        onTabSelect={handleVerificationMethodTab}
+      />,
+      <Password key="password" onTabSelect={handleVerificationMethodTab} />,
     ],
-    []
+    [handleVerificationMethodTab]
   );
 
   useEffect(() => {
