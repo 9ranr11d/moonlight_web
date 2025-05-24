@@ -8,8 +8,6 @@ import { AppDispatch, RootState } from "@redux/store";
 
 import { TVerificationMethod } from "@interfaces/auth";
 
-import styles from "./SignUp.module.css";
-
 import ErrorBlock from "@components/common/ErrorBlock";
 import DotAndBar from "@components/common/indicator/DotAndBar";
 
@@ -66,7 +64,7 @@ export default function MissingContactForm() {
   /** Steps */
   const steps = useMemo(
     () => [
-      <div style={{ marginBottom: 10 }}>
+      <div key="verification-method" style={{ marginBottom: 10 }}>
         <VerificationMethodForm onTabSelect={handleTab} />
 
         <div
@@ -79,7 +77,7 @@ export default function MissingContactForm() {
           </button>
         </div>
       </div>,
-      <div style={{ marginBottom: 20 }}>
+      <div key="verification-form" style={{ marginBottom: 20 }}>
         <VerificationForm type="signUp" method={method} />
       </div>,
     ],

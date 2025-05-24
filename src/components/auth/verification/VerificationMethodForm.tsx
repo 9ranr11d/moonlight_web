@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import DirectionTabBtns from "@components/common/btn/DirectionTabBtns";
 
@@ -24,6 +24,26 @@ const findIdTabBtnsStyle: React.CSSProperties = {
 export default function VerificationMethodForm({
   onTabSelect,
 }: IVerificationMethodForm) {
+  const labelArr = useMemo(
+    () => [
+      <div key="email" style={findIdTabBtnsStyle}>
+        <h6>Email</h6>
+
+        <span>
+          <IconGreaterThen width={18} height={18} fill="black" />
+        </span>
+      </div>,
+      <div key="phone" style={findIdTabBtnsStyle}>
+        <h6>휴대전화 번호</h6>
+
+        <span>
+          <IconGreaterThen width={18} height={18} fill="black" />
+        </span>
+      </div>,
+    ],
+    []
+  );
+
   return (
     <div>
       <h6
@@ -38,22 +58,7 @@ export default function VerificationMethodForm({
       </h6>
 
       <DirectionTabBtns
-        labelArr={[
-          <div style={findIdTabBtnsStyle}>
-            <h6>Email</h6>
-
-            <span>
-              <IconGreaterThen width={18} height={18} fill="black" />
-            </span>
-          </div>,
-          <div style={findIdTabBtnsStyle}>
-            <h6>휴대전화 번호</h6>
-
-            <span>
-              <IconGreaterThen width={18} height={18} fill="black" />
-            </span>
-          </div>,
-        ]}
+        labelArr={labelArr}
         direction="column"
         onTabSelect={onTabSelect}
       />

@@ -41,19 +41,23 @@ export default function Password({ onTabSelect }: IPassword) {
   /** Step별 컴포넌트 */
   const steps = useMemo(
     () => [
-      <IdCheckForm saveId={(id: string) => setIdentification(id)} />,
-      <div style={{ marginBottom: 10 }}>
+      <IdCheckForm
+        key="id-check"
+        saveId={(id: string) => setIdentification(id)}
+      />,
+      <div key="verification-method" style={{ marginBottom: 10 }}>
         <VerificationMethodForm onTabSelect={onTabSelect} />
       </div>,
       <VerificationForm
+        key="verification"
         style={{ marginBottom: 10 }}
         type="findPw"
         identification={identification}
         method={verificationMethod as TVerificationMethod}
       />,
-      <ChangePwForm identification={identification} />,
+      <ChangePwForm key="change-pw" identification={identification} />,
     ],
-    [step]
+    [step, onTabSelect, identification, verificationMethod]
   );
 
   return (

@@ -47,17 +47,17 @@ export default function Identification({ onTabSelect }: IIdentification) {
   /** Steps */
   const steps = useMemo(
     () => [
-      <div style={{ marginBottom: 10 }}>
+      <div key="verification-method" style={{ marginBottom: 10 }}>
         <VerificationMethodForm onTabSelect={onTabSelect} />
       </div>,
-      <div style={{ marginBottom: 10 }}>
+      <div key="verification-form" style={{ marginBottom: 10 }}>
         <VerificationForm
           type="findId"
           method={verificationMethod as TVerificationMethod}
         />
       </div>,
     ],
-    [step]
+    [step, onTabSelect, verificationMethod]
   );
 
   console.log("STEP :", step);

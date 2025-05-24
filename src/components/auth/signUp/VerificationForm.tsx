@@ -32,7 +32,10 @@ export default function VerificationForm() {
   const [timeLeft, setTimeLeft] = useState<number>(5); // 본인 인증 완료 시 다음 단계 자동 넘기 제한 시간
 
   /** Input들 */
-  const inputs = useMemo(() => [<EmailForm />, <PhoneNumberForm />], []);
+  const inputs = useMemo(
+    () => [<EmailForm key="email" />, <PhoneNumberForm key="phone" />],
+    []
+  );
 
   /** 선택된 Tab 변경 */
   const handleTab = (idx: number): void => {
@@ -76,7 +79,7 @@ export default function VerificationForm() {
         return () => clearInterval(timer);
       } else dispatch(incrementSignUpStep());
     }
-  }, [timeLeft, verification.isVerified]);
+  }, [timeLeft, verification.isVerified, dispatch]);
 
   return (
     <>
@@ -102,7 +105,7 @@ export default function VerificationForm() {
             <h6 style={{ marginTop: 10 }}>
               본인 인증이 완료되었습니다.
               <br />
-              '다음'버튼을 눌러 다음 단계를 진행해주세요.
+              &apos;다음&apos;버튼을 눌러 다음 단계를 진행해주세요.
             </h6>
           </div>
 

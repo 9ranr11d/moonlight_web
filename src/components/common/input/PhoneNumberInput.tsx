@@ -70,7 +70,7 @@ export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
   // 휴대전화 번호 변경 시
   useEffect(() => {
     onChange?.(`${countryCallingCodes[conuntryCallingCodeIdx].code}${number}`);
-  }, [conuntryCallingCodeIdx, number]);
+  }, [conuntryCallingCodeIdx, number, countryCallingCodes, onChange]);
 
   return (
     <>
@@ -85,8 +85,8 @@ export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
         />
 
         <DropdownBtn
-          list={countryCallingCodes.map(({ flag, code }) => (
-            <div style={countryCallingCodeStyle}>
+          list={countryCallingCodes.map(({ flag, code }, index) => (
+            <div key={code} style={countryCallingCodeStyle}>
               {flag}
               {code}
             </div>

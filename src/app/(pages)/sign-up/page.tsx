@@ -66,10 +66,10 @@ export default function SignUp() {
   /** Step별 컴포넌트 */
   const steps = useMemo(
     () => [
-      <TermsForm />,
-      <AccountForm />,
-      <VerificationForm />,
-      <ProfileForm />,
+      <TermsForm key="terms" />,
+      <AccountForm key="account" />,
+      <VerificationForm key="verification" />,
+      <ProfileForm key="profile" />,
     ],
     []
   );
