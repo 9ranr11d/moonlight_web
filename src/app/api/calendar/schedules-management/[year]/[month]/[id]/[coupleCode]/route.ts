@@ -14,7 +14,7 @@ interface IParams {
  * @param id 사용자 Id
  * @param coupleCode 커플 코드
  */
-export async function GET(req: NextRequest, { params }: { params: IParams }) {
+export async function GET(request: NextRequest, context: { params: IParams }) {
   try {
     /** 일정들 반환 */
     return NextResponse.json({ msg: "success" }, { status: 200 });
