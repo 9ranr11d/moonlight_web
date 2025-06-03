@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
         ON
           cu.couple_code = c.couple_code
       WHERE
-        identification = ?
+        u.identification = ?
     `,
       [id]
     );

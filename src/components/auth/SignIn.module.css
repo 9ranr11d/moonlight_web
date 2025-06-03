@@ -37,14 +37,14 @@
 
 .signInBox .innerBox {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 135px;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .signInBox .innerBox > ul {
   width: 100%;
-  margin-right: 10px;
 }
 
 .signInBox .innerBox > ul > li:first-child {

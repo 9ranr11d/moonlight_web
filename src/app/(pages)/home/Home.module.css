@@ -1,0 +1,37 @@
+.coupleCodeBox {
+  background-image: url("/imgs/background/background_night_sky.jpg");
+  background-position: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  max-height: 900px;
+  position: relative;
+}
+
+.issueBtn {
+  padding: 10px 20px;
+  color: var(--white-700a);
+  border: 2px solid var(--white-700a);
+}
+
+.issueBtn:hover {
+  background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
+  color: white;
+}
+
+.clipboardBtn {
+  background: linear-gradient(120deg, #f8c3c7, #e0a3a7);
+}
+
+.clipboardBtn svg {
+  fill: black;
+}
+
+.clipboardBtn:hover {
+  scale: 1.05;
+}
+
+.clipboardBtn:hover svg {
+  fill: white;
+}

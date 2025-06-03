@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import Link from "next/link";
+import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,6 +13,9 @@ import { AppDispatch, RootState } from "@redux/store";
 import { signOutAction } from "@actions/authAction";
 
 import styles from "./ProfileModal.module.css";
+
+import ImgProfile from "@public/imgs/auth/img_profile.png";
+import CloseBtn from "@components/common/btn/CloseBtn";
 
 /** 사용자 정보 수정 모달 Interface */
 interface IProfileModal {
@@ -39,17 +42,38 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
   };
 
   return (
-    <div className={styles.option}>
-      <h6>{user.nickname}님</h6>
+    <div className={styles.modal}>
+      <div style={{ position: "absolute", top: 5, right: 5 }}>
+        <CloseBtn onClick={closeModal} />
+      </div>
+
+      <div
+        style={{ display: "flex", justifyContent: "center", marginBottom: 5 }}
+      >
+        <Image
+          src={user.profileImgUrl || ImgProfile}
+          width={70}
+          height={70}
+          alt="프로필 이미지"
+        />
+      </div>
+
+      <p style={{ textAlign: "center", fontSize: 16, marginBottom: 10 }}>
+        {user.nickname}님
+      </p>
 
       <ul>
         <li>
-          <Link href={"/profile"}>
-            <button type="button">정보</button>
-          </Link>
+          <button type="button" className="noOutlineBtn">
+            정보
+          </button>
         </li>
         <li>
-          <button type="button" onClick={clickSignOut}>
+          <button
+            type="button"
+            className={`noOutlineBtn ${styles.logoutBtn}`}
+            onClick={clickSignOut}
+          >
             로그아웃
           </button>
         </li>

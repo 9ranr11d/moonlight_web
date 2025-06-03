@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-/** 커플 코드 유효성 검사 */
+/** 연인 식별자 유효성 검사 */
 export async function POST(req: NextRequest) {
   try {
     // 성공 Message 반환
     return NextResponse.json(
-      { msg: "커플 코드 발급되었습니다." },
+      { msg: "연인 식별자 발급되었습니다." },
       { status: 200 }
     );
   } catch (err) {

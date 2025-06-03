@@ -13,7 +13,7 @@
 }
 
 .sideMenu {
-  transition: right 1s ease, opacity 1s ease;
+  transition: right 0.5s ease, opacity 0.5s ease;
   position: absolute;
   top: 0;
   background: white;
@@ -41,16 +41,8 @@
   position: relative;
   transition: bottom 1s ease, opacity 1s ease;
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 30px;
-}
-
-.logoBox {
-  margin: auto;
-}
-
-.logoBox h5 {
-  font-family: "sf_pro_bold";
 }
 
 .menuBox {
@@ -77,6 +69,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.menuBox > ul > li > a {
+  font-size: 15px;
+  font-family: "pretendard_bold";
 }
 
 .menuBox > ul > li:last-child {

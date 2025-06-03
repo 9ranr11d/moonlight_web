@@ -8,13 +8,15 @@
   --err-background-color: #ffe5e9;
 
   --background-color: linear-gradient(
-    to bottom,
+    160deg,
     #8b9da4 0%,
     #b7a0a1 80%,
     #b7a0a1 100%
   );
-  --modal-background-color: #00000099;
+  --modal-background-color: #12121299;
   --search-input-background-color: #f0f0f0cc;
+
+  --white-700a: rgba(255, 255, 255, 0.7);
 
   --gray-50: #f9f9f9;
   --gray-100: #f2f2f2;
@@ -26,6 +28,8 @@
   --gray-700: #666666;
   --gray-800: #4d4d4d;
   --gray-900: #333333;
+
+  --black-color: #121212;
 
   --saturday-color: #00bfff;
   --sunday-color: #ff69b4;
@@ -73,13 +77,12 @@ header {
 
 header > nav {
   padding: 10px 30px;
-  background: #ffffffcc;
+  background: #ffffffee;
   transition: height 1s ease, padding 1s ease;
 }
 
 main {
   min-height: 100vh;
-  padding: 110px 0 0;
 }
 
 .main {
@@ -90,7 +93,7 @@ main {
 
 footer {
   padding: 20px;
-  background: var(--gray-800);
+  background: var(--black-color);
   color: white;
 }
 
@@ -241,7 +244,7 @@ button {
   border: none;
   background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
 }
@@ -252,6 +255,10 @@ button:active {
 
 button:disabled {
   background: var(--gray-300);
+}
+
+.authBox {
+  margin-top: 110px;
 }
 
 .authBox > div {
@@ -275,23 +282,27 @@ button:disabled {
   justify-content: flex-end;
 }
 
+.outlineBtn {
+  background: none;
+  color: var(--font-color);
+  border: 2px solid var(--black-color);
+}
+
 .noOutlineBtn {
   background: none;
-  border: 0.5px solid transparent;
+  color: var(--font-color);
   padding: 5px;
 }
 
 .noOutlineBtn:hover {
-  /* background: var(--gray-100); */
   scale: 1.05;
-  border: 0.5px solid var(--gray-900);
+}
+
+.noOutlineBtn:active {
+  background: var(--gray-50);
 }
 
 @media (max-width: 767px) {
-  main {
-    padding: 110px 10px;
-  }
-
   .authBox > div {
     max-width: initial;
     width: 100%;

@@ -6,9 +6,19 @@ import Link from "next/link";
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { useSession } from "next-auth/react";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import { AppDispatch, RootState } from "@redux/store";
+
 import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
+
+import {
+  checkRefreshTokenAction,
+  getUserByAccessTokenAction,
+  socialSignInAction,
+} from "@actions/authAction";
 
 import styles from "./Header.module.css";
 
@@ -20,12 +30,8 @@ import Backdrop from "@components/common/Backdrop";
 
 import IconLogoSquare from "@public/svgs/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/svgs/common/icon_logo_horizontal.svg";
-import IconHamburger from "@public/img/common/icon_hamburger_black.svg";
-import IconClose from "@public/img/common/icon_greater_than_black.svg";
-import {
-  checkRefreshTokenAction,
-  getUserByAccessTokenAction,
-} from "@actions/authAction";
+import IconThreeBar from "@public/svgs/common/icon_three_bar.svg";
+import IconClose from "@public/svgs/common/icon_greater_than.svg";
 
 /** Header */
 export default function Header() {
@@ -33,6 +39,8 @@ export default function Header() {
   const router = useRouter();
   /** 현재 도메인 경로 */
   const pathname = usePathname();
+
+  const { data: session } = useSession();
 
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
@@ -71,6 +79,12 @@ export default function Header() {
   const closeUserPanel = (): void => {
     setIsUserPanelOpen(false);
   };
+
+  // 소셜 로그인 정보가 있을 시
+  useEffect(() => {
+    if (session?.user && session.user.id)
+      dispatch(socialSignInAction(session.user.id));
+  }, [session]);
 
   // Access Token, Refresh Token으로 자동 로그인
   useEffect(() => {
@@ -132,23 +146,32 @@ export default function Header() {
                   <Link href={menu.path}>{menu.title}</Link>
                 </li>
               ))}
-              <li>
-                <button type="button" onClick={toggleUserPanel}>
-                  {user.nickname}
-                </button>
-
-                {isUserPanelOpen && (
-                  <ProfileModal closeModal={closeUserPanel} />
-                )}
-              </li>
             </ul>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "relative",
+            }}
+          >
+            <button
+              type="button"
+              onClick={toggleUserPanel}
+              className="noOutlineBtn"
+            >
+              {user.nickname}
+            </button>
+
+            {isUserPanelOpen && <ProfileModal closeModal={closeUserPanel} />}
 
             <button
               type="button"
               onClick={toggleSideMenu}
               className={styles.mobile}
             >
-              <IconHamburger width={24} height={24} />
+              <IconThreeBar width={24} height={24} fill={"var(--gray-500)"} />
             </button>
           </div>
         </div>
@@ -178,7 +201,12 @@ export default function Header() {
       >
         <div className={styles.sideMenuHeader}>
           <button type="button" onClick={toggleSideMenu}>
-            <IconClose alt="X" width={24} height={24} />
+            <IconClose
+              alt="X"
+              width={24}
+              height={24}
+              fill={"var(--gray-500)"}
+            />
           </button>
 
           <Link href={"/profile"}>

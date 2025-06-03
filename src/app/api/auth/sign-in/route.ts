@@ -26,11 +26,20 @@ export async function POST(req: NextRequest) {
     const result = await query(
       `
       SELECT
-        *
+        u.*,
+        c.couple_code AS coupleCode
       FROM
-        users
+        users u
+      LEFT JOIN 
+        couple_code_users cu
+        ON
+          u.identification = cu.user_id
+      LEFT JOIN 
+        couple_codes c
+        ON
+          cu.couple_code = c.couple_code
       WHERE
-        identification = ?
+        u.identification = ?
       `,
       [identification]
     );
@@ -108,6 +117,7 @@ export async function POST(req: NextRequest) {
           provider: user.provider,
           seq: user.seq,
           updatedAt: user.updated_at,
+          coupleCode: user.coupleCode || null,
         },
       },
       {

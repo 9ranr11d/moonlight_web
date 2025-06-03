@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import Image from "next/image";
 
+import Lottie from "react-lottie-player";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import { signIn as socialSignIn } from "next-auth/react";
@@ -21,12 +23,14 @@ import { ISignInData } from "@interfaces/auth";
 import styles from "./SignIn.module.css";
 
 import VisibleBtn from "@components/common/btn/VisibleBtn";
+import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
 
 import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
-import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
+
+import LottieLoading from "@public/json/loading_round_white.json";
 
 /** 로그인 */
 export default function SignIn() {
@@ -40,10 +44,13 @@ export default function SignIn() {
   const [password, setPassword] = useState<string>(""); // 비밀번호
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
-  const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
+  const [isRememberMe, setIsRememberMe] = useState<boolean>(false); // 로그인 상태 유지 여부
+  const [isSignInLoading, setIsSignInLoading] = useState<boolean>(false); // 로그인 로딩 여부
 
   /** 로그인 */
   const processSignIn = (): void => {
+    setIsSignInLoading(true);
+
     const data: ISignInData = {
       identification,
       password,
@@ -123,7 +130,18 @@ export default function SignIn() {
         </ul>
 
         <button type="button" onClick={processSignIn}>
-          <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
+          {!isSignInLoading ? (
+            <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
+          ) : (
+            <span style={{ display: "flex", justifyContent: "center" }}>
+              <Lottie
+                loop
+                animationData={LottieLoading}
+                play
+                style={{ width: 28, height: 28 }}
+              />
+            </span>
+          )}
         </button>
       </div>
 
@@ -135,7 +153,15 @@ export default function SignIn() {
           fill={isRememberMe ? "var(--gray-800)" : "var(--gray-200)"}
         />
 
-        <span>로그인 상태 유지</span>
+        <a
+          href="#"
+          onClick={e => {
+            e.preventDefault();
+            setIsRememberMe(prev => !prev);
+          }}
+        >
+          로그인 상태 유지
+        </a>
       </div>
 
       <div className={styles.subBox} style={{ position: "relative" }}>

@@ -1,25 +1,6 @@
-import { query } from "@lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ "user-id": string }> }
-) {
-  try {
-    const { "user-id": userId } = await context.params;
-
-    console.log(userId);
-
-    return NextResponse.json({ msg: "성공" }, { status: 200 });
-  } catch (err) {
-    console.error("couple-code/couple-code-management > GET() :", err);
-
-    return NextResponse.json(
-      { msg: "서버 오류입니다. 다시 시도해주세요." },
-      { status: 500 }
-    );
-  }
-}
+import { query } from "@lib/dbConnect";
 
 /** 연인 식별자 발급 */
 export async function POST(
@@ -68,6 +49,10 @@ export async function POST(
       // 트랜잭션 커밋
       await query("COMMIT");
 
+      console.log(
+        `'${userId}'님에 의해 연인 식별자(${code})가 발급되었습니다.`
+      );
+
       // 성공 Message 반환
       return NextResponse.json(
         { msg: "성공적으로 연인 식별자가 발급되었습니다.", coupleCode: code },
@@ -86,6 +71,20 @@ export async function POST(
       { msg: "서버 오류입니다. 다시 시도해주세요." },
       { status: 500 }
     );
+  }
+}
+
+/** 연인 식별자 삭제 */
+export async function DELETE(req: NextRequest) {
+  try {
+    // 성공 Message 반환
+    return NextResponse.json({ msg: "성공했습니다." }, { status: 200 });
+  } catch (err) {
+    console.error("/src/app/api/auth/issue-couple-code > DELETE() :", err);
+
+    return NextResponse.json({
+      msg: "서버 오류입니다. 다시 시도해주세요.",
+    });
   }
 }
 

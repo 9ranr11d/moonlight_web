@@ -4,7 +4,8 @@ import React, { useMemo } from "react";
 
 import { useRouter } from "next/navigation";
 
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
+import Lottie from "react-lottie-player";
 
 import { useSelector } from "react-redux";
 
@@ -23,9 +24,9 @@ import VerificationMethodForm from "../verification/VerificationMethodForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
-const LottiePlayer = dynamic(() => import("react-lottie-player"), {
-  ssr: false,
-});
+// const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+//   ssr: false,
+// });
 
 interface IIdentification {
   /** 선택 시 */
@@ -87,7 +88,7 @@ export default function Identification({ onTabSelect }: IIdentification) {
             <h4 style={{ textAlign: "center", color: "var(--primary-color)" }}>
               {modifiedId || (
                 <span style={{ display: "flex", justifyContent: "center" }}>
-                  <LottiePlayer
+                  <Lottie
                     loop
                     animationData={LottieLoading}
                     play

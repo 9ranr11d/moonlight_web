@@ -38,6 +38,7 @@ import {
   IVerificationInfo,
   TVerificationType,
 } from "@interfaces/auth";
+import { setCoupleCode } from "@redux/slices/coupleCodeSlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -55,6 +56,7 @@ export const socialSignInAction =
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       dispatch(socialSignIn(data.user));
+      dispatch(setCoupleCode(data.user.coupleCode));
     } catch (err) {
       console.error("actions/authAction > socialSignInAction() :", err);
     }
@@ -374,7 +376,10 @@ export const signInAction =
         throw new Error(msg);
       }
 
+      console.log("SIGNINACTION :", data.user);
+
       dispatch(signIn(data.user));
+      dispatch(setCoupleCode(data.user.coupleCode));
     } catch (err) {
       console.error("actions/authAction > signInAction() :", err);
     }
@@ -414,6 +419,7 @@ export const getUserByAccessTokenAction =
       if (!res.ok) throw new Error(data?.msg || "서버 오류가 발생했습니다.");
 
       dispatch(signIn(data.user));
+      dispatch(setCoupleCode(data.user.coupleCode));
     } catch (err) {
       console.error("actions/authAction > getUserAction() :", err);
     }

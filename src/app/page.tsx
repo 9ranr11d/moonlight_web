@@ -4,13 +4,9 @@ import React, { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { useSession } from "next-auth/react";
-
-import { AppDispatch, RootState } from "@redux/store";
-
-import { socialSignInAction } from "@actions/authAction";
+import { RootState } from "@redux/store";
 
 import LunarLoader from "@components/common/LunarLoader";
 
@@ -22,19 +18,8 @@ export default function Home() {
   /** 라우터 */
   const router = useRouter();
 
-  /** Dispatch */
-  const dispatch = useDispatch<AppDispatch>();
-
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
-
-  const { data: session } = useSession(); // nextauth의 로그인 정보
-
-  // 소셜 로그인 정보가 있을 시
-  useEffect(() => {
-    if (session?.user && session.user.id)
-      dispatch(socialSignInAction(session.user.id));
-  }, [session]);
 
   // 로그인 정보가 있을 시 '메인 홈'으로
   useEffect(() => {

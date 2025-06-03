@@ -1,0 +1,28 @@
+# 모든 텍스트 파일에 대해 자동 줄바꿈 변환 설정
+* text=auto
+
+# 특정 파일 형식에 대한 설정
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.css text
+*.scss text
+*.html text
+*.md text
+*.svg text
+
+# 바이너리 파일 설정
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.mp4 binary
+*.webm binary
+*.mp3 binary
+*.wav binary 

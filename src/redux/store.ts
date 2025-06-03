@@ -5,6 +5,7 @@ import signUpSlice from "./slices/signUpSlice";
 import verificationSlice from "./slices/verificationSlice";
 import authSlice from "./slices/authSlice";
 import recoverySlice from "./slices/recoverySlice";
+import coupleCodeSlice from "./slices/coupleCodeSlice";
 import calendarSlice from "./slices/calendarSlice";
 import mapSlice from "./slices/mapSlice";
 import favoriteLocationSlice from "./slices/favoriteLocationSlice";
@@ -22,6 +23,8 @@ export const store = configureStore({
     authSlice,
     /** ID/PW 찾기 정보 */
     recoverySlice,
+    /** 연인 식별자 정보 */
+    coupleCodeSlice,
     /** 캘린더 정보 */
     calendarSlice,
     /** 지도 정보 */

@@ -1,14 +1,13 @@
 "use client";
 
 import React from "react";
-
 import dynamic from "next/dynamic";
 
-import LottieLoading from "@public/json/loading_moon.json";
-
-const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+const Lottie = dynamic(() => import("react-lottie-player"), {
   ssr: false,
 });
+
+import LottieLoading from "@public/json/loading_moon.json";
 
 interface ILunarLoader {
   /** styles */
@@ -28,7 +27,7 @@ export default function LunarLoader({ style, msg }: ILunarLoader) {
           marginBottom: 30,
         }}
       >
-        <LottiePlayer
+        <Lottie
           loop
           animationData={LottieLoading}
           play
