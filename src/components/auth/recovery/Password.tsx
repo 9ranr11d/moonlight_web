@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 
-import { TVerificationMethod } from "@interfaces/auth";
+import { TVerificationMethod } from "@/interfaces/auth";
 
-import ErrorBlock from "@components/common/ErrorBlock";
-import DotAndBar from "@components/common/indicator/DotAndBar";
+import ErrorBlock from "@/components/common/ErrorBlock";
+import DotAndBar from "@/components/common/indicator/DotAndBar";
 
 import IdCheckForm from "./IdCheckForm";
 import VerificationMethodForm from "../verification/VerificationMethodForm";

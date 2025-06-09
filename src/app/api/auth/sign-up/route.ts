@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 import bcrypt from "bcrypt";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { IIUser } from "@interfaces/auth";
+import { IIUser } from "@/interfaces/auth";
 
 /** 회원가입 */
 export async function POST(req: NextRequest) {

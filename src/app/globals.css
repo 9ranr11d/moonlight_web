@@ -15,8 +15,31 @@
   );
   --modal-background-color: #12121299;
   --search-input-background-color: #f0f0f0cc;
+  --button-background-color: linear-gradient(
+    120deg,
+    var(--primary-color),
+    #e0a3a7
+  );
 
+  --white-900a: rgba(255, 255, 255, 0.9);
+  --white-800a: rgba(255, 255, 255, 0.8);
   --white-700a: rgba(255, 255, 255, 0.7);
+  --white-600a: rgba(255, 255, 255, 0.6);
+  --white-500a: rgba(255, 255, 255, 0.5);
+  --white-400a: rgba(255, 255, 255, 0.4);
+  --white-300a: rgba(255, 255, 255, 0.3);
+  --white-200a: rgba(255, 255, 255, 0.2);
+  --white-100a: rgba(255, 255, 255, 0.1);
+
+  --black-900a: rgba(0, 0, 0, 0.9);
+  --black-800a: rgba(0, 0, 0, 0.8);
+  --black-700a: rgba(0, 0, 0, 0.7);
+  --black-600a: rgba(0, 0, 0, 0.6);
+  --black-500a: rgba(0, 0, 0, 0.5);
+  --black-400a: rgba(0, 0, 0, 0.4);
+  --black-300a: rgba(0, 0, 0, 0.3);
+  --black-200a: rgba(0, 0, 0, 0.2);
+  --black-100a: rgba(0, 0, 0, 0.1);
 
   --gray-50: #f9f9f9;
   --gray-100: #f2f2f2;
@@ -242,7 +265,7 @@ input[type="color"]::-webkit-color-swatch {
 
 button {
   border: none;
-  background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
+  background: var(--button-background-color);
   padding: 10px;
   border-radius: 10px;
   color: white;
@@ -284,8 +307,17 @@ button:disabled {
 
 .outlineBtn {
   background: none;
-  color: var(--font-color);
-  border: 2px solid var(--black-color);
+  color: var(--black-600a);
+  border: 1px solid var(--black-600a);
+}
+
+.outlineBtn:hover {
+  color: var(--black-900a);
+  border: 1px solid var(--black-900a);
+}
+
+.outlineBtn:active {
+  background: var(--gray-50);
 }
 
 .noOutlineBtn {
@@ -303,10 +335,38 @@ button:disabled {
 }
 
 @media (max-width: 767px) {
+  .authBox {
+    padding: 0 20px;
+  }
+
   .authBox > div {
     max-width: initial;
     width: 100%;
     padding: 20px 10px 20px;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 28px;
+  }
+
+  h4 {
+    font-size: 24px;
+  }
+
+  h5 {
+    font-size: 20px;
+  }
+
+  h6 {
+    font-size: 16px;
   }
 }
 

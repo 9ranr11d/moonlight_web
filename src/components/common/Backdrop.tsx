@@ -3,8 +3,8 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
-import { hideBackdrop } from "@redux/slices/backdropSlice";
+import { RootState } from "@/redux/store";
+import { hideBackdrop } from "@/redux/slices/backdropSlice";
 
 import styles from "./Backdrop.module.css";
 

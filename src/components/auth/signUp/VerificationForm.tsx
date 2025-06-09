@@ -4,17 +4,17 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
-import { incrementSignUpStep } from "@redux/slices/signUpSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { incrementSignUpStep } from "@/redux/slices/signUpSlice";
 
-import styles from "@components/auth/signUp/SignUp.module.css";
+import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import HorizontalTabBtns from "@components/common/btn/HorizontalTabBtns";
-import ErrorBlock from "@components/common/ErrorBlock";
-import NextBtn from "@components/common/btn/NextBtn";
+import HorizontalTabBtns from "@/components/common/btn/HorizontalTabBtns";
+import ErrorBlock from "@/components/common/ErrorBlock";
+import NextBtn from "@/components/common/btn/NextBtn";
 
-import EmailForm from "@components/auth/verification/EmailForm";
-import PhoneNumberForm from "@components/auth/verification/PhoneNumberForm";
+import EmailForm from "@/components/auth/verification/EmailForm";
+import PhoneNumberForm from "@/components/auth/verification/PhoneNumberForm";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
 

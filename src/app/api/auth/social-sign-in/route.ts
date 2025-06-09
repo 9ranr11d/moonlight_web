@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 아이디로 사용자 정보 검색 */
 export async function GET(req: NextRequest) {

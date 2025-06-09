@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { IUserAgreedTerms } from "@interfaces/auth";
+import { IUserAgreedTerms } from "@/interfaces/auth";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 동의된 약관 저장 */
 export async function POST(req: NextRequest) {

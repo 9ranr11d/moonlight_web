@@ -4,18 +4,18 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { clearRecoveryMsg } from "@redux/slices/recoverySlice";
+import { clearRecoveryMsg } from "@/redux/slices/recoverySlice";
 
-import { changePwAction } from "@actions/authAction";
+import { changePwAction } from "@/actions/authAction";
 
 import styles from "./Recovery.module.css";
 
-import { validatePassword } from "@utils/index";
+import { validatePassword } from "@/utils";
 
-import PasswordInput from "@components/common/input/PasswordInput";
-import NextBtn from "@components/common/btn/NextBtn";
+import PasswordInput from "@/components/common/input/PasswordInput";
+import NextBtn from "@/components/common/btn/NextBtn";
 
 /** 비밀번호 변경 Form Interface */
 interface IChagePwForm {

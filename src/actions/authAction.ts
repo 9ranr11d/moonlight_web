@@ -1,4 +1,10 @@
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
+
+import {
+  setMessage,
+  resetMessage,
+  TMessageResult,
+} from "@/redux/slices/messageSlice";
 
 import {
   setAuthErr,
@@ -7,7 +13,7 @@ import {
   signIn,
   signOut,
   socialSignIn,
-} from "@redux/slices/authSlice";
+} from "@/redux/slices/authSlice";
 
 import {
   setLatestTerm,
@@ -15,7 +21,7 @@ import {
   setIsIdDuplicate,
   setSignUpCompleted,
   setTermsSaved,
-} from "@redux/slices/signUpSlice";
+} from "@/redux/slices/signUpSlice";
 
 import {
   confirmVerificationAvailable,
@@ -23,13 +29,13 @@ import {
   setPhoneVerified,
   setRegistered,
   setVerificationErr,
-} from "@redux/slices/verificationSlice";
+} from "@/redux/slices/verificationSlice";
 
 import {
   passwordChangeCompleted,
   passwordChangeFailed,
   setModifiedId,
-} from "@redux/slices/recoverySlice";
+} from "@/redux/slices/recoverySlice";
 
 import {
   IIUser,
@@ -37,8 +43,9 @@ import {
   IUserAgreedTerms,
   IVerificationInfo,
   TVerificationType,
-} from "@interfaces/auth";
-import { setCoupleCode } from "@redux/slices/coupleCodeSlice";
+} from "@/interfaces/auth";
+
+import { setCoupleCode } from "@/redux/slices/coupleCodeSlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -541,7 +548,6 @@ export const setVerificationInfoAction =
 
 /**
  * local 로그아웃
- * @param confirmDesc 띄울 확인 Message
  * @param dispatch dispatch
  * @returns 로그아웃 여부
  */

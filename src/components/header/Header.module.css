@@ -12,31 +12,6 @@
   height: 100%;
 }
 
-.sideMenu {
-  transition: right 0.5s ease, opacity 0.5s ease;
-  position: absolute;
-  top: 0;
-  background: white;
-  width: 80%;
-  height: 100vh;
-  padding: 10px;
-  z-index: 1003;
-  border-radius: 5px 0 0 5px;
-}
-
-.sideMenuHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.sideMenu > ul {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-}
-
 .afterSignInBox {
   position: relative;
   transition: bottom 1s ease, opacity 1s ease;
@@ -48,21 +23,6 @@
 .menuBox {
   width: 100%;
   margin: auto;
-}
-
-.menuBox button,
-.background button,
-.sideMenu button {
-  border: none;
-  background: none;
-  color: var(--font-color);
-  padding: 0;
-}
-
-.menuBox button:active,
-.background button:active,
-.sideMenu button:active {
-  background: none;
 }
 
 .menuBox > ul {
@@ -83,7 +43,7 @@
 }
 
 .mobile {
-  display: none;
+  display: none !important;
 }
 
 .beforeSignInBox {
@@ -96,6 +56,10 @@
 }
 
 @media (max-width: 767px) {
+  .web {
+    display: none;
+  }
+
   .afterSignInBox {
     display: flex;
     align-items: center;
@@ -116,6 +80,6 @@
   }
 
   .mobile {
-    display: initial;
+    display: initial !important;
   }
 }

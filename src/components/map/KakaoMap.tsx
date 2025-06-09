@@ -3,15 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 import {
   setSelectedLocationIdx,
   setMapCenter,
   IAddress,
   setFavoriteLocations,
   setLastCenter,
-} from "@redux/slices/mapSlice";
-import { showBackdrop } from "@redux/slices/backdropSlice";
+} from "@/redux/slices/mapSlice";
+import { showBackdrop } from "@/redux/slices/backdropSlice";
 
 // import Lottie from "react-lottie-player";
 
@@ -22,19 +22,19 @@ import styles from "./Map.module.css";
 import {
   IFavoriteLocation,
   IIFavoriteLocation,
-} from "@models/FavoriteLocation";
+} from "@/models/FavoriteLocation";
 
-import { ILatLng } from "@interfaces/index";
+import { ILatLng } from "@/interfaces";
 
-import useKakaoLoader from "@hooks/useKakaoLoader";
-import useGeoloaction from "@hooks/useGeolocation";
+import useKakaoLoader from "@/hooks/useKakaoLoader";
+import useGeoloaction from "@/hooks/useGeolocation";
 
-import { ERR_MSG } from "@constants/msg";
-import { RESEARCH_DISTANCE } from "@constants/index";
+import { ERR_MSG } from "@/constants";
+import { RESEARCH_DISTANCE } from "@/constants";
 
-import { calculateDistance } from "@utils/index";
+import { calculateDistance } from "@/utils";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
 import SearchInput from "./SearchInput";
 import EventModal from "./EventModal";

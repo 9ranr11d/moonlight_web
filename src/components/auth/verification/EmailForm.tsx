@@ -4,26 +4,26 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { resetVerification, verify } from "@redux/slices/verificationSlice";
-import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
+import { resetVerification, verify } from "@/redux/slices/verificationSlice";
+import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
 
 import {
   checkDuplicateEmailAction,
   getUserIdByEmailAction,
   verityEmailAction,
-} from "@actions/authAction";
+} from "@/actions/authAction";
 
-import styles from "@components/auth/signUp/SignUp.module.css";
+import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import { TVerificationType } from "@interfaces/auth";
+import { TVerificationType } from "@/interfaces/auth";
 
-import { validateEmail } from "@utils/index";
+import { validateEmail } from "@/utils";
 
-import EmailInput from "@components/common/input/EmailInput";
-import VerificationInput from "@components/common/input/VerificationInput";
-import LoadingBtn from "@components/common/btn/LoadingBtn";
+import EmailInput from "@/components/common/input/EmailInput";
+import VerificationInput from "@/components/common/input/VerificationInput";
+import LoadingBtn from "@/components/common/btn/LoadingBtn";
 
 /** 이메일 인증 Form Interface */
 interface IEmailForm {

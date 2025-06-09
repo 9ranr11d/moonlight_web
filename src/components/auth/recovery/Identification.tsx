@@ -9,16 +9,16 @@ import Lottie from "react-lottie-player";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 
-import { TVerificationMethod } from "@interfaces/auth";
+import { TVerificationMethod } from "@/interfaces/auth";
 
 import VerificationForm from "../verification/VerificationForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";
 
-import DotAndBar from "@components/common/indicator/DotAndBar";
-import ErrorBlock from "@components/common/ErrorBlock";
+import DotAndBar from "@/components/common/indicator/DotAndBar";
+import ErrorBlock from "@/components/common/ErrorBlock";
 
 import VerificationMethodForm from "../verification/VerificationMethodForm";
 

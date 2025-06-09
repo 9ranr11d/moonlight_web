@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 
-import { MONTH_NAMES, DAY_OF_WEEK, MONTH_DAYS, TODAY } from "@constants/date";
+import { MONTH_NAMES, DAY_OF_WEEK, MONTH_DAYS, TODAY } from "@/constants";
 
 import styles from "./Calendar.module.css";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
-import YearMonthPicker from "@components/calendar/YearMonthPicker";
+import YearMonthPicker from "@/components/calendar/YearMonthPicker";
 
 import IconLeft from "@public/svgs/common/icon_less_than.svg";
 import IconRight from "@public/svgs/common/icon_greater_than.svg";

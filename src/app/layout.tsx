@@ -3,11 +3,12 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 
-import Provider from "@redux/Provider";
+import Provider from "@/redux/Provider";
 
-import SessionProviderWrapper from "@components/common/SessionProviderWrapper";
-import Header from "@components/common/Header";
-import Footer from "@components/common/Footer";
+import SessionProviderWrapper from "@/components/common/SessionProviderWrapper";
+import Header from "@/components/header/Header";
+import Message from "@/components/common/Message";
+import Footer from "@/components/common/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,8 @@ export default function RootLayout({
             <main style={{ display: "grid", gridTemplateColumns: "1fr" }}>
               {children}
             </main>
+
+            <Message />
 
             <Footer />
           </Provider>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-import { MONTH_NAMES } from "@constants/date";
+import { MONTH_NAMES } from "@/constants";
 
 import styles from "./YearMonthPicker.module.css";
 

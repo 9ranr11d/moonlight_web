@@ -1,4 +1,4 @@
-import { TVerificationMethod } from "@interfaces/auth";
+import { TVerificationMethod } from "@/interfaces/auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 /** IP/PW 찾기 관련 정보 Interface */

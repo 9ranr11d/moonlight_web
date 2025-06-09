@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IDuplicate, IPasswordState, ITerm } from "@interfaces/auth";
+import { IDuplicate, IPasswordState, ITerm } from "@/interfaces/auth";
 
 /** 초기값 Interface */
 interface ITermState {

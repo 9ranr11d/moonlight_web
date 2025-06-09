@@ -20,17 +20,9 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@lib/*": ["src/lib/*"],
-      "@models/*": ["src/models/*"],
-      "@redux/*": ["src/redux/*"],
-      "@actions/*": ["src/actions/*"],
-      "@constants/*": ["src/constants/*"],
+      "@/*": ["src/*"],
       "@pages/*": ["src/app/(pages)/*"],
-      "@components/*": ["src/components/*"],
-      "@public/*": ["public/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@public/*": ["public/*"]
     }
   },
   "include": [

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
 import {
   decrementSignUpStep,
@@ -14,18 +14,18 @@ import {
   resetPassword,
   resetSignUp,
   resetTerm,
-} from "@redux/slices/signUpSlice";
+} from "@/redux/slices/signUpSlice";
 
-import { resetVerification } from "@redux/slices/verificationSlice";
+import { resetVerification } from "@/redux/slices/verificationSlice";
 
-import TitleHeader from "@components/common/TitleHeader";
-import ErrorBlock from "@components/common/ErrorBlock";
-import DotAndBar from "@components/common/indicator/DotAndBar";
+import TitleHeader from "@/components/common/TitleHeader";
+import ErrorBlock from "@/components/common/ErrorBlock";
+import DotAndBar from "@/components/common/indicator/DotAndBar";
 
-import TermsForm from "@components/auth/signUp/TermsForm";
-import AccountForm from "@components/auth/signUp/AccountForm";
-import VerificationForm from "@components/auth/signUp/VerificationForm";
-import ProfileForm from "@components/auth/signUp/ProfileForm";
+import TermsForm from "@/components/auth/signUp/TermsForm";
+import AccountForm from "@/components/auth/signUp/AccountForm";
+import VerificationForm from "@/components/auth/signUp/VerificationForm";
+import ProfileForm from "@/components/auth/signUp/ProfileForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 import IconCheck from "@public/svgs/common/icon_check.svg";

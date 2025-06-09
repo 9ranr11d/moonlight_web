@@ -2,8 +2,8 @@ import { WritableDraft } from "immer";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IIISchedule } from "@models/Schedule";
-import { IIScheduleCategory } from "@models/ScheduleCategory";
+import { IIISchedule } from "@/models/Schedule";
+import { IIScheduleCategory } from "@/models/ScheduleCategory";
 
 /** 초가값 Interface */
 interface IScheduleCategoriesState {

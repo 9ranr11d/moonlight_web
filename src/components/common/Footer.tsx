@@ -4,8 +4,8 @@ import Link from "next/link";
 
 import styles from "./Footer.module.css";
 
-import { MAIN_TITLE } from "@constants/index";
-import { MAIN_MENUS } from "@constants/menu";
+import { MAIN_TITLE } from "@/constants";
+import { MAIN_MENUS } from "@/constants";
 
 /** Footer */
 export default function Footer() {

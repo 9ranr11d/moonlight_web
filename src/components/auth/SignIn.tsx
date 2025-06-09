@@ -12,18 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { signIn as socialSignIn } from "next-auth/react";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { resetAuth } from "@redux/slices/authSlice";
+import { resetAuth } from "@/redux/slices/authSlice";
 
-import { signInAction } from "@actions/authAction";
+import { signInAction } from "@/actions/authAction";
 
-import { ISignInData } from "@interfaces/auth";
+import { ISignInData } from "@/interfaces/auth";
 
 import styles from "./SignIn.module.css";
 
-import VisibleBtn from "@components/common/btn/VisibleBtn";
-import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
+import VisibleBtn from "@/components/common/btn/VisibleBtn";
+import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
 
 import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";

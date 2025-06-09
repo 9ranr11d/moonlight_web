@@ -6,25 +6,25 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { resetVerification, verify } from "@redux/slices/verificationSlice";
+import { resetVerification, verify } from "@/redux/slices/verificationSlice";
 
-import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
+import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
 
 import {
   checkDuplicatePhoneNumberAction,
   getUserIdByPhoneNumberAction,
   verifyPhoneNumberAction,
-} from "@actions/authAction";
+} from "@/actions/authAction";
 
-import styles from "@components/auth/signUp/SignUp.module.css";
+import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import { TVerificationType } from "@interfaces/auth";
+import { TVerificationType } from "@/interfaces/auth";
 
-import PhoneNumberInput from "@components/common/input/PhoneNumberInput";
-import VerificationInput from "@components/common/input/VerificationInput";
-import LoadingBtn from "@components/common/btn/LoadingBtn";
+import PhoneNumberInput from "@/components/common/input/PhoneNumberInput";
+import VerificationInput from "@/components/common/input/VerificationInput";
+import LoadingBtn from "@/components/common/btn/LoadingBtn";
 
 /** 휴대전화 번호 인증 Form Interface */
 interface IPhoneNumberForm {

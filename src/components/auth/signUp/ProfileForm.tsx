@@ -4,19 +4,19 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { saveUserTermsAction, signUpAction } from "@actions/authAction";
+import { saveUserTermsAction, signUpAction } from "@/actions/authAction";
 
-import styles from "@components/auth/signUp/SignUp.module.css";
+import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import { validateNickname } from "@utils/index";
+import { validateNickname } from "@/utils";
 
-import DropdownDateBtn from "@components/common/btn/DropdownDateBtn";
-import RadioBtns from "@components/common/btn/RadioBtns";
-import NextBtn from "@components/common/btn/NextBtn";
-import NicknameInput from "@components/common/input/NicknameInput";
-import LunarLoader from "@components/common/LunarLoader";
+import DropdownDateBtn from "@/components/common/btn/DropdownDateBtn";
+import RadioBtns from "@/components/common/btn/RadioBtns";
+import NextBtn from "@/components/common/btn/NextBtn";
+import NicknameInput from "@/components/common/input/NicknameInput";
+import LunarLoader from "@/components/common/LunarLoader";
 
 import IconMale from "@public/svgs/common/icon_male.svg";
 import IconFemale from "@public/svgs/common/icon_female.svg";

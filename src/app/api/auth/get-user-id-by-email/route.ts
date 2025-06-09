@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 해당 Email을 가진 사용자 아이디 가져오기 */
 export async function POST(req: NextRequest) {

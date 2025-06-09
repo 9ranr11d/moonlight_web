@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 
-import { ITerm } from "@interfaces/auth";
+import { ITerm } from "@/interfaces/auth";
 
-import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
-import ExpandCollapseBtn from "@components/common/btn/ExpandCollapseBtn";
+import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
+import ExpandCollapseBtn from "@/components/common/btn/ExpandCollapseBtn";
 
 /** 약관 체크 박스 인터페이스 */
 interface ITermInput {

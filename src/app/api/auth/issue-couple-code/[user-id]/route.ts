@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 연인 식별자 발급 */
 export async function POST(

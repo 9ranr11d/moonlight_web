@@ -1,4 +1,4 @@
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

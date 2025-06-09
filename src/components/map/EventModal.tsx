@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 
-import { IIFavoriteLocation } from "@models/FavoriteLocation";
-import { IIFavoriteLocationHistory } from "@models/FavoriteLocationHistory";
+import { IIFavoriteLocation } from "@/models/FavoriteLocation";
+import { IIFavoriteLocationHistory } from "@/models/FavoriteLocationHistory";
 
-import { ERR_MSG } from "@constants/msg";
+import { ERR_MSG } from "@/constants";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
 import VisitHistories from "./VisitHistories";
 import VisitHistoryEditor from "./VisitHistoryEditor";

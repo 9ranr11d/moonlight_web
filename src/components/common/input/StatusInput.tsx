@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import VisibleBtn from "@components/common/btn/VisibleBtn";
+import VisibleBtn from "@/components/common/btn/VisibleBtn";
 
 import IconCheck from "@public/svgs/common/icon_check.svg";
 

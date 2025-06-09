@@ -2,12 +2,12 @@
 
 import React, { useMemo } from "react";
 
-import { TVerificationMethod, TVerificationType } from "@interfaces/auth";
+import { TVerificationMethod, TVerificationType } from "@/interfaces/auth";
 
-import ErrorBlock from "@components/common/ErrorBlock";
+import ErrorBlock from "@/components/common/ErrorBlock";
 
-import EmailForm from "@components/auth/verification/EmailForm";
-import PhoneNumberForm from "@components/auth/verification/PhoneNumberForm";
+import EmailForm from "@/components/auth/verification/EmailForm";
+import PhoneNumberForm from "@/components/auth/verification/PhoneNumberForm";
 
 /** 본인인증 Form Interface */
 interface IVerificationForm {

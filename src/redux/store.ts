@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import backdropSlice from "./slices/backdropSlice";
+import messageSlice from "./slices/messageSlice";
 import signUpSlice from "./slices/signUpSlice";
 import verificationSlice from "./slices/verificationSlice";
 import authSlice from "./slices/authSlice";
@@ -17,6 +18,8 @@ export const store = configureStore({
     backdropSlice,
     /** 회원가입 정보 */
     signUpSlice,
+    /** 메시지 정보 */
+    messageSlice,
     /** 본인인증 정보 */
     verificationSlice,
     /** 인증 정보 */

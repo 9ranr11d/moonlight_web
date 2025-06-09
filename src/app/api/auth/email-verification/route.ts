@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import nodemailer from "nodemailer";
 
-import { generateRandomCode } from "@utils/index";
-import { MAIN_DOMAIN } from "@constants/index";
+import { generateRandomCode } from "@/utils";
+import { MAIN_DOMAIN } from "@/constants";
 
 /** 관리자 Email 아이디 */
 const ADMIN_MAIL: string = process.env.NODEMAILER_ID!;

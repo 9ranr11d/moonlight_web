@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 export async function GET(req: NextRequest) {
   try {

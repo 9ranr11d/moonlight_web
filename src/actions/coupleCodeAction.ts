@@ -1,6 +1,6 @@
-import { AppDispatch } from "@redux/store";
+import { AppDispatch } from "@/redux/store";
 
-import { setCoupleCode, setErr } from "@redux/slices/coupleCodeSlice";
+import { setCoupleCode, setErr } from "@/redux/slices/coupleCodeSlice";
 
 export const issueCoupleCodeAction =
   (formData: { userId: string }) => async (dispatch: AppDispatch) => {

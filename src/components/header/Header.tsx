@@ -10,28 +10,29 @@ import { useSession } from "next-auth/react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
+import { hideBackdrop, showBackdrop } from "@/redux/slices/backdropSlice";
 
 import {
   checkRefreshTokenAction,
   getUserByAccessTokenAction,
   socialSignInAction,
-} from "@actions/authAction";
+} from "@/actions/authAction";
 
 import styles from "./Header.module.css";
 
-import { MAIN_MENUS } from "@constants/menu";
+import { MAIN_MENUS } from "@/constants";
 
-import ProfileModal from "@components/profile/ProfileModal";
+import ProfileModal from "@/components/profile/ProfileModal";
 
-import Backdrop from "@components/common/Backdrop";
+import Backdrop from "@/components/common/Backdrop";
+
+import SideMenu from "./SideMenu";
 
 import IconLogoSquare from "@public/svgs/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/svgs/common/icon_logo_horizontal.svg";
 import IconThreeBar from "@public/svgs/common/icon_three_bar.svg";
-import IconClose from "@public/svgs/common/icon_greater_than.svg";
 
 /** Header */
 export default function Header() {
@@ -159,7 +160,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleUserPanel}
-              className="noOutlineBtn"
+              className={`noOutlineBtn ${styles.web}`}
             >
               {user.nickname}
             </button>
@@ -169,9 +170,10 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleSideMenu}
-              className={styles.mobile}
+              className={`noOutlineBtn ${styles.mobile}`}
+              style={{ display: "flex", alignItems: "center" }}
             >
-              <IconThreeBar width={24} height={24} fill={"var(--gray-500)"} />
+              <IconThreeBar width={24} height={24} fill={"var(--black-700a)"} />
             </button>
           </div>
         </div>
@@ -195,35 +197,7 @@ export default function Header() {
 
       <Backdrop />
 
-      <div
-        className={styles.sideMenu}
-        style={{ right: isSideMenuOpen ? 0 : "-100%" }}
-      >
-        <div className={styles.sideMenuHeader}>
-          <button type="button" onClick={toggleSideMenu}>
-            <IconClose
-              alt="X"
-              width={24}
-              height={24}
-              fill={"var(--gray-500)"}
-            />
-          </button>
-
-          <Link href={"/profile"}>
-            <button type="button">
-              <h6>{user.nickname}님</h6>
-            </button>
-          </Link>
-        </div>
-
-        <ul>
-          {MAIN_MENUS.map((menu, idx) => (
-            <li key={idx}>
-              <Link href={menu.path}>{menu.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <SideMenu isOpen={isSideMenuOpen} onClose={toggleSideMenu} />
     </header>
   );
 }

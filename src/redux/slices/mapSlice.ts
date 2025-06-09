@@ -2,11 +2,11 @@ import { WritableDraft } from "immer";
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { IIFavoriteLocation } from "@models/FavoriteLocation";
+import { IIFavoriteLocation } from "@/models/FavoriteLocation";
 
-import { ILatLng } from "@interfaces/index";
+import { ILatLng } from "@/interfaces";
 
-import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
+import { DEFAULT_LAT, DEFAULT_LNG } from "@/constants";
 
 /** 주소 Interface */
 export interface IAddress {

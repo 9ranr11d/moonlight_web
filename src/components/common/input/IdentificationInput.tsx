@@ -4,16 +4,16 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
-import { resetIdentification } from "@redux/slices/signUpSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { resetIdentification } from "@/redux/slices/signUpSlice";
 
-import { checkDuplicateIdAction } from "@actions/authAction";
+import { checkDuplicateIdAction } from "@/actions/authAction";
 
-import { validateIdentification } from "@utils/index";
+import { validateIdentification } from "@/utils";
 
-import styles from "@components/common/input/Input.module.css";
+import styles from "@/components/common/input/Input.module.css";
 
-import StatusInput from "@components/common/input/StatusInput";
+import StatusInput from "@/components/common/input/StatusInput";
 
 /** 아이디 Input */
 export default function IdentificationInput() {

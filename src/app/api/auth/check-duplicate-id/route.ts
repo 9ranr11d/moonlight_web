@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 아이디 중복 여부 확인 */
 export async function POST(req: NextRequest) {

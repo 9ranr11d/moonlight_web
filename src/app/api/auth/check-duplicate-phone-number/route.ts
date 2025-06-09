@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { TVerificationType } from "@interfaces/auth";
+import { TVerificationType } from "@/interfaces/auth";
 
 /** 휴대전화 번호 중복 검사 */
 export async function POST(req: NextRequest) {

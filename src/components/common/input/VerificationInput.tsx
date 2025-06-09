@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import { formatTime } from "@utils/index";
+import { formatTime } from "@/utils";
 
-import StatusInput from "@components/common/input/StatusInput";
+import StatusInput from "@/components/common/input/StatusInput";
 
 /** 인증 Input Interface */
 interface IVerificationInput {

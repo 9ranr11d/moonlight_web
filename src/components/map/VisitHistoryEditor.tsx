@@ -5,14 +5,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 
-import { formatDateII } from "@utils/index";
+import { formatDateII } from "@/utils";
 
 import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";
 import IconDownTriangle from "@public/img/common/icon_down_triangle_black.svg";
-import MiniCalendarView from "@components/calendar/MiniCalendarView";
-import StarRating from "@components/common/StarRating";
+import MiniCalendarView from "@/components/calendar/MiniCalendarView";
+import StarRating from "@/components/common/StarRating";
 
 /** 속성 입력 필드 제목 Interface */
 interface ILabels {

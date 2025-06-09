@@ -4,21 +4,21 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { TVerificationMethod } from "@interfaces/auth";
+import { TVerificationMethod } from "@/interfaces/auth";
 
-import ErrorBlock from "@components/common/ErrorBlock";
-import DotAndBar from "@components/common/indicator/DotAndBar";
+import ErrorBlock from "@/components/common/ErrorBlock";
+import DotAndBar from "@/components/common/indicator/DotAndBar";
 
-import VerificationMethodForm from "@components/auth/verification/VerificationMethodForm";
-import VerificationForm from "@components/auth/verification/VerificationForm";
+import VerificationMethodForm from "@/components/auth/verification/VerificationMethodForm";
+import VerificationForm from "@/components/auth/verification/VerificationForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
-import TitleHeader from "@components/common/TitleHeader";
+import TitleHeader from "@/components/common/TitleHeader";
 
-import LunarLoader from "@components/common/LunarLoader";
-import { setVerificationInfoAction } from "@actions/authAction";
+import LunarLoader from "@/components/common/LunarLoader";
+import { setVerificationInfoAction } from "@/actions/authAction";
 
 /** 본인인증이 안되었을 시 본인인증 Form */
 export default function MissingContactForm() {

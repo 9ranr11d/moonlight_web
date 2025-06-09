@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
 import IconNoEntry from "@public/svgs/common/icon_no_entry.svg";
 

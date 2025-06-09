@@ -4,42 +4,35 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
-import { issueCoupleCodeAction } from "@actions/coupleCodeAction";
+import { issueCoupleCodeAction } from "@/actions/coupleCodeAction";
 
 import styles from "./Home.module.css";
 
+import { copyClipBoard } from "@/utils";
+
+import Container from "@/components/common/Container";
+import UpcomingSchedule from "@/components/home/UpcomingSchedule";
+
 import IconClipboard from "@public/svgs/common/icon_clipboard.svg";
-import Container from "@components/common/Container";
-import UpcomingSchedule from "@components/home/UpcomingSchedule";
+import { Modal } from "@/components/common/Modal";
 
 /** 메인 홈 */
 export default function Home() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  /** 사용자 정보 */
-  const { identification } = useSelector((state: RootState) => state.authSlice);
+  const { identification } = useSelector((state: RootState) => state.authSlice); // 사용자 식별자
 
   const { coupleCode } = useSelector(
     (state: RootState) => state.coupleCodeSlice
-  );
+  ); // 연인 식별자
 
   return (
     <div>
       <div className={styles.coupleCodeBox}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            paddingLeft: 120,
-            width: "100%",
-          }}
-        >
+        <div className={styles.title}>
           <div
             style={{
               paddingBottom: 10,
@@ -89,9 +82,12 @@ export default function Home() {
                   style={{
                     width: 40,
                     height: 40,
-                    padding: 5,
                     borderRadius: 10,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
+                  onClick={() => copyClipBoard(coupleCode)}
                 >
                   <IconClipboard width={20} height={20} />
                 </button>
@@ -115,6 +111,18 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           <UpcomingSchedule />
         </div>
+
+        <Modal>
+          <Modal.Container>
+            <Modal.Title>제목</Modal.Title>
+            <Modal.SubTitle>서브 제목</Modal.SubTitle>
+          </Modal.Container>
+
+          <Modal.Container direction="row" style={{ gap: 10 }}>
+            <Modal.Button>확인</Modal.Button>
+            <Modal.Button className="outlineBtn">취소</Modal.Button>
+          </Modal.Container>
+        </Modal>
       </Container>
     </div>
   );

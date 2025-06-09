@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
-import DropdownBtn from "@components/common/btn/DropdownBtn";
+import DropdownBtn from "@/components/common/btn/DropdownBtn";
 
-import { CURRENT_YEAR } from "@constants/date";
+import { CURRENT_YEAR } from "@/constants";
 
-import { formatDateI, generateRange, getMonthDays } from "@utils/index";
+import { formatDateI, generateRange, getMonthDays } from "@/utils";
 
 interface IDropdownDateBtn {
   /** 선택된 날짜 */

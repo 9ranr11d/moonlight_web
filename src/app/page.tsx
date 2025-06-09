@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 
-import LunarLoader from "@components/common/LunarLoader";
+import LunarLoader from "@/components/common/LunarLoader";
 
-import SignIn from "@components/auth/SignIn";
-import MissingContactForm from "@components/auth/signUp/MissingContactForm";
+import SignIn from "@/components/auth/SignIn";
+import MissingContactForm from "@/components/auth/signUp/MissingContactForm";
 
 /** 시작 Page */
 export default function Home() {

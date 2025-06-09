@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   IFavoriteLocationHistory,
   IIFavoriteLocationHistory,
-} from "@models/FavoriteLocationHistory";
+} from "@/models/FavoriteLocationHistory";
 
 /** 즐겨찾기 방문 일지 타입 */
 type TypeFavoriteLocationHistory = WritableDraft<

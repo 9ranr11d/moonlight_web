@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ERR_MSG } from "@constants/msg";
+import { ERR_MSG } from "@/constants";
 
 import IconNoEntry from "@public/svgs/common/icon_no_entry.svg";
 

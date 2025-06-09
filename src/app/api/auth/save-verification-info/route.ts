@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { IVerificationInfo } from "@interfaces/auth";
+import { IVerificationInfo } from "@/interfaces/auth";
 
 /** 본인인증 정보 저장 */
 export async function PUT(req: NextRequest) {

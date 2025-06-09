@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 import bcrypt from "bcrypt";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { ISignInData } from "@interfaces/auth";
+import { ISignInData } from "@/interfaces/auth";
 
-import { refresh, sign } from "@utils/jwtUtils";
+import { refresh, sign } from "@/utils";
 
 /** 로그인 */
 export async function POST(req: NextRequest) {

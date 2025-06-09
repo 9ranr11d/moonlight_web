@@ -5,17 +5,17 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@redux/store";
-import { setSchedules } from "@redux/slices/calendarSlice";
-import { hideBackdrop, showBackdrop } from "@redux/slices/backdropSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setSchedules } from "@/redux/slices/calendarSlice";
+import { hideBackdrop, showBackdrop } from "@/redux/slices/backdropSlice";
 
-import { IIUser } from "@interfaces/auth/index";
-import { IIISchedule } from "@models/Schedule";
+import { IIUser } from "@/interfaces/auth";
+import { IIISchedule } from "@/models/Schedule";
 
 import styles from "./CalendarView.module.css";
 
-import { DAY_OF_WEEK, MONTH_NAMES } from "@constants/date";
-import { ERR_MSG } from "@constants/msg";
+import { DAY_OF_WEEK, MONTH_NAMES } from "@/constants";
+import { ERR_MSG } from "@/constants";
 
 import EventModal from "./EventModal";
 
@@ -25,7 +25,7 @@ import IconNextWhite from "@public/img/common/icon_greater_than_white.svg";
 import IconNextBlack from "@public/img/common/icon_greater_than_black.svg";
 import IconClose from "@public/img/common/icon_close_primary.svg";
 import IconCheck from "@public/img/common/icon_check_primary.svg";
-import { getMonthDays } from "@utils/index";
+import { getMonthDays } from "@/utils";
 
 /** 일정 표시를 위한 시작 날짜, 종료 날짜를 변환한 일정 Interface */
 export interface IConvertedSchedules extends IIISchedule {

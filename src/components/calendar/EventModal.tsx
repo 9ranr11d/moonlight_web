@@ -5,25 +5,25 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@redux/store";
-import { setScheduleCategories } from "@redux/slices/calendarSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setScheduleCategories } from "@/redux/slices/calendarSlice";
 
-import { IISchedule, ISchedule } from "@models/Schedule";
-import { IIUser } from "@interfaces/auth/index";
+import { IISchedule, ISchedule } from "@/models/Schedule";
+import { IIUser } from "@/interfaces/auth";
 import {
   IIScheduleCategory,
   IScheduleCategory,
-} from "@models/ScheduleCategory";
+} from "@/models/ScheduleCategory";
 
 import styles from "./EventModal.module.css";
 
-import { ERR_MSG } from "@constants/msg";
+import { ERR_MSG } from "@/constants";
 
-import { formatDateII } from "@utils/index";
+import { formatDateII } from "@/utils";
 
-import Modal from "@components/common/Modal";
-import MiniCalendarView from "@components/calendar/MiniCalendarView";
-import { IConvertedSchedules } from "@components/calendar/CalendarView";
+import { Modal } from "@/components/common/Modal";
+import MiniCalendarView from "@/components/calendar/MiniCalendarView";
+import { IConvertedSchedules } from "@/components/calendar/CalendarView";
 
 import IconPrevBlack from "@public/img/common/icon_less_than_black.svg";
 import IconUpTriangle from "@public/img/common/icon_up_triangle_black.svg";

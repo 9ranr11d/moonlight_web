@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import styles from "@components/common/input/Input.module.css";
+import styles from "@/components/common/input/Input.module.css";
 
-import DropdownBtn from "@components/common/btn/DropdownBtn";
+import DropdownBtn from "@/components/common/btn/DropdownBtn";
 
 /** EmailInput Interface */
 interface IEmailInput {

@@ -24,7 +24,7 @@
 }
 
 .sideMenu > ul > li > button:hover {
-  background: var(--gray-300: #d2c8cb);
+  background: var(--gray-300);
 }
 
 .sideMenu > ul > li > .selected {

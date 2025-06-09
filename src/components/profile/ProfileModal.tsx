@@ -4,18 +4,20 @@ import React from "react";
 
 import Image from "next/image";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { signOut as socialSignOut } from "next-auth/react";
+import { RootState } from "@/redux/store";
 
-import { AppDispatch, RootState } from "@redux/store";
-
-import { signOutAction } from "@actions/authAction";
+import useSignOut from "@/hooks/useSignOut";
 
 import styles from "./ProfileModal.module.css";
 
+import CloseBtn from "@/components/common/btn/CloseBtn";
+
 import ImgProfile from "@public/imgs/auth/img_profile.png";
-import CloseBtn from "@components/common/btn/CloseBtn";
+
+import IconProfile from "@public/svgs/auth/icon_profile.svg";
+import IconLogout from "@public/svgs/auth/icon_logout.svg";
 
 /** 사용자 정보 수정 모달 Interface */
 interface IProfileModal {
@@ -25,21 +27,10 @@ interface IProfileModal {
 
 /** 사용자 정보 수정 모달 */
 export default function ProfileModal({ closeModal }: IProfileModal) {
-  /** Dispatch */
-  const dispatch = useDispatch<AppDispatch>();
-
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
 
-  /** '로그아웃' 클릭 시 */
-  const clickSignOut = () => {
-    if (!window.confirm("로그아웃 하시겠습니까?")) return;
-
-    if (user.provider === "local") dispatch(signOutAction());
-    else socialSignOut();
-
-    closeModal();
-  };
+  const signOut = useSignOut();
 
   return (
     <div className={styles.modal}>
@@ -48,7 +39,12 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
       </div>
 
       <div
-        style={{ display: "flex", justifyContent: "center", marginBottom: 5 }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: 5,
+          paddingTop: 20,
+        }}
       >
         <Image
           src={user.profileImgUrl || ImgProfile}
@@ -58,26 +54,29 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
         />
       </div>
 
-      <p style={{ textAlign: "center", fontSize: 16, marginBottom: 10 }}>
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: 16,
+          marginBottom: 10,
+        }}
+      >
         {user.nickname}님
       </p>
 
-      <ul>
-        <li>
-          <button type="button" className="noOutlineBtn">
-            정보
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className={`noOutlineBtn ${styles.logoutBtn}`}
-            onClick={clickSignOut}
-          >
-            로그아웃
-          </button>
-        </li>
-      </ul>
+      <div className={styles.profileActions}>
+        <button type="button">
+          <IconProfile width={15} height={15} fill="white" />
+
+          <span>정보</span>
+        </button>
+
+        <button type="button" className={styles.logoutBtn} onClick={signOut}>
+          <IconLogout width={15} height={15} fill="white" />
+
+          <span>로그아웃</span>
+        </button>
+      </div>
     </div>
   );
 }

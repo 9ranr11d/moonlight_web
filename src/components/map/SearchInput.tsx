@@ -5,18 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { RootState } from "@/redux/store";
 import {
   IAddress,
   resetSearchPlaces,
   setLastCenter,
   setSearchedAddress,
   setSearchedPlaces,
-} from "@redux/slices/mapSlice";
+} from "@/redux/slices/mapSlice";
 
 import styles from "./Map.module.css";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
 import IconClose from "@public/img/common/icon_close_black.svg";
 import IconSearch from "@public/img/common/icon_search_white.svg";

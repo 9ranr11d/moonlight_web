@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import { validateNickname } from "@utils/index";
+import { validateNickname } from "@/utils";
 
-import StatusInput from "@components/common/input/StatusInput";
+import StatusInput from "@/components/common/input/StatusInput";
 
 /** 별명 Input Interface */
 interface INicknameInput {

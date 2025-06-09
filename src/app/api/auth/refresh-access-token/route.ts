@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { refreshVerify, sign } from "@utils/jwtUtils";
+import { refreshVerify, sign } from "@/utils";
 
 /** Refresh Token으로 Access Token 재발급 */
 export async function GET(req: NextRequest) {

@@ -4,26 +4,26 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import {
   agreeToAllTerms,
   incrementSignUpStep,
   resetIdentification,
   resetPassword,
   setTermAgreement,
-} from "@redux/slices/signUpSlice";
+} from "@/redux/slices/signUpSlice";
 
-import { getLatestTermsAction } from "@actions/authAction";
+import { getLatestTermsAction } from "@/actions/authAction";
 
-import { ITerm } from "@interfaces/auth";
+import { ITerm } from "@/interfaces/auth";
 
-import styles from "@components/auth/signUp/SignUp.module.css";
+import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import LunarLoader from "@components/common/LunarLoader";
-import CheckBoxBtn from "@components/common/btn/CheckBoxBtn";
+import LunarLoader from "@/components/common/LunarLoader";
+import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
 
-import TermInput from "@components/common/input/TermInput";
-import NextBtn from "@components/common/btn/NextBtn";
+import TermInput from "@/components/common/input/TermInput";
+import NextBtn from "@/components/common/btn/NextBtn";
 
 /** 약관 동의 Form*/
 export default function TermsForm() {

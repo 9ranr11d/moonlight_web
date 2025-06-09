@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import KakaoMap from "@components/map/KakaoMap";
+import KakaoMap from "@/components/map/KakaoMap";
 
 export default function Map() {
   return (

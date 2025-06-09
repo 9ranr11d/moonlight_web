@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import twilio from "twilio";
 
-import { generateRandomCode } from "@utils/index";
+import { generateRandomCode } from "@/utils";
 
 export async function POST(req: NextRequest) {
   try {

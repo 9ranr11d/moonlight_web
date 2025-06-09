@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
-import { validatePassword } from "@utils/index";
+import { validatePassword } from "@/utils";
 
-import StatusInput from "@components/common/input/StatusInput";
+import StatusInput from "@/components/common/input/StatusInput";
 
 /** 비밀번호 Input Interface */
 interface IPasswordInput {

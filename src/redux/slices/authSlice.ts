@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IUser, IVerificationInfo } from "@interfaces/auth/index";
+import { IUser, IVerificationInfo } from "@/interfaces/auth";
 
 /** 초기값 Interface  */
 interface IAuthState extends IUser {

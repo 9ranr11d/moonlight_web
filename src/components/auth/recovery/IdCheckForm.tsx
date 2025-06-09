@@ -4,16 +4,16 @@ import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
 
-import { AppDispatch } from "@redux/store";
+import { AppDispatch } from "@/redux/store";
 
-import { incrementRecoveryStep } from "@redux/slices/recoverySlice";
+import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
 
 import styles from "./Recovery.module.css";
 
-import { validateIdentification } from "@utils/index";
+import { validateIdentification } from "@/utils";
 
-import StatusInput from "@components/common/input/StatusInput";
-import NextBtn from "@components/common/btn/NextBtn";
+import StatusInput from "@/components/common/input/StatusInput";
+import NextBtn from "@/components/common/btn/NextBtn";
 
 /** 아이디 확인 Form Interface */
 interface IIdCheckForm {

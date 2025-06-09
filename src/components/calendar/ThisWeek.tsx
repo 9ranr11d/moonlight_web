@@ -3,13 +3,13 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setSchedules } from "@redux/slices/calendarSlice";
-import { RootState } from "@redux/store";
+import { setSchedules } from "@/redux/slices/calendarSlice";
+import { RootState } from "@/redux/store";
 
 import styles from "./ThisWeek.module.css";
 
-import { ERR_MSG } from "@constants/msg";
-import { DAY_OF_WEEK } from "@constants/date";
+import { ERR_MSG } from "@/constants";
+import { DAY_OF_WEEK } from "@/constants";
 
 /** 현재 주의 일정 표시 */
 export default function ThisWeek() {

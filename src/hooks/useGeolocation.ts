@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { ILatLng } from "@interfaces/index";
+import { ILatLng } from "@/interfaces";
 
-import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
+import { DEFAULT_LAT, DEFAULT_LNG } from "@/constants";
 
 /** Geolocation Position Interface */
 interface IGeolocationPosition {

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
-import { verify } from "@utils/jwtUtils";
+import { verify } from "@/utils";
 
 /** Access Token으로 사용자 정보 가져오기 Interface */
 interface IAccessTokenValid {

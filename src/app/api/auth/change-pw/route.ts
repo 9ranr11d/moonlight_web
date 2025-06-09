@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import bcrypt from "bcrypt";
 
-import { query } from "@lib/dbConnect";
+import { query } from "@/lib/dbConnect";
 
 /** 비밀번호 변경 */
 export async function PUT(req: NextRequest) {

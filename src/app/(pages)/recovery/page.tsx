@@ -6,24 +6,24 @@ import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 
 import {
   decrementRecoveryStep,
   incrementRecoveryStep,
   resetRecovery,
   setVerificationMethod,
-} from "@redux/slices/recoverySlice";
+} from "@/redux/slices/recoverySlice";
 
-import { resetVerification } from "@redux/slices/verificationSlice";
+import { resetVerification } from "@/redux/slices/verificationSlice";
 
-import TitleHeader from "@components/common/TitleHeader";
+import TitleHeader from "@/components/common/TitleHeader";
 
-import ErrorBlock from "@components/common/ErrorBlock";
-import HorizontalTabBtns from "@components/common/btn/HorizontalTabBtns";
+import ErrorBlock from "@/components/common/ErrorBlock";
+import HorizontalTabBtns from "@/components/common/btn/HorizontalTabBtns";
 
-import Identification from "@components/auth/recovery/Identification";
-import Password from "@components/auth/recovery/Password";
+import Identification from "@/components/auth/recovery/Identification";
+import Password from "@/components/auth/recovery/Password";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
