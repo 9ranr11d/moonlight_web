@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react";
 
-import Modal from "./Modal";
+import { Modal } from "@/components/common/Modal";
 
 interface IConfimationModal {
   children: ReactNode;
