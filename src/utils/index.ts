@@ -1,16 +1,115 @@
-import { AppDispatch } from "@redux/store";
-import { signIn, signOut } from "@redux/slices/AuthSlice";
+export * from "./CookieUtils";
+export * from "./jwtUtils";
 
-import { ILatLng } from "@interfaces/index";
+import { ILatLng } from "@/interfaces";
 
-import { ERR_MSG } from "@constants/msg";
+import { FORBIDDEN_WORDS } from "@/constants";
+import { ERR_MSG } from "@/constants";
+
+/**
+ * 아이디 검증 함수
+ * @param id 입력된 아이디
+ * @returns 검증 결과 (true: 사용 가능, false: 사용 불가능)
+ */
+export const validateIdentification = (id: string): boolean => {
+  // 아이디 길이 (5~20자)
+  if (id.length < 5 || id.length > 20) return false;
+
+  // 영문 소문자, 숫자, `_`, `-` 만 허용
+  const idRegex = /^[a-z][a-z0-9_-]*$/;
+
+  if (!idRegex.test(id)) return false;
+
+  // 연속된 숫자 제한 (예: 1111, 123456 등)
+  if (/\d{4,}/.test(id)) return false;
+
+  // 금칙어 목록 배제
+  if (FORBIDDEN_WORDS.some(word => id.toLowerCase().includes(word)))
+    return false;
+
+  return true;
+};
+
+/**
+ * 비밀번호 유효성 검사 함수
+ * @param password 검사할 비밀번호
+ * @returns 충족 여부 (true: 사용 가능, false: 사용 불가능)
+ */
+export const validatePassword = (password: string): boolean => {
+  /** 특수 문자 포함 여부 */
+  const isSpecialCharIncluded = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  /** 소문자 포함 여부 */
+  const isLowercaseIncluded = /[a-z]/.test(password);
+  /** 대문자 포함 여부 */
+  const isUppercaseIncluded = /[A-Z]/.test(password);
+  /** 최소 길이 충족 여부 */
+  const isMinLengthValid = password.length >= 8;
+
+  // 최소 8자 + (대문자, 소문자, 특수문자 중 2가지 이상 포함)
+  return (
+    isMinLengthValid &&
+    [isSpecialCharIncluded, isLowercaseIncluded, isUppercaseIncluded].filter(
+      Boolean
+    ).length >= 2
+  );
+};
+
+/**
+ * Email 유효성 검사 함수
+ * @param email Email
+ * @returns 유효성 여부 (true: 사용 가능, false: 사용 불가능)
+ */
+export const validateEmail = (email: string): boolean => {
+  /** Email 유효성 정규식 */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return emailRegex.test(email);
+};
+
+/**
+ * 닉네임 검증 함수
+ * @param nickname 입력된 닉네임
+ * @returns 검증 결과 (true: 사용 가능, false: 사용 불가능)
+ */
+export const validateNickname = (nickname: string): boolean => {
+  // 닉네임 길이 (3~20자)
+  if (nickname.length < 3 || nickname.length > 20) return false;
+
+  // 영문, 한글, 숫자, `_`, `.` 허용 (특수문자는 제한)
+  const nicknameRegex = /^[a-zA-Z0-9가-힣_.]+$/;
+  if (!nicknameRegex.test(nickname)) return false;
+
+  // 연속된 숫자 제한 (예: 1111, 123456 등)
+  if (/\d{4,}/.test(nickname)) return false;
+
+  // 금칙어 목록 배제
+  if (FORBIDDEN_WORDS.some(word => nickname.toLowerCase().includes(word)))
+    return false;
+
+  return true;
+};
+
+/**
+ * 지정된 길이의 랜덤 문자열 생성
+ * @param length 문자열 길이
+ * @returns 랜덤 문자열
+ */
+export const generateRandomCode = (length: number): string => {
+  return Math.random()
+    .toString(36)
+    .slice(2, 2 + length);
+};
+
+/** 숫자 범위 생성 함수 */
+export const generateRange = (length: number, start = 1, suffix = "") =>
+  Array.from({ length }, (_, i) => `${start + i}${suffix}`);
 
 /**
  * 시간 형식 설정
  * @param time 시간
  * @returns mm:ss
  */
-export const convertToMinutes = (time: number): string => {
+export const formatTime = (time: number): string => {
   /** 분 */
   const minute = Math.floor(time / 60);
   /** 초 */
@@ -32,7 +131,12 @@ export const convertToMinutes = (time: number): string => {
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDateI = (year: number, month: number, day: number, splitter: string): string => {
+export const formatDateI = (
+  year: number,
+  month: number,
+  day: number,
+  splitter: string
+): string => {
   /** 형식 변경된 달 */
   const paddedMonth = String(month).padStart(2, "0");
   /** 형식 변경된 일 */
@@ -44,10 +148,10 @@ export const convertDateI = (year: number, month: number, day: number, splitter:
 /**
  * 날짜 형식 설정
  * @param date 날짜
- * @param splitter 날짜 사이 나눌 기호
+ * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const convertDateII = (date: Date, splitter: string): string => {
+export const formatDateII = (date: Date, splitter: string): string => {
   /** 연도 */
   const year = date.getFullYear();
   /** 달 */
@@ -55,81 +159,29 @@ export const convertDateII = (date: Date, splitter: string): string => {
   /** 일 */
   const day = date.getDate();
 
-  return convertDateI(year, month, day, splitter);
+  return formatDateI(year, month, day, splitter);
 };
 
-/**
- * 로그아웃
- * @param confirmDesc 띄울 확인 메세지
- * @param dispatch dispatch
- * @returns 로그아웃 여부
- */
-export const processSignOut = (confirmDesc: string, dispatch: AppDispatch): boolean => {
-  /** 확인 메세지 */
-  const confirmSignOut: boolean = window.confirm(confirmDesc);
-
-  // 사용자가 취소 누를 시
-  if (!confirmSignOut) return false;
-
-  fetch("/api/auth/signOut", { method: "POST" })
-    .then(res => {
-      if (res.ok) return res.json();
-
-      alert(ERR_MSG);
-
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data => {
-      console.log(data.msg);
-
-      alert("로그아웃 됐습니다.");
-
-      dispatch(signOut());
-    })
-    .catch(err => console.error("/src/utils/index > processSignOut()에서 오류가 발생했습니다. :", err));
-
-  return true;
+/** 윤년 여부를 판단하는 함수 */
+export const isLeapYear = (year: number): boolean => {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
-/**
- * Access Token 유효한지, 유효하면 일치하는 사용자정보가 있는지, 있으면 사용자 정보가 있으면 자동 로그인
- * @param accessToken Access Token
- * @param dispatch Dispatch
- */
-export const getUser = (accessToken: string, dispatch: AppDispatch): void => {
-  // Access Token이 없을 시
-  if (!accessToken) {
-    console.error("Access Token을 찾지 못했습니다.");
-
-    return;
-  }
-
-  /** 보낼 Access Token */
-  const data: { accessToken: string } = { accessToken };
-
-  fetch("/api/auth/getUserByAccessToken", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then(res => {
-      if (res.ok) return res.json();
-
-      alert(ERR_MSG);
-
-      return res.json().then(data => Promise.reject(data.msg));
-    })
-    .then(data =>
-      // 사용자 정보 AuthSlice(Redux)에 저장
-      dispatch(
-        signIn({
-          ...data,
-          isAuth: true,
-        })
-      )
-    )
-    .catch(err => console.error("/src/utils/index > getUser()에서 오류가 발생했습니다. :", err));
-};
+/** 해당 연도의 월별 일수를 반환하는 함수 */
+export const getMonthDays = (year: number): number[] => [
+  31,
+  isLeapYear(year) ? 29 : 28,
+  31,
+  30,
+  31,
+  30,
+  31,
+  31,
+  30,
+  31,
+  30,
+  31,
+];
 
 /**
  * 클립보드로 복사
@@ -143,7 +195,7 @@ export const copyClipBoard = (text: string): void => {
         alert("클립보드에 복사되었습니다.");
       })
       .catch(err => {
-        console.error("/src/utils/index > copyClipBoard()에서 오류가 발생했습니다. :", err);
+        console.error("/src/utils/index > copyClipBoard() :", err);
 
         alert(ERR_MSG);
       });
@@ -158,7 +210,9 @@ export const calculateDistance = (coord1: ILatLng, coord2: ILatLng): number => {
   const Δφ: number = ((coord2.lat - coord1.lat) * Math.PI) / 180;
   const Δλ: number = ((coord2.lng - coord1.lng) * Math.PI) / 180;
 
-  const a: number = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const a: number =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
   const c: number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c; // 거리 (미터)

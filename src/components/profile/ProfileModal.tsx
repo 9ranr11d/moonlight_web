@@ -2,16 +2,24 @@
 
 import React from "react";
 
-import Link from "next/link";
+import Image from "next/image";
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { useSelector } from "react-redux";
 
-import CSS from "./ProfileModal.module.css";
+import { RootState } from "@/redux/store";
 
-import { processSignOut } from "@utils/index";
+import useSignOut from "@/hooks/useSignOut";
 
-/** 사용자 정보 수정 모달 자식들 */
+import styles from "./ProfileModal.module.css";
+
+import CloseBtn from "@/components/common/btns/CloseBtn";
+
+import ImgProfile from "@public/imgs/auth/img_profile.png";
+
+import IconProfile from "@public/svgs/auth/icon_profile.svg";
+import IconLogout from "@public/svgs/auth/icon_logout.svg";
+
+/** 사용자 정보 수정 모달 Interface */
 interface IProfileModal {
   /** 닫기 */
   closeModal: () => void;
@@ -19,33 +27,56 @@ interface IProfileModal {
 
 /** 사용자 정보 수정 모달 */
 export default function ProfileModal({ closeModal }: IProfileModal) {
-  /** Dispatch */
-  const dispatch = useDispatch();
-
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authReducer);
+  const user = useSelector((state: RootState) => state.authSlice);
 
-  /** '로그아웃' 클릭 시 */
-  const clickSignOut = () => {
-    if (processSignOut("로그아웃 하시겠습니까?", dispatch)) closeModal();
-  };
+  const signOut = useSignOut();
 
   return (
-    <div className={CSS.option}>
-      <h6>{user.nickname}님</h6>
+    <div className={styles.modal}>
+      <div style={{ position: "absolute", top: 5, right: 5 }}>
+        <CloseBtn onClick={closeModal} />
+      </div>
 
-      <ul>
-        <li>
-          <Link href={"/profile"}>
-            <button type="button">정보</button>
-          </Link>
-        </li>
-        <li>
-          <button type="button" onClick={clickSignOut}>
-            로그아웃
-          </button>
-        </li>
-      </ul>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: 5,
+          paddingTop: 20,
+        }}
+      >
+        <Image
+          src={user.profileImgUrl || ImgProfile}
+          width={70}
+          height={70}
+          alt="프로필 이미지"
+        />
+      </div>
+
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: 16,
+          marginBottom: 10,
+        }}
+      >
+        {user.nickname}님
+      </p>
+
+      <div className={styles.profileActions}>
+        <button type="button">
+          <IconProfile width={15} height={15} fill="white" />
+
+          <span>정보</span>
+        </button>
+
+        <button type="button" className={styles.logoutBtn} onClick={signOut}>
+          <IconLogout width={15} height={15} fill="white" />
+
+          <span>로그아웃</span>
+        </button>
+      </div>
     </div>
   );
 }

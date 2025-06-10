@@ -2,80 +2,81 @@
 
 import React, { useState } from "react";
 
+import Link from "next/link";
+
 import Image from "next/image";
 
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@redux/store";
-import { signIn } from "@redux/slices/AuthSlice";
+import Lottie from "lottie-react";
 
-import CSS from "./SignIn.module.css";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ERR_MSG } from "@constants/msg";
+import { signIn as socialSignIn } from "next-auth/react";
 
-import IconEyeClose from "@public/img/common/icon_eye_close_gray.svg";
-import IconEyeOpen from "@public/img/common/icon_eye_open_gray.svg";
+import { AppDispatch, RootState } from "@/redux/store";
 
-/** SignIn 자식 */
-interface ISignInProps {
-  /** 회원가입으로 전환 */
-  signUp: () => void;
-  /** ID/PW 찾기 전환 */
-  recovery: () => void;
-}
+import { resetAuth } from "@/redux/slices/authSlice";
+
+import { signInAction } from "@/actions/authAction";
+
+import { ISignInData } from "@/interfaces/auth";
+
+import styles from "./SignIn.module.css";
+
+import VisibleBtn from "@/components/common/btns/VisibleBtn";
+import CheckBoxBtn from "@/components/common/btns/CheckBoxBtn";
+
+import IconClose from "@public/svgs/common/icon_x.svg";
+import IconGoogle from "@public/imgs/auth/icon_google.png";
+import IconNaver from "@public/imgs/auth/icon_naver.png";
+import IconKakao from "@public/imgs/auth/icon_kakao.png";
+
+import LottieLoading from "@public/json/loading_round_white.json";
 
 /** 로그인 */
-export default function SignIn({ signUp, recovery }: ISignInProps) {
+export default function SignIn() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const [identification, setIdentification] = useState<string>(""); // Identification
-  const [password, setPassword] = useState<string>(""); // Password
+  /** 사용자 정보 */
+  const user = useSelector((state: RootState) => state.authSlice);
+
+  const [identification, setIdentification] = useState<string>(""); // 아이디
+  const [password, setPassword] = useState<string>(""); // 비밀번호
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false); // 비밀번호 표시 여부
-  const [isPasswordVisibleHover, setIsPasswordVisibleHover] = useState<boolean>(false); // 비밀번호 표시 버튼 Hover 여부
+  const [isRememberMe, setIsRememberMe] = useState<boolean>(false); // 로그인 상태 유지 여부
+  const [isSignInLoading, setIsSignInLoading] = useState<boolean>(false); // 로그인 로딩 여부
 
   /** 로그인 */
   const processSignIn = (): void => {
-    const data: { identification: string; password: string } = { identification, password };
+    setIsSignInLoading(true);
 
-    fetch("/api/auth/signIn", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(res => {
-        if (res.ok) return res.json();
+    const data: ISignInData = {
+      identification,
+      password,
+      isRememberMe,
+    };
 
-        if (res.status === 404 || res.status === 401) alert("ID와 PW를 다시 확인해주세요.");
-        else alert(ERR_MSG);
-
-        return res.json().then(data => Promise.reject(data.msg));
-      })
-      .then(data => {
-        // 사용자 정보 AuthSlice(Redux)에 저장
-        dispatch(signIn(data.user));
-      })
-      .catch(err => console.error("/src/components/auth/SignIn > SignIn() > processSignIn()에서 오류가 발생했습니다. :", err));
+    dispatch(signInAction(data));
   };
 
-  /** Identification Input */
-  const handleIdentification = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  /** 아이디 Input */
+  const handleIdentification = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setIdentification(e.target.value);
   };
 
-  /** Password Input */
+  /** 비밀번호 Input */
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  /** Password에서 'Enter'를 누를 시 */
-  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  /** 비밀번호에서 'Enter'를 누를 시 */
+  const handlePasswordKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") processSignIn();
-  };
-
-  /** ID/PW 찾기로 전환 */
-  const handleRecovery = (): void => {
-    recovery();
   };
 
   /** 비밀번호 표시 Toggle */
@@ -84,21 +85,26 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
   };
 
   /**
-   * 비밀번호 표시 아이콘 Hover 관리
-   * @param isHover Hover 여부
+   * 소셜 로그인 클릭 시
+   * @param provider 소셜 로그인 제공자
    */
-  const hoverPasswordVisibility = (isHover: boolean): void => {
-    setIsPasswordVisibleHover(isHover);
+  const clickSocialSignIn = (provider: "google" | "naver" | "kakao") => {
+    socialSignIn(provider);
   };
 
   return (
-    <div className={CSS.signInBox}>
+    <div className={styles.signInBox}>
       <h3>로그인</h3>
 
-      <div className={CSS.innerBox}>
+      <div className={styles.innerBox}>
         <ul>
           <li>
-            <input type="text" value={identification} onChange={handleIdentification} placeholder="Identification" />
+            <input
+              type="text"
+              value={identification}
+              onChange={handleIdentification}
+              placeholder="아이디"
+            />
           </li>
 
           <li style={{ position: "relative" }}>
@@ -107,42 +113,140 @@ export default function SignIn({ signUp, recovery }: ISignInProps) {
               value={password}
               onChange={handlePassword}
               onKeyDown={handlePasswordKeyDown}
-              placeholder="Password"
+              placeholder="비밀번호"
             />
 
-            <button
-              type="button"
+            <VisibleBtn
               onClick={togglePasswordVisibility}
-              className={CSS.passwordVisibleBtn}
-              onMouseOver={() => hoverPasswordVisibility(true)}
-              onMouseOut={() => hoverPasswordVisibility(false)}
-            >
-              <Image
-                src={isPasswordVisible ? (isPasswordVisibleHover ? IconEyeClose : IconEyeOpen) : isPasswordVisibleHover ? IconEyeOpen : IconEyeClose}
-                width={15}
-                alt={isPasswordVisible ? "ㅁ" : "ㅡ"}
-              />
-            </button>
+              isVisible={isPasswordVisible}
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: 10,
+                transform: "translateY(-50%)",
+              }}
+            />
           </li>
         </ul>
 
         <button type="button" onClick={processSignIn}>
-          <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
+          {!isSignInLoading ? (
+            <h5 style={{ fontFamily: "sf_pro_bold" }}>LOGIN</h5>
+          ) : (
+            <span style={{ display: "flex", justifyContent: "center" }}>
+              <Lottie
+                loop
+                animationData={LottieLoading}
+                style={{ width: 28, height: 28 }}
+              />
+            </span>
+          )}
         </button>
       </div>
 
-      <ul>
-        <li>
-          <button type="button" onClick={handleRecovery}>
-            ID/PW 찾기
+      <div style={{ display: "flex", gap: 5 }}>
+        <CheckBoxBtn
+          onClick={() => setIsRememberMe(prev => !prev)}
+          size={14}
+          isChecked={isRememberMe}
+          fill={isRememberMe ? "var(--gray-800)" : "var(--gray-200)"}
+        />
+
+        <a
+          href="#"
+          onClick={e => {
+            e.preventDefault();
+            setIsRememberMe(prev => !prev);
+          }}
+        >
+          로그인 상태 유지
+        </a>
+      </div>
+
+      <div className={styles.subBox} style={{ position: "relative" }}>
+        {user.isErr && (
+          <div
+            className={styles.errBox}
+            style={{
+              position: "absolute",
+              width: "100%",
+              background: "var(--err-background-color)",
+              padding: 10,
+              borderRadius: 5,
+            }}
+          >
+            <p style={{ color: "var(--err-color)" }}>{user.msg}</p>
+
+            <button
+              type="button"
+              style={{
+                padding: 0,
+                background: "none",
+                position: "absolute",
+                right: 15,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+              onClick={() => dispatch(resetAuth())}
+            >
+              <IconClose
+                width={12}
+                height={12}
+                fill={"var(--err-color)"}
+                style={{ display: "flex" }}
+              />
+            </button>
+          </div>
+        )}
+
+        <ul>
+          <li>
+            <Link href="/recovery">ID / PW 찾기</Link>
+          </li>
+
+          <li style={{ color: "var(--gray-800)" }}>|</li>
+
+          <li>
+            <Link href="/sign-up">회원가입</Link>
+          </li>
+        </ul>
+      </div>
+
+      <div className={styles.socialSignInBox}>
+        <div style={{ display: "flex", alignItems: "center", columnGap: 10 }}>
+          <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
+
+          <span style={{ color: "var(--gray-500)" }}>SNS LOGIN</span>
+
+          <div style={{ height: 1, background: "var(--gray-500)", flex: 1 }} />
+        </div>
+
+        <div className={styles.btnBox}>
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("google")}
+            style={{ background: "white" }}
+          >
+            <Image src={IconGoogle} width={20} alt="구글" />
           </button>
-        </li>
-        <li>
-          <button type="button" onClick={signUp}>
-            회원가입
+
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("naver")}
+            style={{ background: "var(--naver-color)" }}
+          >
+            <Image src={IconNaver} width={18} alt="네이버" />
           </button>
-        </li>
-      </ul>
+
+          <button
+            type="button"
+            onClick={() => clickSocialSignIn("kakao")}
+            style={{ background: "var(--kakao-color)" }}
+          >
+            <Image src={IconKakao} width={20} alt="카카오" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

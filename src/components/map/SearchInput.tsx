@@ -5,12 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
-import { IAddress, resetSearchPlaces, setLastCenter, setSearchedAddress, setSearchedPlaces } from "@redux/slices/mapSlice";
+import { RootState } from "@/redux/store";
+import {
+  IAddress,
+  resetSearchPlaces,
+  setLastCenter,
+  setSearchedAddress,
+  setSearchedPlaces,
+} from "@/redux/slices/mapSlice";
 
-import CSS from "./Map.module.css";
+import styles from "./Map.module.css";
 
-import Modal from "@components/common/Modal";
+import { Modal } from "@/components/common/Modal";
 
 import IconClose from "@public/img/common/icon_close_black.svg";
 import IconSearch from "@public/img/common/icon_search_white.svg";
@@ -19,12 +25,19 @@ import IconCollapse from "@public/img/common/icon_collapse_white.svg";
 import IconHeart from "@public/img/common/icon_heart_primary.svg";
 import IconHeartWhite from "@public/img/common/icon_heart_white.svg";
 
-/** Search Input 자식들 */
-interface ISearchInputProps {
+/** Search Input Interface */
+interface ISearchInput {
   /** 검색 결과 목록 선택 시 */
   selectedResult: (idx: number) => void;
   /** 즐겨찾기 여부 판별 함수 */
-  checkIsFavoriteLocation: (location: IAddress | kakao.maps.services.PlacesSearchResultItem) => boolean;
+  checkIsFavoriteLocation: (
+    location: IAddress | kakao.maps.services.PlacesSearchResultItem
+  ) => boolean;
+  /** '현 위치에서 재검색' 버튼 가시 유무 선택 */
+  setIsReSearchVisible: (visible: boolean) => void;
+
+  /** '현 위치에서 재검색' 버튼 가시 유무 */
+  isReSearchVisible: boolean;
 }
 
 /** 검색 결과 목록 Style */
@@ -36,19 +49,22 @@ interface IPanelStyle {
 }
 
 /** 검색창 */
-export default function SearchInput({ selectedResult, checkIsFavoriteLocation }: ISearchInputProps) {
+export default function SearchInput({
+  selectedResult,
+  checkIsFavoriteLocation,
+  isReSearchVisible = false,
+  setIsReSearchVisible,
+}: ISearchInput) {
   /** Dispatch */
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const map = useSelector((state: RootState) => state.mapReducer);
+  const map = useSelector((state: RootState) => state.mapSlice);
 
   /** 검색 결과들의 Box Ref */
   const resultsRef = useRef<HTMLDivElement>(null);
   /** 검색 결과들 Ref */
   const resultRefs = useRef<HTMLLIElement[]>([]);
-  /** 패널 목록 조정 장치 Ref */
-  const panelControllerRef = useRef<HTMLDivElement>(null);
 
   // 검색 결과 목록 Style
   const [panelStyle, setPanelStyle] = useState<IPanelStyle>({
@@ -60,10 +76,12 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
   const [modalMsg, setModalMsg] = useState<string>(""); // 알림 Modal에 띄울 Message
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // 알림 Modal 가시 여부
-  const [isSearchPanelVisible, setIsSearchPanelVisible] = useState<boolean>(false); // 검색 결과 목록 가시 여부
+  const [isSearchPanelVisible, setIsSearchPanelVisible] =
+    useState<boolean>(false); // 검색 결과 목록 가시 여부
 
   /** 검색 결과가 있는 지 */
-  const isSearchResultsAvailable = map.searchedPlaces.length > 0 || map.searchedAddress.length > 0;
+  const isSearchResultsAvailable =
+    map.searchedPlaces.length > 0 || map.searchedAddress.length > 0;
 
   /**
    * 주소 형식 변환
@@ -91,7 +109,9 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
   };
 
   /** 검색창 '키' 누름 시 */
-  const handleSearchQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleSearchQueryKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     if (e.key === "Enter") searchAddress();
   };
 
@@ -130,7 +150,10 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
       const selectedResultOffsetTop: number = resultRefs.current[idx].offsetTop;
 
       /** 스크롤할 거리 */
-      const scrollTop: number = selectedResultOffsetTop - resultsRefHeight / 2 + selectedResultHeight / 2;
+      const scrollTop: number =
+        selectedResultOffsetTop -
+        resultsRefHeight / 2 +
+        selectedResultHeight / 2;
 
       resultsRef.current.scrollTo({ top: scrollTop, behavior: "smooth" });
     }
@@ -138,9 +161,12 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
 
   /** 주소 검색 */
   const searchAddress = (): void => {
+    setIsReSearchVisible(false);
+
     dispatch(setLastCenter(map.mapCenter));
 
-    const geocoder: kakao.maps.services.Geocoder = new kakao.maps.services.Geocoder();
+    const geocoder: kakao.maps.services.Geocoder =
+      new kakao.maps.services.Geocoder();
 
     geocoder.addressSearch(searchQuery, (result, status) => {
       if (status === kakao.maps.services.Status.OK) {
@@ -218,7 +244,11 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
           boxShadow: "none",
         });
       }, 300);
-    } else setPanelStyle({ background: "var(--background-color-iv)", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.2)" });
+    } else
+      setPanelStyle({
+        background: "var(--search-input-background-color)",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.2)",
+      });
 
     return () => clearTimeout(timer);
   }, [isSearchPanelVisible]);
@@ -226,7 +256,12 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
   // Marker 클릭으로 'selectedIdx' 변경 시 해당 검색 결과로 목록 스크롤
   useEffect(() => {
     if (map.selectedLocationIdx !== -1) {
-      const result = map.searchedAddress.length > 0 ? map.searchedAddress : map.searchedPlaces.length > 0 ? map.searchedPlaces : map.favoriteLocations;
+      const result =
+        map.searchedAddress.length > 0
+          ? map.searchedAddress
+          : map.searchedPlaces.length > 0
+            ? map.searchedPlaces
+            : map.favoriteLocations;
 
       console.log("선택한 정보 :", result[map.selectedLocationIdx]);
 
@@ -237,26 +272,37 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
   return (
     <>
       <div
-        className={`${CSS.searchBox} ${(isSearchResultsAvailable || map.favoriteLocations.length > 0) && isSearchPanelVisible ? CSS.searched : undefined}`}
+        className={`${styles.searchBox} ${
+          (isSearchResultsAvailable || map.favoriteLocations.length > 0) &&
+          isSearchPanelVisible
+            ? styles.searched
+            : undefined
+        }`}
         style={panelStyle}
       >
-        <div className={CSS.searchInput}>
+        <div className={styles.searchInput}>
           <span>
-            <input type="text" value={searchQuery} onChange={handleSearchQuery} onKeyDown={handleSearchQueryKeyDown} placeholder="검색할 장소나 주소 입력" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchQuery}
+              onKeyDown={handleSearchQueryKeyDown}
+              placeholder="검색할 장소나 주소 입력"
+            />
 
             {isSearchResultsAvailable && (
               <button type="button" onClick={() => clickResetSearchPlaces()}>
-                <Image src={IconClose} width={15} height={15} alt="X" />
+                {/* <Image src={IconClose} width={15} height={15} alt="X" /> */}
               </button>
             )}
           </span>
 
           <button type="button" onClick={searchAddress}>
-            <Image src={IconSearch} width={15} height={15} alt="검색" />
+            {/* <Image src={IconSearch} width={15} height={15} alt="검색" /> */}
           </button>
         </div>
 
-        <div className={CSS.results} ref={resultsRef}>
+        <div className={styles.results} ref={resultsRef}>
           {isSearchResultsAvailable ? (
             <ul>
               {map.searchedAddress.map((address, idx) => (
@@ -266,22 +312,36 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                     if (el) resultRefs.current[idx] = el;
                   }}
                 >
-                  <button type="button" className={map.selectedLocationIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                  <button
+                    type="button"
+                    className={
+                      map.selectedLocationIdx === idx
+                        ? styles.selectedResult
+                        : undefined
+                    }
+                    onClick={() => selectedResult(idx)}
+                  >
                     <ul>
                       <li>
                         <h6>{address.address_name}</h6>
                       </li>
 
                       <li>
-                        <p className={CSS.category}>{formatAddressType(address.address_type)}</p>
+                        <p className={styles.category}>
+                          {formatAddressType(address.address_type)}
+                        </p>
                       </li>
 
-                      <li>{address.address ? address.address.address_name : address.road_address.address_name}</li>
+                      <li>
+                        {address.address
+                          ? address.address.address_name
+                          : address.road_address.address_name}
+                      </li>
                     </ul>
 
                     {checkIsFavoriteLocation(address) && (
-                      <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                      <div className={styles.favoriteLocations}>
+                        {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     )}
                   </button>
@@ -295,14 +355,24 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                     if (el) resultRefs.current[idx] = el;
                   }}
                 >
-                  <button type="button" className={map.selectedLocationIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                  <button
+                    type="button"
+                    className={
+                      map.selectedLocationIdx === idx
+                        ? styles.selectedResult
+                        : undefined
+                    }
+                    onClick={() => selectedResult(idx)}
+                  >
                     <ul>
                       <li>
                         <h6>{place.place_name}</h6>
                       </li>
 
                       <li>
-                        <p className={CSS.category}>{place.category_group_name}</p>
+                        <p className={styles.category}>
+                          {place.category_group_name}
+                        </p>
                       </li>
 
                       <li>
@@ -311,8 +381,8 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                     </ul>
 
                     {checkIsFavoriteLocation(place) && (
-                      <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                      <div className={styles.favoriteLocations}>
+                        {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     )}
                   </button>
@@ -329,7 +399,15 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                       if (el) resultRefs.current[idx] = el;
                     }}
                   >
-                    <button type="button" className={map.selectedLocationIdx === idx ? CSS.selectedResult : undefined} onClick={() => selectedResult(idx)}>
+                    <button
+                      type="button"
+                      className={
+                        map.selectedLocationIdx === idx
+                          ? styles.selectedResult
+                          : undefined
+                      }
+                      onClick={() => selectedResult(idx)}
+                    >
                       <ul>
                         <li>
                           <h6>{location.placeName || location.addressName}</h6>
@@ -342,8 +420,8 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
                         )}
                       </ul>
 
-                      <div className={CSS.favoriteLocations}>
-                        <Image src={IconHeart} width={10} height={10} alt="❤️" />
+                      <div className={styles.favoriteLocations}>
+                        {/* <Image src={map.selectedLocationIdx === idx ? IconHeartWhite : IconHeart} width={10} height={10} alt="❤️" /> */}
                       </div>
                     </button>
                   </li>
@@ -353,16 +431,24 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
           )}
         </div>
 
-        <div className={CSS.panelController}>
-          <button type="button" onClick={togglePanelVisible} style={!isSearchPanelVisible ? { borderRadius: 5 } : undefined}>
-            <Image src={isSearchPanelVisible ? IconCollapse : IconExpand} width={15} height={15} alt={isSearchPanelVisible ? "▲" : "▼"}></Image>
+        <div className={styles.panelController}>
+          <button
+            type="button"
+            onClick={togglePanelVisible}
+            style={!isSearchPanelVisible ? { borderRadius: 5 } : undefined}
+          >
+            {/* <Image src={isSearchPanelVisible ? IconCollapse : IconExpand} width={15} height={15} alt={isSearchPanelVisible ? "▲" : "▼"}></Image> */}
           </button>
         </div>
 
-        <div className={CSS.panelController} style={{ right: -55 }}>
+        <div className={styles.panelController} style={{ right: -55 }}>
           {!isSearchPanelVisible && map.favoriteLocations.length > 0 && (
-            <button type="button" onClick={clickFavoriteBtn} style={{ borderRadius: 5 }}>
-              <Image src={IconHeartWhite} width={15} height={15} alt="❤️" />
+            <button
+              type="button"
+              onClick={clickFavoriteBtn}
+              style={{ borderRadius: 5 }}
+            >
+              {/* <Image src={IconHeartWhite} width={15} height={15} alt="❤️" /> */}
             </button>
           )}
         </div>
@@ -372,6 +458,16 @@ export default function SearchInput({ selectedResult, checkIsFavoriteLocation }:
         <Modal style={{ position: "absolute", top: "50%", left: "50%" }}>
           <h4>{modalMsg}</h4>
         </Modal>
+      )}
+
+      {isReSearchVisible && isSearchResultsAvailable && (
+        <button
+          type="button"
+          onClick={searchAddress}
+          className={styles.reSearchBtn}
+        >
+          현 위치에서 재검색
+        </button>
       )}
     </>
   );

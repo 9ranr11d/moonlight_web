@@ -1,7 +1,7 @@
 .backdrop {
   width: 100vw;
   height: 100vh;
-  background: var(--background-color-iii);
+  background: var(--modal-background-color);
   position: absolute;
   top: 0;
   left: 0;

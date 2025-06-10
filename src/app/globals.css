@@ -1,20 +1,66 @@
 :root {
   --primary-color: #b67a80;
+  --primary-dark-color: #ae5861;
   --secondary-color: #7295a4;
-  --click-color: #ae5861;
-  --background-color-i: linear-gradient(to bottom, #8b9da4 0%, #b7a0a1 80%, #b7a0a1 100%);
-  --background-color-ii: #1f1b29;
-  --background-color-iii: #00000099;
-  --background-color-iv: #f0f0f0cc;
-  --font-color: #111;
-  --placeholder-color: #72787f;
-  --border-color: #d9d9d9;
-  --disabled-color-i: #c3c7cd;
-  --disabled-color-ii: #ddd;
 
-  --bright-blue: #00bfff;
-  --bright-red: #ff69b4;
-  --bright-green: #7fff00;
+  --font-color: #111;
+  --err-color: #e63946;
+  --err-background-color: #ffe5e9;
+
+  --background-color: linear-gradient(
+    160deg,
+    #8b9da4 0%,
+    #b7a0a1 80%,
+    #b7a0a1 100%
+  );
+  --modal-background-color: #12121299;
+  --search-input-background-color: #f0f0f0cc;
+  --button-background-color: linear-gradient(
+    120deg,
+    var(--primary-color),
+    #e0a3a7
+  );
+
+  --white-900a: rgba(255, 255, 255, 0.9);
+  --white-800a: rgba(255, 255, 255, 0.8);
+  --white-700a: rgba(255, 255, 255, 0.7);
+  --white-600a: rgba(255, 255, 255, 0.6);
+  --white-500a: rgba(255, 255, 255, 0.5);
+  --white-400a: rgba(255, 255, 255, 0.4);
+  --white-300a: rgba(255, 255, 255, 0.3);
+  --white-200a: rgba(255, 255, 255, 0.2);
+  --white-100a: rgba(255, 255, 255, 0.1);
+
+  --black-900a: rgba(0, 0, 0, 0.9);
+  --black-800a: rgba(0, 0, 0, 0.8);
+  --black-700a: rgba(0, 0, 0, 0.7);
+  --black-600a: rgba(0, 0, 0, 0.6);
+  --black-500a: rgba(0, 0, 0, 0.5);
+  --black-400a: rgba(0, 0, 0, 0.4);
+  --black-300a: rgba(0, 0, 0, 0.3);
+  --black-200a: rgba(0, 0, 0, 0.2);
+  --black-100a: rgba(0, 0, 0, 0.1);
+
+  --gray-50: #f9f9f9;
+  --gray-100: #f2f2f2;
+  --gray-200: #e5e5e5;
+  --gray-300: #cccccc;
+  --gray-400: #b3b3b3;
+  --gray-500: #999999;
+  --gray-600: #808080;
+  --gray-700: #666666;
+  --gray-800: #4d4d4d;
+  --gray-900: #333333;
+
+  --black-color: #121212;
+
+  --saturday-color: #00bfff;
+  --sunday-color: #ff69b4;
+  --today-color: #2e7d32;
+  --today-background-color: #e8f5e9;
+
+  --naver-color: #03c75a;
+  --kakao-color: #fee500;
 }
 
 * {
@@ -35,7 +81,7 @@ body {
   font-size: 12px;
   font-weight: 400;
   color: var(--font-color);
-  background: var(--background-color-i);
+  background: var(--background-color);
 }
 
 main,
@@ -54,18 +100,25 @@ header {
 
 header > nav {
   padding: 10px 30px;
-  background: #ffffffcc;
-  transition: height 1s ease, padding 1s ease;
+  background: #ffffffee;
+  transition:
+    height 1s ease,
+    padding 1s ease;
 }
 
 main {
   min-height: 100vh;
-  padding: 110px 20px 20px;
+}
+
+.main {
+  height: calc(100vh - 110px);
+  background: white;
+  padding: 0 20px;
 }
 
 footer {
   padding: 20px;
-  background: var(--background-color-ii);
+  background: var(--black-color);
   color: white;
 }
 
@@ -85,7 +138,7 @@ a {
 }
 
 a:hover {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 h1,
@@ -143,12 +196,12 @@ textarea {
   width: 100%;
   resize: none;
   padding: 10px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-radius: 2px;
 }
 
 textarea::placeholder {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 textarea:focus {
@@ -159,20 +212,20 @@ input[type="text"],
 input[type="password"],
 input[type="number"] {
   width: 100%;
-  padding: 10px 20px;
-  border: 1px solid var(--border-color);
-  border-radius: 2px;
+  padding: 10px;
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
 }
 
 input[type="text"]::placeholder,
 input[type="password"]::placeholder input[type="number"]::placeholder {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus {
-  outline: 1px solid var(--click-color);
+  outline: 1px solid var(--primary-dark-color);
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -184,6 +237,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
@@ -195,40 +249,139 @@ input[type="color"]::-webkit-color-swatch {
   box-shadow: none;
 }
 
-ul::-webkit-scrollbar,
-textarea::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
 }
 
-ul::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb {
-  background: var(--secondary-color);
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
   border-radius: 4px;
 }
 
-ul::-webkit-scrollbar-track,
-textarea::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   width: 10px;
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-radius: 5px;
 }
 
 button {
   border: none;
-  background: var(--primary-color);
-  padding: 10px 20px;
-  border-radius: 5px;
+  background: var(--button-background-color);
+  padding: 10px;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
 }
 
 button:active {
-  background: var(--click-color);
+  background: var(--primary-dark-color);
 }
 
 button:disabled {
-  background: var(--disabled-color-i);
+  background: var(--gray-300);
+}
+
+.authBox {
+  margin-top: 110px;
+}
+
+.authBox > div {
+  width: 500px;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  padding: 20px 50px 20px;
+  text-align: center;
+  border: 0.5px solid var(--gray-300);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  margin: 50px auto 0px;
+  background: rgba(255, 255, 255, 1);
+}
+
+.okBtnBox {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.outlineBtn {
+  background: none;
+  color: var(--black-600a);
+  border: 1px solid var(--black-600a);
+}
+
+.outlineBtn:hover {
+  color: var(--black-900a);
+  border: 1px solid var(--black-900a);
+}
+
+.outlineBtn:active {
+  background: var(--gray-50);
+}
+
+.noOutlineBtn {
+  background: none;
+  color: var(--font-color);
+  padding: 5px;
+}
+
+.noOutlineBtn:hover {
+  scale: 1.05;
+}
+
+.noOutlineBtn:active {
+  background: var(--gray-50);
+}
+
+.mobile {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .authBox {
+    padding: 0 20px;
+  }
+
+  .authBox > div {
+    max-width: initial;
+    width: 100%;
+    padding: 20px 10px 20px;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 28px;
+  }
+
+  h4 {
+    font-size: 24px;
+  }
+
+  h5 {
+    font-size: 20px;
+  }
+
+  h6 {
+    font-size: 16px;
+  }
+
+  .web {
+    display: none !important;
+  }
+
+  .mobile {
+    display: initial !important;
+  }
 }
 
 @font-face {

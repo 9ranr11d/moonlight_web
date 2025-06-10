@@ -1,13 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 
-import Modal from "./Modal";
+import { Modal } from "@/components/common/Modal";
 
-export default function ConfirmationModal({ ...props }) {
+interface IConfimationModal {
+  children: ReactNode;
+}
+
+export default function ConfirmationModal({ children }: IConfimationModal) {
   return (
     <Modal>
-      {props.children}
+      {children}
 
       <div style={{ display: "flex" }}>
         <button type="button">확인</button> <button type="button">취소</button>

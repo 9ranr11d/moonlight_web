@@ -1,5 +1,12 @@
+export * from "./date";
+export * from "./msg";
+export * from "./menu";
+
 /** 메인 제목 */
 export const MAIN_TITLE = "MOONLIGHT";
+
+/** 도메인 */
+export const MAIN_DOMAIN = "http://localhost:3000/";
 
 /** 위도 초기값 */
 export const DEFAULT_LAT = 35.8655;
@@ -8,3 +15,6 @@ export const DEFAULT_LNG = 128.5934;
 
 /** 지도 재검색 버튼 가시 기준 거리(단위: m) */
 export const RESEARCH_DISTANCE = 500;
+
+/** 금칙어 목록 */
+export const FORBIDDEN_WORDS = ["admin", "root", "system", "test"];

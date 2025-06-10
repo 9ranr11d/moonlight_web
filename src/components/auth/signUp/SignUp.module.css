@@ -1,0 +1,21 @@
+.label {
+  text-align: left;
+  margin-bottom: 3px;
+}
+
+.timeLeft {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  background: var(--primary-dark-color);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+  .spacing {
+    display: none;
+  }
+}

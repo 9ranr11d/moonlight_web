@@ -2,7 +2,7 @@
   position: absolute;
   width: 300px;
   max-height: 58px;
-  top: 0;
+  top: 58px;
   padding: 10px;
   z-index: 1;
   display: flex;
@@ -13,7 +13,7 @@
 }
 
 .searched {
-  max-height: 100%;
+  max-height: calc(100% - 58px);
 }
 
 .searchInput {
@@ -72,7 +72,7 @@
 }
 
 .selectedResult {
-  background: var(--click-color) !important;
+  background: var(--primary-dark-color) !important;
   color: white !important;
 }
 
@@ -102,7 +102,7 @@
 }
 
 .category {
-  color: var(--placeholder-color);
+  color: var(--gray-600);
   font-size: 15px;
 }
 
@@ -120,10 +120,19 @@
 }
 
 .currentLocationBtn:active {
-  background: var(--border-color);
+  background: var(--gray-300);
 }
 
 .searchedOverlay > button {
   background: none;
   padding: 0;
+}
+
+.reSearchBtn {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
 }

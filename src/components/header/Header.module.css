@@ -1,0 +1,89 @@
+.background {
+  position: absolute;
+  top: 0;
+  background-color: var(--modal-background-color);
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.background button {
+  width: 100%;
+  height: 100%;
+}
+
+.afterSignInBox {
+  position: relative;
+  transition:
+    bottom 1s ease,
+    opacity 1s ease;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 30px;
+}
+
+.menuBox {
+  width: 100%;
+  margin: auto;
+}
+
+.menuBox > ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuBox > ul > li > a {
+  font-size: 15px;
+  font-family: "pretendard_bold";
+}
+
+.menuBox > ul > li:last-child {
+  position: relative;
+  text-align: center;
+  cursor: initial;
+}
+
+.mobile {
+  display: none !important;
+}
+
+.beforeSignInBox {
+  display: inline-block;
+  position: absolute;
+  z-index: 1003;
+  left: 50%;
+  transform: translateX(-50%);
+  transition:
+    top 1s ease,
+    opacity 1s ease;
+}
+
+@media (max-width: 767px) {
+  .web {
+    display: none;
+  }
+
+  .afterSignInBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logoBox {
+    margin: initial;
+  }
+
+  .menuBox {
+    width: auto;
+    margin: initial;
+  }
+
+  .menuBox > ul {
+    display: none;
+  }
+
+  .mobile {
+    display: initial !important;
+  }
+}

@@ -5,7 +5,7 @@ const secret: string = process.env.JWT_SECRET!;
 
 /**
  * Access Token 발급
- * @param userIdentification Identification
+ * @param userIdentification 아이디
  * @returns Access Token
  */
 export const sign = (userIdentification: string) => {
@@ -40,7 +40,7 @@ export const verify = (token: string) => {
 
 /**
  * Refresh Token 발급
- * @param userIdentification Identification
+ * @param userIdentification 아이디
  * @returns Refresh Token
  */
 export const refresh = (userIdentification: string) => {

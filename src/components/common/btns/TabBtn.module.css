@@ -1,0 +1,42 @@
+.horizontalTabBtnsBox {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.horizontalTabBtnsBox > button {
+  flex: 1;
+  background: var(--gray-300);
+  border-radius: 0;
+}
+
+.horizontalTabBtnsBox > button:hover {
+  background: var(--primary-dark-color);
+}
+
+.horizontalTabBtnsBox > button:disabled {
+  background: linear-gradient(120deg, var(--primary-color), #e0a3a7);
+}
+
+.horizontalTabBtnsBox > button:first-child {
+  border-radius: 3px 0 0 3px;
+}
+
+.horizontalTabBtnsBox > button:last-child {
+  border-radius: 0 3px 3px 0;
+}
+
+.directionTabBtnsBox > button {
+  background: none;
+  color: var(--font-color);
+  padding: 0;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border-radius: 5px;
+}
+
+.directionTabBtnsBox > button:hover {
+  background-image:
+    linear-gradient(#fff),
+    linear-gradient(120deg, var(--primary-color), #e0a3a7);
+}

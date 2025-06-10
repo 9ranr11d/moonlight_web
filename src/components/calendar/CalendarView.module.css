@@ -27,20 +27,20 @@
 }
 
 .disabled:hover {
-  background: var(--disabled-color-i) !important;
+  background: var(--gray-400) !important;
 }
 
 .yearMonthToggleBtn {
   display: flex;
   column-gap: 7px;
-  background: var(--click-color);
+  background: var(--primary-dark-color);
   padding: 7px;
   border-radius: 5px;
 }
 
 .yearMonthToggleBtn button {
-  color: var(--disabled-color-i);
-  background: var(--disabled-color-ii) !important;
+  color: var(--gray-400);
+  background: var(--gray-300) !important;
   padding: 3px 10px !important;
 }
 
@@ -61,7 +61,7 @@
   display: flex;
   column-gap: 5px;
   border-radius: 10px 0 0 10px;
-  background: var(--click-color);
+  background: var(--primary-dark-color);
   transition: left 0.5s ease-in-out;
 }
 
@@ -106,7 +106,7 @@
 
 .subBox > .content > .content button:hover,
 .subBox > .content > .content .selected {
-  background: var(--click-color);
+  background: var(--primary-dark-color);
 }
 
 .mainBox {
@@ -182,7 +182,7 @@
 }
 
 .days > li {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   padding: 3px;
   font-weight: 600;
   overflow: hidden;
@@ -216,7 +216,7 @@
 .days .subDate {
   font-size: 10px;
   font-weight: 400;
-  color: var(--disabled-color-i) !important;
+  color: var(--gray-400) !important;
 }
 
 .days > li > .content {
@@ -280,7 +280,7 @@
   z-index: 1002;
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   padding: 10px;
 }
 
@@ -305,13 +305,17 @@
   height: 30px;
 }
 
+.miniCalendar > .content > .days button {
+  padding: 0;
+}
+
 .miniCalendar > .content > .days button > span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .calendar {
     flex-direction: column;
     right: 0 !important;

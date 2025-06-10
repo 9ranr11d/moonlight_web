@@ -1,0 +1,18 @@
+.wrapper button {
+  background: white;
+  color: var(--font-color);
+  border: 1px solid var(--gray-300);
+}
+
+.list > li > button {
+  border-radius: 0;
+}
+
+.list > li > button:hover {
+  background: var(--primary-dark-color);
+  color: white;
+}
+
+.list > li:last-child > button {
+  border-radius: 0 0 3px 3px;
+}

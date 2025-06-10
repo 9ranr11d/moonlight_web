@@ -1,31 +1,28 @@
 "use client";
 
-import React, { CSSProperties, ReactNode } from "react";
-
-import Image from "next/image";
+import React from "react";
 
 import { useDispatch } from "react-redux";
-import { hideBackdrop } from "@redux/slices/BackdropSlice";
+import { hideBackdrop } from "@/redux/slices/backdropSlice";
 
-import CSS from "./Modal.module.css";
+import styles from "./Modal.module.css";
 
-import IconClose from "@public/img/common/icon_close_primary.svg";
+import CloseBtn from "@/components/common/btns/CloseBtn";
 
-/** Modal 자식들 */
-interface IModalProps {
+/** Modal Interface */
+interface IModal {
+  /** 닫기 */
+  close?: () => void;
+
   /** 적용 될 'className' */
   className?: string;
   /** 적용 될 'style' */
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   /** 적용 될 'Component'들 */
-  children: ReactNode;
-
-  /** 닫기 */
-  close?: () => void;
+  children?: React.ReactNode;
 }
 
-/** Modal */
-export default function Modal({ className = "", style = {}, close, ...props }: IModalProps) {
+function Main({ className = "", style = {}, close, children }: IModal) {
   /** Dispatch */
   const dispatch = useDispatch();
 
@@ -39,14 +36,79 @@ export default function Modal({ className = "", style = {}, close, ...props }: I
   };
 
   return (
-    <div className={`${CSS.modal} ${className}`} style={style}>
+    <div className={`${styles.modal} ${className}`} style={style}>
       {close && (
-        <button type="button" onClick={clickClose} style={{ position: "absolute", top: 10, right: 10, background: "none", padding: 0 }}>
-          <Image src={IconClose} width={20} height={20} alt="X" />
-        </button>
+        <CloseBtn
+          onClick={clickClose}
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+          }}
+        />
       )}
 
-      {props.children}
+      {children}
     </div>
   );
 }
+
+function Container({
+  direction = "column",
+  style,
+  children,
+}: {
+  direction?: "column" | "row";
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div
+      className={styles.container}
+      style={{ display: "flex", flexDirection: direction, ...style }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Title({ children }: { children?: React.ReactNode }) {
+  return <h4 style={{ color: "var(--gray-900)" }}>{children}</h4>;
+}
+
+function SubTitle({ children }: { children?: React.ReactNode }) {
+  return <h6 style={{ color: "var(--gray-500)" }}>{children}</h6>;
+}
+
+function Button({
+  children,
+  className,
+  style,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.button} ${className}`}
+      style={{
+        borderRadius: 3,
+        flex: 1,
+        padding: "15px 20px",
+        fontSize: 15,
+        ...style,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+export const Modal = Object.assign(Main, {
+  Container,
+  Title,
+  SubTitle,
+  Button,
+});

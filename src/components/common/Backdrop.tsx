@@ -3,10 +3,10 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
-import { hideBackdrop } from "@redux/slices/BackdropSlice";
+import { RootState } from "@/redux/store";
+import { hideBackdrop } from "@/redux/slices/backdropSlice";
 
-import CSS from "./Backdrop.module.css";
+import styles from "./Backdrop.module.css";
 
 /** Modal 배경 화면 */
 export default function Backdrop() {
@@ -14,7 +14,7 @@ export default function Backdrop() {
   const dispatch = useDispatch();
 
   /** 배경 화면 Reducer */
-  const backdrop = useSelector((state: RootState) => state.backdropReducer);
+  const backdrop = useSelector((state: RootState) => state.backdropSlice);
 
   /** 배경 화면 클릭 시 */
   const closeBackdrop = (): void => {
@@ -24,7 +24,7 @@ export default function Backdrop() {
   return (
     <>
       {backdrop.isVisible && (
-        <div className={CSS.backdrop}>
+        <div className={styles.backdrop}>
           <button type="button" onClick={closeBackdrop} />
         </div>
       )}

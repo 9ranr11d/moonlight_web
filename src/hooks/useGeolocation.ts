@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { ILatLng } from "@interfaces/index";
+import { ILatLng } from "@/interfaces";
 
-import { DEFAULT_LAT, DEFAULT_LNG } from "@constants/index";
+import { DEFAULT_LAT, DEFAULT_LNG } from "@/constants";
 
-/** Geolocation Position 인터페이스 */
+/** Geolocation Position Interface */
 interface IGeolocationPosition {
   /** 좌표 정보 */
   coords: GeolocationCoordinates;
@@ -50,7 +50,9 @@ export default function useGeoloaction() {
 
     /** Error */
     const error = () => {
-      console.log("현재 위치를 가져오는데 실패했습니다. 위도와 경도가 기본값으로 설정됩니다.");
+      console.log(
+        "현재 위치를 가져오는데 실패했습니다. 위도와 경도가 기본값으로 설정됩니다."
+      );
       console.log("위도 :", DEFAULT_LAT, ", 경도 :", DEFAULT_LNG);
 
       setCurrentLocation({ lat: DEFAULT_LAT, lng: DEFAULT_LNG });
@@ -58,7 +60,8 @@ export default function useGeoloaction() {
       setIsLocationLoading(false);
     };
 
-    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(success, error);
+    if (navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(success, error);
     else {
       console.log("현재 사용 중인 브라우저가 Geolocation을 지원하지 않습니다.");
 

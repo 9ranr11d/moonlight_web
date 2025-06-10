@@ -25,7 +25,7 @@
 
 .modal > .header .startDate {
   font-size: 24px;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--gray-300);
 }
 
 .modal > .header > h5 {
@@ -38,7 +38,7 @@
 }
 
 .modal > .header > h5 > span > button {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   color: var(--font-color);
   padding: 4px;
   display: flex;
@@ -118,7 +118,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   padding: 10px;
 }
 
@@ -161,7 +161,7 @@
   overflow-y: auto;
   z-index: 1001;
   border-radius: 0 0 5px 5px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--gray-300);
   border-top: none;
 }
 
@@ -181,7 +181,7 @@
 }
 
 .user > li {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--gray-300);
   padding: 0 !important;
 }
 
@@ -226,7 +226,7 @@
 
 .categories > li {
   display: grid;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--gray-300);
 }
 
 .categories > li:nth-last-child(2) {
@@ -235,7 +235,7 @@
 
 .categories > .list {
   border: 1px solid white;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--gray-300);
   grid-template-columns: 1fr 30px 30px;
   column-gap: 5px;
 }
@@ -266,7 +266,7 @@
   column-gap: 5px;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--gray-300);
 }
 
 .categories .edit > input[type="color"] {
@@ -295,14 +295,14 @@
 .createCategory {
   position: sticky;
   bottom: 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--gray-300);
 }
 
 .createCategory > button {
   padding: 3px 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .modal {
     width: 100% !important;
   }
