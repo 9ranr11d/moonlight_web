@@ -12,7 +12,7 @@ import useSignOut from "@/hooks/useSignOut";
 
 import styles from "./ProfileModal.module.css";
 
-import CloseBtn from "@/components/common/btn/CloseBtn";
+import CloseBtn from "@/components/common/btns/CloseBtn";
 
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 

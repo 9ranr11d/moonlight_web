@@ -12,10 +12,10 @@ import styles from "@/components/auth/signUp/SignUp.module.css";
 
 import { validateNickname } from "@/utils";
 
-import DropdownDateBtn from "@/components/common/btn/DropdownDateBtn";
-import RadioBtns from "@/components/common/btn/RadioBtns";
-import NextBtn from "@/components/common/btn/NextBtn";
-import NicknameInput from "@/components/common/input/NicknameInput";
+import DropdownDateBtn from "@/components/common/btns/DropdownDateBtn";
+import RadioBtns from "@/components/common/btns/RadioBtns";
+import NextBtn from "@/components/common/btns/NextBtn";
+import NicknameInput from "@/components/common/inputs/NicknameInput";
 import LunarLoader from "@/components/common/LunarLoader";
 
 import IconMale from "@public/svgs/common/icon_male.svg";

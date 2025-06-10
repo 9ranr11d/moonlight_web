@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { TVerificationMethod } from "@/interfaces/auth";
 
 import ErrorBlock from "@/components/common/ErrorBlock";
-import DotAndBar from "@/components/common/indicator/DotAndBar";
+import DotAndBar from "@/components/common/indicators/DotAndBar";
 
 import VerificationMethodForm from "@/components/auth/verification/VerificationMethodForm";
 import VerificationForm from "@/components/auth/verification/VerificationForm";

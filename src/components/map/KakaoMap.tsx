@@ -13,7 +13,7 @@ import {
 } from "@/redux/slices/mapSlice";
 import { showBackdrop } from "@/redux/slices/backdropSlice";
 
-// import Lottie from "react-lottie-player";
+// import Lottie from "lottie-react";
 
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 

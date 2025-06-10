@@ -14,7 +14,9 @@
 
 .afterSignInBox {
   position: relative;
-  transition: bottom 1s ease, opacity 1s ease;
+  transition:
+    bottom 1s ease,
+    opacity 1s ease;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 30px;
@@ -52,7 +54,9 @@
   z-index: 1003;
   left: 50%;
   transform: translateX(-50%);
-  transition: top 1s ease, opacity 1s ease;
+  transition:
+    top 1s ease,
+    opacity 1s ease;
 }
 
 @media (max-width: 767px) {

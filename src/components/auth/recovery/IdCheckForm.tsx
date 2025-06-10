@@ -12,8 +12,8 @@ import styles from "./Recovery.module.css";
 
 import { validateIdentification } from "@/utils";
 
-import StatusInput from "@/components/common/input/StatusInput";
-import NextBtn from "@/components/common/btn/NextBtn";
+import StatusInput from "@/components/common/inputs/StatusInput";
+import NextBtn from "@/components/common/btns/NextBtn";
 
 /** 아이디 확인 Form Interface */
 interface IIdCheckForm {

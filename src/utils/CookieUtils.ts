@@ -9,7 +9,8 @@ const cookies = new Cookies();
  * @param value 값
  * @param option 추가 설정
  */
-export const setCookie = (name: string, value: string, option?: any): void => cookies.set(name, value, { ...option });
+export const setCookie = (name: string, value: string, option?: any): void =>
+  cookies.set(name, value, { ...option });
 
 /**
  * Cookie 가져오기
@@ -23,4 +24,5 @@ export const getCookie = (name: string): void => cookies.get(name);
  * @param name 이름
  * @param option 추가 설정
  */
-export const removeCookie = (name: string, option?: any): void => cookies.remove(name, { ...option });
+export const removeCookie = (name: string, option?: any): void =>
+  cookies.remove(name, { ...option });

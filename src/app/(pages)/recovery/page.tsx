@@ -20,7 +20,7 @@ import { resetVerification } from "@/redux/slices/verificationSlice";
 import TitleHeader from "@/components/common/TitleHeader";
 
 import ErrorBlock from "@/components/common/ErrorBlock";
-import HorizontalTabBtns from "@/components/common/btn/HorizontalTabBtns";
+import HorizontalTabBtns from "@/components/common/btns/HorizontalTabBtns";
 
 import Identification from "@/components/auth/recovery/Identification";
 import Password from "@/components/auth/recovery/Password";

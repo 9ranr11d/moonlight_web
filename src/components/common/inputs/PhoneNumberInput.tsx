@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import styles from "@/components/common/input/Input.module.css";
+import styles from "@/components/common/inputs/Input.module.css";
 
-import DropdownBtn from "@/components/common/btn/DropdownBtn";
+import DropdownBtn from "@/components/common/btns/DropdownBtn";
 
 import FlagKor from "@public/imgs/country_flag/korea.png";
 import FlagUsa from "@public/imgs/country_flag/usa.png";

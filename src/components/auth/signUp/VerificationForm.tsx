@@ -9,9 +9,9 @@ import { incrementSignUpStep } from "@/redux/slices/signUpSlice";
 
 import styles from "@/components/auth/signUp/SignUp.module.css";
 
-import HorizontalTabBtns from "@/components/common/btn/HorizontalTabBtns";
+import HorizontalTabBtns from "@/components/common/btns/HorizontalTabBtns";
 import ErrorBlock from "@/components/common/ErrorBlock";
-import NextBtn from "@/components/common/btn/NextBtn";
+import NextBtn from "@/components/common/btns/NextBtn";
 
 import EmailForm from "@/components/auth/verification/EmailForm";
 import PhoneNumberForm from "@/components/auth/verification/PhoneNumberForm";

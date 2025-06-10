@@ -760,15 +760,15 @@ export default function CalendarView() {
                 const day: number = isPrevMonth
                   ? prevMonthDays - (firstDayOfMonth - (idx + 1))
                   : isNextMonth
-                  ? idx + 1 - monthDaysWithPrevLastWeek
-                  : idx + 1 - firstDayOfMonth;
+                    ? idx + 1 - monthDaysWithPrevLastWeek
+                    : idx + 1 - firstDayOfMonth;
 
                 /** 표기할 날짜의 달 */
                 const _month: number = isPrevMonth
                   ? month - 1
                   : isNextMonth
-                  ? month + 1
-                  : month;
+                    ? month + 1
+                    : month;
 
                 return (
                   <li key={idx}>
@@ -782,12 +782,12 @@ export default function CalendarView() {
                           isPrevMonth
                             ? styles.subDate
                             : isNextMonth
-                            ? styles.subDate
-                            : year === currentYear &&
-                              month === currentMonth &&
-                              day === currentDay
-                            ? styles.today
-                            : undefined
+                              ? styles.subDate
+                              : year === currentYear &&
+                                  month === currentMonth &&
+                                  day === currentDay
+                                ? styles.today
+                                : undefined
                         } ${styles.day}`}
                       >
                         {day}

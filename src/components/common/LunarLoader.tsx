@@ -3,7 +3,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-const Lottie = dynamic(() => import("react-lottie-player"), {
+const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
@@ -30,7 +30,6 @@ export default function LunarLoader({ style, msg }: ILunarLoader) {
         <Lottie
           loop
           animationData={LottieLoading}
-          play
           style={{ width: 100, height: 100 }}
         />
       </div>

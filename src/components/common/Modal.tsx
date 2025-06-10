@@ -7,7 +7,7 @@ import { hideBackdrop } from "@/redux/slices/backdropSlice";
 
 import styles from "./Modal.module.css";
 
-import CloseBtn from "@/components/common/btn/CloseBtn";
+import CloseBtn from "@/components/common/btns/CloseBtn";
 
 /** Modal Interface */
 interface IModal {

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import DropdownBtn from "@/components/common/btn/DropdownBtn";
+import DropdownBtn from "@/components/common/btns/DropdownBtn";
 
 import { CURRENT_YEAR } from "@/constants";
 

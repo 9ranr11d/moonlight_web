@@ -260,8 +260,8 @@ export default function SearchInput({
         map.searchedAddress.length > 0
           ? map.searchedAddress
           : map.searchedPlaces.length > 0
-          ? map.searchedPlaces
-          : map.favoriteLocations;
+            ? map.searchedPlaces
+            : map.favoriteLocations;
 
       console.log("선택한 정보 :", result[map.selectedLocationIdx]);
 

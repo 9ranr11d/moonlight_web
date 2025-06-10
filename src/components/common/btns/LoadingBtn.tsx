@@ -3,11 +3,11 @@
 import React from "react";
 
 // import dynamic from "next/dynamic";
-import Lottie from "react-lottie-player";
+import Lottie from "lottie-react";
 
 import LottieLoading from "@public/json/loading_round_white.json";
 
-// const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+// const LottiePlayer = dynamic(() => import("lottie-react"), {
 //   ssr: false,
 // });
 
@@ -51,7 +51,6 @@ export default function LoadingBtn({
         <Lottie
           loop
           animationData={LottieLoading}
-          play
           style={{ width: 16, height: 16 }}
         />
       ) : (

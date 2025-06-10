@@ -11,9 +11,9 @@ import { checkDuplicateIdAction } from "@/actions/authAction";
 
 import { validateIdentification } from "@/utils";
 
-import styles from "@/components/common/input/Input.module.css";
+import styles from "@/components/common/inputs/Input.module.css";
 
-import StatusInput from "@/components/common/input/StatusInput";
+import StatusInput from "@/components/common/inputs/StatusInput";
 
 /** 아이디 Input */
 export default function IdentificationInput() {

@@ -111,18 +111,6 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           <UpcomingSchedule />
         </div>
-
-        <Modal>
-          <Modal.Container>
-            <Modal.Title>제목</Modal.Title>
-            <Modal.SubTitle>서브 제목</Modal.SubTitle>
-          </Modal.Container>
-
-          <Modal.Container direction="row" style={{ gap: 10 }}>
-            <Modal.Button>확인</Modal.Button>
-            <Modal.Button className="outlineBtn">취소</Modal.Button>
-          </Modal.Container>
-        </Modal>
       </Container>
     </div>
   );

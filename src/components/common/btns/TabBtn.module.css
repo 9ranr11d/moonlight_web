@@ -36,6 +36,7 @@
 }
 
 .directionTabBtnsBox > button:hover {
-  background-image: linear-gradient(#fff),
+  background-image:
+    linear-gradient(#fff),
     linear-gradient(120deg, var(--primary-color), #e0a3a7);
 }

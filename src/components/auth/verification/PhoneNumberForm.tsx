@@ -22,9 +22,9 @@ import styles from "@/components/auth/signUp/SignUp.module.css";
 
 import { TVerificationType } from "@/interfaces/auth";
 
-import PhoneNumberInput from "@/components/common/input/PhoneNumberInput";
-import VerificationInput from "@/components/common/input/VerificationInput";
-import LoadingBtn from "@/components/common/btn/LoadingBtn";
+import PhoneNumberInput from "@/components/common/inputs/PhoneNumberInput";
+import VerificationInput from "@/components/common/inputs/VerificationInput";
+import LoadingBtn from "@/components/common/btns/LoadingBtn";
 
 /** 휴대전화 번호 인증 Form Interface */
 interface IPhoneNumberForm {

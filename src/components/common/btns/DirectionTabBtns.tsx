@@ -68,12 +68,12 @@ export default function DirectionTabBtns({
                     color: "var(--font-color)",
                   }
                 : direction === "row"
-                ? {
-                    backgroundImage:
-                      "linear-gradient(#fff, #fff), linear-gradient(var(--gray-200))",
-                    color: "var(--gray-400)",
-                  }
-                : undefined),
+                  ? {
+                      backgroundImage:
+                        "linear-gradient(#fff, #fff), linear-gradient(var(--gray-200))",
+                      color: "var(--gray-400)",
+                    }
+                  : undefined),
             }}
           >
             {label}

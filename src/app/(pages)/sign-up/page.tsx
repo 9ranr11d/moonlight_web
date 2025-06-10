@@ -20,7 +20,7 @@ import { resetVerification } from "@/redux/slices/verificationSlice";
 
 import TitleHeader from "@/components/common/TitleHeader";
 import ErrorBlock from "@/components/common/ErrorBlock";
-import DotAndBar from "@/components/common/indicator/DotAndBar";
+import DotAndBar from "@/components/common/indicators/DotAndBar";
 
 import TermsForm from "@/components/auth/signUp/TermsForm";
 import AccountForm from "@/components/auth/signUp/AccountForm";

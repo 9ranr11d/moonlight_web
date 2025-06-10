@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 
-import Lottie from "react-lottie-player";
+import Lottie from "lottie-react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,8 +22,8 @@ import { ISignInData } from "@/interfaces/auth";
 
 import styles from "./SignIn.module.css";
 
-import VisibleBtn from "@/components/common/btn/VisibleBtn";
-import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
+import VisibleBtn from "@/components/common/btns/VisibleBtn";
+import CheckBoxBtn from "@/components/common/btns/CheckBoxBtn";
 
 import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
@@ -137,7 +137,6 @@ export default function SignIn() {
               <Lottie
                 loop
                 animationData={LottieLoading}
-                play
                 style={{ width: 28, height: 28 }}
               />
             </span>

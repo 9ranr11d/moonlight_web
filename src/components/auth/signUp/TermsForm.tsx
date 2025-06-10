@@ -20,10 +20,10 @@ import { ITerm } from "@/interfaces/auth";
 import styles from "@/components/auth/signUp/SignUp.module.css";
 
 import LunarLoader from "@/components/common/LunarLoader";
-import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
+import CheckBoxBtn from "@/components/common/btns/CheckBoxBtn";
 
-import TermInput from "@/components/common/input/TermInput";
-import NextBtn from "@/components/common/btn/NextBtn";
+import TermInput from "@/components/common/inputs/TermInput";
+import NextBtn from "@/components/common/btns/NextBtn";
 
 /** 약관 동의 Form*/
 export default function TermsForm() {

@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 
-import DirectionTabBtns from "@/components/common/btn/DirectionTabBtns";
+import DirectionTabBtns from "@/components/common/btns/DirectionTabBtns";
 
 import IconGreaterThen from "@public/svgs/common/icon_greater_than.svg";
 

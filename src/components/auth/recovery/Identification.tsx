@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 // import dynamic from "next/dynamic";
-import Lottie from "react-lottie-player";
+import Lottie from "lottie-react";
 
 import { useSelector } from "react-redux";
 
@@ -17,14 +17,14 @@ import VerificationForm from "../verification/VerificationForm";
 
 import LottieLoading from "@public/json/loading_round_black.json";
 
-import DotAndBar from "@/components/common/indicator/DotAndBar";
+import DotAndBar from "@/components/common/indicators/DotAndBar";
 import ErrorBlock from "@/components/common/ErrorBlock";
 
 import VerificationMethodForm from "../verification/VerificationMethodForm";
 
 import IconHome from "@public/svgs/common/icon_home.svg";
 
-// const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+// const LottiePlayer = dynamic(() => import("lottie-react"), {
 //   ssr: false,
 // });
 
@@ -64,11 +64,11 @@ export default function Identification({ onTabSelect }: IIdentification) {
   return (
     <div>
       {!isVerified ? (
-        steps[step] ?? (
+        (steps[step] ?? (
           <div style={{ marginBottom: 10 }}>
             <ErrorBlock />
           </div>
-        )
+        ))
       ) : (
         <div>
           <p style={{ textAlign: "center" }}>본인 확인이 완료되었습니다.</p>
@@ -91,7 +91,6 @@ export default function Identification({ onTabSelect }: IIdentification) {
                   <Lottie
                     loop
                     animationData={LottieLoading}
-                    play
                     style={{ width: 28, height: 28 }}
                   />
                 </span>

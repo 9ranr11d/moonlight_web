@@ -28,7 +28,9 @@ import ProfileModal from "@/components/profile/ProfileModal";
 
 import Backdrop from "@/components/common/Backdrop";
 
-import SideMenu from "./SideMenu";
+import SideMenu from "@/components/header/SideMenu";
+
+import NotificationBtn from "@/components/common/btns/notificationBtn";
 
 import IconLogoSquare from "@public/svgs/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/svgs/common/icon_logo_horizontal.svg";
@@ -104,9 +106,12 @@ export default function Header() {
 
   // 50분마다 Access Token 자동 재발급
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(checkRefreshTokenAction());
-    }, 50 * 60 * 1000);
+    const interval = setInterval(
+      () => {
+        dispatch(checkRefreshTokenAction());
+      },
+      50 * 60 * 1000
+    );
 
     // 로그아웃 시 Access Token 자동 재발급 취소
     if (!user.isAuth) return clearInterval(interval);
@@ -154,9 +159,12 @@ export default function Header() {
             style={{
               display: "flex",
               justifyContent: "flex-end",
+              alignItems: "center",
               position: "relative",
             }}
           >
+            <NotificationBtn className="web" />
+
             <button
               type="button"
               onClick={toggleUserPanel}
@@ -170,7 +178,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleSideMenu}
-              className={`noOutlineBtn ${styles.mobile}`}
+              className={"noOutlineBtn mobile"}
               style={{ display: "flex", alignItems: "center" }}
             >
               <IconThreeBar width={24} height={24} fill={"var(--black-700a)"} />
@@ -184,8 +192,8 @@ export default function Header() {
             isHidden
               ? { display: "none" } // 애니메이션 후에 display: none 설정
               : isAuth
-              ? { top: -30, opacity: 0 } // top과 opacity 애니메이션
-              : { top: 30 }
+                ? { top: -30, opacity: 0 } // top과 opacity 애니메이션
+                : { top: 30 }
           }
           onTransitionEnd={hiddenBeforeLogo}
         >

@@ -131,15 +131,15 @@ export default function MiniCalendarView({
             const day: number = isPrevMonth
               ? prevMonthDays - (firstDayOfMonth - (idx + 1))
               : isNextMonth
-              ? idx + 1 - monthDaysWithPrevLastWeek
-              : idx + 1 - firstDayOfMonth;
+                ? idx + 1 - monthDaysWithPrevLastWeek
+                : idx + 1 - firstDayOfMonth;
 
             /** 표기할 날짜의 달 */
             const _month: number = isPrevMonth
               ? miniMonth - 1
               : isNextMonth
-              ? miniMonth + 1
-              : miniMonth;
+                ? miniMonth + 1
+                : miniMonth;
 
             /** 표기할 날짜 */
             const thisDate: Date = new Date(miniYear, _month, day);
@@ -166,14 +166,14 @@ export default function MiniCalendarView({
                       isDisabledDate
                         ? styles.subDate
                         : isPrevMonth
-                        ? styles.subDate
-                        : isNextMonth
-                        ? styles.subDate
-                        : miniYear === currentYear &&
-                          miniMonth === currentMonth &&
-                          day === currentDay
-                        ? styles.today
-                        : undefined
+                          ? styles.subDate
+                          : isNextMonth
+                            ? styles.subDate
+                            : miniYear === currentYear &&
+                                miniMonth === currentMonth &&
+                                day === currentDay
+                              ? styles.today
+                              : undefined
                     }
                   >
                     {day}

@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 
 import { ITerm } from "@/interfaces/auth";
 
-import CheckBoxBtn from "@/components/common/btn/CheckBoxBtn";
-import ExpandCollapseBtn from "@/components/common/btn/ExpandCollapseBtn";
+import CheckBoxBtn from "@/components/common/btns/CheckBoxBtn";
+import ExpandCollapseBtn from "@/components/common/btns/ExpandCollapseBtn";
 
 /** 약관 체크 박스 인터페이스 */
 interface ITermInput {
@@ -54,8 +54,8 @@ export default function TermInput({ onChange, term, isAgreed }: ITermInput) {
           backgroundImage: isChecked
             ? "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--primary-color), #e0a3a7)"
             : isContentVisible
-            ? "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--gray-200), var(--gray-100))"
-            : "linear-gradient(#fff, #fff)",
+              ? "linear-gradient(#fff, #fff), linear-gradient(120deg, var(--gray-200), var(--gray-100))"
+              : "linear-gradient(#fff, #fff)",
           backgroundOrigin: "border-box",
           backgroundClip: "content-box, border-box",
         }}

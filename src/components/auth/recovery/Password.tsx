@@ -11,7 +11,7 @@ import { RootState } from "@/redux/store";
 import { TVerificationMethod } from "@/interfaces/auth";
 
 import ErrorBlock from "@/components/common/ErrorBlock";
-import DotAndBar from "@/components/common/indicator/DotAndBar";
+import DotAndBar from "@/components/common/indicators/DotAndBar";
 
 import IdCheckForm from "./IdCheckForm";
 import VerificationMethodForm from "../verification/VerificationMethodForm";

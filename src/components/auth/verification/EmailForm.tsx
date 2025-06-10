@@ -21,9 +21,9 @@ import { TVerificationType } from "@/interfaces/auth";
 
 import { validateEmail } from "@/utils";
 
-import EmailInput from "@/components/common/input/EmailInput";
-import VerificationInput from "@/components/common/input/VerificationInput";
-import LoadingBtn from "@/components/common/btn/LoadingBtn";
+import EmailInput from "@/components/common/inputs/EmailInput";
+import VerificationInput from "@/components/common/inputs/VerificationInput";
+import LoadingBtn from "@/components/common/btns/LoadingBtn";
 
 /** 이메일 인증 Form Interface */
 interface IEmailForm {

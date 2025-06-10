@@ -15,6 +15,8 @@ import useSignOut from "@/hooks/useSignOut";
 
 import styles from "./SideMenu.module.css";
 
+import NotificationBtn from "@/components/common/btns/notificationBtn";
+
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 
 import IconDoubleGreaterThen from "@public/svgs/common/icon_double_greater_then.svg";
@@ -85,6 +87,8 @@ export default function SideMenu({ isOpen, onClose }: ISideMenu) {
               />
 
               <p style={{ fontSize: 16 }}>{nickname}님</p>
+
+              <NotificationBtn count={10} />
             </div>
           </div>
 

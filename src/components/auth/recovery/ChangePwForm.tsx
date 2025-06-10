@@ -14,8 +14,8 @@ import styles from "./Recovery.module.css";
 
 import { validatePassword } from "@/utils";
 
-import PasswordInput from "@/components/common/input/PasswordInput";
-import NextBtn from "@/components/common/btn/NextBtn";
+import PasswordInput from "@/components/common/inputs/PasswordInput";
+import NextBtn from "@/components/common/btns/NextBtn";
 
 /** 비밀번호 변경 Form Interface */
 interface IChagePwForm {

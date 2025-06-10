@@ -101,7 +101,9 @@ header {
 header > nav {
   padding: 10px 30px;
   background: #ffffffee;
-  transition: height 1s ease, padding 1s ease;
+  transition:
+    height 1s ease,
+    padding 1s ease;
 }
 
 main {
@@ -334,6 +336,10 @@ button:disabled {
   background: var(--gray-50);
 }
 
+.mobile {
+  display: none !important;
+}
+
 @media (max-width: 767px) {
   .authBox {
     padding: 0 20px;
@@ -367,6 +373,14 @@ button:disabled {
 
   h6 {
     font-size: 16px;
+  }
+
+  .web {
+    display: none !important;
+  }
+
+  .mobile {
+    display: initial !important;
   }
 }
 
