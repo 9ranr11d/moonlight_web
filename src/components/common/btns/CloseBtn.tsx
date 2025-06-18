@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import IconClose from "@public/svgs/common/icon_x.svg";
 
 interface ICloseBtn {
-  onClick: () => void;
+  onClick?: () => void;
 
   fill?: string;
   hoverFill?: string;
@@ -24,7 +24,7 @@ export default function CloseBtn({
     <button
       type="button"
       onClick={onClick}
-      className="noOutlineBtn"
+      className="iconBtn"
       style={{ ...style, display: "flex" }}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}

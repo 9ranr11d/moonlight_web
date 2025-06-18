@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { query } from "@/lib/dbConnect";
 
+import { ACCESS_LEVEL } from "@/constants";
+
 /** 연인 식별자 발급 */
 export async function POST(
   req: NextRequest,
@@ -36,15 +38,19 @@ export async function POST(
         INSERT INTO
           couple_code_users (
             couple_code,
+            access_level,
             user_id
           )
         VALUES (
           ?,
+          ?,
           ?
         )
         `,
-        [code, userId]
+        [code, ACCESS_LEVEL.ADMIN, userId]
       );
+
+      console.log(typeof ACCESS_LEVEL.ADMIN, ACCESS_LEVEL.ADMIN);
 
       // 트랜잭션 커밋
       await query("COMMIT");

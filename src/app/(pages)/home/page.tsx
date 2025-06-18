@@ -16,7 +16,6 @@ import Container from "@/components/common/Container";
 import UpcomingSchedule from "@/components/home/UpcomingSchedule";
 
 import IconClipboard from "@public/svgs/common/icon_clipboard.svg";
-import { Modal } from "@/components/common/Modal";
 
 /** 메인 홈 */
 export default function Home() {

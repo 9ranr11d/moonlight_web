@@ -6,6 +6,8 @@ import KakaoProvider from "next-auth/providers/kakao";
 
 import { query } from "@/lib/dbConnect";
 
+import { ACCESS_LEVEL } from "@/constants";
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -44,7 +46,7 @@ const handler = NextAuth({
           nickname: user.name || null,
           email: user.email || null,
           platform: "web",
-          access_level: 1,
+          access_level: ACCESS_LEVEL.USER,
           provider: account?.provider!,
         });
 

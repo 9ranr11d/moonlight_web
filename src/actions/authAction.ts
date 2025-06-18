@@ -1,12 +1,6 @@
 import { AppDispatch, RootState } from "@/redux/store";
 
 import {
-  setMessage,
-  resetMessage,
-  TMessageResult,
-} from "@/redux/slices/messageSlice";
-
-import {
   setAuthErr,
   setRefreshAccessToken,
   setVerificationInfo,

@@ -22,7 +22,7 @@
 .issueBtn {
   padding: 10px 20px;
   color: var(--white-700a);
-  border: 2px solid var(--white-700a);
+  border: 1px solid var(--white-700a);
 }
 
 .issueBtn:hover {

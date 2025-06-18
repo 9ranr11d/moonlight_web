@@ -163,22 +163,22 @@ export default function Header() {
               position: "relative",
             }}
           >
-            <NotificationBtn className="web" />
-
             <button
               type="button"
               onClick={toggleUserPanel}
-              className={`noOutlineBtn ${styles.web}`}
+              className={`ghostBtn ${styles.web}`}
             >
               {user.nickname}
             </button>
+
+            <NotificationBtn className="web" />
 
             {isUserPanelOpen && <ProfileModal closeModal={closeUserPanel} />}
 
             <button
               type="button"
               onClick={toggleSideMenu}
-              className={"noOutlineBtn mobile"}
+              className={"ghostBtn mobile"}
               style={{ display: "flex", alignItems: "center" }}
             >
               <IconThreeBar width={24} height={24} fill={"var(--black-700a)"} />

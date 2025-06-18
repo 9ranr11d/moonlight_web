@@ -53,11 +53,6 @@ export async function POST(req: NextRequest) {
 
     const [user] = result; // 사용자 정보
 
-    console.log(
-      "auth/sign-in > GET() :",
-      `'${identification}'(으)로 로그인 성공했습니다`
-    );
-
     /** 해싱한 비밀번호 찾은 사용자의 비밀번호 일치 여부 */
     const isPasswordMatch: boolean = await bcrypt.compare(
       password,
@@ -96,6 +91,11 @@ export async function POST(req: NextRequest) {
     let cookie = `refreshToken=${refreshToken}; HttpOnly; path=/; Secure; SameSite=Strict;`;
 
     if (isRememberMe) cookie += ` Max-Age=${maxAge};`;
+
+    console.log(
+      "auth/sign-in > GET() :",
+      `'${identification}'(으)로 로그인 성공했습니다`
+    );
 
     // 찾은 사용자 정보와 Access Token (Refresh Token을 쿠키에 저장 후 Header에 담아) 반환
     return NextResponse.json(

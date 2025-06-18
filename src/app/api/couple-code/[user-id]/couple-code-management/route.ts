@@ -1,3 +1,4 @@
+import { ACCESS_LEVEL } from "@/constants";
 import { query } from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -55,14 +56,16 @@ export async function POST(
         INSERT INTO
           couple_code_users (
             couple_code,
+            access_level,
             user_id
           )
         VALUES (
           ?,
+          ?,
           ?
         )
         `,
-        [code, userId]
+        [code, ACCESS_LEVEL.ADMIN, userId]
       );
 
       // 트랜잭션 커밋

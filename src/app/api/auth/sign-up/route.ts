@@ -6,6 +6,8 @@ import { query } from "@/lib/dbConnect";
 
 import { IIUser } from "@/interfaces/auth";
 
+import { ACCESS_LEVEL } from "@/constants";
+
 /** 회원가입 */
 export async function POST(req: NextRequest) {
   try {
@@ -84,10 +86,11 @@ export async function POST(req: NextRequest) {
             nickname,
             seq,
             platform,
-            provider
+            provider,
+            access_level
           ) 
         VALUES (
-          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )
         `,
         [
@@ -101,6 +104,7 @@ export async function POST(req: NextRequest) {
           seq,
           "web",
           "local",
+          ACCESS_LEVEL.USER,
         ]
       );
 

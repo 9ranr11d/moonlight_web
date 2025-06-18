@@ -69,7 +69,7 @@ export default function SideMenu({ isOpen, onClose }: ISideMenu) {
               padding: "0 10px",
             }}
           >
-            <button type="button" className="noOutlineBtn" onClick={onClose}>
+            <button type="button" className="ghostBtn" onClick={onClose}>
               <IconDoubleGreaterThen
                 width={15}
                 height={15}

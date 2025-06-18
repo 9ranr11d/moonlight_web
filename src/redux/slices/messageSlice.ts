@@ -9,8 +9,10 @@ export interface IMessage {
   title: string | null;
   /** Message */
   msg: string | null;
-  /** Message Type */
-  type: "ok" | "ok-cancel";
+  /** 타입 */
+  type: "info" | "warn" | "err";
+  /** Message 반환 Type */
+  returnType: "ok" | "ok-cancel" | "none";
 }
 
 /** Message 초기값 Interface */
@@ -26,7 +28,8 @@ const initialState: IMessageState = {
   title: null,
   isVisible: false,
   msg: null,
-  type: "ok-cancel",
+  type: "info",
+  returnType: "none",
   result: null,
 };
 
@@ -45,6 +48,7 @@ export const messageSlice = createSlice({
       state.title = action.payload.title;
       state.msg = action.payload.msg;
       state.type = action.payload.type;
+      state.returnType = action.payload.returnType;
     },
     /** Message 결과 설정 */
     setResult: (state, action: PayloadAction<TMessageResult>) => {

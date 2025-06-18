@@ -24,7 +24,8 @@ export default function useSignOut() {
       setMessage({
         title: "로그아웃",
         msg: "정말 로그아웃하시겠습니까?",
-        type: "ok-cancel",
+        type: "warning",
+        returnType: "ok-cancel",
       })
     );
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 
@@ -15,6 +15,7 @@ import { signIn as socialSignIn } from "next-auth/react";
 import { AppDispatch, RootState } from "@/redux/store";
 
 import { resetAuth } from "@/redux/slices/authSlice";
+import { setMessage } from "@/redux/slices/messageSlice";
 
 import { signInAction } from "@/actions/authAction";
 
@@ -25,7 +26,6 @@ import styles from "./SignIn.module.css";
 import VisibleBtn from "@/components/common/btns/VisibleBtn";
 import CheckBoxBtn from "@/components/common/btns/CheckBoxBtn";
 
-import IconClose from "@public/svgs/common/icon_x.svg";
 import IconGoogle from "@public/imgs/auth/icon_google.png";
 import IconNaver from "@public/imgs/auth/icon_naver.png";
 import IconKakao from "@public/imgs/auth/icon_kakao.png";
@@ -47,8 +47,30 @@ export default function SignIn() {
   const [isRememberMe, setIsRememberMe] = useState<boolean>(false); // 로그인 상태 유지 여부
   const [isSignInLoading, setIsSignInLoading] = useState<boolean>(false); // 로그인 로딩 여부
 
+  /** 로그인 오류 시 로딩 상태 해제 및 메시지 표시 */
+  useEffect(() => {
+    if (user.isErr && user.msg) {
+      setIsSignInLoading(false);
+
+      // Message 컴포넌트로 에러 표시
+      dispatch(
+        setMessage({
+          title: "로그인 오류",
+          msg: user.msg,
+          type: "err",
+          returnType: "ok",
+        })
+      );
+
+      // 에러 상태 초기화
+      dispatch(resetAuth());
+    }
+  }, [user.isErr, user.msg, dispatch]);
+
   /** 로그인 */
   const processSignIn = (): void => {
+    dispatch(resetAuth());
+
     setIsSignInLoading(true);
 
     const data: ISignInData = {
@@ -164,41 +186,6 @@ export default function SignIn() {
       </div>
 
       <div className={styles.subBox} style={{ position: "relative" }}>
-        {user.isErr && (
-          <div
-            className={styles.errBox}
-            style={{
-              position: "absolute",
-              width: "100%",
-              background: "var(--err-background-color)",
-              padding: 10,
-              borderRadius: 5,
-            }}
-          >
-            <p style={{ color: "var(--err-color)" }}>{user.msg}</p>
-
-            <button
-              type="button"
-              style={{
-                padding: 0,
-                background: "none",
-                position: "absolute",
-                right: 15,
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-              onClick={() => dispatch(resetAuth())}
-            >
-              <IconClose
-                width={12}
-                height={12}
-                fill={"var(--err-color)"}
-                style={{ display: "flex" }}
-              />
-            </button>
-          </div>
-        )}
-
         <ul>
           <li>
             <Link href="/recovery">ID / PW 찾기</Link>

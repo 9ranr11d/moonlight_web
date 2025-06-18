@@ -24,10 +24,10 @@ export default function NotificationBtn({
     <button
       type="button"
       onClick={onClick}
-      className={`noOutlineBtn ${className}`}
-      style={{ position: "relative", width: 32, height: 32 }}
+      className={`iconBtn ${className}`}
+      style={{ position: "relative" }}
     >
-      <IconBell width={20} height={20} fill={"var(--black-700a)"} />
+      <IconBell width={15} height={15} fill={"var(--black-700a)"} />
 
       {count > 0 && (
         <div

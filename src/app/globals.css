@@ -5,7 +5,11 @@
 
   --font-color: #111;
   --err-color: #e63946;
-  --err-background-color: #ffe5e9;
+  --err-light-color: #ffe5e9;
+  --err-dark-color: #c1121f;
+  --warn-color: #f4a261;
+  --warn-light-color: #fff3e0;
+  --warn-dark-color: #e76f51;
 
   --background-color: linear-gradient(
     160deg,
@@ -250,7 +254,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -322,18 +326,35 @@ button:disabled {
   background: var(--gray-50);
 }
 
-.noOutlineBtn {
+.ghostBtn {
   background: none;
   color: var(--font-color);
   padding: 5px;
 }
 
-.noOutlineBtn:hover {
+.ghostBtn:hover {
   scale: 1.05;
 }
 
-.noOutlineBtn:active {
+.ghostBtn:active {
   background: var(--gray-50);
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.iconBtn:hover {
+  scale: 1.1;
+}
+
+.iconBtn:active {
+  background: var(--white-300a);
 }
 
 .mobile {
