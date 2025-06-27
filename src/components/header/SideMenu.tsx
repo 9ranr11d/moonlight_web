@@ -17,7 +17,7 @@ import useSignOut from "@/hooks/useSignOut";
 
 import styles from "./SideMenu.module.css";
 
-import NotificationBtn from "@/components/common/btns/NotificationBtn";
+import NotificationBtn from "@/components/NotificationBtn";
 
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 
