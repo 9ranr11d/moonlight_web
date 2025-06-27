@@ -30,7 +30,7 @@ import Backdrop from "@/components/common/Backdrop";
 
 import SideMenu from "@/components/header/SideMenu";
 
-import NotificationBtn from "@/components/common/btns/notificationBtn";
+import NotificationBtn from "@/components/common/btns/NotificationBtn";
 
 import IconLogoSquare from "@public/svgs/common/icon_logo_square.svg";
 import IconLogoHorizontal from "@public/svgs/common/icon_logo_horizontal.svg";

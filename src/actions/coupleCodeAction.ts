@@ -20,8 +20,6 @@ export const issueCoupleCodeAction =
         throw new Error(msg);
       }
 
-      console.log("data :", data);
-
       dispatch(setCoupleCode(data.coupleCode));
     } catch (err) {
       console.error(

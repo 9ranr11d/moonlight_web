@@ -4,6 +4,8 @@ import React from "react";
 
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+
 import { useSelector } from "react-redux";
 
 import { RootState } from "@/redux/store";
@@ -29,8 +31,14 @@ interface IProfileModal {
 export default function ProfileModal({ closeModal }: IProfileModal) {
   /** 사용자 정보 */
   const user = useSelector((state: RootState) => state.authSlice);
+  const router = useRouter();
 
   const signOut = useSignOut();
+
+  const handleProfileClick = () => {
+    closeModal();
+    router.push("/profile");
+  };
 
   return (
     <div className={styles.modal}>
@@ -65,7 +73,7 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
       </p>
 
       <div className={styles.profileActions}>
-        <button type="button">
+        <button type="button" onClick={handleProfileClick}>
           <IconProfile width={15} height={15} fill="white" />
 
           <span>정보</span>

@@ -5,6 +5,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+
 import { useSelector } from "react-redux";
 
 import { RootState } from "@/redux/store";
@@ -15,7 +17,7 @@ import useSignOut from "@/hooks/useSignOut";
 
 import styles from "./SideMenu.module.css";
 
-import NotificationBtn from "@/components/common/btns/notificationBtn";
+import NotificationBtn from "@/components/common/btns/NotificationBtn";
 
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 
@@ -36,11 +38,17 @@ interface ISideMenu {
 
 /** 측면 Menu */
 export default function SideMenu({ isOpen, onClose }: ISideMenu) {
+  const router = useRouter();
+
   const { nickname, profileImgUrl } = useSelector(
     (state: RootState) => state.authSlice
   ); // 사용자 별칭
 
   const signOut = useSignOut();
+
+  const handleProfileClick = () => {
+    router.push("/profile");
+  };
 
   const getMenuIcon = (path: string) => {
     switch (path) {
@@ -93,7 +101,7 @@ export default function SideMenu({ isOpen, onClose }: ISideMenu) {
           </div>
 
           <div className={styles.profileActions}>
-            <button type="button">
+            <button type="button" onClick={handleProfileClick}>
               <IconProfile width={15} height={15} fill="white" />
 
               <span>정보</span>

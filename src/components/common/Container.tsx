@@ -1,9 +1,35 @@
 import React from "react";
 
-export default function Container({
-  children,
-}: {
+interface ISection {
   children?: React.ReactNode;
-}) {
-  return <div style={{ background: "white", padding: 20 }}>{children}</div>;
+  style?: React.CSSProperties;
 }
+
+interface IContainer {
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+}
+
+function Section({ children, style }: ISection) {
+  return <div style={style}>{children}</div>;
+}
+
+export default function Container({ children, style }: IContainer) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        background: "white",
+        marginTop: 100,
+        padding: 20,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+Container.Section = Section;

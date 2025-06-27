@@ -103,7 +103,7 @@ header {
 }
 
 header > nav {
-  padding: 10px 30px;
+  padding: 10px 20px;
   background: #ffffffee;
   transition:
     height 1s ease,

@@ -29,7 +29,7 @@ export default function Home() {
   ); // 연인 식별자
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <div className={styles.coupleCodeBox}>
         <div className={styles.title}>
           <div
@@ -106,11 +106,11 @@ export default function Home() {
         </div>
       </div>
 
-      <Container>
+      <div style={{ flex: 1, background: "white" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           <UpcomingSchedule />
         </div>
-      </Container>
+      </div>
     </div>
   );
 }
