@@ -81,7 +81,11 @@ const MenuItem = ({ path, value, className = "", style = {} }: IMenuItem) => {
       data-active={isActive}
       data-path={path}
     >
-      {value.icon}
+      <div className={styles.menuItemContent}>
+        <div className={styles.menuIcon}>{value.icon}</div>
+        <span className={styles.menuTitle}>{value.title}</span>
+      </div>
+      {isActive && <div className={styles.activeIndicator} />}
     </li>
   );
 };

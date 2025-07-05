@@ -12,7 +12,6 @@ import styles from "./Home.module.css";
 
 import { copyClipBoard } from "@/utils";
 
-import Container from "@/components/common/Container";
 import UpcomingSchedule from "@/components/home/UpcomingSchedule";
 
 import IconClipboard from "@public/svgs/common/icon_clipboard.svg";

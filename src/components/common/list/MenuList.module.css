@@ -2,26 +2,34 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--gray-900);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .menuItem {
-  padding: 16px 20px;
+  position: relative;
+  padding: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid var(--gray-800);
-  color: var(--gray-300);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
   font-weight: 500;
+  overflow: hidden;
 }
 
 .menuItem:hover {
-  background: var(--gray-800);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--white);
+  transform: translateX(4px);
 }
 
 .menuItem[data-active="true"] {
-  background: var(--primary);
+  background: rgba(255, 255, 255, 0.15);
   color: var(--white);
   font-weight: 600;
 }
@@ -30,10 +38,69 @@
   border-bottom: none;
 }
 
+.menuItemContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.menuIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.menuItem[data-active="true"] .menuIcon {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.menuTitle {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.activeIndicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(135deg, #ff6b6b, #ffa726);
+  border-radius: 2px 0 0 2px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50%) translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+  }
+}
+
 .menuContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 }
 
 .menuContent {

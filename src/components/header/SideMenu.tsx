@@ -22,7 +22,7 @@ import NotificationBtn from "@/components/NotificationBtn";
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 
 import IconDoubleGreaterThen from "@public/svgs/common/icon_double_greater_then.svg";
-import IconProfile from "@public/svgs/auth/icon_profile.svg";
+// import IconProfile from "@public/svgs/auth/icon_profile.svg";
 import IconLogout from "@public/svgs/auth/icon_logout.svg";
 import IconCalendar from "@public/svgs/calendar/icon_calendar.svg";
 import IconMap from "@public/svgs/map/icon_map.svg";
@@ -102,7 +102,7 @@ export default function SideMenu({ isOpen, onClose }: ISideMenu) {
 
           <div className={styles.profileActions}>
             <button type="button" onClick={handleProfileClick}>
-              <IconProfile width={15} height={15} fill="white" />
+              {/* <IconProfile width={15} height={15} fill="white" /> */}
 
               <span>정보</span>
             </button>
