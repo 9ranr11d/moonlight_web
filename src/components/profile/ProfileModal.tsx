@@ -18,7 +18,7 @@ import CloseBtn from "@/components/common/btns/CloseBtn";
 
 import ImgProfile from "@public/imgs/auth/img_profile.png";
 
-import IconProfile from "@public/svgs/auth/icon_profile2.svg";
+import IconProfile from "@public/svgs/auth/icon_profile.svg";
 import IconLogout from "@public/svgs/auth/icon_logout.svg";
 
 /** 사용자 정보 수정 모달 Interface */

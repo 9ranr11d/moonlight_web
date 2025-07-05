@@ -2,36 +2,44 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
+  background: var(--gray-50);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .menuItem {
   position: relative;
   padding: 0;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  color: var(--gray-700);
   font-size: 14px;
-  font-weight: 500;
-  overflow: hidden;
+  font-weight: 400;
+  background: var(--gray-50);
+}
+
+.menuItem svg {
+  fill: var(--gray-700);
 }
 
 .menuItem:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  transform: translateX(4px);
+  background: white;
+  color: var(--font-color);
+  transform: translateX(2px);
+}
+
+.menuItem:hover svg {
+  fill: var(--primary-color);
 }
 
 .menuItem[data-active="true"] {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--white);
-  font-weight: 600;
+  background: white;
+  color: var(--font-color);
+  font-weight: 500;
+}
+
+.menuItem[data-active="true"] svg {
+  fill: var(--primary-color);
 }
 
 .menuItem:last-child {
@@ -42,54 +50,48 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 24px;
-  position: relative;
-  z-index: 2;
+  padding: 16px 20px;
 }
 
 .menuIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  width: 24px;
+  height: 24px;
+  color: var(--gray-500);
+  transition: all 0.2s ease;
 }
 
 .menuItem[data-active="true"] .menuIcon {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .menuTitle {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-size: 14px;
+  font-weight: inherit;
+  letter-spacing: 0.3px;
 }
 
 .activeIndicator {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 60%;
-  background: linear-gradient(135deg, #ff6b6b, #ffa726);
-  border-radius: 2px 0 0 2px;
-  animation: slideIn 0.3s ease-out;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin: 10px 0;
+  background: var(--primary-color);
+  animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes slideIn {
+@keyframes fadeIn {
   from {
-    transform: translateY(-50%) translateX(100%);
     opacity: 0;
+    transform: scaleY(0.8);
   }
   to {
-    transform: translateY(-50%) translateX(0);
     opacity: 1;
+    transform: scaleY(1);
   }
 }
 
@@ -97,14 +99,14 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: var(--white-900a);
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  padding: 20px;
 }
 
 .menuContent {
   flex: 1;
   padding: 20px;
-  background: var(--white);
+  background: var(--white-900a);
 }
