@@ -4,8 +4,8 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
-import { resetIdentification } from "@/redux/slices/signUpSlice";
+import { AppDispatch, RootState } from "@/store";
+import { resetIdentification } from "@/store/slices/signUpSlice";
 
 import { checkDuplicateIdAction } from "@/actions/authAction";
 
@@ -21,7 +21,7 @@ export default function IdentificationInput() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 회원가입 관련 정보 */
-  const signUp = useSelector((state: RootState) => state.signUpSlice);
+  const signUp = useSelector((state: RootState) => state.signUp);
 
   const [identification, setIdentification] = useState<string>(""); // 아이디
 

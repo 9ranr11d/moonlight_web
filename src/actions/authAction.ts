@@ -1,4 +1,4 @@
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import {
   setAuthErr,
@@ -7,7 +7,7 @@ import {
   signIn,
   signOut,
   socialSignIn,
-} from "@/redux/slices/authSlice";
+} from "@/store/slices/authSlice";
 
 import {
   setLatestTerm,
@@ -15,7 +15,7 @@ import {
   setIsIdDuplicate,
   setSignUpCompleted,
   setTermsSaved,
-} from "@/redux/slices/signUpSlice";
+} from "@/store/slices/signUpSlice";
 
 import {
   confirmVerificationAvailable,
@@ -23,13 +23,13 @@ import {
   setPhoneVerified,
   setRegistered,
   setVerificationErr,
-} from "@/redux/slices/verificationSlice";
+} from "@/store/slices/verificationSlice";
 
 import {
   passwordChangeCompleted,
   passwordChangeFailed,
   setModifiedId,
-} from "@/redux/slices/recoverySlice";
+} from "@/store/slices/recoverySlice";
 
 import {
   IIUser,
@@ -39,7 +39,7 @@ import {
   TVerificationType,
 } from "@/interfaces/auth";
 
-import { setCoupleCode } from "@/redux/slices/coupleCodeSlice";
+import { setCoupleCode } from "@/store/slices/coupleCodeSlice";
 
 /**
  * 소셜 로그인 정보 저장
@@ -66,7 +66,7 @@ export const socialSignInAction =
 /** 최신 약관 가져오기 */
 export const getLatestTermsAction =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { isLoaded } = getState().signUpSlice.term; // 약관 로드 여부
+    const { isLoaded } = getState().signUp.term; // 약관 로드 여부
 
     // 로드 됐을 시 다시 요청하지 않음
     if (!isLoaded) return;

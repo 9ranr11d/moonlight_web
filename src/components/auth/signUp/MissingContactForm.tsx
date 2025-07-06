@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import { TVerificationMethod } from "@/interfaces/auth";
 
@@ -25,11 +25,9 @@ export default function MissingContactForm() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const auth = useSelector((state: RootState) => state.authSlice);
+  const auth = useSelector((state: RootState) => state.auth);
   /** 본인인증 정보 */
-  const verification = useSelector(
-    (state: RootState) => state.verificationSlice
-  );
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [method, setMethod] = useState<TVerificationMethod>("email"); // 방법
 

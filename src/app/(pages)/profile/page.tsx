@@ -7,6 +7,7 @@ import IconCoupeCode from "@public/svgs/auth/icon_couple_code.svg";
 import Container from "@/components/common/Container";
 import MenuList from "@/components/common/list/MenuList";
 import { PROFILE_MENUS } from "@/constants";
+import Profile from "@/components/profile/Profile";
 
 export default function Page() {
   const [selectedMenu, setSelectedMenu] = useState<string>("profile");
@@ -29,13 +30,7 @@ export default function Page() {
   const renderMenuContent = () => {
     switch (selectedMenu) {
       case "profile":
-        return (
-          <div>
-            <h2>내 정보</h2>
-            <p>사용자 정보를 관리할 수 있습니다.</p>
-            {/* TODO: 사용자 정보 폼 또는 정보 표시 컴포넌트 추가 */}
-          </div>
-        );
+        return <Profile />;
       case "coupleCode":
         return (
           <div>

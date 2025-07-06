@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import { IIFavoriteLocation } from "@/models/FavoriteLocation";
 import { IIFavoriteLocationHistory } from "@/models/FavoriteLocationHistory";
@@ -30,7 +30,7 @@ export default function EventModal({ closeModal, locationData }: IEventModal) {
 
   /** 즐겨찾기 Reducer */
   const favoriteLocation = useSelector(
-    (state: RootState) => state.favoriteLocationSlice
+    (state: RootState) => state.favoriteLocation
   );
 
   const [histories, setHistories] = useState<IIFavoriteLocationHistory[]>([]); // 방문 일지들

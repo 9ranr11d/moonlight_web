@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import { formatDateII } from "@/utils";
 
@@ -43,7 +43,7 @@ export default function VisitHistoryEditor() {
 
   /** 즐겨찾기 정보 Reducer */
   const favoriteLocation = useSelector(
-    (state: RootState) => state.favoriteLocationSlice
+    (state: RootState) => state.favoriteLocation
   );
 
   const [isStartCalendarOpen, setIsStartCalendarOpen] =

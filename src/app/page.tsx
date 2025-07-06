@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import LunarLoader from "@/components/common/LunarLoader";
 
@@ -19,7 +19,7 @@ export default function Home() {
   const router = useRouter();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
 
   // 로그인 정보가 있을 시 '메인 홈'으로
   useEffect(() => {

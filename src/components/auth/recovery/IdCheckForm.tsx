@@ -4,11 +4,9 @@ import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
 
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch } from "@/store";
 
-import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
-
-import styles from "./Recovery.module.css";
+import { incrementRecoveryStep } from "@/store/slices/recoverySlice";
 
 import { validateIdentification } from "@/utils";
 

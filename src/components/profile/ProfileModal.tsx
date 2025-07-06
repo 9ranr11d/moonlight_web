@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import useSignOut from "@/hooks/useSignOut";
 
@@ -30,7 +30,7 @@ interface IProfileModal {
 /** 사용자 정보 수정 모달 */
 export default function ProfileModal({ closeModal }: IProfileModal) {
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   const signOut = useSignOut();

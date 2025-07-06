@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import { MAIN_MENUS } from "@/constants";
 
@@ -41,7 +41,7 @@ export default function SideMenu({ isOpen, onClose }: ISideMenu) {
   const router = useRouter();
 
   const { nickname, profileImgUrl } = useSelector(
-    (state: RootState) => state.authSlice
+    (state: RootState) => state.auth
   ); // 사용자 별칭
 
   const signOut = useSignOut();

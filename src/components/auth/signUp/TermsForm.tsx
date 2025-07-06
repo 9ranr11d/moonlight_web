@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 import {
   agreeToAllTerms,
   incrementSignUpStep,
   resetIdentification,
   resetPassword,
   setTermAgreement,
-} from "@/redux/slices/signUpSlice";
+} from "@/store/slices/signUpSlice";
 
 import { getLatestTermsAction } from "@/actions/authAction";
 
@@ -31,7 +31,7 @@ export default function TermsForm() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 약관 정보 */
-  const signUp = useSelector((state: RootState) => state.signUpSlice);
+  const signUp = useSelector((state: RootState) => state.signUp);
 
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false); // 전체 동의 여부
   const [isConfirmActive, setIsConfirmActive] = useState<boolean>(false); // 다음 버튼 활성화 여부

@@ -3,15 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 import {
   setSelectedLocationIdx,
   setMapCenter,
   IAddress,
   setFavoriteLocations,
   setLastCenter,
-} from "@/redux/slices/mapSlice";
-import { showBackdrop } from "@/redux/slices/backdropSlice";
+} from "@/store/slices/mapSlice";
+import { showBackdrop } from "@/store/slices/backdropSlice";
 
 // import Lottie from "lottie-react";
 
@@ -55,11 +55,11 @@ export default function KakaoMap() {
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const map = useSelector((state: RootState) => state.mapSlice);
+  const map = useSelector((state: RootState) => state.map);
   /** 사용자 Reducer */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
   /** Background Reducer */
-  const backdrop = useSelector((state: RootState) => state.backdropSlice);
+  const backdrop = useSelector((state: RootState) => state.backdrop);
 
   /** 검색 결과 Marker들 */
   const searchedMarkers: (

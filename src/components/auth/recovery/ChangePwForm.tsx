@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { clearRecoveryMsg } from "@/redux/slices/recoverySlice";
+import { clearRecoveryMsg } from "@/store/slices/recoverySlice";
 
 import { changePwAction } from "@/actions/authAction";
 
@@ -33,7 +33,7 @@ export default function ChangePwForm({ identification }: IChagePwForm) {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const { msg } = useSelector((state: RootState) => state.recoverySlice);
+  const { msg } = useSelector((state: RootState) => state.recovery);
 
   const [password, setPassword] = useState<string>(""); // 비밀번호
   const [confirmPw, setConfirmPw] = useState<string>(""); // 비밀번호 확인

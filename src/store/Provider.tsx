@@ -1,6 +1,6 @@
 "use client";
 
-import { store } from "./store";
+import { store } from ".";
 import { Provider as _Provider } from "react-redux";
 
 /** Provider Interface */

@@ -3,8 +3,8 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setSchedules } from "@/redux/slices/calendarSlice";
-import { RootState } from "@/redux/store";
+import { setSchedules } from "@/store/slices/calendarSlice";
+import { RootState } from "@/store";
 
 import styles from "./ThisWeek.module.css";
 
@@ -17,10 +17,10 @@ export default function ThisWeek() {
   const dispatch = useDispatch();
 
   /** 캘린더 정보들 */
-  const calendar = useSelector((state: RootState) => state.calendarSlice);
+  const calendar = useSelector((state: RootState) => state.calendar);
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
 
   /** 오늘 날짜 */
   const today: Date = new Date();

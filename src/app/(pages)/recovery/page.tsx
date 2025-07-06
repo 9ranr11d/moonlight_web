@@ -6,16 +6,16 @@ import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import {
   decrementRecoveryStep,
   incrementRecoveryStep,
   resetRecovery,
   setVerificationMethod,
-} from "@/redux/slices/recoverySlice";
+} from "@/store/slices/recoverySlice";
 
-import { resetVerification } from "@/redux/slices/verificationSlice";
+import { resetVerification } from "@/store/slices/verificationSlice";
 
 import TitleHeader from "@/components/common/TitleHeader";
 
@@ -34,13 +34,9 @@ export default function Recovery() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const { isVerified } = useSelector(
-    (state: RootState) => state.verificationSlice
-  ); // 본인인증 여부
+  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
 
-  const { step, isChanged } = useSelector(
-    (state: RootState) => state.recoverySlice
-  ); // ID/PW 찾기 Step
+  const { step, isChanged } = useSelector((state: RootState) => state.recovery); // ID/PW 찾기 Step
 
   const [selectedTabIdx, setSelectedTabIdx] = useState<number>(0); // 선택된 Tab
 

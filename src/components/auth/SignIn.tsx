@@ -12,10 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { signIn as socialSignIn } from "next-auth/react";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { resetAuth } from "@/redux/slices/authSlice";
-import { setMessage } from "@/redux/slices/messageSlice";
+import { resetAuth } from "@/store/slices/authSlice";
+import { setMessage } from "@/store/slices/messageSlice";
 
 import { signInAction } from "@/actions/authAction";
 
@@ -38,7 +38,7 @@ export default function SignIn() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
 
   const [identification, setIdentification] = useState<string>(""); // 아이디
   const [password, setPassword] = useState<string>(""); // 비밀번호

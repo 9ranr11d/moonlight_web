@@ -4,9 +4,9 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { setResult } from "@/redux/slices/messageSlice";
+import { setResult } from "@/store/slices/messageSlice";
 
 import { Modal } from "@/components/common/Modal";
 import CloseBtn from "@/components/common/btns/CloseBtn";
@@ -17,7 +17,7 @@ export default function Message() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** Message Redux */
-  const message = useSelector((state: RootState) => state.messageSlice);
+  const message = useSelector((state: RootState) => state.message);
 
   const getModalStyle = () => {
     switch (message.type) {

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 
-import Provider from "@/redux/Provider";
+import Provider from "@/store/Provider";
 
 import SessionProviderWrapper from "@/components/common/SessionProviderWrapper";
 import Header from "@/components/header/Header";

@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { resetVerification, verify } from "@/redux/slices/verificationSlice";
+import { resetVerification, verify } from "@/store/slices/verificationSlice";
 
-import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
+import { incrementRecoveryStep } from "@/store/slices/recoverySlice";
 
 import {
   checkDuplicatePhoneNumberAction,
@@ -43,9 +43,7 @@ export default function PhoneNumberForm({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 본인인증 정보 */
-  const verification = useSelector(
-    (state: RootState) => state.verificationSlice
-  );
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [phoneNumber, setPhoneNumber] = useState<string>(""); // 휴대전화 번호
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드

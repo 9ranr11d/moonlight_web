@@ -1,4 +1,4 @@
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch } from "@/store";
 
 export const getSchedulesAction = () => async (dispatch: AppDispatch) => {
   try {

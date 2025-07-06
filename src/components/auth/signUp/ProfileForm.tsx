@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import { saveUserTermsAction, signUpAction } from "@/actions/authAction";
 
@@ -27,11 +27,9 @@ export default function ProfileForm() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 회원가입 정보 */
-  const signUp = useSelector((state: RootState) => state.signUpSlice);
+  const signUp = useSelector((state: RootState) => state.signUp);
   /** 본인인증 정보 */
-  const verification = useSelector(
-    (state: RootState) => state.verificationSlice
-  );
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [birthdate, setBirthdate] = useState<string>(""); // 생년월일
   const [nickname, setNickName] = useState<string>(""); // 별명

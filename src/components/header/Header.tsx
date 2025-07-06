@@ -10,9 +10,9 @@ import { useSession } from "next-auth/react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { hideBackdrop, showBackdrop } from "@/redux/slices/backdropSlice";
+import { hideBackdrop, showBackdrop } from "@/store/slices/backdropSlice";
 
 import {
   checkRefreshTokenAction,
@@ -49,9 +49,9 @@ export default function Header() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
   /** Backdrop */
-  const backdrop = useSelector((state: RootState) => state.backdropSlice);
+  const backdrop = useSelector((state: RootState) => state.backdrop);
 
   const [isHidden, setIsHidden] = useState<boolean>(false); // 로그인 전 로고 불가시 여부
   const [isUserPanelOpen, setIsUserPanelOpen] = useState<boolean>(false); // 사용자 Panel 열기 여부

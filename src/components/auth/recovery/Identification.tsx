@@ -9,7 +9,7 @@ import Lottie from "lottie-react";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import { TVerificationMethod } from "@/interfaces/auth";
 
@@ -38,11 +38,9 @@ export default function Identification({ onTabSelect }: IIdentification) {
   /** Router */
   const router = useRouter();
 
-  const { isVerified } = useSelector(
-    (state: RootState) => state.verificationSlice
-  ); // 본인인증 여부
+  const { isVerified } = useSelector((state: RootState) => state.verification); // 본인인증 여부
   const { step, modifiedId, verificationMethod } = useSelector(
-    (state: RootState) => state.recoverySlice
+    (state: RootState) => state.recovery
   ); // Step과 가려진 아이디
 
   /** Steps */

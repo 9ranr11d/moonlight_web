@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setScheduleCategories } from "@/redux/slices/calendarSlice";
+import { AppDispatch, RootState } from "@/store";
+import { setScheduleCategories } from "@/store/slices/calendarSlice";
 
 import { IISchedule, ISchedule } from "@/models/Schedule";
 import { IIUser } from "@/interfaces/auth";
@@ -132,9 +132,9 @@ export default function EventModal({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 현재 사용자 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
   /** 일정 */
-  const calendar = useSelector((state: RootState) => state.calendarSlice);
+  const calendar = useSelector((state: RootState) => state.calendar);
 
   /** 새 카테고리 기본 값 */
   const newCategoryInitialState: IScheduleCategory = {

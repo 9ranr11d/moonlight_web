@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
-import { resetVerification, verify } from "@/redux/slices/verificationSlice";
-import { incrementRecoveryStep } from "@/redux/slices/recoverySlice";
+import { resetVerification, verify } from "@/store/slices/verificationSlice";
+import { incrementRecoveryStep } from "@/store/slices/recoverySlice";
 
 import {
   checkDuplicateEmailAction,
@@ -42,9 +42,7 @@ export default function EmailForm({
   const dispatch = useDispatch<AppDispatch>();
 
   /** 본인인증 정보 */
-  const verification = useSelector(
-    (state: RootState) => state.verificationSlice
-  );
+  const verification = useSelector((state: RootState) => state.verification);
 
   const [email, setEmail] = useState<string>(""); // 입력된 Email
   const [code, setCode] = useState<string>(""); // 입력된 인증 코드

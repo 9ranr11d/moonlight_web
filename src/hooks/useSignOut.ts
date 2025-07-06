@@ -6,17 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { signOut as socialSignOut } from "next-auth/react";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import { signOutAction } from "@/actions/authAction";
 
-import { setMessage, setResult } from "@/redux/slices/messageSlice";
+import { setMessage, setResult } from "@/store/slices/messageSlice";
 
 export default function useSignOut() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const provider = useSelector((state: RootState) => state.authSlice.provider);
-  const result = useSelector((state: RootState) => state.messageSlice.result);
+  const provider = useSelector((state: RootState) => state.auth.provider);
+  const result = useSelector((state: RootState) => state.message.result);
 
   const triggerSignOut = () => {
     // 메시지 모달 띄우기

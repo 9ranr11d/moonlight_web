@@ -3,7 +3,7 @@
 import React from "react";
 
 import { useDispatch } from "react-redux";
-import { hideBackdrop } from "@/redux/slices/backdropSlice";
+import { hideBackdrop } from "@/store/slices/backdropSlice";
 
 import styles from "./Modal.module.css";
 

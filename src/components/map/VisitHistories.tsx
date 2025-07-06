@@ -5,7 +5,7 @@ import React from "react";
 import Image from "next/image";
 
 import { useDispatch } from "react-redux";
-import { createActiveLocation } from "@/redux/slices/favoriteLocationSlice";
+import { createActiveLocation } from "@/store/slices/favoriteLocationSlice";
 
 import { IIFavoriteLocationHistory } from "@/models/FavoriteLocationHistory";
 

@@ -3,8 +3,8 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { hideBackdrop } from "@/redux/slices/backdropSlice";
+import { RootState } from "@/store";
+import { hideBackdrop } from "@/store/slices/backdropSlice";
 
 import styles from "./Backdrop.module.css";
 
@@ -14,7 +14,7 @@ export default function Backdrop() {
   const dispatch = useDispatch();
 
   /** 배경 화면 Reducer */
-  const backdrop = useSelector((state: RootState) => state.backdropSlice);
+  const backdrop = useSelector((state: RootState) => state.backdrop);
 
   /** 배경 화면 클릭 시 */
   const closeBackdrop = (): void => {

@@ -4,7 +4,7 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import { issueCoupleCodeAction } from "@/actions/coupleCodeAction";
 
@@ -21,11 +21,9 @@ export default function Home() {
   /** Dispatch */
   const dispatch = useDispatch<AppDispatch>();
 
-  const { identification } = useSelector((state: RootState) => state.authSlice); // 사용자 식별자
+  const { identification } = useSelector((state: RootState) => state.auth); // 사용자 식별자
 
-  const { coupleCode } = useSelector(
-    (state: RootState) => state.coupleCodeSlice
-  ); // 연인 식별자
+  const { coupleCode } = useSelector((state: RootState) => state.coupleCode); // 연인 식별자
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>

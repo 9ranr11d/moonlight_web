@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 import {
   incrementSignUpStep,
   resetPassword,
   setIsPasswordValid,
-} from "@/redux/slices/signUpSlice";
+} from "@/store/slices/signUpSlice";
 
 import styles from "@/components/auth/signUp/SignUp.module.css";
 
@@ -25,7 +25,7 @@ export default function AccountForm() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 회원가입 관련 정보 */
-  const signUp = useSelector((state: RootState) => state.signUpSlice);
+  const signUp = useSelector((state: RootState) => state.signUp);
 
   const [password, setPassword] = useState<string>(""); // 비밀번호
   const [confirmPassword, setConfirmPassword] = useState<string>(""); // 비밀번호 재확인

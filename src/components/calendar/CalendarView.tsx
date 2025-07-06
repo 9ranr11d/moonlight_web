@@ -5,9 +5,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { setSchedules } from "@/redux/slices/calendarSlice";
-import { hideBackdrop, showBackdrop } from "@/redux/slices/backdropSlice";
+import { AppDispatch, RootState } from "@/store";
+import { setSchedules } from "@/store/slices/calendarSlice";
+import { hideBackdrop, showBackdrop } from "@/store/slices/backdropSlice";
 
 import { IIUser } from "@/interfaces/auth";
 import { IIISchedule } from "@/models/Schedule";
@@ -48,11 +48,11 @@ export default function CalendarView() {
   const dispatch = useDispatch<AppDispatch>();
 
   /** 일정 */
-  const calendar = useSelector((state: RootState) => state.calendarSlice);
+  const calendar = useSelector((state: RootState) => state.calendar);
   /** 사용자 정보 */
-  const user = useSelector((state: RootState) => state.authSlice);
+  const user = useSelector((state: RootState) => state.auth);
   /** Backdrop */
-  const backdrop = useSelector((state: RootState) => state.backdropSlice);
+  const backdrop = useSelector((state: RootState) => state.backdrop);
 
   /** 오늘 날짜 */
   const today: Date = new Date();

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/store";
 
 import {
   decrementSignUpStep,
@@ -14,9 +14,9 @@ import {
   resetPassword,
   resetSignUp,
   resetTerm,
-} from "@/redux/slices/signUpSlice";
+} from "@/store/slices/signUpSlice";
 
-import { resetVerification } from "@/redux/slices/verificationSlice";
+import { resetVerification } from "@/store/slices/verificationSlice";
 
 import TitleHeader from "@/components/common/TitleHeader";
 import ErrorBlock from "@/components/common/ErrorBlock";
@@ -38,7 +38,7 @@ export default function SignUp() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { step, isCompleted, isErr, msg } = useSelector(
-    (state: RootState) => state.signUpSlice
+    (state: RootState) => state.signUp
   ); // 회원가입 Step, 완료 여부, 오류 여부, 오류 메시지
 
   /** 뒤로 가기 클릭 시 */

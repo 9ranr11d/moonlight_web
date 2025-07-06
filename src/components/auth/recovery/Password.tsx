@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 
 import { TVerificationMethod } from "@/interfaces/auth";
 
@@ -33,7 +33,7 @@ export default function Password({ onTabSelect }: IPassword) {
   const router = useRouter();
 
   const { step, isChanged, verificationMethod } = useSelector(
-    (state: RootState) => state.recoverySlice
+    (state: RootState) => state.recovery
   ); // ID/PW 찾기 관련 정보
 
   const [identification, setIdentification] = useState<string>(""); // 인증할 아이디

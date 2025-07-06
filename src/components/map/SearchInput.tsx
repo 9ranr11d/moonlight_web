@@ -5,14 +5,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { RootState } from "@/store";
 import {
   IAddress,
   resetSearchPlaces,
   setLastCenter,
   setSearchedAddress,
   setSearchedPlaces,
-} from "@/redux/slices/mapSlice";
+} from "@/store/slices/mapSlice";
 
 import styles from "./Map.module.css";
 
@@ -59,7 +59,7 @@ export default function SearchInput({
   const dispatch = useDispatch();
 
   /** 지도 Reducer */
-  const map = useSelector((state: RootState) => state.mapSlice);
+  const map = useSelector((state: RootState) => state.map);
 
   /** 검색 결과들의 Box Ref */
   const resultsRef = useRef<HTMLDivElement>(null);
