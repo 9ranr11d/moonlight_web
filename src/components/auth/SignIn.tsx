@@ -58,7 +58,8 @@ export default function SignIn() {
           title: "로그인 오류",
           msg: user.msg,
           type: "err",
-          returnType: "ok",
+          returnType: "none",
+          pos: "topRight",
         })
       );
 

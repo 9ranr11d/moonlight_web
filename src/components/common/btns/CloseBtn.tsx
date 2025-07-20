@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import IconClose from "@public/svgs/common/icon_x.svg";
 
@@ -6,30 +6,25 @@ interface ICloseBtn {
   onClick?: () => void;
 
   fill?: string;
-  hoverFill?: string;
   style?: React.CSSProperties;
   size?: number;
 }
 
 export default function CloseBtn({
   onClick,
-  fill = "var(--gray-500)",
-  hoverFill = "var(--gray-900)",
+  fill,
   style,
-  size = 15,
+  size = 14,
 }: ICloseBtn) {
-  const [isHover, setIsHover] = useState<boolean>(false);
-
+  console.log("closebtn", fill);
   return (
     <button
       type="button"
       onClick={onClick}
       className="iconBtn"
       style={{ ...style, display: "flex" }}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
     >
-      <IconClose width={size} height={size} fill={isHover ? hoverFill : fill} />
+      <IconClose width={size} height={size} style={{ fill: fill }} />
     </button>
   );
 }

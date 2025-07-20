@@ -166,7 +166,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleUserPanel}
-              className={`ghostBtn ${styles.web}`}
+              className={`iconBtn ${styles.web}`}
             >
               {user.nickname}
             </button>
@@ -178,7 +178,7 @@ export default function Header() {
             <button
               type="button"
               onClick={toggleSideMenu}
-              className={"ghostBtn mobile"}
+              className={"iconBtn mobile"}
               style={{ display: "flex", alignItems: "center" }}
             >
               <IconThreeBar width={24} height={24} fill={"var(--black-700a)"} />

@@ -16,10 +16,9 @@ import styles from "./ProfileModal.module.css";
 
 import CloseBtn from "@/components/common/btns/CloseBtn";
 
-import ImgProfile from "@public/imgs/auth/img_profile.png";
-
 import IconProfile from "@public/svgs/auth/icon_profile.svg";
 import IconLogout from "@public/svgs/auth/icon_logout.svg";
+import ProfileImage from "./ProfileImage";
 
 /** 사용자 정보 수정 모달 Interface */
 interface IProfileModal {
@@ -50,15 +49,16 @@ export default function ProfileModal({ closeModal }: IProfileModal) {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginBottom: 5,
+          marginBottom: 10,
           paddingTop: 20,
         }}
       >
-        <Image
-          src={user.profileImgUrl || ImgProfile}
-          width={70}
-          height={70}
-          alt="프로필 이미지"
+        <ProfileImage
+          size={70}
+          style={{ background: "var(--background-color)" }}
+          profileImgUrl={user.profileImgUrl || undefined}
+          nickname={user.nickname || undefined}
+          identification={user.identification}
         />
       </div>
 

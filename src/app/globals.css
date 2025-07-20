@@ -278,6 +278,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  scale: 1.05;
+}
+
 button:active {
   background: var(--primary-dark-color);
 }
@@ -326,35 +330,31 @@ button:disabled {
   background: var(--gray-50);
 }
 
-.ghostBtn {
+.iconBtn {
   background: none;
   color: var(--font-color);
+  transition: background-color 0.2s;
   padding: 5px;
-}
-
-.ghostBtn:hover {
-  scale: 1.05;
-}
-
-.ghostBtn:active {
-  background: var(--gray-50);
-}
-
-.iconBtn {
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  padding: 5px;
-  border-radius: 3px;
+}
+
+.iconBtn svg {
+  fill: var(--gray-500);
 }
 
 .iconBtn:hover {
-  scale: 1.1;
+  background: var(--white-400a);
+}
+
+.iconBtn:hover svg {
+  fill: var(--primary-color);
 }
 
 .iconBtn:active {
-  background: var(--white-300a);
+  background: var(--gray-50);
 }
 
 .mobile {

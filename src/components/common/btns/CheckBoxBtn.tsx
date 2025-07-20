@@ -4,6 +4,7 @@ import React from "react";
 
 import IconUncheckBox from "@public/svgs/common/icon_uncheck_box.svg";
 import IconCheckBox from "@public/svgs/common/icon_check_box.svg";
+import IconCheck from "@public/svgs/common/icon_check.svg";
 
 /** 체크박스 Interface */
 interface ICheckBoxBtn {
@@ -21,7 +22,7 @@ interface ICheckBoxBtn {
 /** 체크박스 버튼 */
 export default function CheckBoxBtn({
   onClick,
-  fill = "black",
+  fill = "var(--gray-800)",
   size,
   isChecked,
 }: ICheckBoxBtn) {
@@ -29,12 +30,10 @@ export default function CheckBoxBtn({
     <button
       type="button"
       onClick={onClick}
+      className="iconBtn"
       style={{
         width: size,
         height: size,
-        padding: 0,
-        background: "none",
-        margin: 0,
       }}
     >
       <span
@@ -45,11 +44,26 @@ export default function CheckBoxBtn({
           position: "relative",
         }}
       >
-        {isChecked ? (
-          <IconCheckBox width={size} height={size} fill={fill} />
-        ) : (
-          <IconUncheckBox width={size} height={size} fill={fill} />
-        )}
+        <div
+          style={{
+            width: size,
+            height: size,
+            background: isChecked ? "none" : "var(--gray-200)",
+            borderRadius: "20%",
+            border: isChecked ? `2px solid ${fill}` : "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {isChecked && (
+            <IconCheck
+              width={size - 4}
+              height={size - 4}
+              style={{ fill: fill }}
+            />
+          )}
+        </div>
       </span>
     </button>
   );

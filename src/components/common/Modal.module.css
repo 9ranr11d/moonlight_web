@@ -10,9 +10,6 @@
   padding: 20px 40px;
   border-radius: 5px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   border: 0.5px solid var(--gray-200);
 }
 
@@ -22,10 +19,6 @@
 
 .container:last-child {
   margin-bottom: 0;
-}
-
-.button:hover {
-  scale: 1.01;
 }
 
 @media (max-width: 767px) {

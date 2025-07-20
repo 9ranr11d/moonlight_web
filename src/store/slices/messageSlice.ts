@@ -1,5 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type TMessageType = "info" | "warn" | "err";
+export type TMessageReturnType = "ok" | "ok-cancel" | "none";
+export type TMessagePos =
+  | "topLeft"
+  | "topRight"
+  | "bottomLeft"
+  | "bottomRight"
+  | "center";
 /** 결과 Type */
 export type TMessageResult = "ok" | "cancel" | null;
 
@@ -10,9 +18,11 @@ export interface IMessage {
   /** Message */
   msg: string | null;
   /** 타입 */
-  type: "info" | "warn" | "err";
+  type: TMessageType;
   /** Message 반환 Type */
-  returnType: "ok" | "ok-cancel" | "none";
+  returnType: TMessageReturnType;
+  /** Message 위치 */
+  pos?: TMessagePos;
 }
 
 /** Message 초기값 Interface */
@@ -31,6 +41,7 @@ const initialState: IMessageState = {
   type: "info",
   returnType: "none",
   result: null,
+  pos: "center",
 };
 
 /** Message Slice */
@@ -49,10 +60,10 @@ export const messageSlice = createSlice({
       state.msg = action.payload.msg;
       state.type = action.payload.type;
       state.returnType = action.payload.returnType;
+      state.pos = action.payload.pos || "center";
     },
     /** Message 결과 설정 */
     setResult: (state, action: PayloadAction<TMessageResult>) => {
-      console.log("action.payload :", action.payload);
       state.result = action.payload;
       state.isVisible = false;
       state.msg = null;

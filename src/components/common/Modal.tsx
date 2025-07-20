@@ -20,9 +20,20 @@ interface IModal {
   style?: React.CSSProperties;
   /** 적용 될 'Component'들 */
   children?: React.ReactNode;
+  /** Ref */
+  ref?: React.RefObject<HTMLDivElement | null>;
+  /** 닫기 button 색상 */
+  closeBtnFill?: string;
 }
 
-function Main({ className = "", style = {}, close, children }: IModal) {
+function Main({
+  className = "",
+  style = {},
+  close,
+  children,
+  ref,
+  closeBtnFill,
+}: IModal) {
   /** Dispatch */
   const dispatch = useDispatch();
 
@@ -36,10 +47,11 @@ function Main({ className = "", style = {}, close, children }: IModal) {
   };
 
   return (
-    <div className={`${styles.modal} ${className}`} style={style}>
+    <div ref={ref} className={`${styles.modal} ${className}`} style={style}>
       {close && (
         <CloseBtn
           onClick={clickClose}
+          fill={closeBtnFill}
           style={{
             position: "absolute",
             top: 10,
@@ -80,35 +92,8 @@ function SubTitle({ children }: { children?: React.ReactNode }) {
   return <h6 style={{ color: "var(--gray-500)" }}>{children}</h6>;
 }
 
-function Button({
-  children,
-  className,
-  style,
-}: {
-  children?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <button
-      type="button"
-      className={`${styles.button} ${className}`}
-      style={{
-        borderRadius: 3,
-        flex: 1,
-        padding: "15px 20px",
-        fontSize: 15,
-        ...style,
-      }}
-    >
-      {children}
-    </button>
-  );
-}
-
 export const Modal = Object.assign(Main, {
   Container,
   Title,
   SubTitle,
-  Button,
 });

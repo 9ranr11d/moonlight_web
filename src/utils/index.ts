@@ -151,7 +151,7 @@ export const formatDateI = (
  * @param splitter 구분 문자
  * @returns YYYY MM DD
  */
-export const formatDateII = (date: Date, splitter: string): string => {
+export const formatDateII = (date: Date, splitter: string = "."): string => {
   /** 연도 */
   const year = date.getFullYear();
   /** 달 */

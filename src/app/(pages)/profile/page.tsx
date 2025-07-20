@@ -66,7 +66,7 @@ export default function Page() {
           ))}
         </MenuList>
 
-        <MenuList.Container style={{ flex: 1 }}>
+        <MenuList.Container style={{ flex: 1, padding: 40 }}>
           {renderMenuContent()}
         </MenuList.Container>
       </div>

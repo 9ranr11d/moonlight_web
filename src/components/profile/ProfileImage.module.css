@@ -1,0 +1,25 @@
+.profileImageContainer {
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.profileImage {
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.defaultImage {
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.defaultImage h3 {
+  margin: 0;
+  font-weight: bold;
+}

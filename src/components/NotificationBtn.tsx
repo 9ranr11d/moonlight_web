@@ -1,6 +1,6 @@
 "use client";
 
-import IconBell from "@public/svgs/auth/icon_bell.svg";
+import IconBell from "@public/svgs/common/icon_bell.svg";
 
 /** 알림 Button Interface */
 interface INotificationBtn {
