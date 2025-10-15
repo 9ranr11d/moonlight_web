@@ -12,17 +12,35 @@ interface IEmailInput {
   onChange?: (email: string) => void;
   /** 키 클릭 시 */
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  /** 기본값 */
+  defaultValue?: string;
 }
 
 /** Email Input */
-export default function EmailInput({ onChange, onKeyDown }: IEmailInput) {
+export default function EmailInput({
+  onChange,
+  onKeyDown,
+  defaultValue = "",
+}: IEmailInput) {
   /** Email 자동완성 목록 */
   const emailList: string[] = ["직접입력", "gmail.com", "naver.com"];
 
-  const [firstEmail, setFirstEmail] = useState<string>(""); // Email 아이디 부분
-  const [lastEmail, setLastEmail] = useState<string>(""); // Email Domain 부분
+  // 기본값에서 이메일 아이디와 도메인 분리
+  const parseEmail = (email: string) => {
+    if (!email || !email.includes("@")) return { first: "", last: "" };
+    const [first, last] = email.split("@");
+    return { first: first || "", last: last || "" };
+  };
 
-  const [lastEmailIdx, setLastEmailIdx] = useState<number>(0); // Email List에서 선택한 순번
+  const { first: defaultFirst, last: defaultLast } = parseEmail(defaultValue);
+  const defaultLastIdx = emailList.includes(defaultLast)
+    ? emailList.indexOf(defaultLast)
+    : 0;
+
+  const [firstEmail, setFirstEmail] = useState<string>(defaultFirst); // Email 아이디 부분
+  const [lastEmail, setLastEmail] = useState<string>(defaultLast); // Email Domain 부분
+
+  const [lastEmailIdx, setLastEmailIdx] = useState<number>(defaultLastIdx); // Email List에서 선택한 순번
 
   /** 완성된 Email */
   const fullEmail: string = `${firstEmail}@${lastEmail}`;

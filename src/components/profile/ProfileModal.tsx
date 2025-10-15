@@ -16,7 +16,7 @@ import styles from "./ProfileModal.module.css";
 
 import CloseBtn from "@/components/common/btns/CloseBtn";
 
-import IconProfile from "@public/svgs/auth/icon_profile.svg";
+import IconProfile from "@public/svgs/auth/icon_profile_I.svg";
 import IconLogout from "@public/svgs/auth/icon_logout.svg";
 import ProfileImage from "./ProfileImage";
 

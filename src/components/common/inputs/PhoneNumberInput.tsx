@@ -17,6 +17,8 @@ interface IPhoneInput {
   onChange?: (number: string) => void;
   /** 키 클릭 시 */
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  /** 기본값 */
+  defaultValue?: string;
 }
 
 /** 나라 국가, 나라 전화 코드 Interface */
@@ -26,7 +28,11 @@ interface IConuntryCallingCode {
 }
 
 /** 휴대전화 번호 Input */
-export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
+export default function PhoneNumberInput({
+  onChange,
+  onKeyDown,
+  defaultValue = "",
+}: IPhoneInput) {
   /** 나라 코드 Style */
   const countryCallingCodeStyle = { display: "flex", alignItems: "center" };
   /** 나라 국기 Style */
@@ -44,9 +50,26 @@ export default function PhoneNumberInput({ onChange, onKeyDown }: IPhoneInput) {
     },
   ];
 
-  const [number, setNumber] = useState<string>(""); // 휴대전화 번호
+  // 기본값에서 나라 코드와 번호 분리
+  const parsePhoneNumber = (phone: string) => {
+    if (!phone) return { number: "", codeIdx: 0 };
+    const code = phone.startsWith("+82")
+      ? "+82"
+      : phone.startsWith("+1")
+        ? "+1"
+        : "+82";
+    const number = phone.replace(code, "");
+    const codeIdx = code === "+82" ? 0 : 1;
+    return { number, codeIdx };
+  };
 
-  const [conuntryCallingCodeIdx, setCountryCodeIdx] = useState<number>(0); // 선택한 나라 코드 순서
+  const { number: defaultNumber, codeIdx: defaultCodeIdx } =
+    parsePhoneNumber(defaultValue);
+
+  const [number, setNumber] = useState<string>(defaultNumber); // 휴대전화 번호
+
+  const [conuntryCallingCodeIdx, setCountryCodeIdx] =
+    useState<number>(defaultCodeIdx); // 선택한 나라 코드 순서
 
   /** 나라 코드 선택 시 */
   const handleCountryCode = (idx: number): void => {

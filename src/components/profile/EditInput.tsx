@@ -1,33 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
 import NicknameInput from "@/components/common/inputs/NicknameInput";
 import EmailInput from "@/components/common/inputs/EmailInput";
 import PhoneNumberInput from "@/components/common/inputs/PhoneNumberInput";
-import StatusInput from "@/components/common/inputs/StatusInput";
 import RadioBtns from "@/components/common/btns/RadioBtns";
 
-import IconUndo from "@public/svgs/common/icon_undo.svg";
 import IconSave from "@public/svgs/common/icon_check.svg";
+import IconXCircle from "@public/svgs/common/icon_x_circle.svg";
+import CalendarInput from "@/components/common/inputs/CalendarInput";
+import { formatDateII } from "@/utils";
 
-interface ProfileEditFormProps {
+interface EditInputProps {
   field: string;
   onCancel: () => void;
   onSave: (value: string) => void;
   currentValue: string;
 }
 
-export default function ProfileEditForm({
+export default function EditInput({
   field,
   onCancel,
   onSave,
   currentValue,
-}: ProfileEditFormProps) {
+}: EditInputProps) {
   const [value, setValue] = useState(currentValue);
   const [gender, setGender] = useState(currentValue);
 
@@ -57,29 +55,40 @@ export default function ProfileEditForm({
   };
 
   const handleSave = () => {
-    if (field === "gender") {
-      onSave(gender);
-    } else {
-      onSave(value);
-    }
+    if (field === "gender") onSave(gender);
+    else onSave(value);
   };
 
   const renderInput = () => {
     switch (field) {
       case "nickname":
-        return <NicknameInput onChange={nickname => setValue(nickname)} />;
+        return (
+          <NicknameInput
+            defaultValue={value}
+            onChange={nickname => setValue(nickname)}
+          />
+        );
       case "email":
-        return <EmailInput onChange={email => setValue(email)} />;
+        return (
+          <div style={{ paddingRight: 40 }}>
+            <EmailInput
+              defaultValue={value}
+              onChange={email => setValue(email)}
+            />
+          </div>
+        );
       case "phoneNumber":
-        return <PhoneNumberInput onChange={phone => setValue(phone)} />;
+        return (
+          <PhoneNumberInput
+            defaultValue={value}
+            onChange={phone => setValue(phone)}
+          />
+        );
       case "birthdate":
         return (
-          <input
-            type="date"
-            value={value}
-            onChange={e => setValue(e.target.value)}
-            className={styles.editInput}
-          />
+          <CalendarInput style={{ width: "100%" }}>
+            {formatDateII(new Date(value))}
+          </CalendarInput>
         );
       case "gender":
         return (
@@ -108,16 +117,27 @@ export default function ProfileEditForm({
       </div>
 
       <div style={{ display: "flex", gap: 10 }}>
-        <div className={styles.editFormContent}>{renderInput()}</div>
+        <div className={styles.editFormContent}>
+          {renderInput()}
 
-        <div className={styles.editFormActions}>
-          <button type="button" onClick={onCancel} className="iconBtn">
-            <IconUndo width={16} height={16} />
-          </button>
-          <button type="button" onClick={handleSave} className="iconBtn">
-            <IconSave width={16} height={16} />
+          <button
+            type="button"
+            onClick={onCancel}
+            className="iconBtn"
+            style={{
+              position: "absolute",
+              right: 5,
+              top: "50%",
+              transform: "translateY(-50%)",
+            }}
+          >
+            <IconXCircle width={16} height={16} />
           </button>
         </div>
+
+        <button type="button" onClick={handleSave} className="iconBtn">
+          <IconSave width={16} height={16} />
+        </button>
       </div>
     </div>
   );

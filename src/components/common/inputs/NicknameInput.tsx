@@ -9,11 +9,15 @@ import StatusInput from "@/components/common/inputs/StatusInput";
 /** 별명 Input Interface */
 interface INicknameInput {
   onChange?: (nickname: string) => void;
+  defaultValue?: string;
 }
 
 /** 별명 Input */
-export default function NicknameInput({ onChange }: INicknameInput) {
-  const [nickname, setNickName] = useState<string>(""); // 별명
+export default function NicknameInput({
+  onChange,
+  defaultValue = "",
+}: INicknameInput) {
+  const [nickname, setNickName] = useState<string>(defaultValue); // 별명
 
   /** 별명 Input */
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {

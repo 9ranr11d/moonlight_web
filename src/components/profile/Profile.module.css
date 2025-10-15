@@ -164,6 +164,7 @@
 
 .editFormContent {
   flex: 1;
+  position: relative;
 }
 
 .editInput {
@@ -178,11 +179,4 @@
 .editInput:focus {
   outline: none;
   border-color: var(--primary-color);
-}
-
-.editFormActions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  align-items: center;
 }

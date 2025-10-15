@@ -230,7 +230,7 @@ export default function Message() {
       <p
         style={{
           marginBottom: message.returnType === "none" ? 0 : 30,
-          textAlign: message.pos ? "left" : "center",
+          textAlign: message.pos === "center" ? "center" : "left",
         }}
       >
         {message.msg}

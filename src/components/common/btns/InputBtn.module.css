@@ -1,0 +1,14 @@
+.inputBtn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
+  background: white;
+  text-align: left;
+  color: var(--font-color);
+}
+
+.inputBtn:hover {
+  scale: 1;
+  border: 1px solid var(--primary-color);
+}

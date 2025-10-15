@@ -16,7 +16,6 @@ export default function CloseBtn({
   style,
   size = 14,
 }: ICloseBtn) {
-  console.log("closebtn", fill);
   return (
     <button
       type="button"

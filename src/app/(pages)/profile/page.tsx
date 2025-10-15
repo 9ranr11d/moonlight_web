@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import IconUser from "@public/svgs/auth/icon_user.svg";
+import IconUser from "@public/svgs/auth/icon_profile_II.svg";
 import IconCoupeCode from "@public/svgs/auth/icon_couple_code.svg";
 import Container from "@/components/common/Container";
 import MenuList from "@/components/common/list/MenuList";
